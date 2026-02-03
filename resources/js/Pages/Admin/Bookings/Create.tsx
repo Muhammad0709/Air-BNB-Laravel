@@ -24,6 +24,7 @@ export default function CreateBooking() {
 
   console.log(formData);
   console.log(formData.guest);
+  console.log(formData.guestEmail);
   
 
 
