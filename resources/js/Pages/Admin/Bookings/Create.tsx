@@ -21,6 +21,7 @@ export default function CreateBooking() {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
+  
 
   const handleSelectChange = (value: string) => {
     setFormData(prev => ({ ...prev, status: value }))
