@@ -24,13 +24,7 @@ export default function CreateBooking() {
 
   console.log(formData);
   console.log(formData.guest);
-  console.log(formData.guestEmail);
-  console.log(formData.guestPhone);
-  console.log(formData.property);
-  console.log(formData.checkin);
-  console.log(formData.checkout);
-  console.log(formData.status);
-  console.log(formData.amount);
+  
 
 
   const handleSelectChange = (value: string) => {
