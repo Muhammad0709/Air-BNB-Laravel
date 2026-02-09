@@ -10,8 +10,8 @@ use OpenApi\Attributes as OA;
     description: "API documentation for LipaBnb application"
 )]
 #[OA\Server(
-    url: "/",
-    description: "Current server (API requests use the same domain as this page)"
+    url: "http://localhost:8000",
+    description: "Local development server"
 )]
 #[OA\SecurityScheme(
     securityScheme: "apiAuth",
