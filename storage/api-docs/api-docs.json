@@ -7,8 +7,8 @@
     },
     "servers": [
         {
-            "url": "/",
-            "description": "Current server (API requests use the same domain as this page)"
+            "url": "https://airbnb.bondoqi.com",
+            "description": "Production server"
         }
     ],
     "paths": {
