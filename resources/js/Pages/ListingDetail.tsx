@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Box, Button, Checkbox, FormControlLabel, Paper, Stack, Typography } from '@mui/material'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -13,7 +13,7 @@ import BedIcon from '@mui/icons-material/Bed'
 import BathroomIcon from '@mui/icons-material/Bathroom'
 import PeopleIcon from '@mui/icons-material/People'
 import HomeIcon from '@mui/icons-material/Home'
-import { router, Head } from '@inertiajs/react'
+import { router, Head, usePage } from '@inertiajs/react'
 import MessageIcon from '@mui/icons-material/Message'
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
@@ -21,12 +21,64 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import TourIcon from '@mui/icons-material/Tour'
 import ScheduleIcon from '@mui/icons-material/Schedule'
 
-// Images served from public directory
-const img1 = '/images/popular-stay-1.svg'
-const img2 = '/images/popular-stay-2.svg'
-const img3 = '/images/popular-stay-3.svg'
+const PLACEHOLDER_IMAGE = '/images/popular-stay-1.svg'
+
+type PropertyHost = {
+  id: number
+  name: string
+  email: string
+  profile_picture: string | null
+  created_at: string
+}
+
+type Property = {
+  id: number
+  title: string
+  location: string
+  price: number | string
+  bedrooms: number
+  bathrooms: number
+  guests: number
+  property_type: string
+  description: string
+  amenities: string[]
+  image: string | null
+  images: string[]
+  host: PropertyHost
+}
+
+type Review = {
+  id: number
+  rating: number
+  comment: string
+  created_at: string
+  user: { id: number; name: string; profile_picture: string | null }
+}
+
+type RelatedProperty = {
+  id: number
+  title: string
+  location: string
+  price: number | string
+  image: string | null
+}
+
+type RatingStats = {
+  average: number
+  total: number
+  breakdown: Record<number, number>
+}
+
+type ListingDetailProps = {
+  property: Property
+  relatedProperties: RelatedProperty[]
+  reviews: Review[]
+  ratingStats: RatingStats
+}
 
 export default function ListingDetail() {
+  const { property, relatedProperties, reviews, ratingStats } = usePage<ListingDetailProps>().props
+
   const [calendar1Month, setCalendar1Month] = useState(new Date(2025, 7, 1))
   const [calendar2Month, setCalendar2Month] = useState(new Date(2025, 7, 1))
   const [selectedDate1, setSelectedDate1] = useState(6)
@@ -34,40 +86,40 @@ export default function ListingDetail() {
   const [bookPickupService, setBookPickupService] = useState(false)
   const [bookGuidedTour, setBookGuidedTour] = useState(false)
 
-  // Airport Pickup Service Data (mock data - in real app, fetch from API)
+  // Airport Pickup / Guided Tours (mock – backend could pass these later)
   const airportPickupService = {
     enabled: true,
     airport: 'Los Angeles International Airport (LAX)',
     pickupStartTime: '08:00',
     pickupEndTime: '22:00',
-    price: '$50'
+    price: '$50',
   }
-
-  // Guided Tours Service Data (mock data - in real app, fetch from API)
   const guidedToursService = {
     enabled: true,
-    description: 'Explore the beautiful city with our expert local guide. Visit historical landmarks, cultural sites, and hidden gems. Experience authentic local cuisine and learn about the rich history and traditions of the area.',
+    description: 'Explore the beautiful city with our expert local guide. Visit historical landmarks, cultural sites, and hidden gems.',
     duration: 'Half Day (4-5 hours)',
-    price: '$75'
+    price: '$75',
   }
 
-  const galleryImages = [
-    'https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1600585154084-4e5fe7c39198?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1600585152915-d208bec867a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-  ]
+  // Gallery: use property images; fallback to single image or placeholder
+  const galleryImages = useMemo(() => {
+    const list = Array.isArray(property.images) && property.images.length > 0
+      ? property.images
+      : property.image
+        ? [property.image]
+        : [PLACEHOLDER_IMAGE]
+    return list
+  }, [property.images, property.image])
 
-  // Get images for grid layout: 1 large + 2 medium + 5 small = 8 images
-  const displayedImages = galleryImages.slice(0, 8)
-  const remainingCount = galleryImages.length - displayedImages.length
+  // Grid needs 8 slots: 1 large + 2 medium + 5 small. Pad with first image if fewer.
+  const displayedImages = useMemo(() => {
+    const need = 8
+    const base = galleryImages.slice(0, need)
+    const first = base[0] || PLACEHOLDER_IMAGE
+    while (base.length < need) base.push(first)
+    return base
+  }, [galleryImages])
+  const remainingCount = Math.max(0, galleryImages.length - 8)
 
   const handlePrevMonth = (calendar: number) => {
     const current = calendar === 1 ? calendar1Month : calendar2Month
@@ -92,7 +144,7 @@ export default function ListingDetail() {
     const daysInMonth = new Date(year, month + 1, 0).getDate()
     const daysInPrevMonth = new Date(year, month, 0).getDate()
 
-    const days = []
+    const days: { day: number; isOtherMonth: boolean }[] = []
     for (let i = firstDay - 1; i >= 0; i--) {
       days.push({ day: daysInPrevMonth - i, isOtherMonth: true })
     }
@@ -112,21 +164,12 @@ export default function ListingDetail() {
   const calendar1Days = getDaysInMonth(calendar1Month)
   const calendar2Days = getDaysInMonth(calendar2Month)
 
-  const reviews = [
-    { name: 'Chirstina Perry', date: '14 Nov, 2021', rating: 4, text: 'Thank you very fast shipping from Poland only 3days. Very Greateful.', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80' },
-    { name: 'John Smith', date: '10 Nov, 2021', rating: 5, text: 'Amazing property with beautiful views. Highly recommended!', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80' },
-    { name: 'Sarah Johnson', date: '5 Nov, 2021', rating: 4, text: 'Great location and excellent amenities. Will definitely come back.', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80' },
-  ]
-
-  const popularStays = [
-    { image: img1, title: 'Luxury Beachfront Villa Luxury Bea...', location: 'Malibu, California', price: 299 },
-    { image: img2, title: 'Luxury Beachfront Villa Luxury Bea...', location: 'Malibu, California', price: 299 },
-    { image: img3, title: 'Luxury Beachfront Villa Luxury Bea...', location: 'Malibu, California', price: 299 },
-  ]
+  const priceDisplay = typeof property.price === 'number' ? property.price : Number(property.price) || 0
+  const hostJoinedYear = property.host?.created_at ? new Date(property.host.created_at).getFullYear() : ''
 
   return (
     <Box>
-      <Head title="Property Detail" />
+      <Head title={property.title || 'Property Detail'} />
       <Navbar />
       <main className="property-detail-page">
         {/* Property Details Section */}
@@ -138,33 +181,33 @@ export default function ListingDetail() {
                   <Row className="align-items-center">
                     <Col md={10}>
                       <Typography className="property-title" component="h1">
-                        Luxury Beachfront Villa Luxury <br /> Beachfront Vi
+                        {property.title}
                       </Typography>
                       <Box className="property-meta">
                         <Box className="location">
                           <LocationOnIcon sx={{ fontSize: 16 }} />
-                          <span>Malibu, California</span>
+                          <span>{property.location}</span>
                         </Box>
                         <Box className="rating">
                           <Box className="stars">
                             {[...Array(5)].map((_, i) => (
-                              <StarIcon key={i} sx={{ fontSize: 14, color: '#FFD700' }} />
+                              <StarIcon key={i} sx={{ fontSize: 14, color: i < Math.round(ratingStats.average) ? '#FFD700' : '#e9ecef' }} />
                             ))}
                           </Box>
-                          <Typography className="rating-text">(123)</Typography>
+                          <Typography className="rating-text">({ratingStats.total})</Typography>
                         </Box>
                       </Box>
                     </Col>
                     <Col md={2}>
                       <Box className="booking-info">
                         <Box className="price">
-                          <Typography component="span" className="price-amount">$299</Typography>
+                          <Typography component="span" className="price-amount">${priceDisplay}</Typography>
                           <Typography component="span" className="price-period">/night</Typography>
                         </Box>
                         <Button
                           variant="contained"
                           className="btn-book"
-                          onClick={() => router.visit('/booking')}
+                          onClick={() => router.visit(`/booking?property_id=${property.id}`)}
                         >
                          Book
                         </Button>
@@ -181,12 +224,12 @@ export default function ListingDetail() {
         <section className="gallery-section">
           <RBContainer>
             <Box className="gallery-grid-container">
-              <Box className="gallery-top-section">
+                <Box className="gallery-top-section">
                 <Box className="gallery-large-item">
                   <button type="button" className="gallery-image-button">
                     <img
                       src={displayedImages[0]}
-                      alt="Property 1"
+                      alt={`${property.title} - 1`}
                       className="gallery-image"
                     />
                   </button>
@@ -196,7 +239,7 @@ export default function ListingDetail() {
                     <button type="button" className="gallery-image-button">
                       <img
                         src={displayedImages[1]}
-                        alt="Property 2"
+                        alt={`${property.title} - 2`}
                         className="gallery-image"
                       />
                     </button>
@@ -205,7 +248,7 @@ export default function ListingDetail() {
                     <button type="button" className="gallery-image-button">
                       <img
                         src={displayedImages[2]}
-                        alt="Property 3"
+                        alt={`${property.title} - 3`}
                         className="gallery-image"
                       />
                     </button>
@@ -219,7 +262,7 @@ export default function ListingDetail() {
                     <button type="button" className="gallery-image-button">
                       <img
                         src={image}
-                        alt={`Property ${idx + 4}`}
+                        alt={`${property.title} - ${idx + 4}`}
                         className="gallery-image"
                       />
                       {idx === 4 && remainingCount > 0 && (
@@ -247,7 +290,7 @@ export default function ListingDetail() {
                      <BedIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px',mr: 1.5 }} />
                       </Box>
                     <Box className="info-text">
-                      <Typography component="span" className="info-number">2</Typography>
+                      <Typography component="span" className="info-number">{property.bedrooms}</Typography>
                       <Typography component="span" className="info-label">Bedrooms</Typography>
                     </Box>
                   </Box>
@@ -257,7 +300,7 @@ export default function ListingDetail() {
                     <Box className="info-icon">
                     <BathroomIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px',mr: 1.5 }} />
                     </Box>
-                    <Typography component="span" className="info-number">3</Typography>
+                    <Typography component="span" className="info-number">{property.bathrooms}</Typography>
                     <Typography component="span" className="info-label">Bathrooms</Typography>
                   </Box>
                 </Col>
@@ -269,7 +312,7 @@ export default function ListingDetail() {
                     <PeopleIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px',mr: 1.5 }} />
                     </Box>
                     <Box className="info-text">
-                      <Typography component="span" className="info-number">4</Typography>
+                      <Typography component="span" className="info-number">{property.guests}</Typography>
                       <Typography component="span" className="info-label">Guests</Typography>
                     </Box>
                   </Box>
@@ -279,7 +322,7 @@ export default function ListingDetail() {
                     <Box className="info-icon">
                     <HomeIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px',mr: 1.5 }} />
                     </Box>
-                    <Typography component="span" className="info-label">Entire apartment</Typography>
+                    <Typography component="span" className="info-label">{property.property_type || 'Entire place'}</Typography>
                   </Box>
                 </Col>
               </Row>
@@ -298,18 +341,22 @@ export default function ListingDetail() {
                   <Typography className="section-title" component="h2">About Your Host</Typography>
                   <Box className="host-info">
                     <Box className="host-avatar">
-                      <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" alt="Aisha M." style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} />
+                      <img
+                        src={property.host?.profile_picture || '/images/popular-stay-1.svg'}
+                        alt={property.host?.name || 'Host'}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+                      />
                     </Box>
                     <Box className="host-details" sx={{ flex: 1 }}>
-                      <Typography className="host-name" component="h5">Hosted by Aisha M.</Typography>
-                      <Typography className="host-joined">joined in 2021</Typography>
+                      <Typography className="host-name" component="h5">Hosted by {property.host?.name || 'Host'}</Typography>
+                      <Typography className="host-joined">{hostJoinedYear ? `joined in ${hostJoinedYear}` : ''}</Typography>
                       <Typography className="host-description">
-                        Aisha is a passionate traveler and local expert in Lahore, dedicated to providing guests with exceptional stays. She takes pride in ensuring her properties are clean, comfortable, and well-equipped for a memorable experience. Aisha is always available to offer recommendations and assistance during your visit.
+                        Your host is committed to providing a comfortable stay. Feel free to message for any questions about the property or the area.
                       </Typography>
                       <Button
                         variant="outlined"
                         startIcon={<MessageIcon />}
-                        onClick={() => router.visit('/chat?host=Aisha M.&property=Luxury Beachfront Villa')}
+                        onClick={() => router.visit(`/chat?host=${encodeURIComponent(property.host?.name || '')}&property=${encodeURIComponent(property.title)}`)}
                         sx={{
                           mt: 2,
                           borderColor: '#AD542D',
@@ -333,10 +380,7 @@ export default function ListingDetail() {
                 <Paper className="about-section mt-4" elevation={0}>
                   <Typography className="section-title" component="h2">About the Property</Typography>
                   <Typography className="about-text">
-                    Experience unparalleled comfort and convenience in our modern apartment located right in the heart of Lahore. Designed with sophisticated aesthetics and equipped with all essential amenities, this apartment offers a serene escape amidst the bustling city. Perfect for families, business travelers, or anyone looking to explore Lahore with ease, our property ensures a memorable stay with its prime location and luxurious features. Enjoy spacious living areas, a fully equipped kitchen, and breathtaking city views from large windows.
-                  </Typography>
-                  <Typography className="about-text">
-                    Experience unparalleled comfort and convenience in our modern apartment located right in the heart of Lahore. Designed with sophisticated aesthetics and equipped with all essential amenities, this apartment offers a serene escape amidst the bustling city.
+                    {property.description || 'No description available.'}
                   </Typography>
                 </Paper>
 
@@ -535,17 +579,17 @@ export default function ListingDetail() {
                 {/* Reviews Section */}
                 <Box className="reviews-section mt-4">
                   <Row>
-                    <Typography className="reviews-title" component="h2">Reviews (120)</Typography>
+                    <Typography className="reviews-title" component="h2">Reviews ({ratingStats.total})</Typography>
                     <Col lg={8}>
                       <Box className="reviews-list">
-                        {reviews.map((review, idx) => (
-                          <Box key={idx} className="review-item">
+                        {reviews.length > 0 ? reviews.map((review) => (
+                          <Box key={review.id} className="review-item">
                             <Box className="reviewer-info">
                               <Box className="reviewer-avatar">
-                                <img src={review.avatar} alt={review.name} />
+                                <img src={review.user?.profile_picture || '/images/popular-stay-1.svg'} alt={review.user?.name || 'Reviewer'} />
                               </Box>
-                              <Typography className="reviewer-name">{review.name}</Typography>
-                              <Typography className="review-date">{review.date}</Typography>
+                              <Typography className="reviewer-name">{review.user?.name}</Typography>
+                              <Typography className="review-date">{review.created_at}</Typography>
                             </Box>
                             <Box className="review-content">
                               <Box className="stars">
@@ -553,41 +597,41 @@ export default function ListingDetail() {
                                   <StarIcon key={i} sx={{ fontSize: 14, color: i < review.rating ? '#ffc107' : '#e9ecef' }} />
                                 ))}
                               </Box>
-                              <Typography className="review-text">{review.text}</Typography>
+                              <Typography className="review-text">{review.comment}</Typography>
                               <Typography className="helpful-text">Was this review helpful to you?</Typography>
                             </Box>
                           </Box>
-                        ))}
+                        )) : (
+                          <Typography sx={{ color: '#717171' }}>No reviews yet.</Typography>
+                        )}
                       </Box>
                     </Col>
                     <Col lg={4}>
                       <Paper className="rating-summary" elevation={0}>
                         <Box className="average-rating">
                           <Typography className="rating-title">Average rating</Typography>
-                          <Typography className="rating-score">4/5</Typography>
+                          <Typography className="rating-score">{ratingStats.average}/5</Typography>
                           <Box className="stars">
                             {[...Array(5)].map((_, i) => (
-                              <StarIcon key={i} sx={{ fontSize: 16, color: i < 4 ? '#ffc107' : '#e9ecef' }} />
+                              <StarIcon key={i} sx={{ fontSize: 16, color: i < Math.round(ratingStats.average) ? '#ffc107' : '#e9ecef' }} />
                             ))}
                           </Box>
-                          <Typography className="total-reviews">(8.24kreviews)</Typography>
+                          <Typography className="total-reviews">({ratingStats.total} reviews)</Typography>
                         </Box>
                         <Box className="rating-breakdown">
-                          {[
-                            { label: '5 star', width: 40, count: '32K' },
-                            { label: '4 star', width: 60, count: '54K' },
-                            { label: '3 star', width: 45, count: '37K' },
-                            { label: '2 star', width: 50, count: '42K' },
-                            { label: '1 star', width: 70, count: '65K' },
-                          ].map((r, idx) => (
-                            <Box key={idx} className="rating-bar">
-                              <Typography className="rating-label">{r.label}</Typography>
-                              <Box className="bar-container">
-                                <Box className="bar-fill" sx={{ width: `${r.width}%` }}></Box>
+                          {[5, 4, 3, 2, 1].map((stars) => {
+                            const count = ratingStats.breakdown[stars] ?? 0
+                            const pct = ratingStats.total > 0 ? (count / ratingStats.total) * 100 : 0
+                            return (
+                              <Box key={stars} className="rating-bar">
+                                <Typography className="rating-label">{stars} star</Typography>
+                                <Box className="bar-container">
+                                  <Box className="bar-fill" sx={{ width: `${pct}%` }}></Box>
+                                </Box>
+                                <Typography className="rating-count">{count}</Typography>
                               </Box>
-                              <Typography className="rating-count">{r.count}</Typography>
-                            </Box>
-                          ))}
+                            )
+                          })}
                         </Box>
                       </Paper>
                     </Col>
@@ -607,11 +651,21 @@ export default function ListingDetail() {
           <RBContainer>
             <Typography className="section-title" component="h2">Popular Stays Near You</Typography>
             <Row className="g-4">
-              {popularStays.map((stay, idx) => (
-                <Col key={idx} lg={4} md={6}>
-                  <FeaturedCard image={stay.image} title={stay.title} location={stay.location} price={stay.price} id={idx + 1} />
+              {relatedProperties.length > 0 ? relatedProperties.map((stay) => (
+                <Col key={stay.id} lg={4} md={6}>
+                  <FeaturedCard
+                    image={stay.image || PLACEHOLDER_IMAGE}
+                    title={stay.title}
+                    location={stay.location}
+                    price={typeof stay.price === 'number' ? stay.price : Number(stay.price) || 0}
+                    id={stay.id}
+                  />
                 </Col>
-              ))}
+              )) : (
+                <Col lg={12}>
+                  <Typography sx={{ color: '#717171' }}>No related properties at the moment.</Typography>
+                </Col>
+              )}
             </Row>
           </RBContainer>
         </section>

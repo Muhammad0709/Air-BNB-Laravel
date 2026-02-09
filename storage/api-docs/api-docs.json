@@ -7,6 +7,10 @@
     },
     "servers": [
         {
+            "url": "/",
+            "description": "Current server (uses the same domain as this documentation)"
+        },
+        {
             "url": "http://localhost:8000",
             "description": "Local development server"
         }
