@@ -1,18 +1,42 @@
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Button, FormControl, InputAdornment, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import Toast from '../components/shared/Toast'
 import { Container, Row, Col } from 'react-bootstrap'
 import CreditCardIcon from '@mui/icons-material/CreditCard'
-import { router, Head } from '@inertiajs/react'
+import { router, Head, usePage } from '@inertiajs/react'
 import ListingPreviewCard from '../components/ListingPreviewCard'
 import BookingSummaryCard from '../components/BookingSummaryCard'
 
-// Images served from public directory
-const img1 = '/images/popular-stay-1.svg'
+const PLACEHOLDER_IMAGE = '/images/popular-stay-1.svg'
+
+type BookingProperty = {
+  id: number
+  title: string
+  location: string
+  image: string
+  price: number
+  bedrooms: number
+  bathrooms: number
+  guests: number
+  reviews_count: number
+  rating: number
+}
+
+type BookingPageProps = {
+  property: BookingProperty | null
+  nights: number
+  checkin: string | null
+  checkout: string | null
+  costs: Array<{ label: string; amount: string }>
+  totalAmount: string
+  rules: string[]
+}
 
 export default function Booking() {
+  const { property, nights, costs, totalAmount, rules } = usePage<BookingPageProps>().props
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -21,12 +45,24 @@ export default function Booking() {
     guests: 1,
     rooms: 1,
     adults: 1,
-    children: 1,
+    children: 0,
     paymentMethod: 'ideal',
     cardNumber: '',
     expiryDate: '',
     csv: ''
   })
+
+  useEffect(() => {
+    if (property) {
+      setFormData(prev => ({
+        ...prev,
+        rooms: Math.max(1, property.bedrooms || 1),
+        guests: Math.max(1, property.guests || 1),
+        adults: Math.max(1, property.guests ? Math.min(property.guests, 10) : 1),
+        children: 0
+      }))
+    }
+  }, [property])
 
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
@@ -65,7 +101,8 @@ export default function Booking() {
     e.preventDefault()
     if (validate()) {
       setToast({ open: true, message: 'Booking request submitted successfully!', severity: 'success' })
-      setTimeout(() => router.visit('/confirmation'), 1000)
+      const url = property ? `/confirmation?property_id=${property.id}` : '/confirmation'
+      setTimeout(() => router.visit(url), 1000)
     } else {
       setToast({ open: true, message: 'Please fix the errors in the form', severity: 'error' })
     }
@@ -233,7 +270,7 @@ export default function Booking() {
                     <Paper elevation={0} className="booking-total">
                       <Typography>Total</Typography>
                       <Stack direction="row" spacing={2} alignItems="center">
-                        <Typography className="grand-total">$631</Typography>
+                        <Typography className="grand-total">{totalAmount}</Typography>
                         <Button type="submit" variant="contained" className="request-btn">Book</Button>
                       </Stack>
                     </Paper>
@@ -242,22 +279,18 @@ export default function Booking() {
               </Col>
 
               <Col xs={12} md={5} lg={4}>
-                <ListingPreviewCard image={img1} title="Luxury Beachfront Villa Luxury Beachfront Vi" location="Malibu, California" reviews={123} rating={4} />
+                <ListingPreviewCard
+                  image={property?.image ?? PLACEHOLDER_IMAGE}
+                  title={property?.title ?? 'Select a property'}
+                  location={property?.location ?? '—'}
+                  reviews={property?.reviews_count ?? 0}
+                  rating={property?.rating ?? 0}
+                />
 
                 <BookingSummaryCard
-                  rules={[
-                    'Check-in: 3:00 PM - 10:00 PM',
-                    'Check-out: 11:00 AM',
-                    'No parties or events allowed',
-                    'Pets allowed (with prior notification)',
-                    'No smoking indoors',
-                  ]}
-                  costs={[
-                    { label: '$87 × 7 nights', amount: '$585' },
-                    { label: 'Cleaning fee', amount: '$25' },
-                    { label: 'Service fee', amount: '$71' },
-                  ]}
-                  totalAmount="$631"
+                  rules={rules}
+                  costs={costs}
+                  totalAmount={totalAmount}
                 />
               </Col>
             </Row>
