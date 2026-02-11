@@ -1,54 +1,39 @@
 import React from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { Box, Typography } from '@mui/material'
+import { useLanguage } from '../hooks/use-language'
 // Images served from public directory
 const howWorkIcon = '/images/how-work.svg'
 
-type Step = {
-  title: string
-  description: string
-}
-
-const steps: Step[] = [
-  {
-    title: 'Browse Listings',
-    description:
-      'Explore our curated collection of rentals, each with detailed descriptions.',
-  },
-  {
-    title: 'Book & Pay Securely',
-    description:
-      'Securely book your stay using our trusted payment gateways.',
-  },
-  {
-    title: 'Wait for Confirmation',
-    description:
-      'Receive confirmation of your booking and prepare for your trip.',
-  },
-]
+const stepKeys = [
+  { title: 'about.step1_title', desc: 'about.step1_desc' },
+  { title: 'about.step2_title', desc: 'about.step2_desc' },
+  { title: 'about.step3_title', desc: 'about.step3_desc' },
+] as const
 
 export default function HowItWorks() {
+  const { t } = useLanguage()
   return (
     <section className="how-works">
       <Container>
         <Typography component="h2" className="how-title">
-          How It Works
+          {t('about.how_title')}
         </Typography>
         <Typography className="how-sub">
-          Book your perfect stay in just three simple steps
+          {t('about.how_sub')}
         </Typography>
 
         <Row className="g-4 how-grid">
-          {steps.map((s, i) => (
+          {stepKeys.map((s, i) => (
             <Col key={i} xs={12} md={4}>
               <Box className="how-card">
                 <Box className="how-icon">
                   <img src={howWorkIcon} alt="step" />
                 </Box>
                 <Typography component="h3" className="how-card-title">
-                  {s.title}
+                  {t(s.title)}
                 </Typography>
-                <Typography className="how-card-desc">{s.description}</Typography>
+                <Typography className="how-card-desc">{t(s.desc)}</Typography>
               </Box>
             </Col>
           ))}

@@ -86,23 +86,23 @@ export default function Booking() {
   const validate = () => {
     const newErrors: Record<string, string> = {}
 
-    if (!formData.name.trim()) newErrors.name = 'Name is required'
-    else if (formData.name.trim().length < 2) newErrors.name = 'Name must be at least 2 characters'
+    if (!formData.name.trim()) newErrors.name = t('booking.err_name_required')
+    else if (formData.name.trim().length < 2) newErrors.name = t('booking.err_name_min')
 
-    if (!formData.email.trim()) newErrors.email = 'Email is required'
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Please enter a valid email'
+    if (!formData.email.trim()) newErrors.email = t('booking.err_email_required')
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = t('booking.err_email_invalid')
 
-    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required'
-    else if (!/^\d{7,15}$/.test(formData.phone.replace(/[\s\-\(\)]/g, ''))) newErrors.phone = 'Please enter a valid phone number'
+    if (!formData.phone.trim()) newErrors.phone = t('booking.err_phone_required')
+    else if (!/^\d{7,15}$/.test(formData.phone.replace(/[\s\-\(\)]/g, ''))) newErrors.phone = t('booking.err_phone_invalid')
 
-    if (!formData.cardNumber.trim()) newErrors.cardNumber = 'Card number is required'
-    else if (!/^\d{13,19}$/.test(formData.cardNumber.replace(/\s|-/g, ''))) newErrors.cardNumber = 'Please enter a valid card number'
+    if (!formData.cardNumber.trim()) newErrors.cardNumber = t('booking.err_card_required')
+    else if (!/^\d{13,19}$/.test(formData.cardNumber.replace(/\s|-/g, ''))) newErrors.cardNumber = t('booking.err_card_invalid')
 
-    if (!formData.expiryDate.trim()) newErrors.expiryDate = 'Expiry date is required'
-    else if (!/^(0[1-9]|1[0-2])\/\d{2,4}$/.test(formData.expiryDate)) newErrors.expiryDate = 'Please enter a valid expiry date (MM/YY)'
+    if (!formData.expiryDate.trim()) newErrors.expiryDate = t('booking.err_expiry_required')
+    else if (!/^(0[1-9]|1[0-2])\/\d{2,4}$/.test(formData.expiryDate)) newErrors.expiryDate = t('booking.err_expiry_invalid')
 
-    if (!formData.csv.trim()) newErrors.csv = 'CVC/CVV is required'
-    else if (!/^\d{3,4}$/.test(formData.csv)) newErrors.csv = 'Please enter a valid CSV/CVC'
+    if (!formData.csv.trim()) newErrors.csv = t('booking.err_csv_required')
+    else if (!/^\d{3,4}$/.test(formData.csv)) newErrors.csv = t('booking.err_csv_invalid')
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -116,7 +116,7 @@ export default function Booking() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (validate()) {
-      setToast({ open: true, message: 'Booking request submitted successfully!', severity: 'success' })
+      setToast({ open: true, message: t('booking.toast_success'), severity: 'success' })
       let url = '/confirmation'
       if (property) {
         const params = new URLSearchParams({ property_id: String(property.id) })
@@ -126,7 +126,7 @@ export default function Booking() {
       }
       setTimeout(() => router.visit(url), 1000)
     } else {
-      setToast({ open: true, message: 'Please fix the errors in the form', severity: 'error' })
+      setToast({ open: true, message: t('booking.toast_fix_errors'), severity: 'error' })
     }
   }
 
@@ -192,7 +192,9 @@ export default function Booking() {
                     )}
                     {property && (
                       <Typography variant="body2" sx={{ color: '#6B7280', mb: 2 }}>
-                        {nights} night{nights !== 1 ? 's' : ''} · Price details update when you change dates
+                        {nights !== 1
+                          ? t('booking.nights_note_plural').replace(':count', String(nights))
+                          : t('booking.nights_note').replace(':count', String(nights))}
                       </Typography>
                     )}
                     <Box className="field">
@@ -209,7 +211,7 @@ export default function Booking() {
                     </Box>
 
                     <Box className="field">
-                      <Typography className="label">Number of Rooms</Typography>
+                      <Typography className="label">{t('booking.number_of_rooms')}</Typography>
                       <FormControl fullWidth size="small">
                         <Select 
                           value={formData.rooms} 
@@ -217,7 +219,7 @@ export default function Booking() {
                           onChange={(e) => handleChange('rooms', Number(e.target.value))}
                         >
                           {[1,2,3,4,5,6,7,8,9,10].map((r) => (
-                            <MenuItem key={r} value={r}>{r} {r > 1 ? 'rooms' : 'room'}</MenuItem>
+                            <MenuItem key={r} value={r}>{r} {r > 1 ? t('booking.rooms') : t('booking.room')}</MenuItem>
                           ))}
                         </Select>
                       </FormControl>
@@ -225,7 +227,7 @@ export default function Booking() {
 
                     <Stack direction="row" spacing={1.5} className="field">
                       <Box sx={{ flex: 1 }}>
-                        <Typography className="label">Adults</Typography>
+                        <Typography className="label">{t('booking.adults')}</Typography>
                         <FormControl fullWidth size="small">
                           <Select 
                             value={formData.adults} 
@@ -233,13 +235,13 @@ export default function Booking() {
                             onChange={(e) => handleChange('adults', Number(e.target.value))}
                           >
                             {[1,2,3,4,5,6,7,8,9,10].map((a) => (
-                              <MenuItem key={a} value={a}>{a} {a > 1 ? 'adults' : 'adult'}</MenuItem>
+                              <MenuItem key={a} value={a}>{a} {a > 1 ? t('booking.adults') : t('booking.adult')}</MenuItem>
                             ))}
                           </Select>
                         </FormControl>
                       </Box>
                       <Box sx={{ flex: 1 }}>
-                        <Typography className="label">Children</Typography>
+                        <Typography className="label">{t('booking.children')}</Typography>
                         <FormControl fullWidth size="small">
                           <Select 
                             value={formData.children} 
@@ -247,7 +249,7 @@ export default function Booking() {
                             onChange={(e) => handleChange('children', Number(e.target.value))}
                           >
                             {[0,1,2,3,4,5,6,7,8,9,10].map((c) => (
-                              <MenuItem key={c} value={c}>{c} {c === 1 ? 'child' : c === 0 ? 'children' : 'children'}</MenuItem>
+                              <MenuItem key={c} value={c}>{c} {c === 1 ? t('booking.child') : t('booking.children')}</MenuItem>
                             ))}
                           </Select>
                         </FormControl>
@@ -255,10 +257,10 @@ export default function Booking() {
                     </Stack>
 
                     <Box className="field">
-                      <Typography className="label">Email</Typography>
+                      <Typography className="label">{t('booking.email')}</Typography>
                       <TextField 
                         size="small" 
-                        placeholder="example@gmail.com" 
+                        placeholder={t('booking.email_placeholder')} 
                         fullWidth 
                         type="email"
                         value={formData.email}
@@ -270,7 +272,7 @@ export default function Booking() {
                     </Box>
 
                     <Box className="field">
-                      <Typography className="label">Phone Number</Typography>
+                      <Typography className="label">{t('booking.phone_number')}</Typography>
                       <Stack direction="row" spacing={1.5}>
                         <FormControl size="small" sx={{ minWidth: 120 }}>
                           <Select 
@@ -291,12 +293,12 @@ export default function Booking() {
                           helperText={errors.phone}
                         />
                       </Stack>
-                      <Typography className="help">We will only contact you about your booking</Typography>
+                      <Typography className="help">{t('booking.phone_note')}</Typography>
                     </Box>
 
-                    <Typography className="section-title" sx={{ fontSize: '1.5rem', fontWeight: 700, color: '#222222', mb: 2, mt: 1.5 }}>Card info</Typography>
+                    <Typography className="section-title" sx={{ fontSize: '1.5rem', fontWeight: 700, color: '#222222', mb: 2, mt: 1.5 }}>{t('booking.card_info')}</Typography>
                     <Box className="field">
-                      <Typography className="label">Card Number</Typography>
+                      <Typography className="label">{t('booking.card_number')}</Typography>
                       <TextField 
                         size="small" 
                         fullWidth 
@@ -310,11 +312,11 @@ export default function Booking() {
 
                     <Stack direction="row" spacing={1.5} className="field">
                       <Box sx={{ flex: 1 }}>
-                        <Typography className="label">Expiry Date</Typography>
+                        <Typography className="label">{t('booking.expiry_date')}</Typography>
                         <TextField 
                           size="small" 
                           fullWidth 
-                          placeholder="MM/YY" 
+                          placeholder={t('booking.expiry_placeholder')} 
                           value={formData.expiryDate}
                           onChange={(e) => handleChange('expiryDate', e.target.value)}
                           error={!!errors.expiryDate}
@@ -322,11 +324,11 @@ export default function Booking() {
                         />
                       </Box>
                       <Box sx={{ flex: 1 }}>
-                        <Typography className="label">CSV/CVC</Typography>
+                        <Typography className="label">{t('booking.csv')}</Typography>
                         <TextField 
                           size="small" 
                           fullWidth 
-                          placeholder="123" 
+                          placeholder={t('booking.csv_placeholder')} 
                           value={formData.csv}
                           onChange={(e) => handleChange('csv', e.target.value)}
                           error={!!errors.csv}
@@ -336,10 +338,10 @@ export default function Booking() {
                     </Stack>
 
                     <Paper elevation={0} className="booking-total">
-                      <Typography>Total</Typography>
+                      <Typography>{t('booking.total')}</Typography>
                       <Stack direction="row" spacing={2} alignItems="center">
                         <Typography className="grand-total">{totalAmount}</Typography>
-                        <Button type="submit" variant="contained" className="request-btn">Book</Button>
+                        <Button type="submit" variant="contained" className="request-btn">{t('booking.book_btn')}</Button>
                       </Stack>
                     </Paper>
                   </form>
@@ -349,7 +351,7 @@ export default function Booking() {
               <Col xs={12} md={5} lg={4}>
                 <ListingPreviewCard
                   image={property?.image ?? PLACEHOLDER_IMAGE}
-                  title={property?.title ?? 'Select a property'}
+                  title={property?.title ?? t('booking.select_property')}
                   location={property?.location ?? '—'}
                   reviews={property?.reviews_count ?? 0}
                   rating={property?.rating ?? 0}

@@ -113,7 +113,7 @@ export default function ProfileSettings() {
 
   return (
     <>
-      <Head title="Profile Settings" />
+      <Head title={t('profile_settings.title')} />
       <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Navbar />
         <Box className="profile-settings-page" sx={{ flex: 1 }}>
@@ -121,10 +121,10 @@ export default function ProfileSettings() {
             {/* Header Section */}
             <Box sx={{ textAlign: 'center', mb: 6, mt: 4 }}>
               <Typography variant="h2" sx={{fontSize: '2rem', fontWeight: 800, color: '#111827', mb: 2 }}>
-                Profile Settings
+                {t('profile_settings.title')}
               </Typography>
               <Typography variant="body1" sx={{ color: '#6B7280', fontSize: '1rem', maxWidth: 600, mx: 'auto' }}>
-                Manage your account settings and preferences
+                {t('profile_settings.subtitle')}
               </Typography>
             </Box>
 
@@ -185,7 +185,7 @@ export default function ProfileSettings() {
                         />
                       </Button>
                       <Typography variant="body2" sx={{ color: '#6B7280' }}>
-                        JPG, PNG or GIF. Max size 2MB
+                        {t('profile_settings.file_hint')}
                       </Typography>
                     </Stack>
                   </Stack>
@@ -232,14 +232,14 @@ export default function ProfileSettings() {
 
                       <Box>
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
-                          Email Address
+                          {t('profile_settings.email_address')}
                         </Typography>
                         <TextField
                           name="email"
                           type="email"
                           value={profileData.email}
                           onChange={handleProfileChange}
-                          placeholder="your.email@example.com"
+                          placeholder={t('profile_settings.email_placeholder')}
                           fullWidth
                           required
                           size="small"
@@ -264,13 +264,13 @@ export default function ProfileSettings() {
 
                       <Box>
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
-                          Phone Number
+                          {t('profile_settings.phone_number')}
                         </Typography>
                         <TextField
                           name="phone"
                           value={profileData.phone}
                           onChange={handleProfileChange}
-                          placeholder="+1 (555) 123-4567"
+                          placeholder={t('profile_settings.phone_placeholder')}
                           fullWidth
                           size="small"
                           error={!!profileErrors.phone}
@@ -294,13 +294,13 @@ export default function ProfileSettings() {
 
                       <Box>
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
-                          Bio
+                          {t('profile_settings.bio')}
                         </Typography>
                         <TextField
                           name="bio"
                           value={profileData.bio}
                           onChange={handleProfileChange}
-                          placeholder="Tell us about yourself..."
+                          placeholder={t('profile_settings.bio_placeholder')}
                           fullWidth
                           multiline
                           rows={4}

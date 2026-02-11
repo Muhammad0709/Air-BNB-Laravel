@@ -1,6 +1,7 @@
 import React from 'react'
 import { Box, Paper, Typography, Divider } from '@mui/material'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import { useLanguage } from '../hooks/use-language'
 
 interface BookingSummaryCardProps {
   rules: string[]
@@ -9,12 +10,14 @@ interface BookingSummaryCardProps {
   totalAmount: string
 }
 
-export default function BookingSummaryCard({ rules, costs, totalLabel = "Total", totalAmount }: BookingSummaryCardProps) {
+export default function BookingSummaryCard({ rules, costs, totalLabel, totalAmount }: BookingSummaryCardProps) {
+  const { t } = useLanguage()
+  const label = totalLabel ?? t('booking.total')
   return (
     <Paper elevation={0} sx={{ p: 3, border: '1px solid #E5E7EB', borderRadius: 2 }}>
       {/* Rules Section */}
       <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 2 }}>
-        House Rules
+        {t('booking.house_rules')}
       </Typography>
       
       <Box sx={{ mb: 3 }}>
@@ -32,7 +35,7 @@ export default function BookingSummaryCard({ rules, costs, totalLabel = "Total",
 
       {/* Cost Breakdown */}
       <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 2 }}>
-        Price Details
+        {t('booking.price_details')}
       </Typography>
       
       <Box sx={{ mb: 2 }}>
@@ -53,7 +56,7 @@ export default function BookingSummaryCard({ rules, costs, totalLabel = "Total",
       {/* Total */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827' }}>
-          {totalLabel}
+          {label}
         </Typography>
         <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827' }}>
           {totalAmount}

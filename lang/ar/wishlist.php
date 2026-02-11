@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'title' => 'My Wishlist',
-    'subtitle' => 'Your saved properties for future bookings',
-    'empty_title' => 'Your wishlist is empty',
-    'empty_subtitle' => 'Start exploring and save your favorite properties',
-    'property_saved' => 'property saved',
-    'properties_saved' => 'properties saved',
-    'remove_error' => 'Failed to remove property from wishlist. Please try again.',
+    'title' => 'قائمتي المفضلة',
+    'subtitle' => 'العقارات المحفوظة لحجوزاتك المستقبلية',
+    'empty_title' => 'قائمتك المفضلة فارغة',
+    'empty_subtitle' => 'ابدأ الاستكشاف واحفظ العقارات المفضلة لديك',
+    'property_saved' => 'عقار محفوظ',
+    'properties_saved' => 'عقارات محفوظة',
+    'remove_error' => 'فشل في إزالة العقار من المفضلة. يرجى المحاولة مرة أخرى.',
 ];
