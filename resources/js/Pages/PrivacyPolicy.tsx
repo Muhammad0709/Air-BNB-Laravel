@@ -5,7 +5,7 @@ import { Head } from '@inertiajs/react'
 import { useLanguage } from '../hooks/use-language'
 
 export default function PrivacyPolicy() {
-  const { t } = useLanguage()
+  const { t, isRtl } = useLanguage()
   return (
     <Box>
       <Head title={t('privacy.title')} />
@@ -27,7 +27,7 @@ export default function PrivacyPolicy() {
               <Box>
                 <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: '#222222' }}>{t('privacy.collect_title')}</Typography>
                 <Typography variant="body1" sx={{ color: '#222222', mb: 1.5, lineHeight: 1.8 }}>{t('privacy.collect_intro')}</Typography>
-                <Box component="ul" sx={{ pl: 3, mb: 1.5 }}>
+                <Box component="ul" sx={{ ...(isRtl ? { pr: 3 } : { pl: 3 }), mb: 1.5 }}>
                   <li><Typography variant="body1" sx={{ color: '#222222', lineHeight: 1.8 }}>{t('privacy.collect_1')}</Typography></li>
                   <li><Typography variant="body1" sx={{ color: '#222222', lineHeight: 1.8 }}>{t('privacy.collect_2')}</Typography></li>
                   <li><Typography variant="body1" sx={{ color: '#222222', lineHeight: 1.8 }}>{t('privacy.collect_3')}</Typography></li>
@@ -41,7 +41,7 @@ export default function PrivacyPolicy() {
               <Box>
                 <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: '#222222' }}>{t('privacy.use_title')}</Typography>
                 <Typography variant="body1" sx={{ color: '#222222', mb: 1.5, lineHeight: 1.8 }}>{t('privacy.use_intro')}</Typography>
-                <Box component="ul" sx={{ pl: 3, mb: 1.5 }}>
+                <Box component="ul" sx={{ ...(isRtl ? { pr: 3 } : { pl: 3 }), mb: 1.5 }}>
                   <li><Typography variant="body1" sx={{ color: '#222222', lineHeight: 1.8 }}>{t('privacy.use_1')}</Typography></li>
                   <li><Typography variant="body1" sx={{ color: '#222222', lineHeight: 1.8 }}>{t('privacy.use_2')}</Typography></li>
                   <li><Typography variant="body1" sx={{ color: '#222222', lineHeight: 1.8 }}>{t('privacy.use_3')}</Typography></li>
@@ -53,7 +53,7 @@ export default function PrivacyPolicy() {
               <Box>
                 <Typography variant="h5" sx={{ fontWeight: 600, mb: 2, color: '#222222' }}>{t('privacy.sharing_title')}</Typography>
                 <Typography variant="body1" sx={{ color: '#222222', mb: 1.5, lineHeight: 1.8 }}>{t('privacy.sharing_intro')}</Typography>
-                <Box component="ul" sx={{ pl: 3, mb: 1.5 }}>
+                <Box component="ul" sx={{ ...(isRtl ? { pr: 3 } : { pl: 3 }), mb: 1.5 }}>
                   <li><Typography variant="body1" sx={{ color: '#222222', lineHeight: 1.8 }}>{t('privacy.sharing_1')}</Typography></li>
                   <li><Typography variant="body1" sx={{ color: '#222222', lineHeight: 1.8 }}>{t('privacy.sharing_2')}</Typography></li>
                   <li><Typography variant="body1" sx={{ color: '#222222', lineHeight: 1.8 }}>{t('privacy.sharing_3')}</Typography></li>

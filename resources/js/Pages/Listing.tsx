@@ -67,7 +67,7 @@ type ListingProps = {
 }
 
 export default function Listing() {
-  const { t } = useLanguage()
+  const { t, isRtl } = useLanguage()
   const { props } = usePage()
   const {
     properties = { data: [], current_page: 1, last_page: 1, per_page: 12, total: 0, from: null, to: null, first_page_url: '', last_page_url: '', prev_page_url: null, next_page_url: null },
@@ -288,7 +288,7 @@ export default function Listing() {
                   <Typography className="results-text">
                     Showing {properties.from ?? 0}-{properties.to ?? 0} of {properties.total ?? 0} results
                   </Typography>
-                  <Stack direction="row" spacing={1.5} flex={1} sx={{ maxWidth: 560, ml: { sm: 'auto' } }}>
+                  <Stack direction="row" spacing={1.5} flex={1} sx={{ maxWidth: 560, ...(isRtl ? { mr: { sm: 'auto' } } : { ml: { sm: 'auto' } }) }}>
                     <TextField
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}

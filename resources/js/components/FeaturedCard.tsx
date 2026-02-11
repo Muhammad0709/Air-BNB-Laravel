@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Box, Paper, Typography } from '@mui/material'
 import { router } from '@inertiajs/react'
 import StarIcon from '@mui/icons-material/Star'
+import { useLanguage } from '../hooks/use-language'
 
 type FeaturedCardProps = {
   image: string
@@ -26,6 +27,7 @@ export default function FeaturedCard({
   isGuestFavorite: _isGuestFavorite,
   fallbackImage = '/images/popular-stay-1.svg',
 }: FeaturedCardProps) {
+  const { isRtl } = useLanguage()
   const [imgSrc, setImgSrc] = useState(image)
   const [imgError, setImgError] = useState(false)
 
@@ -83,8 +85,8 @@ export default function FeaturedCard({
             {' '}night
           </Typography>
           <Box className="airbnb-card-rating-inline">
-            <StarIcon sx={{ fontSize: 12, color: '#222222', marginLeft: 1 }} />
-            <Typography component="span" sx={{ fontSize: 14, fontWeight: 600, color: '#222222', marginLeft: 0.5 }}>
+            <StarIcon sx={{ fontSize: 12, color: '#222222', ...(isRtl ? { marginRight: 1 } : { marginLeft: 1 }) }} />
+            <Typography component="span" sx={{ fontSize: 14, fontWeight: 600, color: '#222222', ...(isRtl ? { marginRight: 0.5 } : { marginLeft: 0.5 }) }}>
               {rating.toFixed(2)}
             </Typography>
           </Box>

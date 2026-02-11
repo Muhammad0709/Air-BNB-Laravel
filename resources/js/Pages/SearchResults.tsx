@@ -63,7 +63,7 @@ const allItems: Item[] = [
 ]
 
 export default function SearchResults() {
-  const { t } = useLanguage()
+  const { t, isRtl } = useLanguage()
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'))
   const { url } = usePage()
@@ -144,7 +144,7 @@ export default function SearchResults() {
                         : (t('search_results.over_homes') as string).replace(':count', String(filtered.length)))
                     : t('search_results.no_homes_found')}
                 </Typography>
-                <Typography sx={{ color: '#717171', fontSize: '0.875rem', flexShrink: 0, ml: 2 }}>{t('search_results.prices_include_fees')}</Typography>
+                <Typography sx={{ color: '#717171', fontSize: '0.875rem', flexShrink: 0, ...(isRtl ? { mr: 2 } : { ml: 2 }) }}>{t('search_results.prices_include_fees')}</Typography>
               </Box>
               {filtered.length === 0 ? (
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px', textAlign: 'center' }}>

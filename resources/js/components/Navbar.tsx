@@ -42,7 +42,7 @@ const languages = [
 ]
 
 export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/' }: NavbarProps) {
-  const { t, language, switchLanguage } = useLanguage()
+  const { t, language, switchLanguage, isRtl } = useLanguage()
   const { url, props } = usePage()
   const pathname = url.split('?')[0]
   const [open, setOpen] = useState(false)
@@ -117,7 +117,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
     <AppBar position="static" elevation={0} sx={{ bgcolor: 'transparent', color: 'inherit' }}>
       <Container maxWidth={false} sx={{ px: { xs: 2, md: 3 }, py: 1.5, maxWidth: { xs: '100%', md: 1160, xl: 1440 }, mx: 'auto' }}>
         <Toolbar disableGutters sx={{ gap: 2 }}>
-          <Box component={Link} href={brandTo} sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
+          <Box component={Link} href={brandTo} sx={{ ...(isRtl ? { ml: 2 } : { mr: 2 }), display: 'flex', alignItems: 'center' }}>
             <Box
               component="img"
               src={logoUrl}
@@ -132,7 +132,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
             />
           </Box>
 
-          <IconButton edge="start" sx={{ display: { md: 'none' }, ml: 'auto' }} onClick={() => setOpen(true)}>
+          <IconButton edge="start" sx={{ display: { md: 'none' }, ...(isRtl ? { mr: 'auto' } : { ml: 'auto' }) }} onClick={() => setOpen(true)}>
             <MenuIcon />
           </IconButton>
 
@@ -151,7 +151,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
           </Stack>
 
           {showAuth && (
-            <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', md: 'flex' }, ml: 'auto' }} alignItems="center">
+            <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', md: 'flex' }, ...(isRtl ? { mr: 'auto' } : { ml: 'auto' }) }} alignItems="center">
               <Box
                 onClick={handleLanguageClick}
                 sx={{
@@ -171,7 +171,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                 <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem' }}>
                   {currentLanguage.code.toUpperCase()}
                 </Typography>
-                <ArrowDropDownIcon sx={{ fontSize: 22, color: '#222222', ml: 0.25 }} />
+                <ArrowDropDownIcon sx={{ fontSize: 22, color: '#222222', ...(isRtl ? { mr: 0.25 } : { ml: 0.25 }) }} />
               </Box>
               <Menu
                 anchorEl={languageAnchor}

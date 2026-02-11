@@ -4,6 +4,7 @@ import { Box, IconButton, Paper, Stack, Typography } from '@mui/material'
 import { Container as RBContainer } from 'react-bootstrap'
 import MenuIcon from '@mui/icons-material/Menu'
 import AdminSidebar from './AdminSidebar'
+import { useLanguage } from '../../hooks/use-language'
 
 type AdminLayoutProps = {
   title: string
@@ -11,6 +12,7 @@ type AdminLayoutProps = {
 }
 
 export default function AdminLayout({ title, children }: AdminLayoutProps) {
+  const { isRtl } = useLanguage()
   const [sidebarOpen, setSidebarOpen] = useState(true)
 
   // Auto-show sidebar on desktop, hide on mobile
@@ -33,8 +35,9 @@ export default function AdminLayout({ title, children }: AdminLayoutProps) {
         flex: 1, 
         display: 'flex', 
         flexDirection: 'column',
-        marginLeft: { xs: 0, md: sidebarOpen ? '280px' : 0 },
-        transition: 'margin-left 0.3s',
+        ...(isRtl
+          ? { marginRight: { xs: 0, md: sidebarOpen ? '280px' : 0 }, transition: 'margin-right 0.3s' }
+          : { marginLeft: { xs: 0, md: sidebarOpen ? '280px' : 0 }, transition: 'margin-left 0.3s' }),
         width: { xs: '100%', md: sidebarOpen ? 'calc(100% - 280px)' : '100%' },
         overflowX: 'hidden'
       }}>
