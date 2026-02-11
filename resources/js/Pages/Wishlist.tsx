@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
 import { Box, IconButton, Typography, Stack } from '@mui/material'
 import { Container, Row, Col } from 'react-bootstrap'
-import Navbar from '../Components/Navbar'
-import Footer from '../Components/Footer'
-import FeaturedCard from '../Components/FeaturedCard'
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
+import FeaturedCard from '../components/FeaturedCard'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import { Head, usePage, router } from '@inertiajs/react'
-import Toast from '../Components/shared/Toast'
+import Toast from '../components/shared/Toast'
+import { useLanguage } from '../hooks/use-language'
 
 interface Property {
   id: number
@@ -20,6 +21,7 @@ interface Property {
 }
 
 export default function Wishlist() {
+  const { t } = useLanguage()
   const { props } = usePage()
   const properties = (props as any).properties || []
   
@@ -55,7 +57,7 @@ export default function Wishlist() {
       onError: () => {
         setToast({
           open: true,
-          message: 'Failed to remove property from wishlist. Please try again.',
+          message: t('wishlist.remove_error'),
           severity: 'error'
         })
       }
@@ -64,7 +66,7 @@ export default function Wishlist() {
 
   return (
     <>
-      <Head title="Wishlist" />
+      <Head title={t('wishlist.title')} />
       <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Navbar />
         <Box className="wishlist-page" sx={{ flex: 1 }}>
@@ -73,11 +75,11 @@ export default function Wishlist() {
             <Box sx={{ textAlign: 'center', mb: 6, mt: 4 }}>
               <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} sx={{ mb: 2 }}>
                 <Typography variant="h2" sx={{fontSize: '2.5rem', fontWeight: 800, color: '#222222' }}>
-                  My Wishlist
+                  {t('wishlist.title')}
                 </Typography>
               </Stack>
               <Typography variant="body1" sx={{ color: '#717171', fontSize: '1.125rem', maxWidth: 600, mx: 'auto' }}>
-                Your saved properties for future bookings
+                {t('wishlist.subtitle')}
               </Typography>
             </Box>
 
@@ -86,17 +88,17 @@ export default function Wishlist() {
               <Box sx={{ textAlign: 'center', py: 8 }}>
                 <FavoriteIcon sx={{ color: '#D1D5DB', fontSize: 80, mb: 2 }} />
                 <Typography variant="h5" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>
-                  Your wishlist is empty
+                  {t('wishlist.empty_title')}
                 </Typography>
                 <Typography variant="body1" sx={{ color: '#717171', mb: 3 }}>
-                  Start exploring and save your favorite properties
+                  {t('wishlist.empty_subtitle')}
                 </Typography>
               </Box>
             ) : (
               <>
                 <Box sx={{ mb: 3, textAlign: { xs: 'center', md: 'left' } }}>
                   <Typography variant="body1" sx={{ color: '#717171', fontWeight: 600 }}>
-                    {wishlistItems.length} {wishlistItems.length === 1 ? 'property' : 'properties'} saved
+                    {wishlistItems.length} {wishlistItems.length === 1 ? t('wishlist.property_saved') : t('wishlist.properties_saved')}
                   </Typography>
                 </Box>
 

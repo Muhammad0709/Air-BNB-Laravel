@@ -13,6 +13,7 @@ import AddIcon from '@mui/icons-material/Add'
 import MapIcon from '@mui/icons-material/Map'
 import ListIcon from '@mui/icons-material/List'
 import { Head, router, usePage } from '@inertiajs/react'
+import { useLanguage } from '../hooks/use-language'
 
 /** Fallback when DB image is null or fails to load */
 const DEFAULT_IMAGE = '/images/popular-stay-1.svg'
@@ -66,6 +67,7 @@ type ListingProps = {
 }
 
 export default function Listing() {
+  const { t } = useLanguage()
   const { props } = usePage()
   const {
     properties = { data: [], current_page: 1, last_page: 1, per_page: 12, total: 0, from: null, to: null, first_page_url: '', last_page_url: '', prev_page_url: null, next_page_url: null },
@@ -179,7 +181,7 @@ export default function Listing() {
 
   return (
     <>
-      <Head title="Listing" />
+      <Head title={t('listing.title')} />
       <Box>
         <Navbar />
         <Box className="listing-page">
@@ -188,12 +190,12 @@ export default function Listing() {
               <Col xs={12} md={3}>
                 <Paper className="filter-card" elevation={0}>
                   <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
-                    <Typography className="filter-title">Filters</Typography>
+                    <Typography className="filter-title">{t('listing.filters')}</Typography>
                     <IconButton size="small"><ExpandMoreIcon /></IconButton>
                   </Stack>
                   <Divider sx={{ mb: 2 }} />
 
-                  <Typography className="filter-group">Location</Typography>
+                  <Typography className="filter-group">{t('listing.location')}</Typography>
                   <Stack spacing={1} sx={{ mb: 2 }}>
                     {availableLocations.length > 0 ? (
                       availableLocations.map((location) => {
@@ -221,11 +223,11 @@ export default function Listing() {
                         )
                       })
                     ) : (
-                      <Typography variant="body2" color="text.secondary">No locations yet</Typography>
+                      <Typography variant="body2" color="text.secondary">{t('listing.no_locations')}</Typography>
                     )}
                   </Stack>
 
-                  <Typography className="filter-group">Price Range</Typography>
+                  <Typography className="filter-group">{t('listing.price_range')}</Typography>
                   <Box sx={{ px: 1 }}>
                     <Slider
                       size="small"
@@ -243,7 +245,7 @@ export default function Listing() {
                     </Stack>
                   </Box>
 
-                  <Typography className="filter-group">Checkin / Checkout</Typography>
+                  <Typography className="filter-group">{t('listing.checkin')} / {t('listing.checkout')}</Typography>
                   <Box className="mini-calendar">
                     <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
                       <IconButton size="small" onClick={() => changeMonth(-1)}><RemoveIcon fontSize="small" /></IconButton>
@@ -272,7 +274,7 @@ export default function Listing() {
                     </Box>
                   </Box>
 
-                  <Typography className="filter-group">Guest</Typography>
+                  <Typography className="filter-group">{t('listing.guests')}</Typography>
                   <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mb: 2 }}>
                     <IconButton size="small" className="guest-btn" onClick={() => setGuests((g) => Math.max(1, g - 1))}><RemoveIcon fontSize="small" /></IconButton>
                     <Box className="guest-count">{guests}</Box>
@@ -297,10 +299,10 @@ export default function Listing() {
                       InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon fontSize="small" /></InputAdornment> }}
                     />
                     <Select size="small" value={sortBy} onChange={(e) => setSortBy(e.target.value)} sx={{ minWidth: 170 }} className="listing-sort">
-                      <MenuItem value="featured">Sort by: Featured</MenuItem>
-                      <MenuItem value="price_low">Price: Low to High</MenuItem>
-                      <MenuItem value="price_high">Price: High to Low</MenuItem>
-                      <MenuItem value="newest">Newest First</MenuItem>
+                      <MenuItem value="featured">{t('listing.sort_by')}: {t('listing.featured')}</MenuItem>
+                      <MenuItem value="price_low">{t('listing.price_low')}</MenuItem>
+                      <MenuItem value="price_high">{t('listing.price_high')}</MenuItem>
+                      <MenuItem value="newest">{t('listing.newest')}</MenuItem>
                     </Select>
                     <Stack direction="row" spacing={0.5}>
                       <Button
@@ -333,8 +335,8 @@ export default function Listing() {
 
                 {items.length === 0 ? (
                   <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px', textAlign: 'center' }}>
-                    <Typography variant="h5" sx={{ color: '#717171', mb: 1, fontWeight: 600 }}>No properties found</Typography>
-                    <Typography variant="body2" sx={{ color: '#9CA3AF' }}>Try adjusting your search or filter criteria</Typography>
+                    <Typography variant="h5" sx={{ color: '#717171', mb: 1, fontWeight: 600 }}>{t('listing.no_results')}</Typography>
+                    <Typography variant="body2" sx={{ color: '#9CA3AF' }}>{t('listing.no_results_sub')}</Typography>
                   </Box>
                 ) : viewMode === 'list' ? (
                   <>

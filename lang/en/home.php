@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'destination' => 'DESTINATION',
+    'checkin' => 'CHECKIN',
+    'checkout' => 'CHECKOUT',
+    'guests' => 'GUESTS',
+    'search' => 'Search',
+    'adults' => 'Adults',
+    'adult' => 'Adult',
+    'children' => 'Children',
+    'child' => 'Child',
+    'rooms' => 'Rooms',
+    'room' => 'Room',
+    'done' => 'Done',
+    'where_to' => 'Where to?',
+    'popular_destinations_label' => 'Popular destinations',
+    'popular_destinations' => 'Popular destinations',
+    'hotels' => 'Hotels',
+    'popular' => 'Popular',
+    'favorites' => 'Favorites',
+    'no_hotels' => 'No hotels available',
+    'no_hotels_sub' => 'Check back later or try a different search.',
+    'no_popular' => 'No popular stays yet',
+    'no_popular_sub' => 'Popular listings will appear here as more properties are added.',
+    'no_favorites' => 'No favorites yet',
+    'no_favorites_sub' => 'Save properties you like by clicking the heart icon on any listing.',
+];

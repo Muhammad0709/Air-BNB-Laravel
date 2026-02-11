@@ -49,6 +49,19 @@ class HomeController extends Controller
             ->get()
             ->map($formatProperty);
 
+        // Popular Properties - Approved, sorted by rating (then latest)
+        $popularProperties = Property::with('reviews')
+            ->where('status', 'Active')
+            ->where('approval_status', PropertyStatus::APPROVED)
+            ->latest()
+            ->limit(50)
+            ->get()
+            ->map($formatProperty)
+            ->sortByDesc('rating')
+            ->take(20)
+            ->values()
+            ->all();
+
         // Popular Destinations - Get unique locations from properties
         $popularDestinations = Property::where('status', 'Active')
             ->where('approval_status', PropertyStatus::APPROVED)
@@ -72,6 +85,7 @@ class HomeController extends Controller
         return Inertia::render('Home', [
             'featuredProperties' => $featuredProperties,
             'favoriteProperties' => $favoriteProperties,
+            'popularProperties' => $popularProperties,
             'popularDestinations' => $popularDestinations,
         ]);
     }

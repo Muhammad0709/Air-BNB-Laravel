@@ -1,13 +1,15 @@
-import '../css/app.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { createRoot } from 'react-dom/client';
-import { createInertiaApp } from '@inertiajs/react';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import "../css/app.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./echo";
+import { createRoot } from "react-dom/client";
+import { createInertiaApp } from "@inertiajs/react";
+import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
+import { LaravelReactI18nProvider } from "laravel-react-i18n";
 
-const appName = import.meta.env.VITE_APP_NAME || 'LipaBnb';
+const appName = import.meta.env.VITE_APP_NAME || "LipaBnb";
 
 // Pre-load all page components
-const pages = import.meta.glob('./Pages/**/*.tsx', { eager: false });
+const pages = import.meta.glob("./Pages/**/*.tsx", { eager: false });
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -17,10 +19,18 @@ createInertiaApp({
     },
     setup({ el, App, props }) {
         const root = createRoot(el);
-        root.render(<App {...props} />);
+        const initialLocale = props.initialPage?.props?.locale || "en";
+        root.render(
+            <LaravelReactI18nProvider
+                locale={initialLocale}
+                fallbackLocale="en"
+                files={import.meta.glob("/lang/*.json")}
+            >
+                <App {...props} />
+            </LaravelReactI18nProvider>
+        );
     },
     progress: {
-        color: '#FFF5F7',
+        color: "#FFF5F7",
     },
 });
-

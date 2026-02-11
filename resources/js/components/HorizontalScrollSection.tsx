@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react'
-import { Box, IconButton, Typography } from '@mui/material'
+import { Box, IconButton, Typography, Button } from '@mui/material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import FeaturedCard from './FeaturedCard'
+import { Link } from '@inertiajs/react'
 
 type PropertyItem = {
   image: string
@@ -19,12 +20,20 @@ type HorizontalScrollSectionProps = {
   title: string
   items: PropertyItem[]
   showScrollButtons?: boolean
+  emptyMessage?: string
+  emptySubtext?: string
+  emptyActionLabel?: string
+  emptyActionHref?: string
 }
 
 export default function HorizontalScrollSection({ 
   title, 
   items, 
-  showScrollButtons = true 
+  showScrollButtons = true,
+  emptyMessage,
+  emptySubtext,
+  emptyActionLabel,
+  emptyActionHref,
 }: HorizontalScrollSectionProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [showLeftButton, setShowLeftButton] = useState(false)
@@ -65,6 +74,58 @@ export default function HorizontalScrollSection({
       left: newScrollLeft,
       behavior: 'smooth'
     })
+  }
+
+  if (items.length === 0) {
+    return (
+      <Box className="airbnb-horizontal-section">
+        <Box className="airbnb-section-header">
+          <Typography className="airbnb-section-title" component="h2">
+            {title}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            py: 6,
+            px: 2,
+            bgcolor: '#F9FAFB',
+            borderRadius: 2,
+            border: '1px dashed #E5E7EB',
+            minHeight: 200,
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: 600, color: '#222222', mb: 0.5, textAlign: 'center' }}>
+            {emptyMessage ?? 'Nothing here yet'}
+          </Typography>
+          {emptySubtext && (
+            <Typography variant="body2" sx={{ color: '#717171', textAlign: 'center', mb: 2, maxWidth: 360 }}>
+              {emptySubtext}
+            </Typography>
+          )}
+          {emptyActionLabel && emptyActionHref && (
+            <Button
+              component={Link}
+              href={emptyActionHref}
+              variant="contained"
+              sx={{
+                bgcolor: '#AD542D',
+                textTransform: 'none',
+                fontWeight: 600,
+                borderRadius: 2,
+                px: 3,
+                '&:hover': { bgcolor: '#78381C' },
+              }}
+            >
+              {emptyActionLabel}
+            </Button>
+          )}
+        </Box>
+      </Box>
+    )
   }
 
   return (

@@ -7,6 +7,7 @@ use App\Http\Requests\MessageRequest;
 use App\Http\Requests\ConversationRequest;
 use App\Http\Resources\ConversationResource;
 use App\Http\Resources\MessageResource;
+use App\Events\MessageSent;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\MessageFile;
@@ -80,6 +81,45 @@ class MessagesController extends Controller
             'message' => 'Conversations retrieved successfully',
             'data' => [
                 'conversations' => ConversationResource::collection($conversations),
+            ],
+        ], 200);
+    }
+
+    /**
+     * List properties (with host info) that the user can start a conversation with.
+     */
+    public function propertiesToMessage(): JsonResponse
+    {
+        $user = Auth::user();
+
+        $properties = Property::where('status', 'Active')
+            ->where('approval_status', PropertyStatus::APPROVED)
+            ->with('user')
+            ->orderBy('title')
+            ->limit(100)
+            ->get();
+
+        $list = $properties->map(function ($property) {
+            $host = $property->user;
+            $hostAvatar = null;
+            if ($host && $host->profile_picture) {
+                $hostAvatar = filter_var($host->profile_picture, FILTER_VALIDATE_URL)
+                    ? $host->profile_picture
+                    : Storage::url($host->profile_picture);
+            }
+            return [
+                'propertyId' => $property->id,
+                'property' => $property->title,
+                'hostName' => $host->name ?? 'Unknown',
+                'hostAvatar' => $hostAvatar,
+            ];
+        });
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Properties retrieved successfully',
+            'data' => [
+                'properties' => $list,
             ],
         ], 200);
     }
@@ -379,6 +419,7 @@ class MessagesController extends Controller
         $conversation->touch();
 
         $message->load(['files']);
+        broadcast(new MessageSent($message))->toOthers();
 
         return response()->json([
             'status' => 'success',

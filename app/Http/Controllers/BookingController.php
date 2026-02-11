@@ -11,11 +11,61 @@ use Carbon\Carbon;
 
 class BookingController extends Controller
 {
+    /**
+     * Validate/fix checkin & checkout on the backend and redirect to the booking page.
+     * Used when navigating from Listing Detail "Book" so date logic stays on the server.
+     */
+    public function redirectToBooking(Request $request)
+    {
+        $propertyId = $request->query('property_id');
+        $checkin = $request->query('checkin');
+        $checkout = $request->query('checkout');
+
+        $today = Carbon::today()->format('Y-m-d');
+        $defaultCheckout = Carbon::today()->addDays(7)->format('Y-m-d');
+
+        if (! $checkin || ! preg_match('/^\d{4}-\d{2}-\d{2}$/', $checkin)) {
+            $checkin = $today;
+        }
+        if (! $checkout || ! preg_match('/^\d{4}-\d{2}-\d{2}$/', $checkout)) {
+            $checkout = $defaultCheckout;
+        }
+        try {
+            if (Carbon::parse($checkout)->lte(Carbon::parse($checkin))) {
+                $checkout = Carbon::parse($checkin)->addDay()->format('Y-m-d');
+            }
+        } catch (\Exception $e) {
+            $checkout = Carbon::parse($checkin)->addDay()->format('Y-m-d');
+        }
+
+        $params = array_filter([
+            'property_id' => $propertyId,
+            'checkin' => $checkin,
+            'checkout' => $checkout,
+        ]);
+
+        return redirect()->route('booking', $params);
+    }
+
     public function index(Request $request)
     {
         $propertyId = $request->query('property_id');
         $checkin = $request->query('checkin');
         $checkout = $request->query('checkout');
+
+        // Default dates from backend: today and today + 7 days
+        $today = Carbon::today()->format('Y-m-d');
+        $defaultCheckout = Carbon::today()->addDays(7)->format('Y-m-d');
+        if (! $checkin) {
+            $checkin = $today;
+        }
+        if (! $checkout) {
+            $checkout = $defaultCheckout;
+        }
+        // Ensure checkout is after checkin
+        if (Carbon::parse($checkout)->lte(Carbon::parse($checkin))) {
+            $checkout = Carbon::parse($checkin)->addDay()->format('Y-m-d');
+        }
 
         $propertyData = null;
         $nights = 7;
@@ -52,14 +102,12 @@ class BookingController extends Controller
                     $image = '/images/popular-stay-1.svg';
                 }
 
-                if ($checkin && $checkout) {
-                    try {
-                        $start = Carbon::parse($checkin);
-                        $end = Carbon::parse($checkout);
-                        $nights = max(1, (int) $start->diffInDays($end));
-                    } catch (\Exception $e) {
-                        $nights = 7;
-                    }
+                try {
+                    $start = Carbon::parse($checkin);
+                    $end = Carbon::parse($checkout);
+                    $nights = max(1, (int) $start->diffInDays($end));
+                } catch (\Exception $e) {
+                    $nights = 7;
                 }
 
                 $pricePerNight = (float) $property->price;

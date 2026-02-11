@@ -13,12 +13,11 @@ class ConversationResource extends JsonResource
         $user = $request->user();
         $property = $this->property;
         $host = $property->user ?? null;
-        
+
         $lastMessage = $this->lastMessage;
-        $unreadCount = $this->messages()
-            ->where('sender_id', '!=', $user->id)
-            ->where('read', false)
-            ->count();
+        $unreadCount = $user
+            ? $this->messages()->where('sender_id', '!=', $user->id)->where('read', false)->count()
+            : 0;
 
         $lastMessageText = '';
         if ($lastMessage) {

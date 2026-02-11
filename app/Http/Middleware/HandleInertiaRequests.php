@@ -58,6 +58,7 @@ class HandleInertiaRequests extends Middleware
                         : null,
                 ] : null,
             ],
+            'locale' => fn () => $request->session()->get('locale', config('app.locale', 'en')),
         ];
     }
 }

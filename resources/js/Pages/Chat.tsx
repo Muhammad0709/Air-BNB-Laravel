@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect, useMemo } from 'react'
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { usePage, router, Head } from '@inertiajs/react'
 import { Box, Button, Card, CardContent, Stack, TextField, Typography, Avatar, Paper, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { useLanguage } from '../hooks/use-language'
 import { Container, Row, Col } from 'react-bootstrap'
 import SendIcon from '@mui/icons-material/Send'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
@@ -10,9 +11,10 @@ import VideoFileIcon from '@mui/icons-material/VideoFile'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
+import { apiGet, apiPostForm, apiPostJson } from '../chatApi'
 
 interface MessageFile {
-  id: string
+  id: number | string
   type: 'image' | 'video'
   url: string
   name: string
@@ -23,31 +25,44 @@ interface Message {
   id: number
   text?: string
   sender: 'customer' | 'host'
-  timestamp: Date
+  timestamp: Date | string
   read: boolean
-  files?: MessageFile[]
+  files?: MessageFile[] | null
 }
 
-interface Conversation {
+interface ConversationListItem {
   id: number
   hostName: string
-  hostAvatar: string
+  hostAvatar: string | null
   property: string
+  propertyId?: number
   lastMessage: string
-  lastMessageTime: Date
+  lastMessageTime: string
   unreadCount: number
+}
+
+interface Conversation extends ConversationListItem {
   messages: Message[]
 }
 
-interface User {
-  id: number
-  name: string
-  email: string
-  avatar: string
+interface PropertyToMessage {
+  propertyId: number
+  property: string
+  hostName: string
+  hostAvatar: string | null
+}
+
+function apiMessageToMessage(m: { id: number; text?: string; sender: string; timestamp: string; read: boolean; files?: MessageFile[] | null }): Message {
+  return {
+    ...m,
+    sender: (m.sender === 'user' ? 'customer' : 'host') as 'customer' | 'host',
+    timestamp: m.timestamp,
+  }
 }
 
 export default function Chat() {
-  const { url } = usePage()
+  const { t } = useLanguage()
+  const { url, props } = usePage<{ conversations: ConversationListItem[]; auth: { user: { id: number; name: string; email: string } | null } }>()
   const searchParams = useMemo(() => {
     const q = url.includes('?') ? url.split('?')[1] : ''
     return new URLSearchParams(q)
@@ -59,118 +74,142 @@ export default function Chat() {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [menuAnchor, setMenuAnchor] = useState<{ [key: number]: HTMLElement | null }>({})
   const [openModal, setOpenModal] = useState(false)
-  const [selectedUser, setSelectedUser] = useState<number | null>(null)
+  const [selectedPropertyId, setSelectedPropertyId] = useState<number | null>(null)
+  const [startableProperties, setStartableProperties] = useState<PropertyToMessage[]>([])
+  const [loadingStartable, setLoadingStartable] = useState(false)
+  const [startingConversation, setStartingConversation] = useState(false)
+  const [loadingMessages, setLoadingMessages] = useState(false)
+  const [sending, setSending] = useState(false)
 
-  // Mock users data
-  const [users] = useState<User[]>([
-    { id: 1, name: 'Sarah Johnson', email: 'sarah.johnson@example.com', avatar: '' },
-    { id: 2, name: 'Michael Chen', email: 'michael.chen@example.com', avatar: '' },
-    { id: 3, name: 'Emma Williams', email: 'emma.williams@example.com', avatar: '' },
-    { id: 4, name: 'David Brown', email: 'david.brown@example.com', avatar: '' },
-    { id: 5, name: 'Lisa Anderson', email: 'lisa.anderson@example.com', avatar: '' },
-  ])
+  const conversationsList = useMemo(() => {
+    const arr = Array.isArray(props.conversations) ? props.conversations : []
+    return arr.map((c) => ({ ...c, messages: [] as Message[] }))
+  }, [props.conversations])
+  const [conversations, setConversations] = useState<Conversation[]>(conversationsList)
 
-  // Mock conversations data
-  const [conversations, setConversations] = useState<Conversation[]>([
-    {
-      id: 1,
-      hostName: 'Sarah Johnson',
-      hostAvatar: '',
-      property: 'Luxury Beachfront Villa',
-      lastMessage: 'hey 👋 hey...',
-      lastMessageTime: new Date('2025-01-20T10:30:00'),
-      unreadCount: 2,
-      messages: [
-        { id: 1, text: 'Hello! I have a question about the property.', sender: 'customer', timestamp: new Date('2025-01-20T09:00:00'), read: true },
-        { id: 2, text: 'Hi! I\'d be happy to help. What would you like to know?', sender: 'host', timestamp: new Date('2025-01-20T09:05:00'), read: true },
-        { id: 3, text: 'Is the property pet-friendly?', sender: 'customer', timestamp: new Date('2025-01-20T09:10:00'), read: true },
-        { id: 4, text: 'Yes, pets are allowed with prior notification.', sender: 'host', timestamp: new Date('2025-01-20T09:15:00'), read: true },
-        { id: 5, text: 'hey 👋 hey', sender: 'customer', timestamp: new Date('2025-01-20T10:30:00'), read: false },
-      ]
-    },
-    {
-      id: 2,
-      hostName: 'Michael Chen',
-      hostAvatar: '',
-      property: 'Modern Downtown Apartment',
-      lastMessage: 'hey',
-      lastMessageTime: new Date('2025-01-19T14:20:00'),
-      unreadCount: 0,
-      messages: [
-        { id: 1, text: 'What time is check-in?', sender: 'customer', timestamp: new Date('2025-01-19T14:00:00'), read: true },
-        { id: 2, text: 'The check-in time is flexible.', sender: 'host', timestamp: new Date('2025-01-19T14:20:00'), read: true },
-        { id: 3, text: 'hey', sender: 'customer', timestamp: new Date('2025-01-19T14:25:00'), read: true },
-      ]
-    },
-    {
-      id: 3,
-      hostName: 'Emma Williams',
-      hostAvatar: '',
-      property: 'Cozy Mountain Cabin',
-      lastMessage: '📎 image',
-      lastMessageTime: new Date('2025-01-18T16:45:00'),
-      unreadCount: 0,
-      messages: [
-        { 
-          id: 1, 
-          sender: 'host', 
-          timestamp: new Date('2025-01-18T16:45:00'), 
-          read: true,
-          files: [
-            { id: '1', type: 'image', url: '/images/popular-stay-1.svg', name: 'property-image.jpg', size: 245000 }
-          ]
-        },
-      ]
-    },
-  ])
+  useEffect(() => {
+    setConversations((prev) => {
+      const byId = new Map(prev.map((c) => [c.id, c]))
+      for (const c of conversationsList) {
+        if (!byId.has(c.id)) byId.set(c.id, { ...c, messages: [] })
+        else {
+          const existing = byId.get(c.id)!
+          byId.set(c.id, { ...c, messages: existing.messages })
+        }
+      }
+      return Array.from(byId.values()).sort((a, b) => new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime())
+    })
+  }, [conversationsList])
+
+  useEffect(() => {
+    if (!openModal) return
+    setLoadingStartable(true)
+    apiGet<{ data: { properties: PropertyToMessage[] } }>('/api/messages/properties-to-message')
+      .then((res) => setStartableProperties(res.data?.properties ?? []))
+      .catch(() => setStartableProperties([]))
+      .finally(() => setLoadingStartable(false))
+  }, [openModal])
 
   const currentConversation = conversations.find(c => c.id === selectedConversation)
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
+  }, [])
 
-  // Handle URL parameters to auto-select conversation with host
+  const addMessageToConversation = useCallback((conversationId: number, message: Message) => {
+    setConversations((prev) =>
+      prev.map((conv) => {
+        if (conv.id !== conversationId) return conv
+        if (conv.messages.some((m) => m.id === message.id)) return conv
+        return { ...conv, messages: [...conv.messages, message] }
+      })
+    )
+  }, [])
+
   useEffect(() => {
-    const hostName = searchParams.get('host')
-    const propertyName = searchParams.get('property')
-    
-    if (hostName && propertyName) {
-      // Find existing conversation with this host and property
-      const existingConv = conversations.find(
-        c => c.hostName === hostName && c.property === propertyName
-      )
-      
-      if (existingConv) {
-        setSelectedConversation(existingConv.id)
-      } else {
-        // Create new conversation
-        const newConversation: Conversation = {
-          id: Date.now(),
-          hostName: hostName,
-          hostAvatar: '',
-          property: propertyName,
-          lastMessage: '',
-          lastMessageTime: new Date(),
-          unreadCount: 0,
-          messages: []
-        }
-        setConversations(prev => [newConversation, ...prev])
-        setSelectedConversation(newConversation.id)
-      }
-      
-      // Clean up URL params
+    const propertyIdParam = searchParams.get('property_id')
+    const propertyId = propertyIdParam ? parseInt(propertyIdParam, 10) : null
+    if (!propertyId) return
+
+    const existingConv = conversations.find((c) => c.propertyId === propertyId)
+    if (existingConv) {
+      setSelectedConversation(existingConv.id)
       router.visit('/chat')
+      return
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams])
+
+    apiPostJson<{ data: { conversation: ConversationListItem } }>('/api/messages/conversations', {
+      property_id: propertyId,
+    })
+      .then((res) => {
+        const conv = res.data?.conversation
+        if (conv) {
+          const newConv: Conversation = { ...conv, messages: [] }
+          setConversations((prev) => {
+            const exists = prev.find((c) => c.id === newConv.id)
+            if (exists) return prev
+            return [newConv, ...prev].sort(
+              (a, b) => new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime()
+            )
+          })
+          setSelectedConversation(conv.id)
+        }
+      })
+      .catch(() => {})
+      .finally(() => router.visit('/chat'))
+  }, [searchParams, conversations])
 
   useEffect(() => {
-    if (currentConversation) {
-      scrollToBottom()
+    if (!selectedConversation) return
+    const conv = conversations.find((c) => c.id === selectedConversation)
+    if (conv && conv.messages.length > 0) return
+    setLoadingMessages(true)
+    apiGet<{ data: { messages: unknown[] } }>(`/api/messages/conversations/${selectedConversation}`)
+      .then((res) => {
+        const messages = (res.data.messages ?? []).map((m: unknown) =>
+          apiMessageToMessage({
+            id: (m as Record<string, unknown>).id as number,
+            text: (m as Record<string, unknown>).text as string | undefined,
+            sender: (m as Record<string, unknown>).sender as string,
+            timestamp: (m as Record<string, unknown>).timestamp as string,
+            read: (m as Record<string, unknown>).read as boolean,
+            files: ((m as Record<string, unknown>).files as MessageFile[] | null) ?? null,
+          })
+        )
+        setConversations((prev) =>
+          prev.map((c) => (c.id === selectedConversation ? { ...c, messages } : c))
+        )
+      })
+      .catch(() => {})
+      .finally(() => setLoadingMessages(false))
+  }, [selectedConversation, conversations])
+
+  useEffect(() => {
+    if (!selectedConversation || typeof window === 'undefined' || !(window as unknown as { Echo?: { private: (ch: string) => { listen: (e: string, cb: (payload: unknown) => void) => void } } }).Echo) return
+    const ch = `conversation.${selectedConversation}`
+    const echo = (window as unknown as { Echo: { private: (ch: string) => { listen: (e: string, cb: (payload: unknown) => void) => void } } }).Echo
+    const handler = (payload: unknown) => {
+      const p = payload as { id?: number; text?: string; sender?: string; timestamp?: string; read?: boolean; files?: MessageFile[] | null }
+      if (!p || p.id == null) return
+      addMessageToConversation(selectedConversation, apiMessageToMessage({
+        id: p.id,
+        text: p.text,
+        sender: p.sender ?? 'host',
+        timestamp: p.timestamp ?? new Date().toISOString(),
+        read: p.read ?? false,
+        files: p.files ?? null,
+      }))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentConversation?.messages])
+    const channel = echo.private(ch)
+    channel.listen('.message.sent', handler)
+    return () => {
+      try { (channel as { leave?: () => void }).leave?.() } catch { /* noop */ }
+    }
+  }, [selectedConversation, addMessageToConversation])
+
+  useEffect(() => {
+    if (currentConversation) scrollToBottom()
+  }, [currentConversation?.messages, scrollToBottom, currentConversation])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -183,48 +222,42 @@ export default function Chat() {
     setSelectedFiles(prev => prev.filter((_, i) => i !== index))
   }
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if ((!messageText.trim() && selectedFiles.length === 0) || !selectedConversation) return
-
-    const fileMessages: MessageFile[] = selectedFiles.map((file, index) => ({
-      id: `file-${Date.now()}-${index}`,
-      type: file.type.startsWith('image/') ? 'image' : 'video',
-      url: URL.createObjectURL(file),
-      name: file.name,
-      size: file.size
-    }))
-
-    const newMessage: Message = {
-      id: Date.now(),
-      text: messageText.trim() || undefined,
-      sender: 'customer',
-      timestamp: new Date(),
-      read: false,
-      files: fileMessages.length > 0 ? fileMessages : undefined
-    }
-
-    let lastMessageText = messageText.trim() || ''
-    // Don't show "image" or "video" in last message preview
-    if (selectedFiles.length > 0 && !messageText.trim()) {
-      lastMessageText = ''
-    }
-
-    setConversations(prev => prev.map(conv => {
-      if (conv.id === selectedConversation) {
-        return {
-          ...conv,
-          messages: [...conv.messages, newMessage],
-          lastMessage: lastMessageText,
-          lastMessageTime: new Date()
-        }
+    setSending(true)
+    const form = new FormData()
+    form.append('message', messageText.trim())
+    selectedFiles.forEach((f) => form.append('files[]', f))
+    try {
+      const res = await apiPostForm<{ data: { message: Record<string, unknown> } }>(
+        `/api/messages/conversations/${selectedConversation}/messages`,
+        form
+      )
+      const m = res.data?.message
+      if (m) {
+        const newMessage = apiMessageToMessage({
+          id: m.id as number,
+          text: m.text as string | undefined,
+          sender: 'user',
+          timestamp: (m.timestamp as string) ?? new Date().toISOString(),
+          read: m.read as boolean,
+          files: (m.files as MessageFile[] | null) ?? null,
+        })
+        addMessageToConversation(selectedConversation, newMessage)
+        const lastMessageText = messageText.trim() || ''
+        setConversations((prev) =>
+          prev.map((conv) =>
+            conv.id === selectedConversation
+              ? { ...conv, lastMessage: lastMessageText, lastMessageTime: new Date().toISOString() }
+              : conv
+          )
+        )
       }
-      return conv
-    }))
-
-    setMessageText('')
-    setSelectedFiles([])
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
+      setMessageText('')
+      setSelectedFiles([])
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    } finally {
+      setSending(false)
     }
   }
 
@@ -235,22 +268,19 @@ export default function Chat() {
     }
   }
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+  const formatTime = (date: Date | string) => {
+    const d = typeof date === 'string' ? new Date(date) : date
+    return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
   }
 
-  const formatDate = (date: Date) => {
+  const formatDate = (date: Date | string) => {
+    const d = typeof date === 'string' ? new Date(date) : date
     const today = new Date()
     const yesterday = new Date(today)
     yesterday.setDate(yesterday.getDate() - 1)
-
-    if (date.toDateString() === today.toDateString()) {
-      return 'Today'
-    } else if (date.toDateString() === yesterday.toDateString()) {
-      return 'Yesterday'
-    } else {
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    }
+    if (d.toDateString() === today.toDateString()) return 'Today'
+    if (d.toDateString() === yesterday.toDateString()) return 'Yesterday'
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
   }
 
   const handleMenuOpen = (conversationId: number, event: React.MouseEvent<HTMLElement>) => {
@@ -261,31 +291,30 @@ export default function Chat() {
     setMenuAnchor(prev => ({ ...prev, [conversationId]: null }))
   }
 
-  const handleStartConversation = (userId: number) => {
-    // Find or create conversation with selected user
-    const user = users.find(u => u.id === userId)
-    if (user) {
-      const existingConv = conversations.find(c => c.hostName === user.name)
-      if (existingConv) {
-        setSelectedConversation(existingConv.id)
-      } else {
-        // Create new conversation
-        const newConversation: Conversation = {
-          id: Date.now(),
-          hostName: user.name,
-          hostAvatar: user.avatar,
-          property: 'New Property',
-          lastMessage: '',
-          lastMessageTime: new Date(),
-          unreadCount: 0,
-          messages: []
-        }
-        setConversations(prev => [newConversation, ...prev])
-        setSelectedConversation(newConversation.id)
+  const handleStartConversation = async () => {
+    if (!selectedPropertyId) return
+    setStartingConversation(true)
+    try {
+      const res = await apiPostJson<{ data: { conversation: ConversationListItem } }>('/api/messages/conversations', {
+        property_id: selectedPropertyId,
+      })
+      const conv = res.data?.conversation
+      if (conv) {
+        const newConv: Conversation = { ...conv, messages: [] }
+        setConversations((prev) => {
+          const exists = prev.find((c) => c.id === newConv.id)
+          if (exists) return prev
+          return [newConv, ...prev].sort(
+            (a, b) => new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime()
+          )
+        })
+        setSelectedConversation(conv.id)
       }
+      setOpenModal(false)
+      setSelectedPropertyId(null)
+    } finally {
+      setStartingConversation(false)
     }
-    setOpenModal(false)
-    setSelectedUser(null)
   }
 
   const getLastMessagePreview = (conversation: Conversation) => {
@@ -298,16 +327,16 @@ export default function Chat() {
 
   return (
     <Box>
-      <Head title="Messages" />
+      <Head title={t('chat.messages')} />
       <Navbar />
       <Box sx={{ minHeight: '100vh', bgcolor: '#FFFFFF', py: 4 }}>
         <Container>
           <Box sx={{ mb: 4 }}>
             <Typography variant="h2" sx={{ fontSize: '2.5rem', fontWeight: 800, color: '#222222', mb: 1 }}>
-              Messages
+              {t('chat.messages')}
             </Typography>
             <Typography variant="body1" sx={{ color: '#717171', fontSize: '1rem' }}>
-              Chat with your hosts
+              {t('chat.chat_with_hosts')}
             </Typography>
           </Box>
 
@@ -331,7 +360,7 @@ export default function Chat() {
                       '&:hover': { bgcolor: '#78381C' }
                     }}
                   >
-                    Start Conversation
+                    {t('chat.start_conversation')}
                   </Button>
                 </CardContent>
                 <CardContent sx={{ p: 0, flex: 1, overflowY: 'auto' }}>
@@ -340,16 +369,11 @@ export default function Chat() {
                       key={conversation.id}
                       onClick={() => {
                         setSelectedConversation(conversation.id)
-                        setConversations(prev => prev.map(conv => {
-                          if (conv.id === conversation.id) {
-                            return {
-                              ...conv,
-                              unreadCount: 0,
-                              messages: conv.messages.map(msg => ({ ...msg, read: true }))
-                            }
-                          }
-                          return conv
-                        }))
+                        setConversations((prev) =>
+                          prev.map((conv) =>
+                            conv.id === conversation.id ? { ...conv, unreadCount: 0 } : conv
+                          )
+                        )
                       }}
                       sx={{
                         p: 2,
@@ -465,6 +489,12 @@ export default function Chat() {
 
                   {/* Messages */}
                   <Box sx={{ flex: 1, overflowY: 'auto', p: 2, bgcolor: '#F9FAFB' }}>
+                    {loadingMessages ? (
+                      <Box sx={{ textAlign: 'center', py: 4 }}>
+                        <Typography variant="body2" sx={{ color: '#717171' }}>{t('chat.loading')}</Typography>
+                      </Box>
+                    ) : (
+                    <>
                     {currentConversation.messages.map((message, index) => {
                       const showDate = index === 0 || 
                         new Date(message.timestamp).toDateString() !== 
@@ -618,6 +648,8 @@ export default function Chat() {
                         </Box>
                       )
                     })}
+                    </>
+                    )}
                     <div ref={messagesEndRef} />
                   </Box>
 
@@ -713,7 +745,7 @@ export default function Chat() {
                       </IconButton>
                       <TextField
                         fullWidth
-                        placeholder="Type a message..."
+                        placeholder={t('chat.type_placeholder')}
                         value={messageText}
                         onChange={(e) => setMessageText(e.target.value)}
                         onKeyPress={handleKeyPress}
@@ -732,8 +764,8 @@ export default function Chat() {
                       />
                       <Button
                         variant="contained"
-                        onClick={handleSendMessage}
-                        disabled={!messageText.trim() && selectedFiles.length === 0}
+                        onClick={() => void handleSendMessage()}
+                        disabled={sending || (!messageText.trim() && selectedFiles.length === 0)}
                         sx={{
                           bgcolor: '#AD542D',
                           borderRadius: 2,
@@ -767,10 +799,10 @@ export default function Chat() {
                       <SendIcon sx={{ fontSize: 40, color: '#9CA3AF' }} />
                     </Box>
                     <Typography variant="h6" sx={{ color: '#6B7280', mb: 1 }}>
-                      Select a conversation
+                      {t('chat.select_conversation')}
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#9CA3AF' }}>
-                      Choose a conversation from the list to start messaging, or create a new one.
+                      {t('chat.select_conversation_sub')}
                     </Typography>
                   </Box>
                 </Card>
@@ -786,7 +818,7 @@ export default function Chat() {
         open={openModal}
         onClose={() => {
           setOpenModal(false)
-          setSelectedUser(null)
+          setSelectedPropertyId(null)
         }}
         maxWidth="sm"
         fullWidth
@@ -799,12 +831,12 @@ export default function Chat() {
       >
         <DialogTitle sx={{ pb: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>
-            Start Conversation
+            {t('chat.start_conversation')}
           </Typography>
           <IconButton
             onClick={() => {
               setOpenModal(false)
-              setSelectedUser(null)
+              setSelectedPropertyId(null)
             }}
             sx={{ color: '#717171' }}
           >
@@ -813,46 +845,59 @@ export default function Chat() {
         </DialogTitle>
         <DialogContent sx={{ p: 0 }}>
           <Typography variant="body2" sx={{ px: 3, pb: 2, color: '#717171' }}>
-            Select Participants
+            {t('chat.select_property')}
           </Typography>
           <Box sx={{ maxHeight: '50vh', overflowY: 'auto' }}>
-            {users.map((user) => (
-              <Box
-                key={user.id}
-                onClick={() => setSelectedUser(user.id)}
-                sx={{
-                  px: 3,
-                  py: 2,
-                  cursor: 'pointer',
-                  bgcolor: selectedUser === user.id ? '#FFF5F7' : 'transparent',
-                  borderBottom: '1px solid #E5E7EB',
-                  '&:hover': {
-                    bgcolor: selectedUser === user.id ? '#FFF5F7' : '#F9FAFB'
-                  }
-                }}
-              >
-                <Stack direction="row" spacing={2} alignItems="center">
-                  <Avatar sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}>
-                    {user.name.charAt(0)}
-                  </Avatar>
-                  <Box sx={{ flex: 1 }}>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222', mb: 0.5 }}>
-                      {user.name}
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: '#717171', fontSize: '0.875rem' }}>
-                      {user.email}
-                    </Typography>
-                  </Box>
-                </Stack>
+            {loadingStartable ? (
+              <Box sx={{ py: 4, textAlign: 'center' }}>
+                <Typography variant="body2" sx={{ color: '#717171' }}>{t('chat.loading')}</Typography>
               </Box>
-            ))}
+            ) : startableProperties.length === 0 ? (
+              <Box sx={{ py: 4, textAlign: 'center' }}>
+                <Typography variant="body2" sx={{ color: '#717171' }}>{t('chat.no_properties')}</Typography>
+              </Box>
+            ) : (
+              startableProperties.map((item) => (
+                <Box
+                  key={item.propertyId}
+                  onClick={() => setSelectedPropertyId(item.propertyId)}
+                  sx={{
+                    px: 3,
+                    py: 2,
+                    cursor: 'pointer',
+                    bgcolor: selectedPropertyId === item.propertyId ? '#FFF5F7' : 'transparent',
+                    borderBottom: '1px solid #E5E7EB',
+                    '&:hover': {
+                      bgcolor: selectedPropertyId === item.propertyId ? '#FFF5F7' : '#F9FAFB'
+                    }
+                  }}
+                >
+                  <Stack direction="row" spacing={2} alignItems="center">
+                    <Avatar
+                      src={item.hostAvatar ?? undefined}
+                      sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}
+                    >
+                      {item.hostName.charAt(0)}
+                    </Avatar>
+                    <Box sx={{ flex: 1, minWidth: 0 }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222', mb: 0.5 }}>
+                        {item.hostName}
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: '#717171', fontSize: '0.875rem' }} noWrap>
+                        {item.property}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </Box>
+              ))
+            )}
           </Box>
         </DialogContent>
         <DialogActions sx={{ p: 2, borderTop: '1px solid #E5E7EB' }}>
           <Button
             onClick={() => {
               setOpenModal(false)
-              setSelectedUser(null)
+              setSelectedPropertyId(null)
             }}
             sx={{
               color: '#717171',
@@ -860,11 +905,11 @@ export default function Chat() {
               fontWeight: 600
             }}
           >
-            Cancel
+            {t('chat.cancel')}
           </Button>
           <Button
-            onClick={() => selectedUser && handleStartConversation(selectedUser)}
-            disabled={!selectedUser}
+            onClick={() => void handleStartConversation()}
+            disabled={!selectedPropertyId || startingConversation}
             variant="contained"
             sx={{
               bgcolor: '#AD542D',
@@ -876,7 +921,7 @@ export default function Chat() {
               '&:disabled': { bgcolor: '#E5E7EB', color: '#9CA3AF' }
             }}
           >
-            Start
+            {startingConversation ? t('chat.loading') : t('chat.start')}
           </Button>
         </DialogActions>
       </Dialog>

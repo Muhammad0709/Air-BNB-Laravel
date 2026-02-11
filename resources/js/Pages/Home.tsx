@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import PopularStays from '../components/PopularStays'
 import HorizontalScrollSection from '../components/HorizontalScrollSection'
+import { useLanguage } from '../hooks/use-language'
 import { Box, Button, TextField, Popover, Stack, Typography, IconButton, Paper } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import PersonIcon from '@mui/icons-material/Person'
@@ -30,14 +31,17 @@ interface Destination {
 }
 
 export default function Home() {
+  const { t } = useLanguage()
   const pageProps = usePage().props as {
     featuredProperties?: Property[]
     favoriteProperties?: Property[]
+    popularProperties?: Property[]
     popularDestinations?: Destination[]
   }
   
   const featuredProperties = pageProps.featuredProperties || []
   const favoriteProperties = pageProps.favoriteProperties || []
+  const popularProperties = pageProps.popularProperties || []
   const popularDestinations = pageProps.popularDestinations || []
   const guestsAnchorRef = useRef<HTMLDivElement>(null)
   const destinationAnchorRef = useRef<HTMLDivElement>(null)
@@ -109,9 +113,9 @@ export default function Home() {
 
   const getGuestsText = () => {
     const parts: string[] = []
-    parts.push(`${adults} ${adults === 1 ? 'adult' : 'adults'}`)
-    if (children > 0) parts.push(`${children} ${children === 1 ? 'child' : 'children'}`)
-    parts.push(`${rooms} ${rooms === 1 ? 'room' : 'rooms'}`)
+    parts.push(`${adults} ${adults === 1 ? t('home.adult') : t('home.adults')}`)
+    if (children > 0) parts.push(`${children} ${children === 1 ? t('home.child') : t('home.children')}`)
+    parts.push(`${rooms} ${rooms === 1 ? t('home.room') : t('home.rooms')}`)
     return parts.join(' · ')
   }
 
@@ -130,6 +134,17 @@ export default function Home() {
   const favoritesItems = favoriteProperties.map(property => ({
     id: property.id,
     image: property.image || '/images/popular-stay-1.svg',
+    title: property.title,
+    location: property.location,
+    price: property.price,
+    rating: property.rating || 0,
+    reviews: property.reviews || 0,
+    isGuestFavorite: property.isGuestFavorite || false,
+  }))
+
+  const popularItems = popularProperties.map(property => ({
+    id: property.id,
+    image: property.image || '/images/filter-1.svg',
     title: property.title,
     location: property.location,
     price: property.price,
@@ -206,10 +221,10 @@ export default function Home() {
                       >
                         <Paper elevation={0} sx={{ p: 3 }}>
                           <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 3 }}>
-                            Where to?
+                            {t('home.where_to')}
                           </Typography>
                           <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222', mb: 2, fontSize: '0.875rem' }}>
-                            Popular destinations
+                            {t('home.popular_destinations_label')}
                           </Typography>
                           <Stack spacing={0}>
                             {displayDestinations.map((dest, index) => (
@@ -243,7 +258,7 @@ export default function Home() {
                         </Paper>
                       </Popover>
                       <Box className="search-field">
-                        <label htmlFor="checkin">Checkin</label>
+                        <label htmlFor="checkin">{t('home.checkin')}</label>
                         <TextField
                           id="checkin"
                           name="checkin"
@@ -257,7 +272,7 @@ export default function Home() {
                         />
                       </Box>
                       <Box className="search-field">
-                        <label htmlFor="checkout">Checkout</label>
+                        <label htmlFor="checkout">{t('home.checkout')}</label>
                         <TextField
                           id="checkout"
                           name="checkout"
@@ -271,7 +286,7 @@ export default function Home() {
                         />
                       </Box>
                       <Box className="search-field" ref={guestsAnchorRef}>
-                        <label htmlFor="guests">Guests</label>
+                        <label htmlFor="guests">{t('home.guests')}</label>
                         <Box
                           onClick={handleGuestsClick}
                           sx={{
@@ -314,7 +329,7 @@ export default function Home() {
                         <Stack spacing={3}>
                           {/* Adults */}
                           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Typography sx={{ fontWeight: 600, color: '#222222' }}>Adults</Typography>
+                            <Typography sx={{ fontWeight: 600, color: '#222222' }}>{t('home.adults')}</Typography>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, border: '1px solid #E5E7EB', borderRadius: 2, px: 1 }}>
                               <IconButton
                                 size="small"
@@ -346,7 +361,7 @@ export default function Home() {
 
                           {/* Children */}
                           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Typography sx={{ fontWeight: 600, color: '#222222' }}>Children</Typography>
+                            <Typography sx={{ fontWeight: 600, color: '#222222' }}>{t('home.children')}</Typography>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, border: '1px solid #E5E7EB', borderRadius: 2, px: 1 }}>
                               <IconButton
                                 size="small"
@@ -378,7 +393,7 @@ export default function Home() {
 
                           {/* Rooms */}
                           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Typography sx={{ fontWeight: 600, color: '#222222' }}>Rooms</Typography>
+                            <Typography sx={{ fontWeight: 600, color: '#222222' }}>{t('home.rooms')}</Typography>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, border: '1px solid #E5E7EB', borderRadius: 2, px: 1 }}>
                               <IconButton
                                 size="small"
@@ -426,13 +441,13 @@ export default function Home() {
                               }
                             }}
                           >
-                            Done
+                            {t('home.done')}
                           </Button>
                         </Stack>
                       </Popover>
                       <Button type="submit" className="search-button">
                         <SearchIcon sx={{ fontSize: '1.3rem' }} />
-                        <span>Search</span>
+                        <span>{t('home.search')}</span>
                       </Button>
                     </Box>
                   </form>
@@ -446,21 +461,25 @@ export default function Home() {
       <section className="featured-section">
         <RBContainer fluid>
           <HorizontalScrollSection 
-            title="Hotels"
+            title={t('home.hotels')}
             items={featuredItems}
+            emptyMessage={t('home.no_hotels')}
+            emptySubtext={t('home.no_hotels_sub')}
           />
         </RBContainer>
       </section>
       <section className="popular-stays-section">
         <RBContainer fluid>
-          <PopularStays />
+          <PopularStays items={popularItems} />
         </RBContainer>
       </section>
       <section className="favorites-section" style={{ flex: 1 }}>
         <RBContainer fluid>
           <HorizontalScrollSection 
-            title="Favorites"
+            title={t('home.favorites')}
             items={favoritesItems}
+            emptyMessage={t('home.no_favorites')}
+            emptySubtext={t('home.no_favorites_sub')}
           />
         </RBContainer>
       </section>

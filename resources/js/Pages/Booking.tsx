@@ -8,6 +8,7 @@ import CreditCardIcon from '@mui/icons-material/CreditCard'
 import { router, Head, usePage } from '@inertiajs/react'
 import ListingPreviewCard from '../components/ListingPreviewCard'
 import BookingSummaryCard from '../components/BookingSummaryCard'
+import { useLanguage } from '../hooks/use-language'
 
 const PLACEHOLDER_IMAGE = '/images/popular-stay-1.svg'
 
@@ -27,15 +28,30 @@ type BookingProperty = {
 type BookingPageProps = {
   property: BookingProperty | null
   nights: number
-  checkin: string | null
-  checkout: string | null
+  checkin: string
+  checkout: string
   costs: Array<{ label: string; amount: string }>
   totalAmount: string
   rules: string[]
 }
 
 export default function Booking() {
-  const { property, nights, costs, totalAmount, rules } = usePage<BookingPageProps>().props
+  const { t } = useLanguage()
+  const { property, nights, checkin, checkout, costs, totalAmount, rules } = usePage<BookingPageProps>().props
+
+  const updateDates = (newCheckin: string, newCheckout: string) => {
+    const params: Record<string, string> = {}
+    if (property?.id) params.property_id = String(property.id)
+    params.checkin = newCheckin
+    params.checkout = newCheckout
+    const url = `/booking?${new URLSearchParams(params).toString()}`
+    // Partial reload: only refresh price-related props so they update; form state is preserved
+    router.visit(url, {
+      method: 'get',
+      preserveState: true,
+      only: ['costs', 'totalAmount', 'nights', 'checkin', 'checkout'],
+    })
+  }
 
   const [formData, setFormData] = useState({
     name: '',
@@ -101,7 +117,13 @@ export default function Booking() {
     e.preventDefault()
     if (validate()) {
       setToast({ open: true, message: 'Booking request submitted successfully!', severity: 'success' })
-      const url = property ? `/confirmation?property_id=${property.id}` : '/confirmation'
+      let url = '/confirmation'
+      if (property) {
+        const params = new URLSearchParams({ property_id: String(property.id) })
+        if (checkin) params.set('checkin', checkin)
+        if (checkout) params.set('checkout', checkout)
+        url = `/confirmation?${params.toString()}`
+      }
       setTimeout(() => router.visit(url), 1000)
     } else {
       setToast({ open: true, message: 'Please fix the errors in the form', severity: 'error' })
@@ -110,25 +132,71 @@ export default function Booking() {
 
   return (
     <>
-      <Head title="Booking" />
+      <Head title={t('booking.title')} />
       <Box>
         <Navbar />
         <Box className="booking-page">
           <Container className="px-0">
             <Box sx={{ mb: 2, mt: 4 }}>
               <Typography variant="h2" sx={{ fontSize: '2.5rem', fontWeight: 800, color: '#222222', mb: 2 }}>
-                Booking
+                {t('booking.title')}
               </Typography>
             </Box>
 
             <Row>
               <Col xs={12} md={7} lg={8} className="px-0">
                 <Paper elevation={0} className="booking-form">
-                  <Typography className="section-title" sx={{ fontSize: '1.5rem', fontWeight: 700, color: '#222222', mb: 2 }}>Enter your personal info</Typography>
+                  <Typography className="section-title" sx={{ fontSize: '1.5rem', fontWeight: 700, color: '#222222', mb: 2 }}>{t('booking.guest_details')}</Typography>
 
                   <form onSubmit={handleSubmit}>
+                    {property && (
+                      <Stack direction="row" spacing={1.5} className="field" sx={{ mb: 2 }}>
+                        <Box sx={{ flex: 1 }}>
+                          <Typography className="label">{t('home.checkin')}</Typography>
+                          <TextField
+                            size="small"
+                            fullWidth
+                            type="date"
+                            value={checkin}
+                            onChange={(e) => {
+                              const newCheckin = e.target.value
+                              let newCheckout = checkout
+                              if (new Date(newCheckin) >= new Date(checkout)) {
+                                const d = new Date(newCheckin)
+                                d.setDate(d.getDate() + 1)
+                                newCheckout = d.toISOString().slice(0, 10)
+                              }
+                              updateDates(newCheckin, newCheckout)
+                            }}
+                            InputLabelProps={{ shrink: true }}
+                            inputProps={{ min: new Date().toISOString().slice(0, 10) }}
+                          />
+                        </Box>
+                        <Box sx={{ flex: 1 }}>
+                          <Typography className="label">{t('home.checkout')}</Typography>
+                          <TextField
+                            size="small"
+                            fullWidth
+                            type="date"
+                            value={checkout}
+                            onChange={(e) => {
+                              const newCheckout = e.target.value
+                              if (new Date(newCheckout) <= new Date(checkin)) return
+                              updateDates(checkin, newCheckout)
+                            }}
+                            InputLabelProps={{ shrink: true }}
+                            inputProps={{ min: checkin }}
+                          />
+                        </Box>
+                      </Stack>
+                    )}
+                    {property && (
+                      <Typography variant="body2" sx={{ color: '#6B7280', mb: 2 }}>
+                        {nights} night{nights !== 1 ? 's' : ''} · Price details update when you change dates
+                      </Typography>
+                    )}
                     <Box className="field">
-                      <Typography className="label">Name</Typography>
+                      <Typography className="label">{t('booking.name')}</Typography>
                       <TextField 
                         size="small" 
                         fullWidth 

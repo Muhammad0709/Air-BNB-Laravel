@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'destination' => 'مقصد',
+    'checkin' => 'ورود',
+    'checkout' => 'خروج',
+    'guests' => 'میهمان',
+    'search' => 'جستجو',
+    'adults' => 'بزرگسال',
+    'adult' => 'بزرگسال',
+    'children' => 'کودک',
+    'child' => 'کودک',
+    'rooms' => 'اتاق',
+    'room' => 'اتاق',
+    'done' => 'انجام',
+    'where_to' => 'کجا؟',
+    'popular_destinations_label' => 'مقاصد محبوب',
+    'popular_destinations' => 'مقاصد محبوب',
+    'hotels' => 'هتل‌ها',
+    'popular' => 'محبوب',
+    'favorites' => 'علاقه‌مندی',
+    'no_hotels' => 'هتلی موجود نیست',
+    'no_hotels_sub' => 'بعداً بررسی کنید یا جستجوی دیگری انجام دهید.',
+    'no_popular' => 'هنوز اقامت محبوبی نیست',
+    'no_popular_sub' => 'با افزودن اقامت‌های بیشتر اینجا نمایش داده می‌شوند.',
+    'no_favorites' => 'هنوز علاقه‌مندی نیست',
+    'no_favorites_sub' => 'با کلیک روی آیکون قلب در هر لیست، اقامت را ذخیره کنید.',
+];

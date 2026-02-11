@@ -1,0 +1,19 @@
+<?php
+
+return [
+    'home' => 'الرئيسية',
+    'stays' => 'الإقامات',
+    'contact_us' => 'اتصل بنا',
+    'wishlist' => 'المفضلة',
+    'messages' => 'الرسائل',
+    'bookings' => 'الحجوزات',
+    'profile' => 'الملف الشخصي',
+    'log_in' => 'تسجيل الدخول',
+    'sign_up' => 'إنشاء حساب',
+    'currency' => 'العملة',
+    'language' => 'اللغة',
+    'become_host' => 'كن مضيفاً',
+    'become_host_sub' => 'ابدأ الاستضافة واكسب دخلاً إضافياً',
+    'booking_history' => 'سجل الحجوزات',
+    'logout' => 'تسجيل الخروج',
+];

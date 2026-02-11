@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'destination' => 'منزل',
+    'checkin' => 'چیک ان',
+    'checkout' => 'چیک آؤٹ',
+    'guests' => 'مہمان',
+    'search' => 'تلاش',
+    'adults' => 'بالغ',
+    'adult' => 'بالغ',
+    'children' => 'بچے',
+    'child' => 'بچہ',
+    'rooms' => 'کمرے',
+    'room' => 'کمرہ',
+    'done' => 'ہو گیا',
+    'where_to' => 'کہاں؟',
+    'popular_destinations_label' => 'مقبول مقامات',
+    'popular_destinations' => 'مقبول مقامات',
+    'hotels' => 'ہوٹل',
+    'popular' => 'مقبول',
+    'favorites' => 'پسندیدہ',
+    'no_hotels' => 'کوئی ہوٹل دستیاب نہیں',
+    'no_hotels_sub' => 'بعد میں دیکھیں یا دوسری تلاش کریں۔',
+    'no_popular' => 'ابھی کوئی مقبول قیام نہیں',
+    'no_popular_sub' => 'جیسے جیسے مزید پراپرٹیز شامل ہوں گی یہاں دکھائی دیں گی۔',
+    'no_favorites' => 'ابھی کوئی پسندیدہ نہیں',
+    'no_favorites_sub' => 'کسی لسٹنگ پر دل کے آئیکون پر کلک کر کے پراپرٹیز محفوظ کریں۔',
+];

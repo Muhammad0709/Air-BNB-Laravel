@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Button, Paper, Stack, TextField, Typography, Chip } from '@mui/material'
 import { Container, Row, Col } from 'react-bootstrap'
-import Navbar from '../Components/Navbar'
-import Footer from '../Components/Footer'
-import Toast from '../Components/shared/Toast'
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
+import Toast from '../components/shared/Toast'
 import SendIcon from '@mui/icons-material/Send'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
 import CloseIcon from '@mui/icons-material/Close'
 import { Head, useForm, usePage } from '@inertiajs/react'
+import { useLanguage } from '../hooks/use-language'
 
 export default function Contact() {
+  const { t } = useLanguage()
   const { props } = usePage()
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
@@ -67,7 +69,7 @@ export default function Contact() {
         // Show success toast immediately
         setToast({
           open: true,
-          message: 'Thank you for your message! We will get back to you soon.',
+          message: t('contact.success_message'),
           severity: 'success'
         })
         reset()
@@ -75,8 +77,8 @@ export default function Contact() {
       onError: (errors) => {
         // Show error toast if there are validation errors
         const errorMessage = Object.keys(errors).length > 0 
-          ? 'Please fix the errors and try again.' 
-          : 'Something went wrong. Please try again.'
+          ? t('contact.error_fix') 
+          : t('contact.error_generic')
         setToast({ 
           open: true, 
           message: errorMessage, 
@@ -88,7 +90,7 @@ export default function Contact() {
 
   return (
     <>
-      <Head title="Contact Us" />
+      <Head title={t('contact.title')} />
       <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Navbar />
         <Box className="contact-page" sx={{ flex: 1 }}>
@@ -96,10 +98,10 @@ export default function Contact() {
             {/* Header Section */}
             <Box sx={{ textAlign: 'center', mb: 6, mt: 4 }}>
               <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 800, color: '#111827', mb: 2 }}>
-                Contact Us
+                {t('contact.title')}
               </Typography>
               <Typography variant="body1" sx={{ color: '#6B7280', fontSize: '1rem',  mx: 'auto' }}>
-                Get in touch with us. We're here to help and answer any questions you might have.
+                {t('contact.subtitle')}
               </Typography>
             </Box>
 
@@ -108,20 +110,20 @@ export default function Contact() {
               <Col xs={12} md={10} lg={8} xl={6}>
                 <Paper elevation={0} sx={{ p: 4, border: '1px solid #E5E7EB', borderRadius: '16px' }}>
                   <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 3, fontSize: '1.25rem' }}>
-                    Send us a Message
+                    {t('contact.send_message')}
                   </Typography>
                   
                   <form onSubmit={handleSubmit}>
                     <Stack spacing={3}>
                       <Box>
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
-                          Name
+                          {t('contact.name')}
                         </Typography>
                         <TextField
                           name="name"
                           value={data.name}
                           onChange={handleChange}
-                          placeholder="Your name"
+                          placeholder={t('contact.name_placeholder')}
                           fullWidth
                           required
                           size="small"
@@ -140,14 +142,14 @@ export default function Contact() {
 
                       <Box>
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
-                          Email
+                          {t('contact.email')}
                         </Typography>
                         <TextField
                           name="email"
                           type="email"
                           value={data.email}
                           onChange={handleChange}
-                          placeholder="your.email@example.com"
+                          placeholder={t('contact.email_placeholder')}
                           fullWidth
                           required
                           size="small"
@@ -166,13 +168,13 @@ export default function Contact() {
 
                       <Box>
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
-                          Subject
+                          {t('contact.subject')}
                         </Typography>
                         <TextField
                           name="subject"
                           value={data.subject}
                           onChange={handleChange}
-                          placeholder="What is this regarding?"
+                          placeholder={t('contact.subject_placeholder')}
                           fullWidth
                           required
                           size="small"
@@ -191,7 +193,7 @@ export default function Contact() {
 
                       <Box>
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
-                          Attach Files (Optional)
+                          {t('contact.attach_files')}
                         </Typography>
                         <Box
                           sx={{
@@ -219,10 +221,10 @@ export default function Contact() {
                             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
                               <AttachFileIcon sx={{ fontSize: 32, color: '#6B7280', mb: 1 }} />
                               <Typography sx={{ color: '#6B7280', fontSize: '0.875rem', mb: 0.5 }}>
-                                Click to upload or drag and drop
+                                {t('contact.click_to_upload')}
                               </Typography>
                               <Typography sx={{ color: '#9CA3AF', fontSize: '0.75rem' }}>
-                                PDF, DOC, DOCX, JPG, PNG (Max 10MB per file)
+                                {t('contact.file_types')}
                               </Typography>
                             </Box>
                           </label>
@@ -254,13 +256,13 @@ export default function Contact() {
 
                       <Box>
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
-                          Message
+                          {t('contact.message')}
                         </Typography>
                         <TextField
                           name="message"
                           value={data.message}
                           onChange={handleChange}
-                          placeholder="Tell us more about your inquiry..."
+                          placeholder={t('contact.message_placeholder')}
                           fullWidth
                           required
                           multiline
@@ -299,7 +301,7 @@ export default function Contact() {
                           }
                         }}
                       >
-                        {processing ? 'Sending...' : 'Send Message'}
+                        {processing ? t('contact.sending') : t('contact.send_message_btn')}
                       </Button>
                     </Stack>
                   </form>

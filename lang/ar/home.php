@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'destination' => 'الوجهة',
+    'checkin' => 'وصول',
+    'checkout' => 'مغادرة',
+    'guests' => 'الضيوف',
+    'search' => 'بحث',
+    'adults' => 'بالغون',
+    'adult' => 'بالغ',
+    'children' => 'أطفال',
+    'child' => 'طفل',
+    'rooms' => 'غرف',
+    'room' => 'غرفة',
+    'done' => 'تم',
+    'where_to' => 'إلى أين؟',
+    'popular_destinations_label' => 'الوجهات الشائعة',
+    'popular_destinations' => 'الوجهات الشائعة',
+    'hotels' => 'الفنادق',
+    'popular' => 'الشائع',
+    'favorites' => 'المفضلة',
+    'no_hotels' => 'لا فنادق متاحة',
+    'no_hotels_sub' => 'تحقق لاحقاً أو جرب بحثاً آخر.',
+    'no_popular' => 'لا إقامات شائعة بعد',
+    'no_popular_sub' => 'ستظهر القوائم الشائعة هنا مع إضافة المزيد.',
+    'no_favorites' => 'لا مفضلات بعد',
+    'no_favorites_sub' => 'احفظ العقارات التي تعجبك بالنقر على أيقونة القلب في أي قائمة.',
+];

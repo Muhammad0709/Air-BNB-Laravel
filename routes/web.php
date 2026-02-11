@@ -27,6 +27,10 @@ use App\Http\Controllers\ProfileSettingsController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ConfirmationController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\LocaleController;
+
+// Locale switch (session) - available to all
+Route::get('locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
 
 // Public authentication routes (only accessible to guests)
 Route::middleware('guest')->group(function () {
@@ -53,12 +57,12 @@ Route::get('/listing', [ListingController::class, 'index'])->name('listing');
 Route::get('/detail/{id}', [PropertyDetailController::class, 'show'])->name('property.detail');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+Route::get('/booking/redirect', [BookingController::class, 'redirectToBooking'])->name('booking.redirect');
 Route::get('/booking', [BookingController::class, 'index'])->name('booking');
 Route::get('/confirmation', [ConfirmationController::class, 'index'])->name('confirmation');
 
 // Public pages (PageController)
 Route::get('/about', [PageController::class, 'about'])->name('about');
-Route::get('/chat', [PageController::class, 'chat'])->name('chat');
 Route::get('/bookings', [PageController::class, 'customerBookings'])->name('bookings');
 Route::get('/privacy-policy', [PageController::class, 'privacyPolicy'])->name('privacy-policy');
 Route::get('/terms', [PageController::class, 'terms'])->name('terms');
@@ -75,6 +79,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index']);
     
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+    
+    Route::get('/chat', [PageController::class, 'chat'])->name('chat');
     
     // User-specific routes
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');

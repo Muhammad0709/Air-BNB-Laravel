@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Property;
 use App\Enums\PropertyStatus;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
@@ -133,6 +134,9 @@ class PropertyDetailController extends Controller
                 ];
             });
 
+        $defaultCheckin = Carbon::today()->format('Y-m-d');
+        $defaultCheckout = Carbon::today()->addDays(7)->format('Y-m-d');
+
         return Inertia::render('ListingDetail', [
             'property' => $propertyData,
             'relatedProperties' => $relatedProperties,
@@ -142,6 +146,8 @@ class PropertyDetailController extends Controller
                 'total' => $totalReviews,
                 'breakdown' => $ratingBreakdown,
             ],
+            'defaultCheckin' => $defaultCheckin,
+            'defaultCheckout' => $defaultCheckout,
         ]);
     }
 }

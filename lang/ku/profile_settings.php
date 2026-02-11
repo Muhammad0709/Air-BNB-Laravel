@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'title' => 'Profile Settings',
+    'subtitle' => 'Manage your account settings and preferences',
+    'profile_picture' => 'Profile Picture',
+    'change_photo' => 'Change photo',
+    'upload_photo' => 'Upload photo',
+    'file_size_error' => 'File size must be less than 2MB.',
+    'file_type_error' => 'Please upload a valid image file (JPG, PNG, or GIF).',
+    'personal_info' => 'Personal Information',
+    'name' => 'Name',
+    'name_placeholder' => 'Your full name',
+    'email' => 'Email',
+    'phone' => 'Phone',
+    'bio' => 'Bio',
+    'save_changes' => 'Save Changes',
+    'saving' => 'Saving...',
+    'change_password' => 'Change Password',
+    'current_password' => 'Current Password',
+    'new_password' => 'New Password',
+    'confirm_password' => 'Confirm New Password',
+    'update_password' => 'Update Password',
+    'updating' => 'Updating...',
+];

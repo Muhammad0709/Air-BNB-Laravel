@@ -6,6 +6,7 @@ import SearchResultCard from '../components/SearchResultCard'
 import { Container as RBContainer, Row, Col } from 'react-bootstrap'
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { Head } from '@inertiajs/react'
+import { useLanguage } from '../hooks/use-language'
 
 const PropertyMap = lazy(() => import('../components/PropertyMap'))
 
@@ -62,6 +63,7 @@ const allItems: Item[] = [
 ]
 
 export default function SearchResults() {
+  const { t } = useLanguage()
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'))
   const { url } = usePage()
@@ -116,7 +118,7 @@ export default function SearchResults() {
 
   return (
     <Box sx={{ width: '100%', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Head title="Search Results" />
+      <Head title={t('search_results.title')} />
       <Navbar />
       <Box sx={{ flex: 1, width: '100%' }}>
         <Row className="g-0" style={{ margin: 0, minHeight: 'calc(100vh - 64px)' }}>
@@ -136,14 +138,18 @@ export default function SearchResults() {
             <RBContainer fluid className="px-0">
               <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <Typography sx={{ fontWeight: 600, color: '#222222', fontSize: '1.375rem', mb: 0.5 }}>
-                  {filtered.length > 0 ? `Over ${filtered.length} ${searchLabel ? `homes in ${search}` : 'homes'}` : 'No homes found'}
+                  {filtered.length > 0
+                    ? (searchLabel
+                        ? (t('search_results.over_homes_in') as string).replace(':count', String(filtered.length)).replace(':location', search)
+                        : (t('search_results.over_homes') as string).replace(':count', String(filtered.length)))
+                    : t('search_results.no_homes_found')}
                 </Typography>
-                <Typography sx={{ color: '#717171', fontSize: '0.875rem', flexShrink: 0, ml: 2 }}>Prices include all fees</Typography>
+                <Typography sx={{ color: '#717171', fontSize: '0.875rem', flexShrink: 0, ml: 2 }}>{t('search_results.prices_include_fees')}</Typography>
               </Box>
               {filtered.length === 0 ? (
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px', textAlign: 'center' }}>
-                  <Typography variant="h5" sx={{ color: '#717171', mb: 1, fontWeight: 600 }}>No data found</Typography>
-                  <Typography variant="body2" sx={{ color: '#9CA3AF' }}>Try adjusting your search or filter criteria</Typography>
+                  <Typography variant="h5" sx={{ color: '#717171', mb: 1, fontWeight: 600 }}>{t('search_results.no_data_found')}</Typography>
+                  <Typography variant="body2" sx={{ color: '#9CA3AF' }}>{t('search_results.try_adjusting')}</Typography>
                 </Box>
               ) : (
                 <Row className="g-3">
@@ -187,7 +193,7 @@ export default function SearchResults() {
               }}
             >
               {mapMounted && (
-              <Suspense fallback={<Box sx={{ width: '100%', height: '100%', bgcolor: '#F7F7F7', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '12px' }}><Typography sx={{ color: '#717171' }}>Loading map…</Typography></Box>}>
+              <Suspense fallback={<Box sx={{ width: '100%', height: '100%', bgcolor: '#F7F7F7', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '12px' }}><Typography sx={{ color: '#717171' }}>{t('search_results.loading_map')}</Typography></Box>}>
                 <PropertyMap
                   properties={filtered.map((item, idx) => ({
                     id: idx + 1,

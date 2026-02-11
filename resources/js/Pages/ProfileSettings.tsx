@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Button, Paper, Stack, TextField, Typography, Avatar } from '@mui/material'
 import { Container, Row, Col } from 'react-bootstrap'
-import Navbar from '../Components/Navbar'
-import Footer from '../Components/Footer'
-import Toast from '../Components/shared/Toast'
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
+import Toast from '../components/shared/Toast'
 import SaveIcon from '@mui/icons-material/Save'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { Head, useForm, usePage, router } from '@inertiajs/react'
+import { useLanguage } from '../hooks/use-language'
 
 export default function ProfileSettings() {
+  const { t } = useLanguage()
   const { props } = usePage()
   const user = (props as any).user
   
@@ -76,7 +78,7 @@ export default function ProfileSettings() {
 
     // Validate file size (2MB)
     if (file.size > 2 * 1024 * 1024) {
-      setToast({ open: true, message: 'File size must be less than 2MB.', severity: 'error' })
+      setToast({ open: true, message: t('profile_settings.file_size_error'), severity: 'error' })
       e.target.value = ''
       return
     }
@@ -84,7 +86,7 @@ export default function ProfileSettings() {
     // Validate file type
     const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
     if (!validTypes.includes(file.type)) {
-      setToast({ open: true, message: 'Please upload a valid image file (JPG, PNG, or GIF).', severity: 'error' })
+      setToast({ open: true, message: t('profile_settings.file_type_error'), severity: 'error' })
       e.target.value = ''
       return
     }
@@ -131,7 +133,7 @@ export default function ProfileSettings() {
                 {/* Profile Picture Section */}
                 <Paper elevation={0} sx={{ p: 4, border: '1px solid #E5E7EB', borderRadius: '16px', mb: 3 }}>
                   <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 3 }}>
-                    Profile Picture
+                    {t('profile_settings.profile_picture')}
                   </Typography>
                   <Stack direction="row" spacing={3} alignItems="center">
                     <Avatar
@@ -173,7 +175,7 @@ export default function ProfileSettings() {
                           }
                         }}
                       >
-                        {uploading ? 'Uploading...' : 'Upload Photo'}
+                        {uploading ? t('profile_settings.saving') : t('profile_settings.upload_photo')}
                         <input 
                           type="file" 
                           hidden 
@@ -192,20 +194,20 @@ export default function ProfileSettings() {
                 {/* Profile Information */}
                 <Paper elevation={0} sx={{ p: 4, border: '1px solid #E5E7EB', borderRadius: '16px', mb: 3 }}>
                   <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 3 }}>
-                    Personal Information
+                    {t('profile_settings.personal_info')}
                   </Typography>
                   
                   <form onSubmit={handleProfileSubmit}>
                     <Stack spacing={3}>
                       <Box>
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
-                          Full Name
+                          {t('profile_settings.name')}
                         </Typography>
                         <TextField
                           name="name"
                           value={profileData.name}
                           onChange={handleProfileChange}
-                          placeholder="Your full name"
+                          placeholder={t('profile_settings.name_placeholder')}
                           fullWidth
                           required
                           size="small"

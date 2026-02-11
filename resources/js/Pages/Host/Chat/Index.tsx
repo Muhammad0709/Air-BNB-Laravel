@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { Box, Button, Card, CardContent, Stack, TextField, Typography, Avatar, Paper, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
 import HostLayout from '../../../Components/Host/HostLayout'
-import { Head } from '@inertiajs/react'
+import { Head, usePage } from '@inertiajs/react'
 import { Row, Col } from 'react-bootstrap'
 import SendIcon from '@mui/icons-material/Send'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
@@ -9,9 +9,10 @@ import VideoFileIcon from '@mui/icons-material/VideoFile'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
+import { apiGet, apiPostForm } from '../../../chatApi'
 
 interface MessageFile {
-  id: string
+  id: number | string
   type: 'image' | 'video'
   url: string
   name: string
@@ -22,19 +23,23 @@ interface Message {
   id: number
   text?: string
   sender: 'customer' | 'host'
-  timestamp: Date
+  timestamp: Date | string
   read: boolean
-  files?: MessageFile[]
+  files?: MessageFile[] | null
 }
 
-interface Conversation {
+interface ConversationListItem {
   id: number
   customerName: string
-  customerAvatar: string
+  customerAvatar: string | null
   property: string
+  propertyId?: number
   lastMessage: string
-  lastMessageTime: Date
+  lastMessageTime: string
   unreadCount: number
+}
+
+interface Conversation extends ConversationListItem {
   messages: Message[]
 }
 
@@ -45,7 +50,16 @@ interface User {
   avatar: string
 }
 
+function apiMessageToMessage(m: { id: number; text?: string; sender: string; timestamp: string; read: boolean; files?: MessageFile[] | null }): Message {
+  return {
+    ...m,
+    sender: (m.sender === 'user' ? 'customer' : m.sender) as 'customer' | 'host',
+    timestamp: m.timestamp,
+  }
+}
+
 export default function HostChat() {
+  const { props } = usePage<{ conversations: ConversationListItem[] }>()
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [selectedConversation, setSelectedConversation] = useState<number | null>(null)
@@ -54,8 +68,27 @@ export default function HostChat() {
   const [menuAnchor, setMenuAnchor] = useState<{ [key: number]: HTMLElement | null }>({})
   const [openModal, setOpenModal] = useState(false)
   const [selectedUser, setSelectedUser] = useState<number | null>(null)
+  const [loadingMessages, setLoadingMessages] = useState(false)
+  const [sending, setSending] = useState(false)
 
-  // Mock users data
+  const conversationsList = useMemo(() => {
+    const arr = Array.isArray(props.conversations) ? props.conversations : []
+    return arr.map((c) => ({ ...c, messages: [] as Message[] }))
+  }, [props.conversations])
+
+  const [conversations, setConversations] = useState<Conversation[]>(conversationsList)
+
+  useEffect(() => {
+    setConversations((prev) => {
+      const byId = new Map(prev.map((c) => [c.id, c]))
+      for (const c of conversationsList) {
+        if (!byId.has(c.id)) byId.set(c.id, { ...c, messages: [] })
+        else byId.set(c.id, { ...c, messages: byId.get(c.id)!.messages })
+      }
+      return Array.from(byId.values()).sort((a, b) => new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime())
+    })
+  }, [conversationsList])
+
   const [users] = useState<User[]>([
     { id: 1, name: 'John Doe', email: 'john.doe@example.com', avatar: '' },
     { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com', avatar: '' },
@@ -64,71 +97,71 @@ export default function HostChat() {
     { id: 5, name: 'Robert Wilson', email: 'robert.wilson@example.com', avatar: '' },
   ])
 
-  // Mock conversations data
-  const [conversations, setConversations] = useState<Conversation[]>([
-    {
-      id: 1,
-      customerName: 'John Doe',
-      customerAvatar: '',
-      property: 'Luxury Beachfront Villa',
-      lastMessage: 'hey 👋 hey...',
-      lastMessageTime: new Date('2025-01-20T09:10:00'),
-      unreadCount: 1,
-      messages: [
-        { id: 1, text: 'Hello! I have a question about the property.', sender: 'customer', timestamp: new Date('2025-01-20T09:00:00'), read: true },
-        { id: 2, text: 'Hi! I\'d be happy to help. What would you like to know?', sender: 'host', timestamp: new Date('2025-01-20T09:05:00'), read: true },
-        { id: 3, text: 'Is the property pet-friendly?', sender: 'customer', timestamp: new Date('2025-01-20T09:10:00'), read: false },
-      ]
-    },
-    {
-      id: 2,
-      customerName: 'Jane Smith',
-      customerAvatar: '',
-      property: 'Modern Downtown Apartment',
-      lastMessage: 'hey',
-      lastMessageTime: new Date('2025-01-19T14:00:00'),
-      unreadCount: 0,
-      messages: [
-        { id: 1, text: 'What time is check-in?', sender: 'customer', timestamp: new Date('2025-01-19T14:00:00'), read: true },
-        { id: 2, text: 'The check-in time is flexible.', sender: 'host', timestamp: new Date('2025-01-19T14:20:00'), read: true },
-        { id: 3, text: 'hey', sender: 'customer', timestamp: new Date('2025-01-19T14:25:00'), read: true },
-      ]
-    },
-    {
-      id: 3,
-      customerName: 'Mike Johnson',
-      customerAvatar: '',
-      property: 'Cozy Mountain Cabin',
-      lastMessage: '📎 image',
-      lastMessageTime: new Date('2025-01-18T16:30:00'),
-      unreadCount: 0,
-      messages: [
-        { 
-          id: 1, 
-          sender: 'customer', 
-          timestamp: new Date('2025-01-18T16:30:00'), 
-          read: true,
-          files: [
-            { id: '1', type: 'image', url: '/images/popular-stay-1.svg', name: 'property-image.jpg', size: 245000 }
-          ]
-        },
-        { id: 2, text: 'Looking forward to hosting you!', sender: 'host', timestamp: new Date('2025-01-18T16:45:00'), read: true },
-      ]
-    },
-  ])
+  const currentConversation = conversations.find((c) => c.id === selectedConversation)
 
-  const currentConversation = conversations.find(c => c.id === selectedConversation)
-
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
+  }, [])
+
+  const addMessageToConversation = useCallback((conversationId: number, message: Message) => {
+    setConversations((prev) =>
+      prev.map((conv) => {
+        if (conv.id !== conversationId) return conv
+        if (conv.messages.some((m) => m.id === message.id)) return conv
+        return { ...conv, messages: [...conv.messages, message] }
+      })
+    )
+  }, [])
 
   useEffect(() => {
-    if (currentConversation) {
-      scrollToBottom()
+    if (!selectedConversation) return
+    const conv = conversations.find((c) => c.id === selectedConversation)
+    if (conv && conv.messages.length > 0) return
+    setLoadingMessages(true)
+    apiGet<{ data: { messages: unknown[] } }>(`/api/host/chat/conversations/${selectedConversation}`)
+      .then((res) => {
+        const messages = (res.data.messages ?? []).map((m: unknown) =>
+          apiMessageToMessage({
+            id: (m as Record<string, unknown>).id as number,
+            text: (m as Record<string, unknown>).text as string | undefined,
+            sender: (m as Record<string, unknown>).sender as string,
+            timestamp: (m as Record<string, unknown>).timestamp as string,
+            read: (m as Record<string, unknown>).read as boolean,
+            files: ((m as Record<string, unknown>).files as MessageFile[] | null) ?? null,
+          })
+        )
+        setConversations((prev) => prev.map((c) => (c.id === selectedConversation ? { ...c, messages } : c)))
+      })
+      .catch(() => {})
+      .finally(() => setLoadingMessages(false))
+  }, [selectedConversation, conversations])
+
+  useEffect(() => {
+    if (!selectedConversation || typeof window === 'undefined' || !(window as unknown as { Echo?: unknown }).Echo) return
+    const ch = `conversation.${selectedConversation}`
+    const echo = (window as unknown as { Echo: { private: (ch: string) => { listen: (e: string, cb: (p: unknown) => void) => void } } }).Echo
+    const handler = (payload: unknown) => {
+      const p = payload as { id?: number; text?: string; sender?: string; timestamp?: string; read?: boolean; files?: MessageFile[] | null }
+      if (!p || p.id == null) return
+      addMessageToConversation(selectedConversation, apiMessageToMessage({
+        id: p.id,
+        text: p.text,
+        sender: p.sender ?? 'user',
+        timestamp: p.timestamp ?? new Date().toISOString(),
+        read: p.read ?? false,
+        files: p.files ?? null,
+      }))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentConversation?.messages])
+    const channel = echo.private(ch)
+    channel.listen('.message.sent', handler)
+    return () => {
+      try { (channel as { leave?: () => void }).leave?.() } catch { /* noop */ }
+    }
+  }, [selectedConversation, addMessageToConversation])
+
+  useEffect(() => {
+    if (currentConversation) scrollToBottom()
+  }, [currentConversation?.messages, scrollToBottom, currentConversation])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -141,48 +174,40 @@ export default function HostChat() {
     setSelectedFiles(prev => prev.filter((_, i) => i !== index))
   }
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if ((!messageText.trim() && selectedFiles.length === 0) || !selectedConversation) return
-
-    const fileMessages: MessageFile[] = selectedFiles.map((file, index) => ({
-      id: `file-${Date.now()}-${index}`,
-      type: file.type.startsWith('image/') ? 'image' : 'video',
-      url: URL.createObjectURL(file),
-      name: file.name,
-      size: file.size
-    }))
-
-    const newMessage: Message = {
-      id: Date.now(),
-      text: messageText.trim() || undefined,
-      sender: 'host',
-      timestamp: new Date(),
-      read: false,
-      files: fileMessages.length > 0 ? fileMessages : undefined
-    }
-
-    let lastMessageText = messageText.trim() || ''
-    // Don't show "image" or "video" in last message preview
-    if (selectedFiles.length > 0 && !messageText.trim()) {
-      lastMessageText = ''
-    }
-
-    setConversations(prev => prev.map(conv => {
-      if (conv.id === selectedConversation) {
-        return {
-          ...conv,
-          messages: [...conv.messages, newMessage],
-          lastMessage: lastMessageText,
-          lastMessageTime: new Date()
-        }
+    setSending(true)
+    const form = new FormData()
+    form.append('message', messageText.trim())
+    selectedFiles.forEach((f) => form.append('files[]', f))
+    try {
+      const res = await apiPostForm<{ data: { message: Record<string, unknown> } }>(
+        `/api/host/chat/conversations/${selectedConversation}/messages`,
+        form
+      )
+      const m = res.data?.message
+      if (m) {
+        const newMessage = apiMessageToMessage({
+          id: m.id as number,
+          text: m.text as string | undefined,
+          sender: 'host',
+          timestamp: (m.timestamp as string) ?? new Date().toISOString(),
+          read: m.read as boolean,
+          files: (m.files as MessageFile[] | null) ?? null,
+        })
+        addMessageToConversation(selectedConversation, newMessage)
+        const lastMessageText = messageText.trim() || ''
+        setConversations((prev) =>
+          prev.map((conv) =>
+            conv.id === selectedConversation ? { ...conv, lastMessage: lastMessageText, lastMessageTime: new Date().toISOString() } : conv
+          )
+        )
       }
-      return conv
-    }))
-
-    setMessageText('')
-    setSelectedFiles([])
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ''
+      setMessageText('')
+      setSelectedFiles([])
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    } finally {
+      setSending(false)
     }
   }
 
@@ -193,22 +218,19 @@ export default function HostChat() {
     }
   }
 
-  const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+  const formatTime = (date: Date | string) => {
+    const d = typeof date === 'string' ? new Date(date) : date
+    return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
   }
 
-  const formatDate = (date: Date) => {
+  const formatDate = (date: Date | string) => {
+    const d = typeof date === 'string' ? new Date(date) : date
     const today = new Date()
     const yesterday = new Date(today)
     yesterday.setDate(yesterday.getDate() - 1)
-
-    if (date.toDateString() === today.toDateString()) {
-      return 'Today'
-    } else if (date.toDateString() === yesterday.toDateString()) {
-      return 'Yesterday'
-    } else {
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    }
+    if (d.toDateString() === today.toDateString()) return 'Today'
+    if (d.toDateString() === yesterday.toDateString()) return 'Yesterday'
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
   }
 
   const handleMenuOpen = (conversationId: number, event: React.MouseEvent<HTMLElement>) => {
@@ -234,7 +256,7 @@ export default function HostChat() {
           customerAvatar: user.avatar,
           property: 'New Property',
           lastMessage: '',
-          lastMessageTime: new Date(),
+          lastMessageTime: new Date().toISOString(),
           unreadCount: 0,
           messages: []
         }
@@ -287,16 +309,7 @@ export default function HostChat() {
                   key={conversation.id}
                   onClick={() => {
                     setSelectedConversation(conversation.id)
-                    setConversations(prev => prev.map(conv => {
-                      if (conv.id === conversation.id) {
-                        return {
-                          ...conv,
-                          unreadCount: 0,
-                          messages: conv.messages.map(msg => ({ ...msg, read: true }))
-                        }
-                      }
-                      return conv
-                    }))
+                    setConversations((prev) => prev.map((conv) => (conv.id === conversation.id ? { ...conv, unreadCount: 0 } : conv)))
                   }}
                   sx={{
                     p: 2,
@@ -412,6 +425,12 @@ export default function HostChat() {
 
               {/* Messages */}
               <Box sx={{ flex: 1, overflowY: 'auto', p: 2, bgcolor: '#F9FAFB' }}>
+                {loadingMessages ? (
+                  <Box sx={{ textAlign: 'center', py: 4 }}>
+                    <Typography variant="body2" sx={{ color: '#717171' }}>Loading messages…</Typography>
+                  </Box>
+                ) : (
+                <>
                 {currentConversation.messages.map((message, index) => {
                   const showDate = index === 0 || 
                     new Date(message.timestamp).toDateString() !== 
@@ -563,8 +582,10 @@ export default function HostChat() {
                             )}
                       </Stack>
                     </Box>
-                  )
+                    )
                 })}
+                </>
+                )}
                 <div ref={messagesEndRef} />
               </Box>
 
@@ -679,8 +700,8 @@ export default function HostChat() {
                   />
                   <Button
                     variant="contained"
-                    onClick={handleSendMessage}
-                    disabled={!messageText.trim() && selectedFiles.length === 0}
+                    onClick={() => void handleSendMessage()}
+                    disabled={sending || (!messageText.trim() && selectedFiles.length === 0)}
                     sx={{
                       bgcolor: '#AD542D',
                       borderRadius: 2,

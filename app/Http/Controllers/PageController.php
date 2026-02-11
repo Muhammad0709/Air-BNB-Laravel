@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ConversationResource;
+use App\Models\Conversation;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class PageController extends Controller
@@ -11,9 +15,24 @@ class PageController extends Controller
         return Inertia::render('About');
     }
 
-    public function chat()
+    public function chat(Request $request)
     {
-        return Inertia::render('Chat');
+        $conversations = Conversation::where('user_id', Auth::id())
+            ->with(['property.user', 'lastMessage.files'])
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        $conversationsData = ConversationResource::collection($conversations)->toArray($request);
+        return Inertia::render('Chat', [
+            'conversations' => $conversationsData['data'] ?? $conversationsData,
+            'auth' => [
+                'user' => $request->user() ? [
+                    'id' => $request->user()->id,
+                    'name' => $request->user()->name,
+                    'email' => $request->user()->email,
+                ] : null,
+            ],
+        ]);
     }
 
     public function customerBookings()

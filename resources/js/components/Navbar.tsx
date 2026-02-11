@@ -4,6 +4,8 @@ import { AppBar, Avatar, Box, Button, Container, IconButton, Stack, Toolbar, Typ
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import { useLanguage } from '../hooks/use-language'
 
 const logoUrl = '/images/logo-main.png'
 
@@ -15,14 +17,14 @@ type NavbarProps = {
   brandTo?: string
 }
 
-const allLinks: NavbarLink[] = [
-  { label: 'Home', href: '/' },
-  { label: 'Stays', href: '/listing' },
-  { label: 'Contact us', href: '/contact' },
-  { label: 'Wishlist', href: '/wishlist' },
-  { label: 'Messages', href: '/chat' },
-  { label: 'Bookings', href: '/booking' },
-  { label: 'Profile', href: '/profile/settings' },
+const linkKeys: { key: string; href: string }[] = [
+  { key: 'home', href: '/' },
+  { key: 'stays', href: '/listing' },
+  { key: 'contact_us', href: '/contact' },
+  { key: 'wishlist', href: '/wishlist' },
+  { key: 'messages', href: '/chat' },
+  { key: 'bookings', href: '/booking' },
+  { key: 'profile', href: '/profile/settings' },
 ]
 
 const currencies = [
@@ -30,23 +32,36 @@ const currencies = [
   { code: 'PKR', name: 'Pakistani Rupee' },
 ]
 
+const languages = [
+  { code: 'en', name: 'English', flag: '🇺🇸' },
+  { code: 'ar', name: 'Arabic', flag: '🇸🇦' },
+  { code: 'ur', name: 'Urdu', flag: '🇵🇰' },
+  { code: 'fa', name: 'Persian', flag: '🇮🇷' },
+  { code: 'tr', name: 'Turkish', flag: '🇹🇷' },
+  { code: 'ku', name: 'Kurdish', flag: '🇮🇶' },
+]
+
 export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/' }: NavbarProps) {
+  const { t, language, switchLanguage } = useLanguage()
   const { url, props } = usePage()
   const pathname = url.split('?')[0]
   const [open, setOpen] = useState(false)
   const [currency, setCurrency] = useState('USD')
   const [currencyAnchor, setCurrencyAnchor] = useState<null | HTMLElement>(null)
+  const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null)
   const [profileAnchor, setProfileAnchor] = useState<null | HTMLElement>(null)
 
   const user = (props as any)?.auth?.user || null
   const isAuthenticated = !!user
 
-  const links = linksProp ?? allLinks.filter((l) => {
-    if (l.href === '/wishlist' || l.href === '/booking' || l.href === '/profile/settings' || l.href === '/chat') {
-      return isAuthenticated
-    }
-    return true
-  })
+  const links: NavbarLink[] = linksProp ?? linkKeys
+    .filter((l) => {
+      if (l.href === '/wishlist' || l.href === '/booking' || l.href === '/profile/settings' || l.href === '/chat') {
+        return isAuthenticated
+      }
+      return true
+    })
+    .map((l) => ({ label: t('nav.' + l.key), href: l.href }))
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/'
@@ -67,6 +82,22 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
   const handleCurrencySelect = (code: string) => {
     setCurrency(code)
     handleCurrencyClose()
+  }
+
+  const currentLanguage = languages.find((l) => l.code === language) || languages[0]
+
+  const handleLanguageClick = (event: React.MouseEvent<HTMLElement>) => {
+    setLanguageAnchor(event.currentTarget)
+  }
+
+  const handleLanguageClose = () => {
+    setLanguageAnchor(null)
+  }
+
+  const handleLanguageSelect = (code: string) => {
+    const locale = code as 'en' | 'ar' | 'ur' | 'fa' | 'tr' | 'ku'
+    handleLanguageClose()
+    switchLanguage(locale)
   }
 
   const handleProfileClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -121,6 +152,57 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
 
           {showAuth && (
             <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', md: 'flex' }, ml: 'auto' }} alignItems="center">
+              <Box
+                onClick={handleLanguageClick}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.75,
+                  px: 1.5,
+                  py: 0.75,
+                  borderRadius: 2,
+                  border: '1px solid #DDDDDD',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  '&:hover': { borderColor: '#AD542D', bgcolor: '#F7F7F7' }
+                }}
+              >
+                <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{currentLanguage.flag}</Typography>
+                <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem' }}>
+                  {currentLanguage.code.toUpperCase()}
+                </Typography>
+                <ArrowDropDownIcon sx={{ fontSize: 22, color: '#222222', ml: 0.25 }} />
+              </Box>
+              <Menu
+                anchorEl={languageAnchor}
+                open={Boolean(languageAnchor)}
+                onClose={handleLanguageClose}
+                PaperProps={{
+                  sx: { mt: 1, minWidth: 180, borderRadius: 2, boxShadow: '0 2px 16px rgba(0,0,0,0.12)' }
+                }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+              >
+                {languages.map((lang) => (
+                  <MenuItem
+                    key={lang.code}
+                    onClick={() => handleLanguageSelect(lang.code)}
+                    sx={{
+                      py: 1.5,
+                      px: 2,
+                      '&.Mui-selected': { bgcolor: '#FFF5F7', '&:hover': { bgcolor: '#FFF5F7' } },
+                      '&:hover': { bgcolor: '#F7F7F7' }
+                    }}
+                  >
+                    <Stack direction="row" spacing={1.5} alignItems="center">
+                      <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{lang.flag}</Typography>
+                      <Typography sx={{ fontWeight:   400, fontSize: '0.875rem', color: '#222222' }}>
+                        {lang.name}
+                      </Typography>
+                    </Stack>
+                  </MenuItem>
+                ))}
+              </Menu>
               <Box
                 onClick={handleCurrencyClick}
                 sx={{
@@ -207,7 +289,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                       onClick={handleProfileClose}
                       sx={{ py: 1.5, px: 2, '&:hover': { bgcolor: '#F7F7F7' } }}
                     >
-                      <Typography sx={{ fontWeight: 400, fontSize: '0.875rem', color: '#222222' }}>Booking History</Typography>
+                      <Typography sx={{ fontWeight: 400, fontSize: '0.875rem', color: '#222222' }}>{t('nav.booking_history')}</Typography>
                     </MenuItem>
                     <MenuItem
                       component={Link}
@@ -220,8 +302,8 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                           <Typography sx={{ fontSize: '1rem' }}>🏠</Typography>
                         </Box>
                         <Box>
-                          <Typography sx={{ fontWeight: 600, fontSize: '0.875rem', color: '#222222' }}>Become a host</Typography>
-                          <Typography sx={{ fontSize: '0.75rem', color: '#717171' }}>Start hosting and earn extra income</Typography>
+                          <Typography sx={{ fontWeight: 600, fontSize: '0.875rem', color: '#222222' }}>{t('nav.become_host')}</Typography>
+                          <Typography sx={{ fontSize: '0.75rem', color: '#717171' }}>{t('nav.become_host_sub')}</Typography>
                         </Box>
                       </Stack>
                     </MenuItem>
@@ -229,15 +311,15 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                       onClick={(e) => { handleProfileClose(); handleLogout(e) }}
                       sx={{ py: 1.5, px: 2, borderTop: '1px solid #E5E7EB', '&:hover': { bgcolor: '#F7F7F7' } }}
                     >
-                      <Typography sx={{ fontSize: '0.875rem', color: '#222222', fontWeight: 600 }}>Logout</Typography>
+                      <Typography sx={{ fontSize: '0.875rem', color: '#222222', fontWeight: 600 }}>{t('nav.logout')}</Typography>
                     </MenuItem>
                   </Menu>
                 </>
               ) : (
                 <>
-                  <Typography component={Link} href="/auth/login" sx={{ textDecoration: 'none', color: '#222222', fontWeight: 700 }}>Log in</Typography>
+                  <Typography component={Link} href="/auth/login" sx={{ textDecoration: 'none', color: '#222222', fontWeight: 700 }}>{t('nav.log_in')}</Typography>
                   <Button component={Link} href="/auth/register" variant="contained" sx={{ bgcolor: '#AD542D', borderRadius: 999, px: 3, py: 1.25, textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>
-                    Sign up
+                    {t('nav.sign_up')}
                   </Button>
                 </>
               )}
@@ -284,8 +366,8 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                     <Typography sx={{ fontSize: '1.25rem' }}>🏠</Typography>
                   </Box>
                   <Box>
-                    <Typography sx={{ fontWeight: 700, color: '#222222', fontSize: '0.875rem' }}>Become a host</Typography>
-                    <Typography sx={{ fontSize: '0.75rem', color: '#717171', mt: 0.25 }}>It's easy to start hosting and earn extra income.</Typography>
+                    <Typography sx={{ fontWeight: 700, color: '#222222', fontSize: '0.875rem' }}>{t('nav.become_host')}</Typography>
+                    <Typography sx={{ fontSize: '0.75rem', color: '#717171', mt: 0.25 }}>{t('nav.become_host_sub')}</Typography>
                   </Box>
                 </Stack>
               </Box>
@@ -293,7 +375,61 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
             {showAuth && (
               <Stack spacing={2}>
                 <Box>
-                  <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem', mb: 1.5 }}>Currency</Typography>
+                  <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem', mb: 1.5 }}>{t('nav.language')}</Typography>
+                  <Box
+                    onClick={handleLanguageClick}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      px: 2,
+                      py: 1.25,
+                      borderRadius: 2,
+                      border: '1px solid #DDDDDD',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                      '&:hover': { borderColor: '#AD542D', bgcolor: '#F7F7F7' }
+                    }}
+                  >
+                    <Stack direction="row" spacing={1.5} alignItems="center">
+                      <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{currentLanguage.flag}</Typography>
+                      <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem' }}>
+                        {currentLanguage.name}
+                      </Typography>
+                    </Stack>
+                    <ArrowDropDownIcon sx={{ fontSize: 24, color: '#222222' }} />
+                  </Box>
+                  <Menu
+                    anchorEl={languageAnchor}
+                    open={Boolean(languageAnchor)}
+                    onClose={handleLanguageClose}
+                    PaperProps={{ sx: { mt: 1, minWidth: 200, borderRadius: 2, boxShadow: '0 2px 16px rgba(0,0,0,0.12)' } }}
+                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                  >
+                    {languages.map((lang) => (
+                      <MenuItem
+                        key={lang.code}
+                        onClick={() => handleLanguageSelect(lang.code)}
+                        sx={{
+                          py: 1.5,
+                          px: 2,
+                          '&.Mui-selected': { bgcolor: '#FFF5F7', '&:hover': { bgcolor: '#FFF5F7' } },
+                          '&:hover': { bgcolor: '#F7F7F7' }
+                        }}
+                      >
+                        <Stack direction="row" spacing={1.5} alignItems="center">
+                          <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{lang.flag}</Typography>
+                          <Typography sx={{ fontWeight: 400, fontSize: '0.875rem', color: '#222222' }}>
+                            {lang.name}
+                          </Typography>
+                        </Stack>
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                </Box>
+                <Box>
+                  <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem', mb: 1.5 }}>{t('nav.currency')}</Typography>
                   <Box
                     onClick={handleCurrencyClick}
                     sx={{
@@ -358,13 +494,13 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                         {(user as any)?.name?.charAt(0)?.toUpperCase() ?? '?'}
                       </Avatar>
                       <Button onClick={(e) => { setOpen(false); handleLogout(e) }} variant="contained" sx={{ bgcolor: '#AD542D', borderRadius: 999, px: 3, textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>
-                        Logout
+                        {t('nav.logout')}
                       </Button>
                     </>
                   ) : (
                     <>
-                      <Button component={Link} href="/auth/login" variant="text" onClick={() => setOpen(false)} sx={{ textTransform: 'none', fontWeight: 700 }}>Log in</Button>
-                      <Button component={Link} href="/auth/register" variant="contained" onClick={() => setOpen(false)} sx={{ bgcolor: '#AD542D', borderRadius: 999, px: 3, textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>Sign up</Button>
+                      <Button component={Link} href="/auth/login" variant="text" onClick={() => setOpen(false)} sx={{ textTransform: 'none', fontWeight: 700 }}>{t('nav.log_in')}</Button>
+                      <Button component={Link} href="/auth/register" variant="contained" onClick={() => setOpen(false)} sx={{ bgcolor: '#AD542D', borderRadius: 999, px: 3, textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>{t('nav.sign_up')}</Button>
                     </>
                   )}
                 </Stack>

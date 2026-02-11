@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react'
 import { Box, Button, Checkbox, FormControlLabel, Paper, Stack, Typography } from '@mui/material'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { useLanguage } from '../hooks/use-language'
 import FeaturedCard from '../components/FeaturedCard'
 import { Container as RBContainer, Row, Col } from 'react-bootstrap'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
@@ -74,15 +75,26 @@ type ListingDetailProps = {
   relatedProperties: RelatedProperty[]
   reviews: Review[]
   ratingStats: RatingStats
+  defaultCheckin?: string
+  defaultCheckout?: string
+}
+
+function parseDateFromBackend(dateStr: string): { year: number; month: number; day: number } {
+  const [y, m, d] = dateStr.split('-').map(Number)
+  return { year: y ?? new Date().getFullYear(), month: (m ?? new Date().getMonth() + 1) - 1, day: d ?? 1 }
 }
 
 export default function ListingDetail() {
-  const { property, relatedProperties, reviews, ratingStats } = usePage<ListingDetailProps>().props
+  const { t } = useLanguage()
+  const { property, relatedProperties, reviews, ratingStats, defaultCheckin, defaultCheckout } = usePage<ListingDetailProps>().props
 
-  const [calendar1Month, setCalendar1Month] = useState(new Date(2025, 7, 1))
-  const [calendar2Month, setCalendar2Month] = useState(new Date(2025, 7, 1))
-  const [selectedDate1, setSelectedDate1] = useState(6)
-  const [selectedDate2, setSelectedDate2] = useState(11)
+  const today = new Date()
+  const defaultStart = defaultCheckin ? parseDateFromBackend(defaultCheckin) : { year: today.getFullYear(), month: today.getMonth(), day: today.getDate() }
+  const defaultEnd = defaultCheckout ? parseDateFromBackend(defaultCheckout) : (() => { const d = new Date(today); d.setDate(d.getDate() + 7); return { year: d.getFullYear(), month: d.getMonth(), day: d.getDate() } })()
+  const [calendar1Month, setCalendar1Month] = useState(() => new Date(defaultStart.year, defaultStart.month, 1))
+  const [calendar2Month, setCalendar2Month] = useState(() => new Date(defaultEnd.year, defaultEnd.month, 1))
+  const [selectedDate1, setSelectedDate1] = useState(defaultStart.day)
+  const [selectedDate2, setSelectedDate2] = useState(defaultEnd.day)
   const [bookPickupService, setBookPickupService] = useState(false)
   const [bookGuidedTour, setBookGuidedTour] = useState(false)
 
@@ -164,6 +176,23 @@ export default function ListingDetail() {
   const calendar1Days = getDaysInMonth(calendar1Month)
   const calendar2Days = getDaysInMonth(calendar2Month)
 
+  // Build check-in/check-out from calendar for Book button; backend validates/fixes and redirects
+  const getCalendarCheckinCheckout = () => {
+    const y1 = calendar1Month.getFullYear()
+    const m1 = calendar1Month.getMonth()
+    const y2 = calendar2Month.getFullYear()
+    const m2 = calendar2Month.getMonth()
+    const checkin = `${y1}-${String(m1 + 1).padStart(2, '0')}-${String(selectedDate1).padStart(2, '0')}`
+    const checkout = `${y2}-${String(m2 + 1).padStart(2, '0')}-${String(selectedDate2).padStart(2, '0')}`
+    return { checkin, checkout }
+  }
+
+  const bookingUrl = () => {
+    const { checkin, checkout } = getCalendarCheckinCheckout()
+    const params = new URLSearchParams({ property_id: String(property.id), checkin, checkout })
+    return `/booking/redirect?${params.toString()}`
+  }
+
   const priceDisplay = typeof property.price === 'number' ? property.price : Number(property.price) || 0
   const hostJoinedYear = property.host?.created_at ? new Date(property.host.created_at).getFullYear() : ''
 
@@ -202,14 +231,14 @@ export default function ListingDetail() {
                       <Box className="booking-info">
                         <Box className="price">
                           <Typography component="span" className="price-amount">${priceDisplay}</Typography>
-                          <Typography component="span" className="price-period">/night</Typography>
+                          <Typography component="span" className="price-period">{t('listing_detail.per_night')}</Typography>
                         </Box>
                         <Button
                           variant="contained"
                           className="btn-book"
-                          onClick={() => router.visit(`/booking?property_id=${property.id}`)}
+                          onClick={() => router.visit(bookingUrl())}
                         >
-                         Book
+                         {t('listing_detail.book')}
                         </Button>
                       </Box>
                     </Col>
@@ -267,7 +296,7 @@ export default function ListingDetail() {
                       />
                       {idx === 4 && remainingCount > 0 && (
                         <Box className="gallery-more-overlay">
-                          <Typography component="span">+{remainingCount} photos</Typography>
+                          <Typography component="span">+{remainingCount} {t('listing_detail.more_photos')}</Typography>
                         </Box>
                       )}
                     </button>
@@ -282,7 +311,7 @@ export default function ListingDetail() {
         <section>
           <RBContainer className="mt-4">
             <Paper className="quick-info-section" elevation={0}>
-              <Typography className="section-title" component="h2">Quick Info</Typography>
+              <Typography className="section-title" component="h2">{t('listing_detail.quick_info')}</Typography>
               <Row className="g-4">
                 <Col md={6} sm={6}>
                   <Box className="info-item d-flex gap-2">
@@ -291,7 +320,7 @@ export default function ListingDetail() {
                       </Box>
                     <Box className="info-text">
                       <Typography component="span" className="info-number">{property.bedrooms}</Typography>
-                      <Typography component="span" className="info-label">Bedrooms</Typography>
+                      <Typography component="span" className="info-label">{t('listing_detail.bedrooms')}</Typography>
                     </Box>
                   </Box>
                 </Col>
@@ -301,7 +330,7 @@ export default function ListingDetail() {
                     <BathroomIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px',mr: 1.5 }} />
                     </Box>
                     <Typography component="span" className="info-number">{property.bathrooms}</Typography>
-                    <Typography component="span" className="info-label">Bathrooms</Typography>
+                    <Typography component="span" className="info-label">{t('listing_detail.bathrooms')}</Typography>
                   </Box>
                 </Col>
               </Row>
@@ -313,7 +342,7 @@ export default function ListingDetail() {
                     </Box>
                     <Box className="info-text">
                       <Typography component="span" className="info-number">{property.guests}</Typography>
-                      <Typography component="span" className="info-label">Guests</Typography>
+                      <Typography component="span" className="info-label">{t('listing_detail.guests')}</Typography>
                     </Box>
                   </Box>
                 </Col>
@@ -322,7 +351,7 @@ export default function ListingDetail() {
                     <Box className="info-icon">
                     <HomeIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px',mr: 1.5 }} />
                     </Box>
-                    <Typography component="span" className="info-label">{property.property_type || 'Entire place'}</Typography>
+                    <Typography component="span" className="info-label">{property.property_type || t('listing_detail.entire_place')}</Typography>
                   </Box>
                 </Col>
               </Row>
@@ -338,7 +367,7 @@ export default function ListingDetail() {
 
                  {/* Host Section */}
                  <Paper className="host-section mt-4" elevation={0}>
-                  <Typography className="section-title" component="h2">About Your Host</Typography>
+                  <Typography className="section-title" component="h2">{t('listing_detail.about_host')}</Typography>
                   <Box className="host-info">
                     <Box className="host-avatar">
                       <img
@@ -348,15 +377,12 @@ export default function ListingDetail() {
                       />
                     </Box>
                     <Box className="host-details" sx={{ flex: 1 }}>
-                      <Typography className="host-name" component="h5">Hosted by {property.host?.name || 'Host'}</Typography>
-                      <Typography className="host-joined">{hostJoinedYear ? `joined in ${hostJoinedYear}` : ''}</Typography>
-                      <Typography className="host-description">
-                        Your host is committed to providing a comfortable stay. Feel free to message for any questions about the property or the area.
-                      </Typography>
+                      <Typography className="host-name" component="h5">{property.host?.name || 'Host'}</Typography>
+                      <Typography className="host-joined">{hostJoinedYear ? `${t('listing_detail.joined_in')} ${hostJoinedYear}` : ''}</Typography>
                       <Button
                         variant="outlined"
                         startIcon={<MessageIcon />}
-                        onClick={() => router.visit(`/chat?host=${encodeURIComponent(property.host?.name || '')}&property=${encodeURIComponent(property.title)}`)}
+                        onClick={() => router.visit(`/chat?property_id=${property.id}`)}
                         sx={{
                           mt: 2,
                           borderColor: '#AD542D',
@@ -371,23 +397,23 @@ export default function ListingDetail() {
                           }
                         }}
                       >
-                        Message
+                        {t('listing_detail.message')}
                       </Button>
                     </Box>
                   </Box>
                 </Paper>
                 {/* About Section */}
                 <Paper className="about-section mt-4" elevation={0}>
-                  <Typography className="section-title" component="h2">About the Property</Typography>
+                  <Typography className="section-title" component="h2">{t('listing_detail.about_property')}</Typography>
                   <Typography className="about-text">
-                    {property.description || 'No description available.'}
+                    {property.description || t('listing_detail.no_description')}
                   </Typography>
                 </Paper>
 
                 {/* Airport Pickup Service Section */}
                 {airportPickupService.enabled && (
                   <Paper className="about-section mt-4" elevation={0} sx={{ bgcolor: '#F9FAFB', border: '1px solid #E5E7EB' }}>
-                    <Typography className="section-title" component="h2">Airport Pickup Service</Typography>
+                    <Typography className="section-title" component="h2">{t('listing_detail.airport_pickup')}</Typography>
                     <Box sx={{ mt: 2 }}>
                       <FormControlLabel
                         control={
@@ -397,7 +423,7 @@ export default function ListingDetail() {
                             sx={{ color: '#AD542D', '&.Mui-checked': { color: '#AD542D' } }}
                           />
                         }
-                        label="Are you booking a pickup service?"
+                        label={t('listing_detail.pickup_question')}
                         sx={{ mb: bookPickupService ? 3 : 0 }}
                       />
 
@@ -443,7 +469,7 @@ export default function ListingDetail() {
                 {/* Guided Tours Service Section */}
                 {guidedToursService.enabled && (
                   <Paper className="about-section mt-4" elevation={0} sx={{ bgcolor: '#F9FAFB', border: '1px solid #E5E7EB' }}>
-                    <Typography className="section-title" component="h2">Guided Tours Service</Typography>
+                    <Typography className="section-title" component="h2">{t('listing_detail.guided_tours')}</Typography>
                     <Box sx={{ mt: 2 }}>
                       <FormControlLabel
                         control={
@@ -453,7 +479,7 @@ export default function ListingDetail() {
                             sx={{ color: '#AD542D', '&.Mui-checked': { color: '#AD542D' } }}
                           />
                         }
-                        label="Are you booking a guided tour?"
+                        label={t('listing_detail.guided_tours_question')}
                         sx={{ mb: bookGuidedTour ? 3 : 0 }}
                       />
 
@@ -649,7 +675,7 @@ export default function ListingDetail() {
         {/* Popular Stays Section */}
         <section className="popular-stays-section">
           <RBContainer>
-            <Typography className="section-title" component="h2">Popular Stays Near You</Typography>
+            <Typography className="section-title" component="h2">{t('listing_detail.popular_near')}</Typography>
             <Row className="g-4">
               {relatedProperties.length > 0 ? relatedProperties.map((stay) => (
                 <Col key={stay.id} lg={4} md={6}>

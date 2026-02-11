@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Events\MessageSent;
 use App\Http\Resources\HostConversationResource;
 use App\Http\Resources\HostMessageResource;
 use App\Models\Conversation;
@@ -436,6 +437,7 @@ class HostChatController extends Controller
         $conversation->touch();
 
         $message->load(['files']);
+        broadcast(new MessageSent($message))->toOthers();
 
         return response()->json([
             'status' => 'success',

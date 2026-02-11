@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'destination' => 'YÖN',
+    'checkin' => 'GİRİŞ',
+    'checkout' => 'ÇIKIŞ',
+    'guests' => 'MİSAFİR',
+    'search' => 'Ara',
+    'adults' => 'Yetişkin',
+    'adult' => 'Yetişkin',
+    'children' => 'Çocuk',
+    'child' => 'Çocuk',
+    'rooms' => 'Oda',
+    'room' => 'Oda',
+    'done' => 'Tamam',
+    'where_to' => 'Nereye?',
+    'popular_destinations_label' => 'Popüler destinasyonlar',
+    'popular_destinations' => 'Popüler destinasyonlar',
+    'hotels' => 'Oteller',
+    'popular' => 'Popüler',
+    'favorites' => 'Favoriler',
+    'no_hotels' => 'Otel bulunamadı',
+    'no_hotels_sub' => 'Daha sonra tekrar deneyin veya farklı arama yapın.',
+    'no_popular' => 'Henüz popüler konaklama yok',
+    'no_popular_sub' => 'Daha fazla ilan eklendikçe burada görünecektir.',
+    'no_favorites' => 'Henüz favori yok',
+    'no_favorites_sub' => 'Beğendiğiniz ilanlarda kalp simgesine tıklayarak kaydedin.',
+];

@@ -6,20 +6,22 @@ import CtaReady from '../components/CtaReady'
 import { Container, Row, Col } from 'react-bootstrap'
 import { Box, Typography } from '@mui/material'
 import { Head } from '@inertiajs/react'
+import { useLanguage } from '../hooks/use-language'
 
 export default function About() {
+  const { t } = useLanguage()
   return (
     <div className="about-page">
-      <Head title="About Us" />
+      <Head title={t('about.title')} />
       <Navbar />
       <section className="hero-section">
         <Container>
           <Box className="hero-content">
             <Row className="justify-content-center">
               <Col lg={8} className="text-center">
-                <Typography component="h1" className="hero-title">About us</Typography>
+                <Typography component="h1" className="hero-title">{t('about.title')}</Typography>
                 <Typography className="hero-subtitle">
-                  We offer a diverse selection of rentals, from cozy apartments to luxurious villas and hotels, tailored to your preferences.
+                  {t('about.subtitle')}
                 </Typography>
               </Col>
             </Row>
