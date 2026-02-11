@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'title' => 'My Wishlist',
-    'subtitle' => 'Your saved properties for future bookings',
-    'empty_title' => 'Your wishlist is empty',
-    'empty_subtitle' => 'Start exploring and save your favorite properties',
-    'property_saved' => 'property saved',
-    'properties_saved' => 'properties saved',
-    'remove_error' => 'Failed to remove property from wishlist. Please try again.',
+    'title' => 'Lîsteya dilê min',
+    'subtitle' => 'Milkên we yên hilanînê ji bo rezervasyonên pêşerojê',
+    'empty_title' => 'Lîsteya dilê we vala ye',
+    'empty_subtitle' => 'Vekolînê dest pê bikin û milkên xwe yên hezkirî hilanîn',
+    'property_saved' => 'mal hatin hilanîn',
+    'properties_saved' => 'mal hatin hilanîn',
+    'remove_error' => 'Rakirina milkê ji lîsteya dilê we têk çû. Ji kerema xwe dîsa biceribînin.',
 ];
