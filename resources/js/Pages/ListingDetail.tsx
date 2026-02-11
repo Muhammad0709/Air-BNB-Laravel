@@ -635,14 +635,14 @@ export default function ListingDetail() {
                     <Col lg={4}>
                       <Paper className="rating-summary" elevation={0}>
                         <Box className="average-rating">
-                          <Typography className="rating-title">Average rating</Typography>
+                          <Typography className="rating-title">{t('listing_detail.average_rating')}</Typography>
                           <Typography className="rating-score">{ratingStats.average}/5</Typography>
                           <Box className="stars">
                             {[...Array(5)].map((_, i) => (
                               <StarIcon key={i} sx={{ fontSize: 16, color: i < Math.round(ratingStats.average) ? '#ffc107' : '#e9ecef' }} />
                             ))}
                           </Box>
-                          <Typography className="total-reviews">({ratingStats.total} reviews)</Typography>
+                          <Typography className="total-reviews">({ratingStats.total} {t('listing_detail.reviews')})</Typography>
                         </Box>
                         <Box className="rating-breakdown">
                           {[5, 4, 3, 2, 1].map((stars) => {

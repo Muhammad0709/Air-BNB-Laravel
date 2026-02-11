@@ -388,7 +388,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                       border: '1px solid #DDDDDD',
                       cursor: 'pointer',
                       transition: 'all 0.2s',
-                      '&:hover': { borderColor: '#AD542D', bgcolor: '#F7F7F7' }
+                      '&:hover': { borderColor: '#AD542Dimage.png', bgcolor: '#F7F7F7' }
                     }}
                   >
                     <Stack direction="row" spacing={1.5} alignItems="center">

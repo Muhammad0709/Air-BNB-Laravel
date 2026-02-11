@@ -19,4 +19,6 @@ return [
     'guided_tours_question' => 'آیا تور راهنما رزرو می‌کنید؟',
     'popular_near' => 'اقامت‌های محبوب نزدیک شما',
     'more_photos' => 'عکس',
+    'average_rating' => 'امتیاز میانگین',
+    'reviews' => 'نظر',
 ];

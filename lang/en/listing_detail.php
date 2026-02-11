@@ -19,4 +19,6 @@ return [
     'guided_tours_question' => 'Are you booking a guided tour?',
     'popular_near' => 'Popular Stays Near You',
     'more_photos' => 'photos',
+    'average_rating' => 'Average rating',
+    'reviews' => 'reviews',
 ];

@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'title' => 'Search Results',
-    'over_homes' => 'Over :count homes',
-    'over_homes_in' => 'Over :count homes in :location',
-    'homes_in' => 'homes in :location',
-    'homes' => 'homes',
-    'no_homes_found' => 'No homes found',
-    'prices_include_fees' => 'Prices include all fees',
-    'no_data_found' => 'No data found',
-    'try_adjusting' => 'Try adjusting your search or filter criteria',
-    'loading_map' => 'Loading map…',
+    'title' => 'نتائج البحث',
+    'over_homes' => 'أكثر من :count منزل',
+    'over_homes_in' => 'أكثر من :count منزل في :location',
+    'homes_in' => 'منازل في :location',
+    'homes' => 'منازل',
+    'no_homes_found' => 'لم يتم العثور على منازل',
+    'prices_include_fees' => 'الأسعار تشمل جميع الرسوم',
+    'no_data_found' => 'لم يتم العثور على بيانات',
+    'try_adjusting' => 'حاول تعديل البحث أو معايير التصفية',
+    'loading_map' => 'جاري تحميل الخريطة…',
 ];

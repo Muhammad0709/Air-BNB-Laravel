@@ -19,4 +19,6 @@ return [
     'guided_tours_question' => 'هل تحجز جولة إرشادية؟',
     'popular_near' => 'إقامات شائعة قريبة منك',
     'more_photos' => 'صور',
+    'average_rating' => 'متوسط التقييم',
+    'reviews' => 'تقييمات',
 ];
