@@ -16,4 +16,7 @@ return [
     'no_results' => 'No properties found',
     'no_results_sub' => 'Try adjusting your filters or search.',
     'newest' => 'Newest First',
+    'search_placeholder' => 'search',
+    'showing_results' => 'Showing :from-:to of :total results',
+    'night' => 'night',
 ];

@@ -24,8 +24,11 @@ return [
     'saving' => 'Kaydediliyor...',
     'change_password' => 'Şifre Değiştir',
     'current_password' => 'Mevcut Şifre',
+    'current_password_placeholder' => 'Mevcut şifrenizi girin',
     'new_password' => 'Yeni Şifre',
+    'new_password_placeholder' => 'Yeni şifrenizi girin',
     'confirm_password' => 'Yeni Şifreyi Onayla',
+    'confirm_password_placeholder' => 'Yeni şifrenizi onaylayın',
     'update_password' => 'Şifreyi Güncelle',
     'updating' => 'Güncelleniyor...',
 ];

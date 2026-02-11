@@ -286,13 +286,16 @@ export default function Listing() {
               <Col xs={12} md={9}>
                 <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'stretch', sm: 'center' }} spacing={2} sx={{ mb: 2 }}>
                   <Typography className="results-text">
-                    Showing {properties.from ?? 0}-{properties.to ?? 0} of {properties.total ?? 0} results
+                    {t('listing.showing_results')
+                      .replace(':from', String(properties.from ?? 0))
+                      .replace(':to', String(properties.to ?? 0))
+                      .replace(':total', String(properties.total ?? 0))}
                   </Typography>
                   <Stack direction="row" spacing={1.5} flex={1} sx={{ maxWidth: 560, ...(isRtl ? { mr: { sm: 'auto' } } : { ml: { sm: 'auto' } }) }}>
                     <TextField
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
-                      placeholder="search"
+                      placeholder={t('listing.search_placeholder')}
                       size="small"
                       fullWidth
                       className="listing-search"

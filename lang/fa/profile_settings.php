@@ -24,8 +24,11 @@ return [
     'saving' => 'در حال ذخیره...',
     'change_password' => 'تغییر رمز عبور',
     'current_password' => 'رمز عبور فعلی',
+    'current_password_placeholder' => 'رمز عبور فعلی را وارد کنید',
     'new_password' => 'رمز عبور جدید',
+    'new_password_placeholder' => 'رمز عبور جدید را وارد کنید',
     'confirm_password' => 'تأیید رمز عبور جدید',
+    'confirm_password_placeholder' => 'رمز عبور جدید را تأیید کنید',
     'update_password' => 'به‌روزرسانی رمز عبور',
     'updating' => 'در حال به‌روزرسانی...',
 ];

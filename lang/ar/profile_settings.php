@@ -24,8 +24,11 @@ return [
     'saving' => 'جاري الحفظ...',
     'change_password' => 'تغيير كلمة المرور',
     'current_password' => 'كلمة المرور الحالية',
+    'current_password_placeholder' => 'أدخل كلمة المرور الحالية',
     'new_password' => 'كلمة المرور الجديدة',
+    'new_password_placeholder' => 'أدخل كلمة المرور الجديدة',
     'confirm_password' => 'تأكيد كلمة المرور الجديدة',
+    'confirm_password_placeholder' => 'أكد كلمة المرور الجديدة',
     'update_password' => 'تحديث كلمة المرور',
     'updating' => 'جاري التحديث...',
 ];

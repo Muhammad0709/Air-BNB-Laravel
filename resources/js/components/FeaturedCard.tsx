@@ -27,7 +27,7 @@ export default function FeaturedCard({
   isGuestFavorite: _isGuestFavorite,
   fallbackImage = '/images/popular-stay-1.svg',
 }: FeaturedCardProps) {
-  const { isRtl } = useLanguage()
+  const { t, isRtl } = useLanguage()
   const [imgSrc, setImgSrc] = useState(image)
   const [imgError, setImgError] = useState(false)
 
@@ -82,7 +82,7 @@ export default function FeaturedCard({
             ${price}
           </Typography>
           <Typography component="span" className="airbnb-card-night-text">
-            {' '}night
+            {' '}{t('listing.night')}
           </Typography>
           <Box className="airbnb-card-rating-inline">
             <StarIcon sx={{ fontSize: 12, color: '#222222', ...(isRtl ? { marginRight: 1 } : { marginLeft: 1 }) }} />

@@ -24,8 +24,11 @@ return [
     'saving' => 'محفوظ ہو رہا ہے...',
     'change_password' => 'پاس ورڈ بدلیں',
     'current_password' => 'موجودہ پاس ورڈ',
+    'current_password_placeholder' => 'موجودہ پاس ورڈ درج کریں',
     'new_password' => 'نیا پاس ورڈ',
+    'new_password_placeholder' => 'نیا پاس ورڈ درج کریں',
     'confirm_password' => 'نیا پاس ورڈ تصدیق کریں',
+    'confirm_password_placeholder' => 'نیا پاس ورڈ تصدیق کریں',
     'update_password' => 'پاس ورڈ اپڈیٹ کریں',
     'updating' => 'اپڈیٹ ہو رہا ہے...',
 ];

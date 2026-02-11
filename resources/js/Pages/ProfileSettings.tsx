@@ -345,7 +345,7 @@ export default function ProfileSettings() {
                           }
                         }}
                       >
-                        {profileProcessing ? 'Saving...' : 'Save Changes'}
+                        {profileProcessing ? t('profile_settings.saving') : t('profile_settings.save_changes')}
                       </Button>
                     </Stack>
                   </form>
@@ -354,21 +354,21 @@ export default function ProfileSettings() {
                 {/* Change Password */}
                 <Paper elevation={0} sx={{ p: 4, border: '1px solid #E5E7EB', borderRadius: '16px' }}>
                   <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 3 }}>
-                    Change Password
+                    {t('profile_settings.change_password')}
                   </Typography>
                   
                   <form onSubmit={handlePasswordSubmit}>
                     <Stack spacing={3}>
                       <Box>
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
-                          Current Password
+                          {t('profile_settings.current_password')}
                         </Typography>
                         <TextField
                           name="current_password"
                           type="password"
                           value={passwordData.current_password}
                           onChange={handlePasswordChange}
-                          placeholder="Enter current password"
+                          placeholder={t('profile_settings.current_password_placeholder')}
                           fullWidth
                           required
                           size="small"
@@ -393,14 +393,14 @@ export default function ProfileSettings() {
 
                       <Box>
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
-                          New Password
+                          {t('profile_settings.new_password')}
                         </Typography>
                         <TextField
                           name="new_password"
                           type="password"
                           value={passwordData.new_password}
                           onChange={handlePasswordChange}
-                          placeholder="Enter new password"
+                          placeholder={t('profile_settings.new_password_placeholder')}
                           fullWidth
                           required
                           size="small"
@@ -425,14 +425,14 @@ export default function ProfileSettings() {
 
                       <Box>
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
-                          Confirm New Password
+                          {t('profile_settings.confirm_password')}
                         </Typography>
                         <TextField
                           name="new_password_confirmation"
                           type="password"
                           value={passwordData.new_password_confirmation}
                           onChange={handlePasswordChange}
-                          placeholder="Confirm new password"
+                          placeholder={t('profile_settings.confirm_password_placeholder')}
                           fullWidth
                           required
                           size="small"
@@ -477,7 +477,7 @@ export default function ProfileSettings() {
                           }
                         }}
                       >
-                        {passwordProcessing ? 'Updating...' : 'Update Password'}
+                        {passwordProcessing ? t('profile_settings.updating') : t('profile_settings.update_password')}
                       </Button>
                     </Stack>
                   </form>

@@ -24,8 +24,11 @@ return [
     'saving' => 'Tê tomar kirin...',
     'change_password' => 'Şîfreyê biguherîne',
     'current_password' => 'Şîfreya niha',
+    'current_password_placeholder' => 'Şîfreya niha binivîse',
     'new_password' => 'Şîfreya nû',
+    'new_password_placeholder' => 'Şîfreya nû binivîse',
     'confirm_password' => 'Şîfreya nû piştrast bikin',
+    'confirm_password_placeholder' => 'Şîfreya nû piştrast bikin',
     'update_password' => 'Şîfreyê nûve bikin',
     'updating' => 'Tê nûve kirin...',
 ];
