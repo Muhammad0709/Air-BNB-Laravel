@@ -19,4 +19,6 @@ return [
     'guided_tours_question' => 'ئایا گەشتی ڕێنوێنکراو حجز دەکەیت؟',
     'popular_near' => 'مانەوە بەناوبانگەکانی نزیکت',
     'more_photos' => 'وێنە',
+    'average_rating' => 'Navîn nêrîn',
+    'reviews' => 'nêrîn',
 ];

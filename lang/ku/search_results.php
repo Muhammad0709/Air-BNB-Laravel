@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'title' => 'Search Results',
-    'over_homes' => 'Over :count homes',
-    'over_homes_in' => 'Over :count homes in :location',
-    'homes_in' => 'homes in :location',
-    'homes' => 'homes',
-    'no_homes_found' => 'No homes found',
-    'prices_include_fees' => 'Prices include all fees',
-    'no_data_found' => 'No data found',
-    'try_adjusting' => 'Try adjusting your search or filter criteria',
-    'loading_map' => 'Loading map…',
+    'title' => 'Encamên lêgerînê',
+    'over_homes' => 'Zêdetir ji :count mal',
+    'over_homes_in' => 'Zêdetir ji :count mal li :location',
+    'homes_in' => 'mal li :location',
+    'homes' => 'mal',
+    'no_homes_found' => 'Mal nehate dîtin',
+    'prices_include_fees' => 'Bihayên hemû xercan digirin',
+    'no_data_found' => 'Daneyên nehate dîtin',
+    'try_adjusting' => 'Lêgerîn an parzûnê biguherînin',
+    'loading_map' => 'Tê xerckirin nexşe…',
 ];
