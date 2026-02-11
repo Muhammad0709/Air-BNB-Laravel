@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'title' => 'My Wishlist',
-    'subtitle' => 'Your saved properties for future bookings',
-    'empty_title' => 'Your wishlist is empty',
-    'empty_subtitle' => 'Start exploring and save your favorite properties',
-    'property_saved' => 'property saved',
-    'properties_saved' => 'properties saved',
-    'remove_error' => 'Failed to remove property from wishlist. Please try again.',
+    'title' => 'لیست علاقه‌مندی‌های من',
+    'subtitle' => 'املاک ذخیره‌شده شما برای رزروهای آینده',
+    'empty_title' => 'لیست علاقه‌مندی شما خالی است',
+    'empty_subtitle' => 'کاوش را شروع کنید و املاک مورد علاقه را ذخیره کنید',
+    'property_saved' => 'ملک ذخیره شد',
+    'properties_saved' => 'املاک ذخیره شد',
+    'remove_error' => 'حذف ملک از لیست علاقه‌مندی ناموفق بود. لطفاً دوباره تلاش کنید.',
 ];

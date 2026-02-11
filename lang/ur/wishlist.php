@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'title' => 'My Wishlist',
-    'subtitle' => 'Your saved properties for future bookings',
-    'empty_title' => 'Your wishlist is empty',
-    'empty_subtitle' => 'Start exploring and save your favorite properties',
-    'property_saved' => 'property saved',
-    'properties_saved' => 'properties saved',
-    'remove_error' => 'Failed to remove property from wishlist. Please try again.',
+    'title' => 'میری پسندیدہ فہرست',
+    'subtitle' => 'مستقبل کی بکنگز کے لیے آپ کی محفوظ پراپرٹیز',
+    'empty_title' => 'آپ کی پسندیدہ فہرست خالی ہے',
+    'empty_subtitle' => 'دریافت شروع کریں اور اپنی پسندیدہ پراپرٹیز محفوظ کریں',
+    'property_saved' => 'پراپرٹی محفوظ',
+    'properties_saved' => 'پراپرٹیز محفوظ',
+    'remove_error' => 'پسندیدہ فہرست سے پراپرٹی ہٹانے میں ناکامی۔ براہ کرم دوبارہ کوشش کریں۔',
 ];

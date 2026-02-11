@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'title' => 'Welcome',
-    'heading' => 'Welcome to LipaBnb',
-    'subtitle' => 'Laravel 12 + Inertia.js + React is working!',
+    'title' => 'Hoş Geldiniz',
+    'heading' => 'LipaBnb\'ye Hoş Geldiniz',
+    'subtitle' => 'Laravel 12 + Inertia.js + React çalışıyor!',
 ];
