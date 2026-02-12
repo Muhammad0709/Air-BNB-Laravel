@@ -1,11 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Head, Link, useForm } from '@inertiajs/react'
-import { Box, Button, Link as MUILink, Paper, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, Link as MUILink, Menu, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import { Container } from 'react-bootstrap'
+import { useLanguage } from '../../hooks/use-language'
+
 const socialIcon = '/images/Social-icon.svg'
 const logoUrl = '/images/logo-main.png'
 
+const languages = [
+  { code: 'en', name: 'English', flag: '🇺🇸' },
+  { code: 'ar', name: 'Arabic', flag: '🇸🇦' },
+  { code: 'ur', name: 'Urdu', flag: '🇵🇰' },
+  { code: 'fa', name: 'Persian', flag: '🇮🇷' },
+  { code: 'tr', name: 'Turkish', flag: '🇹🇷' },
+  { code: 'ku', name: 'Kurdish', flag: '🇮🇶' },
+]
+
 export default function SignUp() {
+  const { t, language, switchLanguage } = useLanguage()
+  const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null)
+  const currentLanguage = languages.find((l) => l.code === language) || languages[0]
+
+  const handleLanguageClick = (e: React.MouseEvent<HTMLElement>) => setLanguageAnchor(e.currentTarget)
+  const handleLanguageClose = () => setLanguageAnchor(null)
+  const handleLanguageSelect = (code: string) => {
+    switchLanguage(code as any)
+    handleLanguageClose()
+  }
+
   const { data, setData, post, processing, errors } = useForm({
     name: '',
     email: '',
@@ -22,8 +45,48 @@ export default function SignUp() {
 
   return (
     <>
-      <Head title="Sign Up" />
+      <Head title={t('auth.signup.title')} />
       <Box sx={{ minHeight: '100vh' }}>
+        {/* Language dropdown - right side */}
+        <Box sx={{ position: 'fixed', top: 16, right: 16, zIndex: 1300 }}>
+          <Box
+            onClick={handleLanguageClick}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 0.75,
+              px: 1.5,
+              py: 0.75,
+              borderRadius: 2,
+              border: '1px solid #DDDDDD',
+              cursor: 'pointer',
+              bgcolor: '#fff',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+              '&:hover': { borderColor: '#AD542D', bgcolor: '#F7F7F7' },
+            }}
+          >
+            <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{currentLanguage.flag}</Typography>
+            <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem', marginInlineStart: 0.75 }}>{currentLanguage.code.toUpperCase()}</Typography>
+            <ArrowDropDownIcon sx={{ fontSize: 22, color: '#222222' }} />
+          </Box>
+          <Menu
+            anchorEl={languageAnchor}
+            open={Boolean(languageAnchor)}
+            onClose={handleLanguageClose}
+            PaperProps={{ sx: { mt: 1, minWidth: 180, borderRadius: 2, boxShadow: '0 2px 16px rgba(0,0,0,0.12)' } }}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          >
+            {languages.map((lang) => (
+              <MenuItem key={lang.code} onClick={() => handleLanguageSelect(lang.code)} sx={{ py: 1.5, px: 2, '&:hover': { bgcolor: '#F7F7F7' } }}>
+                <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
+                  <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{lang.flag}</Typography>
+                  <Typography sx={{ fontWeight: 400, fontSize: '0.875rem', color: '#222222' }}>{lang.name}</Typography>
+                </Stack>
+              </MenuItem>
+            ))}
+          </Menu>
+        </Box>
         <Container>
           <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Box sx={{ maxWidth: 1160, width: '100%', mx: 'auto', px: { xs: 2, md: 3 }, py: { xs: 4, md: 6 } }}>
@@ -48,14 +111,14 @@ export default function SignUp() {
                     </Link>
                   </Stack>
                   <Typography variant="h4" fontWeight={700} sx={{ mb: 2, fontSize: { xs: 32, md: 30 }, lineHeight: 1.15 }}>
-                    Create an account
+                    {t('auth.signup.heading')}
                   </Typography>
 
                   <Paper elevation={0} sx={{ bgcolor: 'transparent' }}>
                     <form onSubmit={handleSubmit}>
                       <Stack spacing={2.5}>
                         <Box>
-                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600, display: 'flex' }}>Name*</Typography>
+                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600, display: 'flex' }}>{t('auth.signup.name')}</Typography>
                           <TextField
                             name="name"
                             value={data.name}
@@ -74,11 +137,11 @@ export default function SignUp() {
                               },
                               '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 },
                             }}
-                            placeholder="Enter your name"
+                            placeholder={t('auth.signup.name_placeholder')}
                           />
                         </Box>
                         <Box>
-                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600, display: 'flex' }}>Email*</Typography>
+                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600, display: 'flex' }}>{t('auth.signup.email')}</Typography>
                           <TextField
                             name="email"
                             type="email"
@@ -98,11 +161,11 @@ export default function SignUp() {
                               },
                               '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 },
                             }}
-                            placeholder="Enter your email"
+                            placeholder={t('auth.signup.email_placeholder')}
                           />
                         </Box>
                         <Box>
-                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600, display: 'flex' }}>Password*</Typography>
+                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600, display: 'flex' }}>{t('auth.signup.password')}</Typography>
                           <TextField
                             name="password"
                             type="password"
@@ -122,12 +185,12 @@ export default function SignUp() {
                               },
                               '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 },
                             }}
-                            placeholder="Create a password"
+                            placeholder={t('auth.signup.password_placeholder')}
                           />
-                          <Typography variant="caption" color="text.secondary" sx={{ display: 'flex', mt: 1 }}>Must be at least 8 characters.</Typography>
+                          <Typography variant="caption" color="text.secondary" sx={{ display: 'flex', mt: 1 }}>{t('auth.signup.password_hint')}</Typography>
                         </Box>
                         <Box>
-                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600, display: 'flex' }}>Confirm Password*</Typography>
+                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600, display: 'flex' }}>{t('auth.signup.confirm_password')}</Typography>
                           <TextField
                             name="password_confirmation"
                             type="password"
@@ -147,7 +210,7 @@ export default function SignUp() {
                               },
                               '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 },
                             }}
-                            placeholder="Confirm your password"
+                            placeholder={t('auth.signup.confirm_password_placeholder')}
                           />
                         </Box>
 
@@ -158,7 +221,7 @@ export default function SignUp() {
                           disabled={processing}
                           sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: 999, textTransform: 'none', fontWeight: 700, fontSize: 16, bgcolor: '#AD542D', boxShadow: 'none', '&:hover': { bgcolor: '#78381C', boxShadow: 'none' } }}
                         >
-                          {processing ? 'Creating account...' : 'Get started'}
+                          {processing ? t('auth.signup.creating') : t('auth.signup.submit')}
                         </Button>
 
                         <Button
@@ -166,18 +229,18 @@ export default function SignUp() {
                           variant="outlined"
                           size="large"
                           startIcon={<Box component="img" src={socialIcon} alt="Google" sx={{ width: 24, height: 24 }} />}
-                          sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: 999, borderColor: '#D0D5DD', color: '#344054' }}
+                          sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: 999, borderColor: '#D0D5DD', color: '#344054', gap: 1, '& .MuiButton-startIcon': { margin: 0 } }}
                         >
-                          Sign up with Google
+                          {t('auth.signup.sign_up_google')}
                         </Button>
                       </Stack>
                     </form>
                   </Paper>
 
                   <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', m: 4 }}>
-                    Already have an account?{' '}
+                    {t('auth.signup.have_account')}{' '}
                     <MUILink component={Link} href="/auth/login" underline="none" sx={{ color: '#AD542D', fontWeight: 600 }}>
-                      Log in
+                      {t('auth.signup.log_in_link')}
                     </MUILink>
                   </Typography>
                 </Box>

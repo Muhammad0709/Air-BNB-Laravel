@@ -1,0 +1,38 @@
+<?php
+
+return [
+    'signin' => [
+        'title' => 'چوونەژوورەوە',
+        'welcome' => 'بەخێربێیت بۆ بوندوقی',
+        'subtitle' => 'تکایە زانیاریەکانت بنووسە.',
+        'email' => 'ئیمەیڵ',
+        'email_placeholder' => 'ئیمەیڵەکەت بنووسە',
+        'password' => 'وشەی نهێنی',
+        'password_placeholder' => 'وشەی نهێنیت بنووسە',
+        'remember_me' => 'لەبیرم بهێنەوە',
+        'forgot_password' => 'وشەی نهێنیم لەبیرچووەتەوە',
+        'submit' => 'چوونەژوورەوە',
+        'signing_in' => 'چوونەژوورەوە دەبێت...',
+        'sign_in_google' => 'چوونەژوورەوە لەگەڵ Google',
+        'no_account' => 'حیسابەوەت نییە؟',
+        'sign_up_link' => 'تۆمارکردن',
+    ],
+    'signup' => [
+        'title' => 'تۆمارکردن',
+        'heading' => 'حیساب دروست بکە',
+        'name' => 'ناو*',
+        'name_placeholder' => 'ناوەکەت بنووسە',
+        'email' => 'ئیمەیڵ*',
+        'email_placeholder' => 'ئیمەیڵەکەت بنووسە',
+        'password' => 'وشەی نهێنی*',
+        'password_placeholder' => 'وشەیەکی نهێنی دروست بکە',
+        'password_hint' => 'دەبێت لانیکەم ٨ پیت بێت.',
+        'confirm_password' => 'دڵنیاکردنەوەی وشەی نهێنی*',
+        'confirm_password_placeholder' => 'وشەی نهێنیت دڵنیا بکەرەوە',
+        'submit' => 'دەست پێ بکە',
+        'creating' => 'حیساب دروست دەبێت...',
+        'sign_up_google' => 'تۆمارکردن لەگەڵ Google',
+        'have_account' => 'پێشتر حیسابت هەیە؟',
+        'log_in_link' => 'چوونەژوورەوە',
+    ],
+];

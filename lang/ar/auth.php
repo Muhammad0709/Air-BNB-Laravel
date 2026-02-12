@@ -1,0 +1,38 @@
+<?php
+
+return [
+    'signin' => [
+        'title' => 'تسجيل الدخول',
+        'welcome' => 'مرحباً بك في بوندوقي',
+        'subtitle' => 'يرجى إدخال بياناتك.',
+        'email' => 'البريد الإلكتروني',
+        'email_placeholder' => 'أدخل بريدك الإلكتروني',
+        'password' => 'كلمة المرور',
+        'password_placeholder' => 'أدخل كلمة المرور',
+        'remember_me' => 'تذكرني',
+        'forgot_password' => 'نسيت كلمة المرور',
+        'submit' => 'تسجيل الدخول',
+        'signing_in' => 'جاري تسجيل الدخول...',
+        'sign_in_google' => 'تسجيل الدخول عبر Google',
+        'no_account' => 'ليس لديك حساب؟',
+        'sign_up_link' => 'إنشاء حساب',
+    ],
+    'signup' => [
+        'title' => 'إنشاء حساب',
+        'heading' => 'إنشاء حساب جديد',
+        'name' => 'الاسم*',
+        'name_placeholder' => 'أدخل اسمك',
+        'email' => 'البريد الإلكتروني*',
+        'email_placeholder' => 'أدخل بريدك الإلكتروني',
+        'password' => 'كلمة المرور*',
+        'password_placeholder' => 'أنشئ كلمة مرور',
+        'password_hint' => 'يجب أن تكون 8 أحرف على الأقل.',
+        'confirm_password' => 'تأكيد كلمة المرور*',
+        'confirm_password_placeholder' => 'أكد كلمة المرور',
+        'submit' => 'ابدأ',
+        'creating' => 'جاري إنشاء الحساب...',
+        'sign_up_google' => 'التسجيل عبر Google',
+        'have_account' => 'لديك حساب بالفعل؟',
+        'log_in_link' => 'تسجيل الدخول',
+    ],
+];

@@ -1,0 +1,38 @@
+<?php
+
+return [
+    'signin' => [
+        'title' => 'Sign In',
+        'welcome' => 'Welcome to Bondoqi',
+        'subtitle' => 'Please enter your details.',
+        'email' => 'Email',
+        'email_placeholder' => 'Enter your email',
+        'password' => 'Password',
+        'password_placeholder' => 'Enter your password',
+        'remember_me' => 'Remember me',
+        'forgot_password' => 'Forgot password',
+        'submit' => 'Sign in',
+        'signing_in' => 'Signing in...',
+        'sign_in_google' => 'Sign in with Google',
+        'no_account' => "Don't have an account?",
+        'sign_up_link' => 'Sign up',
+    ],
+    'signup' => [
+        'title' => 'Sign Up',
+        'heading' => 'Create an account',
+        'name' => 'Name*',
+        'name_placeholder' => 'Enter your name',
+        'email' => 'Email*',
+        'email_placeholder' => 'Enter your email',
+        'password' => 'Password*',
+        'password_placeholder' => 'Create a password',
+        'password_hint' => 'Must be at least 8 characters.',
+        'confirm_password' => 'Confirm Password*',
+        'confirm_password_placeholder' => 'Confirm your password',
+        'submit' => 'Get started',
+        'creating' => 'Creating account...',
+        'sign_up_google' => 'Sign up with Google',
+        'have_account' => 'Already have an account?',
+        'log_in_link' => 'Log in',
+    ],
+];

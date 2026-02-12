@@ -1,0 +1,38 @@
+<?php
+
+return [
+    'signin' => [
+        'title' => 'Giriş Yap',
+        'welcome' => "Bondoqi'ye Hoş Geldiniz",
+        'subtitle' => 'Lütfen bilgilerinizi girin.',
+        'email' => 'E-posta',
+        'email_placeholder' => 'E-postanızı girin',
+        'password' => 'Şifre',
+        'password_placeholder' => 'Şifrenizi girin',
+        'remember_me' => 'Beni hatırla',
+        'forgot_password' => 'Şifremi unuttum',
+        'submit' => 'Giriş yap',
+        'signing_in' => 'Giriş yapılıyor...',
+        'sign_in_google' => 'Google ile giriş yap',
+        'no_account' => 'Hesabınız yok mu?',
+        'sign_up_link' => 'Kayıt ol',
+    ],
+    'signup' => [
+        'title' => 'Kayıt Ol',
+        'heading' => 'Hesap oluştur',
+        'name' => 'Ad*',
+        'name_placeholder' => 'Adınızı girin',
+        'email' => 'E-posta*',
+        'email_placeholder' => 'E-postanızı girin',
+        'password' => 'Şifre*',
+        'password_placeholder' => 'Bir şifre oluşturun',
+        'password_hint' => 'En az 8 karakter olmalıdır.',
+        'confirm_password' => 'Şifre Onayı*',
+        'confirm_password_placeholder' => 'Şifrenizi onaylayın',
+        'submit' => 'Başla',
+        'creating' => 'Hesap oluşturuluyor...',
+        'sign_up_google' => 'Google ile kayıt ol',
+        'have_account' => 'Zaten hesabınız var mı?',
+        'log_in_link' => 'Giriş yap',
+    ],
+];

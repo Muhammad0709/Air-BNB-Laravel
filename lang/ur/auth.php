@@ -1,0 +1,38 @@
+<?php
+
+return [
+    'signin' => [
+        'title' => 'سائن ان',
+        'welcome' => 'بوندوقی میں خوش آمدید',
+        'subtitle' => 'براہ کرم اپنی تفصیلات درج کریں۔',
+        'email' => 'ای میل',
+        'email_placeholder' => 'اپنی ای میل درج کریں',
+        'password' => 'پاس ورڈ',
+        'password_placeholder' => 'پاس ورڈ درج کریں',
+        'remember_me' => 'مجھے یاد رکھیں',
+        'forgot_password' => 'پاس ورڈ بھول گئے',
+        'submit' => 'سائن ان',
+        'signing_in' => 'سائن ان ہو رہا ہے...',
+        'sign_in_google' => 'Google کے ساتھ سائن ان',
+        'no_account' => 'اکاؤنٹ نہیں ہے؟',
+        'sign_up_link' => 'سائن اپ',
+    ],
+    'signup' => [
+        'title' => 'سائن اپ',
+        'heading' => 'اکاؤنٹ بنائیں',
+        'name' => 'نام*',
+        'name_placeholder' => 'اپنا نام درج کریں',
+        'email' => 'ای میل*',
+        'email_placeholder' => 'اپنی ای میل درج کریں',
+        'password' => 'پاس ورڈ*',
+        'password_placeholder' => 'پاس ورڈ بنائیں',
+        'password_hint' => 'کم از کم 8 حروف ہونے چاہئیں۔',
+        'confirm_password' => 'پاس ورڈ کی تصدیق کریں*',
+        'confirm_password_placeholder' => 'پاس ورڈ کی تصدیق کریں',
+        'submit' => 'شروع کریں',
+        'creating' => 'اکاؤنٹ بن رہا ہے...',
+        'sign_up_google' => 'Google کے ساتھ سائن اپ',
+        'have_account' => 'پہلے سے اکاؤنٹ ہے؟',
+        'log_in_link' => 'لاگ ان',
+    ],
+];

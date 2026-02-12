@@ -1,0 +1,38 @@
+<?php
+
+return [
+    'signin' => [
+        'title' => 'ورود',
+        'welcome' => 'به بوندوقی خوش آمدید',
+        'subtitle' => 'لطفاً اطلاعات خود را وارد کنید.',
+        'email' => 'ایمیل',
+        'email_placeholder' => 'ایمیل خود را وارد کنید',
+        'password' => 'رمز عبور',
+        'password_placeholder' => 'رمز عبور را وارد کنید',
+        'remember_me' => 'مرا به خاطر بسپار',
+        'forgot_password' => 'فراموشی رمز عبور',
+        'submit' => 'ورود',
+        'signing_in' => 'در حال ورود...',
+        'sign_in_google' => 'ورود با Google',
+        'no_account' => 'حساب کاربری ندارید؟',
+        'sign_up_link' => 'ثبت‌نام',
+    ],
+    'signup' => [
+        'title' => 'ثبت‌نام',
+        'heading' => 'ایجاد حساب کاربری',
+        'name' => 'نام*',
+        'name_placeholder' => 'نام خود را وارد کنید',
+        'email' => 'ایمیل*',
+        'email_placeholder' => 'ایمیل خود را وارد کنید',
+        'password' => 'رمز عبور*',
+        'password_placeholder' => 'یک رمز عبور ایجاد کنید',
+        'password_hint' => 'حداقل ۸ کاراکتر باشد.',
+        'confirm_password' => 'تأیید رمز عبور*',
+        'confirm_password_placeholder' => 'رمز عبور را تأیید کنید',
+        'submit' => 'شروع کنید',
+        'creating' => 'در حال ایجاد حساب...',
+        'sign_up_google' => 'ثبت‌نام با Google',
+        'have_account' => 'قبلاً حساب دارید؟',
+        'log_in_link' => 'ورود',
+    ],
+];
