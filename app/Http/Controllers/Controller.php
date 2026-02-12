@@ -10,10 +10,6 @@ use OpenApi\Attributes as OA;
     description: "API documentation for LipaBnb application"
 )]
 #[OA\Server(
-    url: "http://127.0.0.1:8000",
-    description: "Local server"
-)]
-#[OA\Server(
     url: "https://airbnb.bondoqi.com",
     description: "Production server"
 )]
