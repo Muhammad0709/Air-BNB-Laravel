@@ -119,7 +119,7 @@ export default function AddProperty() {
                     required
                     fullWidth
                     InputProps={{
-                      startAdornment: <Typography sx={{ mr: 1, color: '#6B7280' }}>$</Typography>
+                      startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#6B7280' }}>$</Typography>
                     }}
                   />
                 </Stack>
@@ -252,7 +252,7 @@ export default function AddProperty() {
 
             <Row className="mt-4">
               <Col xs={12}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="flex-end" sx={{ width: '100%' }}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap justifyContent="flex-end" sx={{ width: '100%' }}>
                   <Button
                     variant="outlined"
                     onClick={() => router.visit('/host/properties')}

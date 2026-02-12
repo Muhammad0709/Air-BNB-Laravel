@@ -150,7 +150,7 @@ export default function Booking() {
 
                   <form onSubmit={handleSubmit}>
                     {property && (
-                      <Stack direction="row" spacing={1.5} className="field" sx={{ mb: 2 }}>
+                      <Stack direction="row" spacing={1.5} useFlexGap className="field" sx={{ mb: 2 }}>
                         <Box sx={{ flex: 1 }}>
                           <Typography className="label">{t('home.checkin')}</Typography>
                           <TextField
@@ -225,7 +225,7 @@ export default function Booking() {
                       </FormControl>
                     </Box>
 
-                    <Stack direction="row" spacing={1.5} className="field">
+                    <Stack direction="row" spacing={1.5} useFlexGap className="field">
                       <Box sx={{ flex: 1 }}>
                         <Typography className="label">{t('booking.adults')}</Typography>
                         <FormControl fullWidth size="small">
@@ -273,7 +273,7 @@ export default function Booking() {
 
                     <Box className="field">
                       <Typography className="label">{t('booking.phone_number')}</Typography>
-                      <Stack direction="row" spacing={1.5}>
+                      <Stack direction="row" spacing={1.5} useFlexGap>
                         <FormControl size="small" sx={{ minWidth: 120 }}>
                           <Select 
                             value={formData.phoneCode}
@@ -310,7 +310,7 @@ export default function Booking() {
                       />
                     </Box>
 
-                    <Stack direction="row" spacing={1.5} className="field">
+                    <Stack direction="row" spacing={1.5} useFlexGap className="field">
                       <Box sx={{ flex: 1 }}>
                         <Typography className="label">{t('booking.expiry_date')}</Typography>
                         <TextField 
@@ -339,7 +339,7 @@ export default function Booking() {
 
                     <Paper elevation={0} className="booking-total">
                       <Typography>{t('booking.total')}</Typography>
-                      <Stack direction="row" spacing={2} alignItems="center">
+                      <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                         <Typography className="grand-total">{totalAmount}</Typography>
                         <Button type="submit" variant="contained" className="request-btn">{t('booking.book_btn')}</Button>
                       </Stack>

@@ -17,18 +17,17 @@ class BookingHistoryResource extends JsonResource
     {
         $property = $this->property;
 
-        // Get property image
+        // Property image as full URL
         $image = null;
         if ($property) {
             if ($property->images) {
                 $imagesArray = is_string($property->images) ? json_decode($property->images, true) : $property->images;
                 if (is_array($imagesArray) && !empty($imagesArray)) {
-                    $image = Storage::url($imagesArray[0]);
+                    $image = asset(Storage::url($imagesArray[0]));
                 }
             }
-            
             if (!$image && $property->image) {
-                $image = Storage::url($property->image);
+                $image = asset(Storage::url($property->image));
             }
         }
 

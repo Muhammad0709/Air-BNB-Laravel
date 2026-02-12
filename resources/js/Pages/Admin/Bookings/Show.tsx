@@ -73,7 +73,7 @@ export default function ShowBooking() {
             <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'flex-start' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
               <Box>
                 <Typography variant="h4" sx={{ fontWeight: 700, color: '#222222', mb: 2 }}>Booking #{booking.id}</Typography>
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Chip label={booking.status} size="small" sx={{ bgcolor: `${getStatusColor(booking.status)}15`, color: getStatusColor(booking.status), fontWeight: 600, fontSize: 12 }} />
                   <Typography sx={{ color: '#717171', fontSize: 14 }}>Created {booking.createdAt && new Date(booking.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</Typography>
                 </Stack>
@@ -91,17 +91,17 @@ export default function ShowBooking() {
               <CardContent sx={{ p: { xs: 2, md: 4 } }}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 3 }}>Guest Information</Typography>
                 <Stack spacing={3}>
-                  <Stack direction="row" spacing={2} alignItems="center">
+                  <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                     <Box sx={{ width: 40, height: 40, borderRadius: 2, bgcolor: '#F3F4F6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><PersonIcon sx={{ fontSize: 20, color: '#717171' }} /></Box>
                     <Box><Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Guest Name</Typography><Typography sx={{ fontWeight: 600, color: '#222222' }}>{booking.guest}</Typography></Box>
                   </Stack>
                   <Divider />
-                  <Stack direction="row" spacing={2} alignItems="center">
+                  <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                     <Box sx={{ width: 40, height: 40, borderRadius: 2, bgcolor: '#F3F4F6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><EmailIcon sx={{ fontSize: 20, color: '#717171' }} /></Box>
                     <Box><Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Email</Typography><Typography sx={{ fontWeight: 600, color: '#222222' }}>{booking.guestEmail}</Typography></Box>
                   </Stack>
                   <Divider />
-                  <Stack direction="row" spacing={2} alignItems="center">
+                  <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                     <Box sx={{ width: 40, height: 40, borderRadius: 2, bgcolor: '#F3F4F6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><PhoneIcon sx={{ fontSize: 20, color: '#717171' }} /></Box>
                     <Box><Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Phone</Typography><Typography sx={{ fontWeight: 600, color: '#222222' }}>{booking.guestPhone}</Typography></Box>
                   </Stack>
@@ -114,17 +114,17 @@ export default function ShowBooking() {
               <CardContent sx={{ p: { xs: 2, md: 4 } }}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 3 }}>Booking Details</Typography>
                 <Stack spacing={3}>
-                  <Stack direction="row" spacing={2} alignItems="center">
+                  <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                     <Box sx={{ width: 40, height: 40, borderRadius: 2, bgcolor: '#F3F4F6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><HotelIcon sx={{ fontSize: 20, color: '#717171' }} /></Box>
                     <Box><Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Property</Typography><Typography sx={{ fontWeight: 600, color: '#222222' }}>{booking.property}</Typography><Typography sx={{ fontSize: 12, color: '#717171' }}>{booking.propertyLocation}</Typography></Box>
                   </Stack>
                   <Divider />
-                  <Stack direction="row" spacing={2} alignItems="center">
+                  <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                     <Box sx={{ width: 40, height: 40, borderRadius: 2, bgcolor: '#F3F4F6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><CalendarTodayIcon sx={{ fontSize: 20, color: '#717171' }} /></Box>
                     <Box><Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Check-in</Typography><Typography sx={{ fontWeight: 600, color: '#222222' }}>{booking.checkin && new Date(booking.checkin).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</Typography></Box>
                   </Stack>
                   <Divider />
-                  <Stack direction="row" spacing={2} alignItems="center">
+                  <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                     <Box sx={{ width: 40, height: 40, borderRadius: 2, bgcolor: '#F3F4F6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><CalendarTodayIcon sx={{ fontSize: 20, color: '#717171' }} /></Box>
                     <Box><Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Check-out</Typography><Typography sx={{ fontWeight: 600, color: '#222222' }}>{booking.checkout && new Date(booking.checkout).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</Typography></Box>
                   </Stack>

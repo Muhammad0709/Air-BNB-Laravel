@@ -20,17 +20,16 @@ class ListingResource extends JsonResource
         $reviewCount = $reviews->count();
         $averageRating = $reviewCount > 0 ? round($reviews->avg('rating'), 2) : 0;
 
-        // Get first image or default
+        // First image as full URL
         $image = null;
         if ($this->images) {
             $imagesArray = is_string($this->images) ? json_decode($this->images, true) : $this->images;
             if (is_array($imagesArray) && !empty($imagesArray)) {
-                $image = Storage::url($imagesArray[0]);
+                $image = asset(Storage::url($imagesArray[0]));
             }
         }
-        
         if (!$image && $this->image) {
-            $image = Storage::url($this->image);
+            $image = asset(Storage::url($this->image));
         }
 
         return [

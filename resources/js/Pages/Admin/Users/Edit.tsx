@@ -58,7 +58,7 @@ export default function EditUser() {
             {/* Profile Picture */}
             <Row className="mb-4">
               <Col xs={12}>
-                <Stack direction="row" spacing={3} alignItems="center">
+                <Stack direction="row" spacing={3} useFlexGap alignItems="center">
                   <Avatar
                     sx={{
                       width: 100,
@@ -127,7 +127,7 @@ export default function EditUser() {
 
             <Row className="mt-4">
               <Col xs={12}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="flex-end" sx={{ width: '100%' }}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap justifyContent="flex-end" sx={{ width: '100%' }}>
                   <Button
                     variant="outlined"
                     onClick={() => router.visit('/admin/users')}

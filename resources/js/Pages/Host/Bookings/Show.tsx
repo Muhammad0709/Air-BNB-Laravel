@@ -96,7 +96,7 @@ export default function ShowBooking() {
               <Typography variant="h4" sx={{ fontWeight: 700, color: '#222222', mb: 2 }}>
                 Booking #{booking.id}
               </Typography>
-              <Stack direction="row" spacing={2} alignItems="center">
+              <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                 <Chip
                   label={booking.status}
                   size="small"
@@ -134,7 +134,7 @@ export default function ShowBooking() {
                 Guest Information
               </Typography>
               <Stack spacing={3}>
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -154,7 +154,7 @@ export default function ShowBooking() {
                   </Box>
                 </Stack>
                 <Divider />
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -174,7 +174,7 @@ export default function ShowBooking() {
                   </Box>
                 </Stack>
                 <Divider />
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -204,7 +204,7 @@ export default function ShowBooking() {
                 Booking Details
               </Typography>
               <Stack spacing={3}>
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -225,7 +225,7 @@ export default function ShowBooking() {
                   </Box>
                 </Stack>
                 <Divider />
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -251,7 +251,7 @@ export default function ShowBooking() {
                   </Box>
                 </Stack>
                 <Divider />
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,

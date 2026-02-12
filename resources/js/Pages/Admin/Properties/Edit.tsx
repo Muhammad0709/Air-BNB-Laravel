@@ -125,7 +125,7 @@ export default function EditProperty() {
                     error={!!errors.price}
                     helperText={errors.price}
                     InputProps={{
-                      startAdornment: <Typography sx={{ mr: 1, color: '#6B7280' }}>$</Typography>
+                      startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#6B7280' }}>$</Typography>
                     }}
                   />
                 </Stack>
@@ -238,7 +238,7 @@ export default function EditProperty() {
                         boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
                       }}
                     />
-                    <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+                    <Stack direction="row" spacing={2} useFlexGap sx={{ mt: 2 }}>
                       <Button
                         component="label"
                         variant="outlined"
@@ -322,7 +322,7 @@ export default function EditProperty() {
 
             <Row className="mt-4">
               <Col xs={12}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="flex-end" sx={{ width: '100%' }}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap justifyContent="flex-end" sx={{ width: '100%' }}>
                   <Button
                     variant="outlined"
                     onClick={() => router.visit('/admin/properties')}

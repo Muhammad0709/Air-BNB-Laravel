@@ -14,7 +14,7 @@ export default function Footer() {
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: { xs: 4, md: 6 }, mb: 4 }}>
           <Box>
             <Typography sx={{ color: '#222222', fontWeight: 600, mb: 2.5, fontSize: '0.875rem' }}>{t('footer.support')}</Typography>
-            <Stack spacing={1.5}>
+            <Stack spacing={1.5} useFlexGap>
               <Box component={Link} href="/contact" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.contact_us')}</Box>
               <Box component={Link} href="/auth/login" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.log_in')}</Box>
               <Box component={Link} href="/auth/register" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.sign_up')}</Box>
@@ -22,7 +22,7 @@ export default function Footer() {
           </Box>
           <Box>
             <Typography sx={{ color: '#222222', fontWeight: 600, mb: 2.5, fontSize: '0.875rem' }}>{t('footer.hosting')}</Typography>
-            <Stack spacing={1.5}>
+            <Stack spacing={1.5} useFlexGap>
               <Box component={Link} href="/auth/register" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.become_host')}</Box>
               <Box component={Link} href="/host/dashboard" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.host_resources')}</Box>
               <Box component={Link} href="/host/dashboard" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.host_dashboard')}</Box>
@@ -30,7 +30,7 @@ export default function Footer() {
           </Box>
           <Box>
             <Typography sx={{ color: '#222222', fontWeight: 600, mb: 2.5, fontSize: '0.875rem' }}>{t('footer.lipabnb')}</Typography>
-            <Stack spacing={1.5}>
+            <Stack spacing={1.5} useFlexGap>
               <Box component={Link} href="/" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.home')}</Box>
               <Box component={Link} href="/about" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.about_us')}</Box>
               <Box component={Link} href="/listing" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.stays')}</Box>
@@ -38,7 +38,7 @@ export default function Footer() {
           </Box>
           <Box>
             <Typography sx={{ color: '#222222', fontWeight: 600, mb: 2.5, fontSize: '0.875rem' }}>{t('footer.community')}</Typography>
-            <Stack spacing={1.5}>
+            <Stack spacing={1.5} useFlexGap>
               <Box component={Link} href="/wishlist" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.wishlist')}</Box>
               <Box component={Link} href="/bookings" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.bookings')}</Box>
               <Box component={Link} href="/chat" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.messages')}</Box>

@@ -67,7 +67,7 @@ export default function EditSupportTicket() {
               <Row className="mt-3"><Col xs={12}><TextField label="Description" name="description" value={formData.description} onChange={handleChange} required fullWidth multiline rows={6} /></Col></Row>
               <Row className="mt-4">
                 <Col xs={12}>
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="flex-end" sx={{ width: '100%' }}>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap justifyContent="flex-end" sx={{ width: '100%' }}>
                     <Button variant="outlined" type="button" onClick={() => router.visit('/admin/support-tickets')} sx={{ textTransform: 'none', borderColor: '#D1D5DB', color: '#717171', '&:hover': { borderColor: '#9CA3AF', bgcolor: '#F9FAFB' } }}>Cancel</Button>
                     <Button type="submit" variant="contained" sx={{ bgcolor: '#AD542D', textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>Update Ticket</Button>
                   </Stack>

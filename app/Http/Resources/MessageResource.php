@@ -11,7 +11,7 @@ class MessageResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user = $request->user();
-        $senderType = ($this->sender_id === $this->conversation->user_id) ? 'user' : 'host';
+        $senderType = ($this->sender_id === $this->conversation->user_id) ? 'customer' : 'host';
 
         $files = $this->files->map(function ($file) {
             $fileUrl = Storage::disk('public')->url($file->file_path);

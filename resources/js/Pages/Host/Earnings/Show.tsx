@@ -111,7 +111,7 @@ export default function ShowEarning() {
               </Typography>
 
               <Stack spacing={3}>
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -133,7 +133,7 @@ export default function ShowEarning() {
 
                 <Divider />
 
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -155,7 +155,7 @@ export default function ShowEarning() {
 
                 <Divider />
 
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -193,7 +193,7 @@ export default function ShowEarning() {
               </Typography>
 
               <Stack spacing={3}>
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -217,7 +217,7 @@ export default function ShowEarning() {
 
                 <Divider />
 
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -239,7 +239,7 @@ export default function ShowEarning() {
 
                 <Divider />
 
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,

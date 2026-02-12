@@ -14,6 +14,7 @@ use App\Models\MessageFile;
 use App\Models\Property;
 use App\Enums\PropertyStatus;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -195,7 +196,7 @@ class MessagesController extends Controller
      *     )
      * )
      */
-    public function messages($conversationId): JsonResponse
+    public function messages(Request $request, $conversationId): JsonResponse
     {
         $user = Auth::user();
         
@@ -214,15 +215,17 @@ class MessagesController extends Controller
             ->update(['read' => true]);
 
         $messages = $conversation->messages()
-            ->with(['files'])
+            ->with(['files', 'conversation'])
             ->orderBy('created_at', 'asc')
             ->get();
+
+        $messagesList = $messages->map(fn ($m) => (new MessageResource($m))->toArray($request))->values()->all();
 
         return response()->json([
             'status' => 'success',
             'message' => 'Messages retrieved successfully',
             'data' => [
-                'messages' => MessageResource::collection($messages),
+                'messages' => $messagesList,
                 'conversation' => new ConversationResource($conversation),
             ],
         ], 200);
@@ -298,11 +301,14 @@ class MessagesController extends Controller
 
         $conversation->load(['property.user', 'lastMessage']);
 
+        $conversationPayload = (new ConversationResource($conversation))->toArray($request);
+        $conversationPayload['messages'] = [];
+
         return response()->json([
             'status' => 'success',
             'message' => 'Conversation retrieved successfully',
             'data' => [
-                'conversation' => new ConversationResource($conversation),
+                'conversation' => $conversationPayload,
             ],
         ], 200);
     }

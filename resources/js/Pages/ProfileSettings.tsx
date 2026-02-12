@@ -135,7 +135,7 @@ export default function ProfileSettings() {
                   <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 3 }}>
                     {t('profile_settings.profile_picture')}
                   </Typography>
-                  <Stack direction="row" spacing={3} alignItems="center">
+                  <Stack direction="row" spacing={3} useFlexGap alignItems="center">
                     <Avatar
                       src={user?.profile_picture}
                       sx={{

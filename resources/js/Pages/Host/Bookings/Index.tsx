@@ -70,7 +70,7 @@ export default function HostBookings() {
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>
                   My Bookings
                 </Typography>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" sx={{ width: { xs: '100%', sm: 'auto' } }}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap alignItems="center" sx={{ width: { xs: '100%', sm: 'auto' } }}>
                   <TextField
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}

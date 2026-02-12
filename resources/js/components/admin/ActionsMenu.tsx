@@ -115,7 +115,7 @@ export default function ActionsMenu({
               '&:hover': { bgcolor: '#F9FAFB' }
             }}
           >
-            <VisibilityIcon sx={{ fontSize: 16, color: '#6B7280', mr: 1 }} />
+            <VisibilityIcon sx={{ fontSize: 16, color: '#6B7280', marginInlineEnd: 1 }} />
             <Typography sx={{ color: '#111827', fontSize: 14 }}>{viewLabel}</Typography>
           </MenuItem>
         )}
@@ -128,7 +128,7 @@ export default function ActionsMenu({
               '&:hover': { bgcolor: '#F9FAFB' }
             }}
           >
-            <EditIcon sx={{ fontSize: 16, color: '#6B7280', mr: 1 }} />
+            <EditIcon sx={{ fontSize: 16, color: '#6B7280', marginInlineEnd: 1 }} />
             <Typography sx={{ color: '#111827', fontSize: 14 }}>{editLabel}</Typography>
           </MenuItem>
         )}
@@ -141,7 +141,7 @@ export default function ActionsMenu({
               '&:hover': { bgcolor: '#ECFDF5' }
             }}
           >
-            <CheckCircleIcon sx={{ fontSize: 16, color: '#10B981', mr: 1 }} />
+            <CheckCircleIcon sx={{ fontSize: 16, color: '#10B981', marginInlineEnd: 1 }} />
             <Typography sx={{ color: '#10B981', fontSize: 14 }}>{approveLabel}</Typography>
           </MenuItem>
         )}
@@ -154,7 +154,7 @@ export default function ActionsMenu({
               '&:hover': { bgcolor: '#FEF2F2' }
             }}
           >
-            <CancelIcon sx={{ fontSize: 16, color: '#EF4444', mr: 1 }} />
+            <CancelIcon sx={{ fontSize: 16, color: '#EF4444', marginInlineEnd: 1 }} />
             <Typography sx={{ color: '#EF4444', fontSize: 14 }}>{rejectLabel}</Typography>
           </MenuItem>
         )}
@@ -167,7 +167,7 @@ export default function ActionsMenu({
               '&:hover': { bgcolor: '#FEF2F2' }
             }}
           >
-            <DeleteIcon sx={{ fontSize: 16, color: '#EF4444', mr: 1 }} />
+            <DeleteIcon sx={{ fontSize: 16, color: '#EF4444', marginInlineEnd: 1 }} />
             <Typography sx={{ color: '#EF4444', fontSize: 14 }}>{deleteLabel}</Typography>
           </MenuItem>
         )}

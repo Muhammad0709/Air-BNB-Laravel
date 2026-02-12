@@ -114,7 +114,7 @@ export default function AdminUsers() {
                       usersList.map((user: any) => (
                         <TableRow key={user.id} sx={{ '&:hover': { bgcolor: '#F9FAFB' } }}>
                           <TableCell>
-                            <Stack direction="row" spacing={2} alignItems="center">
+                            <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                               <Avatar
                                 sx={{
                                   width: 40,

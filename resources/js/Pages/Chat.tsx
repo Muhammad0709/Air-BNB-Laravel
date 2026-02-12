@@ -52,17 +52,39 @@ interface PropertyToMessage {
   hostAvatar: string | null
 }
 
-function apiMessageToMessage(m: { id: number; text?: string; sender: string; timestamp: string; read: boolean; files?: MessageFile[] | null }): Message {
+// Backend returns messages as plain array with sender 'customer'|'host'
+function apiMessageToMessage(m: Record<string, unknown>): Message {
   return {
-    ...m,
-    sender: (m.sender === 'user' ? 'customer' : 'host') as 'customer' | 'host',
-    timestamp: m.timestamp,
+    id: Number(m.id),
+    text: m.text as string | undefined,
+    sender: ((m.sender as string) === 'user' || (m.sender as string) === 'customer' ? 'customer' : 'host') as 'customer' | 'host',
+    timestamp: (m.timestamp as string) ?? new Date().toISOString(),
+    read: (m.read as boolean) ?? false,
+    files: (m.files as MessageFile[] | null) ?? null,
   }
+}
+
+// Backend (createOrGet) returns conversation with id, propertyId, messages: []
+function normalizeConversationFromApi(conv: ConversationListItem | undefined, propertyId: number): Conversation | null {
+  return conv ? { ...conv, id: Number(conv.id), propertyId: conv.propertyId ?? propertyId, messages: (conv as { messages?: Message[] }).messages ?? [] } : null
+}
+
+// Backend returns data.messages as plain array (no .data wrapper)
+function parseMessagesFromApi(res: { data?: { messages?: unknown[] } }): Message[] {
+  return (res.data?.messages ?? []).map(apiMessageToMessage)
+}
+
+function addConversationAndSort(prev: Conversation[], newConv: Conversation): Conversation[] {
+  return prev.some((c) => c.id === newConv.id) ? prev : [newConv, ...prev].sort((a, b) => new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime())
 }
 
 export default function Chat() {
   const { t } = useLanguage()
-  const { url, props } = usePage<{ conversations: ConversationListItem[]; auth: { user: { id: number; name: string; email: string } | null } }>()
+  const { url, props } = usePage<{
+    conversations: ConversationListItem[]
+    propertiesToMessage?: PropertyToMessage[]
+    auth: { user: { id: number; name: string; email: string } | null }
+  }>()
   const searchParams = useMemo(() => {
     const q = url.includes('?') ? url.split('?')[1] : ''
     return new URLSearchParams(q)
@@ -75,7 +97,8 @@ export default function Chat() {
   const [menuAnchor, setMenuAnchor] = useState<{ [key: number]: HTMLElement | null }>({})
   const [openModal, setOpenModal] = useState(false)
   const [selectedPropertyId, setSelectedPropertyId] = useState<number | null>(null)
-  const [startableProperties, setStartableProperties] = useState<PropertyToMessage[]>([])
+  const initialPropertiesToMessage = useMemo(() => Array.isArray(props.propertiesToMessage) ? props.propertiesToMessage : [], [props.propertiesToMessage])
+  const [startableProperties, setStartableProperties] = useState<PropertyToMessage[]>(initialPropertiesToMessage)
   const [loadingStartable, setLoadingStartable] = useState(false)
   const [startingConversation, setStartingConversation] = useState(false)
   const [loadingMessages, setLoadingMessages] = useState(false)
@@ -103,14 +126,50 @@ export default function Chat() {
 
   useEffect(() => {
     if (!openModal) return
+    if (initialPropertiesToMessage.length > 0) {
+      setStartableProperties(initialPropertiesToMessage)
+      setLoadingStartable(false)
+      return
+    }
     setLoadingStartable(true)
     apiGet<{ data: { properties: PropertyToMessage[] } }>('/api/messages/properties-to-message')
       .then((res) => setStartableProperties(res.data?.properties ?? []))
       .catch(() => setStartableProperties([]))
       .finally(() => setLoadingStartable(false))
-  }, [openModal])
+  }, [openModal, initialPropertiesToMessage])
 
   const currentConversation = conversations.find(c => c.id === selectedConversation)
+
+  const hostsToMessage = useMemo(
+    () => initialPropertiesToMessage.filter((p) => !conversations.some((c) => c.propertyId === p.propertyId)),
+    [initialPropertiesToMessage, conversations]
+  )
+
+  const startConversationWithProperty = useCallback(async (propertyId: number) => {
+    const res = await apiPostJson<{ data?: { conversation?: ConversationListItem } }>('/api/messages/conversations', {
+      property_id: propertyId,
+    })
+    const conv = (res as { data?: { conversation?: ConversationListItem } }).data?.conversation
+    const newConv = normalizeConversationFromApi(conv, propertyId)
+    if (!newConv) return null
+    setConversations((prev) => addConversationAndSort(prev, newConv))
+    setTimeout(() => setSelectedConversation(newConv.id), 0)
+    return newConv.id
+  }, [])
+
+  const handleStartFromHost = useCallback(
+    async (propertyId: number) => {
+      setStartingConversation(true)
+      try {
+        await startConversationWithProperty(propertyId)
+      } catch {
+        setSelectedConversation(null)
+      } finally {
+        setStartingConversation(false)
+      }
+    },
+    [startConversationWithProperty]
+  )
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -130,52 +189,23 @@ export default function Chat() {
     const propertyIdParam = searchParams.get('property_id')
     const propertyId = propertyIdParam ? parseInt(propertyIdParam, 10) : null
     if (!propertyId) return
-
     const existingConv = conversations.find((c) => c.propertyId === propertyId)
     if (existingConv) {
       setSelectedConversation(existingConv.id)
       router.visit('/chat')
       return
     }
-
-    apiPostJson<{ data: { conversation: ConversationListItem } }>('/api/messages/conversations', {
-      property_id: propertyId,
-    })
-      .then((res) => {
-        const conv = res.data?.conversation
-        if (conv) {
-          const newConv: Conversation = { ...conv, messages: [] }
-          setConversations((prev) => {
-            const exists = prev.find((c) => c.id === newConv.id)
-            if (exists) return prev
-            return [newConv, ...prev].sort(
-              (a, b) => new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime()
-            )
-          })
-          setSelectedConversation(conv.id)
-        }
-      })
-      .catch(() => {})
-      .finally(() => router.visit('/chat'))
-  }, [searchParams, conversations])
+    startConversationWithProperty(propertyId).catch(() => {}).finally(() => router.visit('/chat'))
+  }, [searchParams, conversations, startConversationWithProperty])
 
   useEffect(() => {
     if (!selectedConversation) return
     const conv = conversations.find((c) => c.id === selectedConversation)
-    if (conv && conv.messages.length > 0) return
+    if (conv?.messages.length) return
     setLoadingMessages(true)
-    apiGet<{ data: { messages: unknown[] } }>(`/api/messages/conversations/${selectedConversation}`)
+    apiGet(`/api/messages/conversations/${selectedConversation}`)
       .then((res) => {
-        const messages = (res.data.messages ?? []).map((m: unknown) =>
-          apiMessageToMessage({
-            id: (m as Record<string, unknown>).id as number,
-            text: (m as Record<string, unknown>).text as string | undefined,
-            sender: (m as Record<string, unknown>).sender as string,
-            timestamp: (m as Record<string, unknown>).timestamp as string,
-            read: (m as Record<string, unknown>).read as boolean,
-            files: ((m as Record<string, unknown>).files as MessageFile[] | null) ?? null,
-          })
-        )
+        const messages = parseMessagesFromApi(res as Parameters<typeof parseMessagesFromApi>[0])
         setConversations((prev) =>
           prev.map((c) => (c.id === selectedConversation ? { ...c, messages } : c))
         )
@@ -235,14 +265,7 @@ export default function Chat() {
       )
       const m = res.data?.message
       if (m) {
-        const newMessage = apiMessageToMessage({
-          id: m.id as number,
-          text: m.text as string | undefined,
-          sender: 'user',
-          timestamp: (m.timestamp as string) ?? new Date().toISOString(),
-          read: m.read as boolean,
-          files: (m.files as MessageFile[] | null) ?? null,
-        })
+        const newMessage = apiMessageToMessage(m as Record<string, unknown>)
         addMessageToConversation(selectedConversation, newMessage)
         const lastMessageText = messageText.trim() || ''
         setConversations((prev) =>
@@ -295,21 +318,7 @@ export default function Chat() {
     if (!selectedPropertyId) return
     setStartingConversation(true)
     try {
-      const res = await apiPostJson<{ data: { conversation: ConversationListItem } }>('/api/messages/conversations', {
-        property_id: selectedPropertyId,
-      })
-      const conv = res.data?.conversation
-      if (conv) {
-        const newConv: Conversation = { ...conv, messages: [] }
-        setConversations((prev) => {
-          const exists = prev.find((c) => c.id === newConv.id)
-          if (exists) return prev
-          return [newConv, ...prev].sort(
-            (a, b) => new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime()
-          )
-        })
-        setSelectedConversation(conv.id)
-      }
+      await startConversationWithProperty(selectedPropertyId)
       setOpenModal(false)
       setSelectedPropertyId(null)
     } finally {
@@ -362,6 +371,43 @@ export default function Chat() {
                   >
                     {t('chat.start_conversation')}
                   </Button>
+                  {hostsToMessage.length > 0 && (
+                    <>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#717171', mb: 1, px: 0.5 }}>
+                        {t('chat.select_property')}
+                      </Typography>
+                      {hostsToMessage.map((item) => (
+                        <Box
+                          key={item.propertyId}
+                          onClick={() => handleStartFromHost(item.propertyId)}
+                          sx={{
+                            p: 1.5,
+                            mb: 0.5,
+                            borderRadius: 1.5,
+                            cursor: 'pointer',
+                            border: '1px solid #E5E7EB',
+                            '&:hover': { bgcolor: '#F9FAFB', borderColor: '#AD542D' },
+                            opacity: startingConversation ? 0.7 : 1,
+                            pointerEvents: startingConversation ? 'none' : 'auto',
+                          }}
+                        >
+                          <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
+                            <Avatar src={item.hostAvatar ?? undefined} sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}>
+                              {item.hostName.charAt(0)}
+                            </Avatar>
+                            <Box sx={{ minWidth: 0, flex: 1 }}>
+                              <Typography variant="body2" sx={{ fontWeight: 600, color: '#222222' }}>
+                                {item.hostName}
+                              </Typography>
+                              <Typography variant="caption" sx={{ color: '#717171', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                {item.property}
+                              </Typography>
+                            </Box>
+                          </Stack>
+                        </Box>
+                      ))}
+                    </>
+                  )}
                 </CardContent>
                 <CardContent sx={{ p: 0, flex: 1, overflowY: 'auto' }}>
                   {conversations.map((conversation) => (
@@ -386,7 +432,7 @@ export default function Chat() {
                         }
                       }}
                     >
-                      <Stack direction="row" spacing={2} alignItems="flex-start">
+                      <Stack direction="row" spacing={2} useFlexGap alignItems="flex-start">
                         <Avatar sx={{ bgcolor: '#AD542D', width: 48, height: 48 }}>
                           {conversation.hostName.charAt(0)}
                         </Avatar>
@@ -395,7 +441,7 @@ export default function Chat() {
                             <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222' }}>
                               {conversation.hostName}
                             </Typography>
-                            <Stack direction="row" spacing={1} alignItems="center">
+                            <Stack direction="row" spacing={1} useFlexGap alignItems="center">
                               <Typography variant="caption" sx={{ color: '#9CA3AF' }}>
                                 {formatDate(conversation.lastMessageTime)}
                               </Typography>
@@ -431,7 +477,7 @@ export default function Chat() {
                                   textOverflow: 'ellipsis',
                                   whiteSpace: 'nowrap',
                                   flex: 1,
-                                  mr: 1
+                                  marginInlineEnd: 1
                                 }}
                               >
                                 {getLastMessagePreview(conversation)}
@@ -470,9 +516,9 @@ export default function Chat() {
                 <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, height: 'calc(100vh - 250px)', display: 'flex', flexDirection: 'column' }}>
                   {/* Chat Header */}
                   <Box sx={{ p: 2, borderBottom: '1px solid #E5E7EB' }}>
-                    <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between">
-                      <Stack direction="row" spacing={2} alignItems="center">
-                        <Avatar sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}>
+                    <Stack direction="row" spacing={2} useFlexGap alignItems="center" justifyContent="space-between">
+<Stack direction="row" spacing={2} useFlexGap alignItems="center">
+                      <Avatar sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}>
                           {currentConversation.hostName.charAt(0)}
                         </Avatar>
                         <Box>
@@ -656,7 +702,7 @@ export default function Chat() {
                   {/* Selected Files Preview */}
                   {selectedFiles.length > 0 && (
                     <Box sx={{ p: 2, borderTop: '1px solid #E5E7EB', bgcolor: '#FFFFFF' }}>
-                      <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+                      <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap', gap: 1 }}>
                         {selectedFiles.map((file, index) => (
                           <Box
                             key={index}
@@ -718,7 +764,7 @@ export default function Chat() {
 
                   {/* Message Input */}
                   <Box sx={{ p: 2, borderTop: '1px solid #E5E7EB' }}>
-                    <Stack direction="row" spacing={1} alignItems="flex-end">
+                    <Stack direction="row" spacing={1} useFlexGap alignItems="flex-end">
                       <input
                         type="file"
                         ref={fileInputRef}
@@ -872,7 +918,7 @@ export default function Chat() {
                     }
                   }}
                 >
-                  <Stack direction="row" spacing={2} alignItems="center">
+                  <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                     <Avatar
                       src={item.hostAvatar ?? undefined}
                       sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}

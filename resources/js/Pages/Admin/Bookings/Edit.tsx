@@ -78,7 +78,7 @@ export default function EditBooking() {
               </Row>
               <Row className="mt-4">
                 <Col xs={12} md={6}>
-                  <TextField label="Total Amount" name="amount" type="number" value={formData.amount} onChange={handleChange} required fullWidth InputProps={{ startAdornment: <Typography sx={{ mr: 1, color: '#717171' }}>$</Typography> }} sx={{ mb: { xs: 3, md: 0 } }} />
+                  <TextField label="Total Amount" name="amount" type="number" value={formData.amount} onChange={handleChange} required fullWidth InputProps={{ startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#717171' }}>$</Typography> }} sx={{ mb: { xs: 3, md: 0 } }} />
                 </Col>
                 <Col xs={12} md={6}>
                   <FormControl fullWidth>
@@ -93,7 +93,7 @@ export default function EditBooking() {
               </Row>
               <Row className="mt-4">
                 <Col xs={12}>
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="flex-end" sx={{ width: '100%' }}>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap justifyContent="flex-end" sx={{ width: '100%' }}>
                     <Button variant="outlined" type="button" onClick={() => router.visit('/admin/bookings')} sx={{ textTransform: 'none', borderColor: '#D1D5DB', color: '#717171', '&:hover': { borderColor: '#9CA3AF', bgcolor: '#F9FAFB' } }}>Cancel</Button>
                     <Button type="submit" variant="contained" sx={{ bgcolor: '#AD542D', textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>Update Booking</Button>
                   </Stack>

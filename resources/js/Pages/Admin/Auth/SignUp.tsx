@@ -50,7 +50,7 @@ export default function HostSignup() {
 
               <form onSubmit={handleSubmit}>
                 <Stack spacing={3}>
-                  <Stack direction="row" spacing={2}>
+                  <Stack direction="row" spacing={2} useFlexGap>
                     <TextField
                       fullWidth
                       label="First Name"

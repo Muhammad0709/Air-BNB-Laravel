@@ -9,12 +9,14 @@ import SettingsIcon from '@mui/icons-material/Settings'
 import LogoutIcon from '@mui/icons-material/Logout'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import { router, usePage } from '@inertiajs/react'
+import { useLanguage } from '../../hooks/use-language'
 
 type AdminSidebarProps = {
   sidebarOpen: boolean
 }
 
 export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
+  const { isRtl } = useLanguage()
   const { url } = usePage()
   const pathname = url
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -98,10 +100,10 @@ export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
         sx={{
           position: { xs: 'fixed', md: 'fixed' },
           top: 0,
-          left: 0,
+          ...(isRtl ? { right: 0 } : { left: 0 }),
           width: sidebarOpen ? { xs: 0, md: 280 } : 0,
           bgcolor: '#FFFFFF',
-          borderRight: '1px solid #E5E7EB',
+          ...(isRtl ? { borderLeft: '1px solid #E5E7EB' } : { borderRight: '1px solid #E5E7EB' }),
           transition: 'width 0.3s',
           overflow: 'hidden',
           display: { xs: sidebarOpen ? 'flex' : 'none', md: 'flex' },
@@ -166,7 +168,7 @@ export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
               }
             }}
           >
-            <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
+            <Stack direction="row" spacing={2} useFlexGap alignItems="center" sx={{ width: '100%' }}>
               <Avatar
                 src={adminUser.profile_picture ?? undefined}
                 sx={{
@@ -179,7 +181,7 @@ export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
               >
                 {adminUser.initials}
               </Avatar>
-              <Box sx={{ flex: 1, textAlign: 'left' }}>
+              <Box sx={{ flex: 1, textAlign: isRtl ? 'right' : 'left' }}>
                 <Typography
                   sx={{
                     fontSize: 14,
@@ -290,7 +292,7 @@ export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
               '&:hover': { bgcolor: '#F9FAFB' }
             }}
           >
-            <SettingsIcon sx={{ fontSize: 18, color: '#6B7280', mr: 1.5 }} />
+            <SettingsIcon sx={{ fontSize: 18, color: '#6B7280', marginInlineEnd: 1.5 }} />
             <Typography sx={{ fontSize: 14, color: '#111827', fontWeight: 500 }}>
               Settings
             </Typography>
@@ -314,7 +316,7 @@ export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
               '&:hover': { bgcolor: '#F9FAFB' }
             }}
           >
-            <LogoutIcon sx={{ fontSize: 18, color: '#6B7280', mr: 1.5 }} />
+            <LogoutIcon sx={{ fontSize: 18, color: '#6B7280', marginInlineEnd: 1.5 }} />
             <Typography sx={{ fontSize: 14, color: '#111827', fontWeight: 500 }}>
               Log out
             </Typography>

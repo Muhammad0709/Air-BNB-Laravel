@@ -165,7 +165,7 @@ export default function HorizontalScrollSection({
                 height: 32,
                 border: '1px solid #DDDDDD',
                 backgroundColor: 'white',
-                marginLeft: 1,
+                marginInlineStart: 1,
                 '&:hover': {
                   backgroundColor: '#F7F7F7',
                   boxShadow: '0 2px 4px rgba(0,0,0,0.18)'

@@ -210,7 +210,7 @@ export default function Listing() {
                             justifyContent="space-between"
                             className="check-row"
                           >
-                            <Stack direction="row" alignItems="center" spacing={1.2}>
+                            <Stack direction="row" alignItems="center" spacing={1.2} useFlexGap>
                               <Checkbox
                                 size="small"
                                 checked={selectedLocations.includes(location)}
@@ -275,7 +275,7 @@ export default function Listing() {
                   </Box>
 
                   <Typography className="filter-group">{t('listing.guests')}</Typography>
-                  <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mb: 2 }}>
+                  <Stack direction="row" alignItems="center" spacing={1.5} useFlexGap sx={{ mb: 2 }}>
                     <IconButton size="small" className="guest-btn" onClick={() => setGuests((g) => Math.max(1, g - 1))}><RemoveIcon fontSize="small" /></IconButton>
                     <Box className="guest-count">{guests}</Box>
                     <IconButton size="small" className="guest-btn" onClick={() => setGuests((g) => g + 1)}><AddIcon fontSize="small" /></IconButton>
@@ -284,14 +284,14 @@ export default function Listing() {
               </Col>
 
               <Col xs={12} md={9}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'stretch', sm: 'center' }} spacing={2} sx={{ mb: 2 }}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'stretch', sm: 'center' }} spacing={2} useFlexGap sx={{ mb: 2 }}>
                   <Typography className="results-text">
                     {t('listing.showing_results')
                       .replace(':from', String(properties.from ?? 0))
                       .replace(':to', String(properties.to ?? 0))
                       .replace(':total', String(properties.total ?? 0))}
                   </Typography>
-                  <Stack direction="row" spacing={1.5} flex={1} sx={{ maxWidth: 560, ...(isRtl ? { mr: { sm: 'auto' } } : { ml: { sm: 'auto' } }) }}>
+                  <Stack direction="row" spacing={1.5} useFlexGap flex={1} sx={{ maxWidth: 560, ...(isRtl ? { mr: { sm: 'auto' } } : { ml: { sm: 'auto' } }) }}>
                     <TextField
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
@@ -307,7 +307,7 @@ export default function Listing() {
                       <MenuItem value="price_high">{t('listing.price_high')}</MenuItem>
                       <MenuItem value="newest">{t('listing.newest')}</MenuItem>
                     </Select>
-                    <Stack direction="row" spacing={0.5}>
+                    <Stack direction="row" spacing={0.5} useFlexGap>
                       <Button
                         variant={viewMode === 'list' ? 'contained' : 'outlined'}
                         onClick={() => setViewMode('list')}

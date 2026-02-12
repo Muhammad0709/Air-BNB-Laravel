@@ -325,7 +325,7 @@ export default function EditBooking() {
                     required
                     fullWidth
                     InputProps={{
-                      startAdornment: <Typography sx={{ mr: 1, color: '#717171' }}>$</Typography>
+                      startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#717171' }}>$</Typography>
                     }}
                   />
                   <FormControl fullWidth>
@@ -525,7 +525,7 @@ export default function EditBooking() {
 
             <Row className="mt-4">
               <Col xs={12}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="flex-end" sx={{ width: '100%' }}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap justifyContent="flex-end" sx={{ width: '100%' }}>
                   <Button
                     variant="outlined"
                     onClick={() => router.visit('/host/bookings')}

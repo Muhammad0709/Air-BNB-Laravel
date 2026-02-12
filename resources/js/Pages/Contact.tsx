@@ -114,7 +114,7 @@ export default function Contact() {
                   </Typography>
                   
                   <form onSubmit={handleSubmit}>
-                    <Stack spacing={3}>
+                    <Stack spacing={3} useFlexGap>
                       <Box>
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
                           {t('contact.name')}

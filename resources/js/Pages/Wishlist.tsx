@@ -73,7 +73,7 @@ export default function Wishlist() {
           <Container>
             {/* Header Section */}
             <Box sx={{ textAlign: 'center', mb: 6, mt: 4 }}>
-              <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} sx={{ mb: 2 }}>
+              <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} useFlexGap sx={{ mb: 2 }}>
                 <Typography variant="h2" sx={{fontSize: '2.5rem', fontWeight: 800, color: '#222222' }}>
                   {t('wishlist.title')}
                 </Typography>

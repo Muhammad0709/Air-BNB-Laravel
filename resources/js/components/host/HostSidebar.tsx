@@ -9,12 +9,14 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import MessageIcon from '@mui/icons-material/Message'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import { router, usePage } from '@inertiajs/react'
+import { useLanguage } from '../../hooks/use-language'
 
 type HostSidebarProps = {
   sidebarOpen: boolean
 }
 
 export default function HostSidebar({ sidebarOpen }: HostSidebarProps) {
+  const { isRtl } = useLanguage()
   const { auth } = usePage().props as any
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const menuOpen = Boolean(anchorEl)
@@ -92,10 +94,10 @@ export default function HostSidebar({ sidebarOpen }: HostSidebarProps) {
         sx={{
           position: { xs: 'fixed', md: 'fixed' },
           top: 0,
-          left: 0,
+          ...(isRtl ? { right: 0 } : { left: 0 }),
           width: { xs: sidebarOpen ? 280 : 0, md: sidebarOpen ? 280 : 0 },
           bgcolor: '#FFFFFF',
-          borderRight: '1px solid #E5E7EB',
+          ...(isRtl ? { borderLeft: '1px solid #E5E7EB' } : { borderRight: '1px solid #E5E7EB' }),
           transition: 'width 0.3s',
           overflow: 'hidden',
           display: { xs: sidebarOpen ? 'flex' : 'none', md: 'flex' },
@@ -160,7 +162,7 @@ export default function HostSidebar({ sidebarOpen }: HostSidebarProps) {
               }
             }}
           >
-            <Stack direction="row" spacing={2} alignItems="center" sx={{ width: '100%' }}>
+            <Stack direction="row" spacing={2} useFlexGap alignItems="center" sx={{ width: '100%' }}>
               <Avatar
                 src={hostUser.profile_picture ?? undefined}
                 sx={{
@@ -173,7 +175,7 @@ export default function HostSidebar({ sidebarOpen }: HostSidebarProps) {
               >
                 {hostUser.initials}
               </Avatar>
-              <Box sx={{ flex: 1, minWidth: 0, textAlign: 'left' }}>
+              <Box sx={{ flex: 1, minWidth: 0, textAlign: isRtl ? 'right' : 'left' }}>
                 <Typography
                   sx={{
                     fontSize: 14,
@@ -300,7 +302,7 @@ export default function HostSidebar({ sidebarOpen }: HostSidebarProps) {
               '&:hover': { bgcolor: '#F9FAFB' }
             }}
           >
-            <SettingsIcon sx={{ fontSize: 18, color: '#717171', mr: 1.5 }} />
+            <SettingsIcon sx={{ fontSize: 18, color: '#717171', marginInlineEnd: 1.5 }} />
             <Typography sx={{ fontSize: 14, color: '#222222', fontWeight: 500 }}>
               Settings
             </Typography>
@@ -324,7 +326,7 @@ export default function HostSidebar({ sidebarOpen }: HostSidebarProps) {
               '&:hover': { bgcolor: '#F9FAFB' }
             }}
           >
-            <LogoutIcon sx={{ fontSize: 18, color: '#717171', mr: 1.5 }} />
+            <LogoutIcon sx={{ fontSize: 18, color: '#717171', marginInlineEnd: 1.5 }} />
             <Typography sx={{ fontSize: 14, color: '#222222', fontWeight: 500 }}>
               Log out
             </Typography>

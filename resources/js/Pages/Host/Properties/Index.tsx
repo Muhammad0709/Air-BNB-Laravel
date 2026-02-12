@@ -105,7 +105,7 @@ export default function HostProperties() {
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827' }}>
                   My Properties
                 </Typography>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" sx={{ width: { xs: '100%', sm: 'auto' } }}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap alignItems="center" sx={{ width: { xs: '100%', sm: 'auto' } }}>
                 <TextField
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
@@ -159,7 +159,7 @@ export default function HostProperties() {
                       filteredProperties.map((property) => (
                       <TableRow key={property.id} sx={{ '&:hover': { bgcolor: '#F9FAFB' } }}>
                         <TableCell>
-                          <Stack direction="row" spacing={2} alignItems="center">
+                          <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                             <Box
                               component="img"
                               src={property.image || DEFAULT_IMAGE}

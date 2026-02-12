@@ -322,7 +322,7 @@ export default function HostChat() {
                     }
                   }}
                 >
-                  <Stack direction="row" spacing={2} alignItems="flex-start">
+                  <Stack direction="row" spacing={2} useFlexGap alignItems="flex-start">
                     <Avatar sx={{ bgcolor: '#AD542D', width: 48, height: 48 }}>
                       {conversation.customerName.charAt(0)}
                     </Avatar>
@@ -331,7 +331,7 @@ export default function HostChat() {
                         <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222' }}>
                           {conversation.customerName}
                         </Typography>
-                        <Stack direction="row" spacing={1} alignItems="center">
+                        <Stack direction="row" spacing={1} useFlexGap alignItems="center">
                           <Typography variant="caption" sx={{ color: '#9CA3AF' }}>
                             {formatDate(conversation.lastMessageTime)}
                           </Typography>
@@ -367,7 +367,7 @@ export default function HostChat() {
                               textOverflow: 'ellipsis',
                               whiteSpace: 'nowrap',
                               flex: 1,
-                              mr: 1
+                              marginInlineEnd: 1
                             }}
                           >
                             {getLastMessagePreview(conversation)}
@@ -406,8 +406,8 @@ export default function HostChat() {
             <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, height: 'calc(100vh - 200px)', display: 'flex', flexDirection: 'column' }}>
               {/* Chat Header */}
               <Box sx={{ p: 2, borderBottom: '1px solid #E5E7EB' }}>
-                <Stack direction="row" spacing={2} alignItems="center" justifyContent="space-between">
-                  <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center" justifyContent="space-between">
+                  <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                     <Avatar sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}>
                       {currentConversation.customerName.charAt(0)}
                     </Avatar>
@@ -592,7 +592,7 @@ export default function HostChat() {
               {/* Selected Files Preview */}
               {selectedFiles.length > 0 && (
                 <Box sx={{ p: 2, borderTop: '1px solid #E5E7EB', bgcolor: '#FFFFFF' }}>
-                  <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', gap: 1 }}>
+                  <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap', gap: 1 }}>
                     {selectedFiles.map((file, index) => (
                       <Box
                         key={index}
@@ -654,7 +654,7 @@ export default function HostChat() {
 
               {/* Message Input */}
               <Box sx={{ p: 2, borderTop: '1px solid #E5E7EB' }}>
-                <Stack direction="row" spacing={1} alignItems="flex-end">
+                <Stack direction="row" spacing={1} useFlexGap alignItems="flex-end">
                   <input
                     type="file"
                     ref={fileInputRef}
@@ -796,7 +796,7 @@ export default function HostChat() {
                   }
                 }}
               >
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Avatar sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}>
                     {user.name.charAt(0)}
                   </Avatar>

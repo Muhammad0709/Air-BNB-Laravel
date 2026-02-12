@@ -62,7 +62,7 @@ export default function HostLayout({ title, children }: HostLayoutProps) {
         <Paper elevation={0} sx={{ borderBottom: '1px solid #E5E7EB', bgcolor: '#FFFFFF' }}>
           <RBContainer fluid>
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ py: 2 }}>
-              <Stack direction="row" alignItems="center" spacing={2}>
+              <Stack direction="row" alignItems="center" spacing={2} useFlexGap>
                 <IconButton
                   onClick={() => setSidebarOpen(!sidebarOpen)}
                   sx={{ display: 'flex' }}

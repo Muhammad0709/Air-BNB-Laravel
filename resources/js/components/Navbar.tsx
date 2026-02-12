@@ -136,7 +136,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
             <MenuIcon />
           </IconButton>
 
-          <Stack direction="row" spacing={5} sx={{ display: { xs: 'none', md: 'flex' }, mx: 'auto' }}>
+          <Stack direction="row" spacing={5} useFlexGap sx={{ display: { xs: 'none', md: 'flex' }, mx: 'auto' }}>
             {links.map((l) => (
               <Typography
                 key={l.label}
@@ -151,7 +151,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
           </Stack>
 
           {showAuth && (
-            <Stack direction="row" spacing={2} sx={{ display: { xs: 'none', md: 'flex' }, ...(isRtl ? { mr: 'auto' } : { ml: 'auto' }) }} alignItems="center">
+            <Stack direction="row" spacing={2} useFlexGap sx={{ display: { xs: 'none', md: 'flex' }, ...(isRtl ? { mr: 'auto' } : { ml: 'auto' }) }} alignItems="center">
               <Box
                 onClick={handleLanguageClick}
                 sx={{
@@ -168,7 +168,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                 }}
               >
                 <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{currentLanguage.flag}</Typography>
-                <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem' }}>
+                <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem', marginInlineStart: 0.75 }}>
                   {currentLanguage.code.toUpperCase()}
                 </Typography>
                 <ArrowDropDownIcon sx={{ fontSize: 22, color: '#222222', ...(isRtl ? { mr: 0.25 } : { ml: 0.25 }) }} />
@@ -194,9 +194,9 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                       '&:hover': { bgcolor: '#F7F7F7' }
                     }}
                   >
-                    <Stack direction="row" spacing={1.5} alignItems="center">
+                    <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
                       <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{lang.flag}</Typography>
-                      <Typography sx={{ fontWeight:   400, fontSize: '0.875rem', color: '#222222' }}>
+                      <Typography sx={{ fontWeight: 400, fontSize: '0.875rem', color: '#222222' }}>
                         {lang.name}
                       </Typography>
                     </Stack>
@@ -297,7 +297,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                       onClick={handleProfileClose}
                       sx={{ py: 1.5, px: 2, '&:hover': { bgcolor: '#F7F7F7' } }}
                     >
-                      <Stack direction="row" spacing={1.5} alignItems="center">
+                      <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
                         <Box sx={{ width: 32, height: 32, borderRadius: '50%', bgcolor: '#FFF5F7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           <Typography sx={{ fontSize: '1rem' }}>🏠</Typography>
                         </Box>
@@ -331,14 +331,14 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
       {/* Mobile drawer */}
       {open && (
         <Box sx={{ position: 'fixed', inset: 0, bgcolor: 'rgba(0,0,0,0.4)', zIndex: 1200 }} onClick={() => setOpen(false)}>
-          <Box sx={{ position: 'absolute', top: 0, right: 0, width: '80%', maxWidth: 320, height: '100%', bgcolor: '#fff', p: 3 }} onClick={(e) => e.stopPropagation()}>
+          <Box sx={{ position: 'absolute', top: 0, ...(isRtl ? { left: 0 } : { right: 0 }), width: '80%', maxWidth: 320, height: '100%', bgcolor: '#fff', p: 3 }} onClick={(e) => e.stopPropagation()}>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
               <Box component="img" src={logoUrl} alt="lipabnb" sx={{ height: 80, width: 'auto', maxWidth: 400, objectFit: 'contain', display: 'block' }} />
               <IconButton onClick={() => setOpen(false)}>
                 <CloseIcon />
               </IconButton>
             </Stack>
-            <Stack spacing={2.5} sx={{ mb: 3 }}>
+            <Stack spacing={2.5} useFlexGap sx={{ mb: 3 }}>
               {links.map((l) => (
                 <Typography key={l.label} component={Link} href={l.href} onClick={() => setOpen(false)} sx={{ textDecoration: 'none', color: isActive(l.href) ? '#AD542D' : '#222222', fontWeight: 700 }}>
                   {l.label}
@@ -361,7 +361,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                   '&:hover': { bgcolor: '#F7F7F7', borderColor: '#AD542D' }
                 }}
               >
-                <Stack direction="row" spacing={1.5} alignItems="center">
+                <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
                   <Box sx={{ width: 40, height: 40, borderRadius: '50%', bgcolor: '#FFF5F7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Typography sx={{ fontSize: '1.25rem' }}>🏠</Typography>
                   </Box>
@@ -373,8 +373,8 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
               </Box>
             </Stack>
             {showAuth && (
-              <Stack spacing={2}>
-                <Box>
+<Stack spacing={2} useFlexGap>
+              <Box>
                   <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem', mb: 1.5 }}>{t('nav.language')}</Typography>
                   <Box
                     onClick={handleLanguageClick}
@@ -388,12 +388,12 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                       border: '1px solid #DDDDDD',
                       cursor: 'pointer',
                       transition: 'all 0.2s',
-                      '&:hover': { borderColor: '#AD542Dimage.png', bgcolor: '#F7F7F7' }
+                      '&:hover': { borderColor: '#AD542D', bgcolor: '#F7F7F7' }
                     }}
                   >
-                    <Stack direction="row" spacing={1.5} alignItems="center">
+                    <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
                       <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{currentLanguage.flag}</Typography>
-                      <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem' }}>
+                      <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem', marginInlineStart: 0.75 }}>
                         {currentLanguage.name}
                       </Typography>
                     </Stack>
@@ -418,7 +418,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                           '&:hover': { bgcolor: '#F7F7F7' }
                         }}
                       >
-                        <Stack direction="row" spacing={1.5} alignItems="center">
+                        <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
                           <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{lang.flag}</Typography>
                           <Typography sx={{ fontWeight: 400, fontSize: '0.875rem', color: '#222222' }}>
                             {lang.name}
@@ -478,7 +478,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                     ))}
                   </Menu>
                 </Box>
-                <Stack direction="row" spacing={1.5} alignItems="center">
+                <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
                   {isAuthenticated ? (
                     <>
                       <Avatar

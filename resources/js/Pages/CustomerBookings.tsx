@@ -148,28 +148,28 @@ export default function CustomerBookings() {
                             }}
                             onClick={() => router.visit('/bookings')}
                           >
-                            <Stack direction={{ xs: 'column', md: 'row' }} spacing={3}>
+                            <Stack direction={{ xs: 'column', md: 'row' }} spacing={3} useFlexGap>
                               <Box component="img" src={booking.image} alt={booking.property} sx={{ width: { xs: '100%', md: 200 }, height: { xs: 200, md: 150 }, objectFit: 'cover', borderRadius: 2, flexShrink: 0 }} />
                               <Stack spacing={2} sx={{ flex: 1 }}>
-                                <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} spacing={2}>
+                                <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} spacing={2} useFlexGap>
                                   <Box>
                                     <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 0.5 }}>{booking.property}</Typography>
-                                    <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
+                                    <Stack direction="row" spacing={1} useFlexGap alignItems="center" sx={{ mb: 1 }}>
                                       <LocationOnIcon sx={{ fontSize: 16, color: '#717171' }} />
                                       <Typography variant="body2" sx={{ color: '#717171' }}>{booking.propertyLocation}</Typography>
                                     </Stack>
                                   </Box>
                                   <Chip label={booking.status} size="small" sx={{ bgcolor: `${getStatusColor(booking.status)}15`, color: getStatusColor(booking.status), fontWeight: 600, fontSize: 12, height: 28 }} />
                                 </Stack>
-                                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} sx={{ mt: 1 }}>
-                                  <Stack direction="row" spacing={1} alignItems="center">
+                                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} useFlexGap sx={{ mt: 1 }}>
+                                  <Stack direction="row" spacing={1} useFlexGap alignItems="center">
                                     <CalendarTodayIcon sx={{ fontSize: 18, color: '#717171' }} />
                                     <Box>
                                       <Typography variant="caption" sx={{ color: '#717171', display: 'block' }}>{t('customer_bookings.checkin')}</Typography>
                                       <Typography variant="body2" sx={{ fontWeight: 600, color: '#222222' }}>{formatDate(booking.checkin)}</Typography>
                                     </Box>
                                   </Stack>
-                                  <Stack direction="row" spacing={1} alignItems="center">
+                                  <Stack direction="row" spacing={1} useFlexGap alignItems="center">
                                     <CalendarTodayIcon sx={{ fontSize: 18, color: '#717171' }} />
                                     <Box>
                                       <Typography variant="caption" sx={{ color: '#717171', display: 'block' }}>{t('customer_bookings.checkout')}</Typography>

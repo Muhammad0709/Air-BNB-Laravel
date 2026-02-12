@@ -85,7 +85,7 @@ export default function ViewProperty() {
         >
           Back to Properties
         </Button>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ width: { xs: '100%', sm: 'auto' } }}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: 'auto' } }}>
           <Button
             variant="outlined"
             startIcon={property.status === 'Active' ? <VisibilityOffIcon /> : <VisibilityIcon />}
@@ -160,12 +160,12 @@ export default function ViewProperty() {
               <Typography variant="h4" sx={{ fontWeight: 700, color: '#111827', mb: 2 }}>
                 {property.title}
               </Typography>
-              <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
-                <Stack direction="row" spacing={1} alignItems="center">
+              <Stack direction="row" spacing={2} useFlexGap alignItems="center" sx={{ mb: 2 }}>
+                <Stack direction="row" spacing={1} useFlexGap alignItems="center">
                   <LocationOnIcon sx={{ fontSize: 18, color: '#6B7280' }} />
                   <Typography sx={{ color: '#6B7280' }}>{property.location}</Typography>
                 </Stack>
-                  <Stack direction="row" spacing={1}>
+                  <Stack direction="row" spacing={1} useFlexGap>
                     <Chip
                       label={property.status}
                       size="small"
@@ -182,7 +182,7 @@ export default function ViewProperty() {
             <Box sx={{ textAlign: { xs: 'left', sm: 'right' } }}>
               <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827' }}>
                 ${property.price}
-                <Typography component="span" sx={{ fontSize: 16, color: '#6B7280', fontWeight: 400, ml: 0.5 }}>
+                <Typography component="span" sx={{ fontSize: 16, color: '#6B7280', fontWeight: 400, marginInlineStart: 0.5 }}>
                   /night
                 </Typography>
               </Typography>
@@ -239,7 +239,7 @@ export default function ViewProperty() {
               </Typography>
 
               <Stack spacing={3}>
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -263,7 +263,7 @@ export default function ViewProperty() {
 
                 <Divider />
 
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -285,7 +285,7 @@ export default function ViewProperty() {
 
                 <Divider />
 
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -307,7 +307,7 @@ export default function ViewProperty() {
 
                 <Divider />
 
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,

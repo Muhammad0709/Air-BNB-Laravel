@@ -73,7 +73,7 @@ export default function AdminSupportTickets() {
               <CardContent>
                 <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
                   <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>All Support Tickets</Typography>
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" sx={{ width: { xs: '100%', sm: 'auto' } }}>
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap alignItems="center" sx={{ width: { xs: '100%', sm: 'auto' } }}>
                     <TextField value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search tickets..." size="small" sx={{ width: { xs: '100%', sm: 250 } }} InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon fontSize="small" sx={{ color: '#9CA3AF' }} /></InputAdornment> }} />
                     <Button variant="contained" onClick={() => router.visit('/admin/support-tickets/create')} sx={{ bgcolor: '#AD542D', textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>Create Ticket</Button>
                   </Stack>

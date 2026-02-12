@@ -316,7 +316,7 @@ export default function ListingDetail() {
                 <Col md={6} sm={6}>
                   <Box className="info-item d-flex gap-2">
                       <Box className="info-icon">
-                     <BedIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px',mr: 1.5 }} />
+                     <BedIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px', marginInlineEnd: 1.5 }} />
                       </Box>
                     <Box className="info-text">
                       <Typography component="span" className="info-number">{property.bedrooms}</Typography>
@@ -327,7 +327,7 @@ export default function ListingDetail() {
                 <Col md={6} sm={6}>
                   <Box className="info-item d-flex gap-2">
                     <Box className="info-icon">
-                    <BathroomIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px',mr: 1.5 }} />
+                    <BathroomIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px', marginInlineEnd: 1.5 }} />
                     </Box>
                     <Typography component="span" className="info-number">{property.bathrooms}</Typography>
                     <Typography component="span" className="info-label">{t('listing_detail.bathrooms')}</Typography>
@@ -338,7 +338,7 @@ export default function ListingDetail() {
                 <Col md={6} sm={6}>
                   <Box className="info-item d-flex gap-2">
                     <Box className="info-icon">
-                    <PeopleIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px',mr: 1.5 }} />
+                    <PeopleIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px', marginInlineEnd: 1.5 }} />
                     </Box>
                     <Box className="info-text">
                       <Typography component="span" className="info-number">{property.guests}</Typography>
@@ -349,7 +349,7 @@ export default function ListingDetail() {
                 <Col md={6} sm={6}>
                   <Box className="info-item d-flex gap-2">
                     <Box className="info-icon">
-                    <HomeIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px',mr: 1.5 }} />
+                    <HomeIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px', marginInlineEnd: 1.5 }} />
                     </Box>
                     <Typography component="span" className="info-label">{property.property_type || t('listing_detail.entire_place')}</Typography>
                   </Box>

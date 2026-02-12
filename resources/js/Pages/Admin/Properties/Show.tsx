@@ -73,7 +73,7 @@ export default function ViewProperty() {
         >
           Back to Properties
         </Button>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ width: { xs: '100%', sm: 'auto' } }}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: 'auto' } }}>
           <Button
             variant="outlined"
             startIcon={currentStatus === 'Active' ? <VisibilityOffIcon /> : <VisibilityIcon />}
@@ -127,13 +127,13 @@ export default function ViewProperty() {
       {/* Property Header */}
       <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 3, mb: 4, bgcolor: '#FAFBFC' }}>
         <CardContent sx={{ p: { xs: 3, md: 4 } }}>
-          <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', md: 'flex-start' }} spacing={3}>
+          <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', md: 'flex-start' }} spacing={3} useFlexGap>
             <Box sx={{ flex: 1 }}>
               <Typography variant="h3" sx={{ fontWeight: 700, color: '#111827', mb: 2 }}>
                 {property.title}
               </Typography>
-              <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap" sx={{ mb: 2 }}>
-                <Stack direction="row" spacing={1} alignItems="center">
+              <Stack direction="row" spacing={2} useFlexGap alignItems="center" flexWrap="wrap" sx={{ mb: 2 }}>
+                <Stack direction="row" spacing={1} useFlexGap alignItems="center">
                   <LocationOnIcon sx={{ fontSize: 20, color: '#6B7280' }} />
                   <Typography sx={{ color: '#4A5568', fontSize: 16, fontWeight: 500 }}>{property.location}</Typography>
                 </Stack>
@@ -156,7 +156,7 @@ export default function ViewProperty() {
             <Box sx={{ textAlign: { xs: 'left', md: 'right' } }}>
               <Typography variant="h3" sx={{ fontWeight: 700, color: '#111827' }}>
                 ${property.price}
-                <Typography component="span" sx={{ fontSize: 20, color: '#6B7280', fontWeight: 400, ml: 0.5 }}>
+                <Typography component="span" sx={{ fontSize: 20, color: '#6B7280', fontWeight: 400, marginInlineStart: 0.5 }}>
                   /night
                 </Typography>
               </Typography>
@@ -175,7 +175,7 @@ export default function ViewProperty() {
               </Typography>
 
               <Stack spacing={2.5}>
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 56,
@@ -200,7 +200,7 @@ export default function ViewProperty() {
 
                 <Divider />
 
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 56,
@@ -223,7 +223,7 @@ export default function ViewProperty() {
 
                 <Divider />
 
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 56,
@@ -246,7 +246,7 @@ export default function ViewProperty() {
 
                 <Divider />
 
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 56,

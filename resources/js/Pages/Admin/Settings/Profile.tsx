@@ -145,7 +145,7 @@ export default function ProfileSettings() {
                   <form onSubmit={handleProfileSubmit}>
                     <Stack spacing={4}>
                       <Box>
-                        <Stack direction="row" spacing={3} alignItems="center">
+                        <Stack direction="row" spacing={3} useFlexGap alignItems="center">
                           <Box sx={{ position: 'relative' }}>
                             <Avatar src={profilePictureUrl || undefined} sx={{ width: 100, height: 100, bgcolor: '#AD542D', fontSize: '2rem', fontWeight: 700 }}>
                               {!profilePictureUrl && getInitials(profileData.name)}

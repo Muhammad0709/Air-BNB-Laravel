@@ -26,7 +26,7 @@ export default function Pagination({ currentPage, lastPage, onPageChange, sx }: 
   const pages = getPageNumbers(current, last)
 
   return (
-    <Stack direction="row" justifyContent="center" alignItems="center" spacing={1} sx={{ mt: 4, mb: 2, ...sx }}>
+    <Stack direction="row" justifyContent="center" alignItems="center" spacing={1} useFlexGap sx={{ mt: 4, mb: 2, ...sx }}>
       <Button
         size="small"
         disabled={current <= 1}
@@ -42,7 +42,7 @@ export default function Pagination({ currentPage, lastPage, onPageChange, sx }: 
       >
         Previous
       </Button>
-      <Stack direction="row" alignItems="center" spacing={0.5}>
+      <Stack direction="row" alignItems="center" spacing={0.5} useFlexGap>
         {pages.map((p, idx) =>
           p === 'ellipsis' ? (
             <Typography key={`e-${idx}`} sx={{ px: 0.75, color: '#6B7280', fontSize: 14 }}>

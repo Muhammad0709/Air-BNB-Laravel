@@ -241,7 +241,7 @@ export default function Home() {
                                   }
                                 }}
                               >
-                                <Stack direction="row" spacing={2} alignItems="flex-start">
+                                <Stack direction="row" spacing={2} useFlexGap alignItems="flex-start">
                                   <LocationOnIcon sx={{ color: '#222222', fontSize: 20, mt: 0.5 }} />
                                   <Stack spacing={0.5}>
                                     <Typography variant="body1" sx={{ fontWeight: 600, color: '#222222' }}>
@@ -326,7 +326,7 @@ export default function Home() {
                           }
                         }}
                       >
-                        <Stack spacing={3}>
+                        <Stack spacing={3} useFlexGap>
                           {/* Adults */}
                           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Typography sx={{ fontWeight: 600, color: '#222222' }}>{t('home.adults')}</Typography>

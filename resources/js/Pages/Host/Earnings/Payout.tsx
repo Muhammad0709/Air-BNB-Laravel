@@ -103,7 +103,7 @@ export default function ShowPayout() {
               </Typography>
 
               <Stack spacing={3}>
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -127,7 +127,7 @@ export default function ShowPayout() {
 
                 <Divider />
 
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -149,7 +149,7 @@ export default function ShowPayout() {
 
                 <Divider />
 
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -181,7 +181,7 @@ export default function ShowPayout() {
               </Typography>
 
               <Stack spacing={3}>
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,
@@ -209,7 +209,7 @@ export default function ShowPayout() {
 
                 <Divider />
 
-                <Stack direction="row" spacing={2} alignItems="center">
+                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                   <Box
                     sx={{
                       width: 40,

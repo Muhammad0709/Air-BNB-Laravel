@@ -56,7 +56,7 @@ export default function ViewUser() {
         >
           Back to Users
         </Button>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ width: { xs: '100%', sm: 'auto' } }}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: 'auto' } }}>
           <Button
             variant="outlined"
             startIcon={<DeleteIcon />}
@@ -95,7 +95,7 @@ export default function ViewUser() {
       {/* User Header */}
       <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '16px', mb: 3 }}>
         <CardContent sx={{ p: { xs: 2, md: 4 } }}>
-          <Stack direction="row" alignItems="center" spacing={3}>
+          <Stack direction="row" alignItems="center" spacing={3} useFlexGap>
             <Avatar
               sx={{
                 width: 120,
@@ -111,14 +111,14 @@ export default function ViewUser() {
               <Typography variant="h4" sx={{ fontWeight: 700, color: '#111827', mb: 1 }}>
                 {user.name}
               </Typography>
-              <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
-                <Stack direction="row" spacing={1} alignItems="center">
+              <Stack direction="row" spacing={2} useFlexGap alignItems="center" sx={{ mb: 2 }}>
+                <Stack direction="row" spacing={1} useFlexGap alignItems="center">
                   <EmailIcon sx={{ fontSize: 18, color: '#6B7280' }} />
                   <Typography sx={{ color: '#6B7280' }}>{user.email}</Typography>
                 </Stack>
               </Stack>
-              <Stack direction="row" spacing={3}>
-                <Stack direction="row" spacing={1} alignItems="center">
+              <Stack direction="row" spacing={3} useFlexGap>
+                <Stack direction="row" spacing={1} useFlexGap alignItems="center">
                   <CalendarTodayIcon sx={{ fontSize: 18, color: '#6B7280' }} />
                   <Typography sx={{ color: '#6B7280' }}>
                     Joined {new Date(user.created_at).toLocaleDateString('en-US', {

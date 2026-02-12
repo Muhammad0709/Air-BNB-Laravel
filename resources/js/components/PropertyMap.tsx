@@ -235,7 +235,7 @@ export default function PropertyMap({ properties, center = [34.0522, -118.2437],
                   </Box>
                   <Box sx={{ p: 1.5, pt: 1.25 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 0.5 }}>
-                      <Typography component="div" sx={{ fontSize: '1rem', fontWeight: 600, color: '#222222', flex: 1, pr: 1, lineHeight: 1.2 }}>
+                      <Typography component="div" sx={{ fontSize: '1rem', fontWeight: 600, color: '#222222', flex: 1, paddingInlineEnd: 1, lineHeight: 1.2 }}>
                         {formatTitle()}
                       </Typography>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0 }}>

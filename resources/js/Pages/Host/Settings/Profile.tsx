@@ -188,7 +188,7 @@ export default function HostProfileSettings() {
                   <Stack spacing={4}>
                     {/* Profile Picture */}
                     <Box>
-                      <Stack direction="row" spacing={3} alignItems="center">
+                      <Stack direction="row" spacing={3} useFlexGap alignItems="center">
                         <Box sx={{ position: 'relative' }}>
                           <Avatar
                             src={profilePictureUrl || undefined}
@@ -253,7 +253,7 @@ export default function HostProfileSettings() {
                     </Box>
 
                     {/* Name Fields */}
-                    <Stack direction="row" spacing={2}>
+                    <Stack direction="row" spacing={2} useFlexGap>
                       <TextField
                         fullWidth
                         label="First Name"

@@ -81,7 +81,7 @@ export default function AdminProperties() {
                       propertiesList.map((property: any) => (
                         <TableRow key={property.id} sx={{ '&:hover': { bgcolor: '#F9FAFB' } }}>
                           <TableCell>
-                            <Stack direction="row" spacing={2} alignItems="center">
+                            <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                               <Box
                                 component="img"
                                 src={property.image || DEFAULT_IMAGE}
