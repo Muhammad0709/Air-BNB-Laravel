@@ -47,7 +47,7 @@ export default function SignIn() {
       <Head title={t('auth.signin.title')} />
       <Box sx={{ minHeight: '100vh' }}>
         {/* Language dropdown - right side */}
-        <Box sx={{ position: 'fixed', top: 16, right: 16, zIndex: 1300 }}>
+        <Box sx={{ position: 'fixed', top: 16, ...(isRtl ? { left: 16 } : { right: 16 }), zIndex: 1300 }}>
           <Box
             onClick={handleLanguageClick}
             sx={{

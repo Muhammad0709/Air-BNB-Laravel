@@ -18,7 +18,7 @@ const languages = [
 ]
 
 export default function SignUp() {
-  const { t, language, switchLanguage } = useLanguage()
+  const { t, language, switchLanguage, isRtl } = useLanguage()
   const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null)
   const currentLanguage = languages.find((l) => l.code === language) || languages[0]
 
@@ -48,7 +48,7 @@ export default function SignUp() {
       <Head title={t('auth.signup.title')} />
       <Box sx={{ minHeight: '100vh' }}>
         {/* Language dropdown - right side */}
-        <Box sx={{ position: 'fixed', top: 16, right: 16, zIndex: 1300 }}>
+        <Box sx={{ position: 'fixed', top: 16, ...(isRtl ? { left: 16 } : { right: 16 }), zIndex: 1300 }}>
           <Box
             onClick={handleLanguageClick}
             sx={{
