@@ -18,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\SetLocaleFromSession::class,
             \App\Http\Middleware\HandleInertiaRequests::class,
         ]);
-        
+
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'host' => \App\Http\Middleware\HostMiddleware::class,

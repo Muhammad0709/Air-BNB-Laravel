@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\HostPropertyController;
 use App\Http\Controllers\Api\HostBookingController;
 use App\Http\Controllers\Api\HostChatController;
 use App\Http\Controllers\Api\HostEarningsController;
+use App\Http\Controllers\Api\SearchController;
 use App\Http\Middleware\UserMiddleware;
 use App\Http\Middleware\HostApiMiddleware;
 
@@ -41,7 +42,6 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/password/forgot', [AuthController::class, 'forgotPassword']);
 Route::post('/password/reset', [AuthController::class, 'resetPassword']);
-
 
 // Protected routes (require authentication)
 Route::middleware('auth:sanctum')->group(function () {
@@ -90,6 +90,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware([UserMiddleware::class])->group(function () {
         // Home API
         Route::get('/home', [HomeController::class, 'index']);
+        
+        // Search API (auth required, GET like Stays)
+        Route::get('/search', [SearchController::class, 'index']);
         
         // Stays API
         Route::get('/stays', [StaysController::class, 'index']);

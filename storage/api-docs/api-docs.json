@@ -5540,6 +5540,180 @@
                 ]
             }
         },
+        "/api/search": {
+            "post": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Search properties (public)",
+                "description": "Search properties by destination/location, check-in/check-out dates, guests (adults, children, rooms). POST body (JSON or form). No authentication required.",
+                "operationId": "5a72f01c02524d82eb2608566fe44476",
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "location": {
+                                        "type": "string",
+                                        "example": "California"
+                                    },
+                                    "checkin": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2026-03-01"
+                                    },
+                                    "checkout": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2026-03-07"
+                                    },
+                                    "adults": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "children": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "rooms": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "search": {
+                                        "type": "string",
+                                        "example": "beachfront"
+                                    },
+                                    "min_price": {
+                                        "type": "number",
+                                        "example": 100
+                                    },
+                                    "max_price": {
+                                        "type": "number",
+                                        "example": 500
+                                    },
+                                    "sort_by": {
+                                        "type": "string",
+                                        "enum": [
+                                            "featured",
+                                            "price_low",
+                                            "price_high",
+                                            "rating_high",
+                                            "newest"
+                                        ],
+                                        "example": "featured"
+                                    },
+                                    "page": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "per_page": {
+                                        "type": "integer",
+                                        "example": 12
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Search results",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Search results retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "properties": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Property"
+                                                    }
+                                                },
+                                                "pagination": {
+                                                    "properties": {
+                                                        "current_page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "last_page": {
+                                                            "type": "integer",
+                                                            "example": 5
+                                                        },
+                                                        "per_page": {
+                                                            "type": "integer",
+                                                            "example": 12
+                                                        },
+                                                        "total": {
+                                                            "type": "integer",
+                                                            "example": 50
+                                                        },
+                                                        "from": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "to": {
+                                                            "type": "integer",
+                                                            "example": 12
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "checkin": {
+                                                    "type": "string",
+                                                    "example": "2026-03-01",
+                                                    "nullable": true
+                                                },
+                                                "checkout": {
+                                                    "type": "string",
+                                                    "example": "2026-03-07",
+                                                    "nullable": true
+                                                },
+                                                "nights": {
+                                                    "type": "integer",
+                                                    "example": 6,
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/stays": {
             "get": {
                 "tags": [
@@ -6286,6 +6460,10 @@
         {
             "name": "Profile",
             "description": "API endpoints for user profile management"
+        },
+        {
+            "name": "Search",
+            "description": "Public API for property search (destination, dates, guests) - no auth required"
         },
         {
             "name": "Stays",
