@@ -1,558 +1,561 @@
 {
-  "_AccessTime-JxTb-0cC.js": {
-    "file": "assets/AccessTime-JxTb-0cC.js",
+  "_AccessTime-CX-SGzf7.js": {
+    "file": "assets/AccessTime-CX-SGzf7.js",
     "name": "AccessTime",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_ActionsMenu-drlnInKW.js": {
-    "file": "assets/ActionsMenu-drlnInKW.js",
+  "_ActionsMenu-BSd7gS-T.js": {
+    "file": "assets/ActionsMenu-BSd7gS-T.js",
     "name": "ActionsMenu",
     "imports": [
       "resources/js/app.jsx",
-      "_MoreVert-Cf9EA5gW.js",
-      "_Edit-Cz35bcF9.js",
-      "_Delete-DEQZGvOM.js",
-      "_Visibility-B3Wg4kNG.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_Stack-CyiA1vL9.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Box-Bt3jkSqy.js"
+      "_MoreVert-DFqSK2nv.js",
+      "_Edit-DmoDUxqR.js",
+      "_Delete-BSRGypGA.js",
+      "_Visibility-B2edmwdG.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_Stack-26joxvls.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Box-C2PF00jf.js"
     ]
   },
-  "_Add-BGJlNvZ1.js": {
-    "file": "assets/Add-BGJlNvZ1.js",
+  "_Add-Ze85R7No.js": {
+    "file": "assets/Add-Ze85R7No.js",
     "name": "Add",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_AdminLayout-Bcy5CJkX.js": {
-    "file": "assets/AdminLayout-Bcy5CJkX.js",
+  "_AdminLayout-CX-ZJmbw.js": {
+    "file": "assets/AdminLayout-CX-ZJmbw.js",
     "name": "AdminLayout",
     "imports": [
       "resources/js/app.jsx",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Stack-CyiA1vL9.js",
-      "_Box-Bt3jkSqy.js",
-      "_Container-DzzB6KIi.js"
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_Stack-26joxvls.js",
+      "_Box-C2PF00jf.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js"
     ]
   },
-  "_ArrowBack-CN_KCeog.js": {
-    "file": "assets/ArrowBack-CN_KCeog.js",
+  "_ArrowBack-BVdACbjX.js": {
+    "file": "assets/ArrowBack-BVdACbjX.js",
     "name": "ArrowBack",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_AttachFile-h1Mt3fCx.js": {
-    "file": "assets/AttachFile-h1Mt3fCx.js",
+  "_AttachFile-xFG8MVQy.js": {
+    "file": "assets/AttachFile-xFG8MVQy.js",
     "name": "AttachFile",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_AttachMoney-DKf0fbVD.js": {
-    "file": "assets/AttachMoney-DKf0fbVD.js",
+  "_AttachMoney-DdLdciYt.js": {
+    "file": "assets/AttachMoney-DdLdciYt.js",
     "name": "AttachMoney",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Bathtub-2CrrtQsT.js": {
-    "file": "assets/Bathtub-2CrrtQsT.js",
+  "_Bathtub-C7dXdmRU.js": {
+    "file": "assets/Bathtub-C7dXdmRU.js",
     "name": "Bathtub",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Bed-DauR1ox5.js": {
-    "file": "assets/Bed-DauR1ox5.js",
+  "_Bed-CnRPoRgI.js": {
+    "file": "assets/Bed-CnRPoRgI.js",
     "name": "Bed",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_BookingSummaryCard-BmrYZ8uw.js": {
-    "file": "assets/BookingSummaryCard-BmrYZ8uw.js",
+  "_BookingSummaryCard-C8RhtNuL.js": {
+    "file": "assets/BookingSummaryCard-C8RhtNuL.js",
     "name": "BookingSummaryCard",
     "imports": [
       "resources/js/app.jsx",
-      "_LocationOn-C4ltgbSn.js",
-      "_Star-yffUuuKr.js",
-      "_Stack-CyiA1vL9.js",
-      "_Box-Bt3jkSqy.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_KeyboardArrowDown-8tMyqA0w.js"
+      "_LocationOn-CMKNkNSq.js",
+      "_Star-DC9s_UBy.js",
+      "_Stack-26joxvls.js",
+      "_Box-C2PF00jf.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_use-language-DtKZJM4y.js",
+      "_KeyboardArrowDown-s2i05HpT.js"
     ]
   },
-  "_Box-Bt3jkSqy.js": {
-    "file": "assets/Box-Bt3jkSqy.js",
+  "_Box-C2PF00jf.js": {
+    "file": "assets/Box-C2PF00jf.js",
     "name": "Box",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_CalendarToday-C5JeWs0V.js": {
-    "file": "assets/CalendarToday-C5JeWs0V.js",
+  "_CalendarToday-Bs_XTKwr.js": {
+    "file": "assets/CalendarToday-Bs_XTKwr.js",
     "name": "CalendarToday",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_CardContent-D0VTyrdU.js": {
-    "file": "assets/CardContent-D0VTyrdU.js",
+  "_CardContent-Dv-hAY9L.js": {
+    "file": "assets/CardContent-Dv-hAY9L.js",
     "name": "CardContent",
     "imports": [
       "resources/js/app.jsx",
-      "_Box-Bt3jkSqy.js",
-      "_Stack-CyiA1vL9.js"
+      "_Box-C2PF00jf.js",
+      "_Stack-26joxvls.js"
     ]
   },
-  "_CheckCircle-0Orjg-2m.js": {
-    "file": "assets/CheckCircle-0Orjg-2m.js",
+  "_CheckCircle-B5CoXN5y.js": {
+    "file": "assets/CheckCircle-B5CoXN5y.js",
     "name": "CheckCircle",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Checkbox-Ca1RAW_A.js": {
-    "file": "assets/Checkbox-Ca1RAW_A.js",
+  "_Checkbox-DcRDZ7PT.js": {
+    "file": "assets/Checkbox-DcRDZ7PT.js",
     "name": "Checkbox",
     "imports": [
       "resources/js/app.jsx",
-      "_Box-Bt3jkSqy.js",
-      "_useFormControl-jTL-W0PA.js",
-      "_Stack-CyiA1vL9.js"
+      "_Box-C2PF00jf.js",
+      "_useFormControl-B4piLBUM.js",
+      "_Stack-26joxvls.js"
     ]
   },
-  "_ChevronRight-DTYTS36o.js": {
-    "file": "assets/ChevronRight-DTYTS36o.js",
+  "_ChevronRight-BbklG6Sm.js": {
+    "file": "assets/ChevronRight-BbklG6Sm.js",
     "name": "ChevronRight",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Chip-BbbvpDpV.js": {
-    "file": "assets/Chip-BbbvpDpV.js",
+  "_Chip-3kzNJxHH.js": {
+    "file": "assets/Chip-3kzNJxHH.js",
     "name": "Chip",
     "imports": [
       "resources/js/app.jsx",
-      "_Box-Bt3jkSqy.js",
-      "_Stack-CyiA1vL9.js"
+      "_Box-C2PF00jf.js",
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Close-CKdSoYIG.js": {
-    "file": "assets/Close-CKdSoYIG.js",
+  "_Close-ZvlGfhoA.js": {
+    "file": "assets/Close-ZvlGfhoA.js",
     "name": "Close",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_CloudUpload-db7htJNn.js": {
-    "file": "assets/CloudUpload-db7htJNn.js",
+  "_CloudUpload-CIMqRt_N.js": {
+    "file": "assets/CloudUpload-CIMqRt_N.js",
     "name": "CloudUpload",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Container-DzzB6KIi.js": {
-    "file": "assets/Container-DzzB6KIi.js",
+  "_Container-B9bZszYJ.js": {
+    "file": "assets/Container-B9bZszYJ.js",
     "name": "Container",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_Delete-DEQZGvOM.js": {
-    "file": "assets/Delete-DEQZGvOM.js",
+  "_Delete-BSRGypGA.js": {
+    "file": "assets/Delete-BSRGypGA.js",
     "name": "Delete",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_DeleteConfirmationDialog-BY_3QG9l.js": {
-    "file": "assets/DeleteConfirmationDialog-BY_3QG9l.js",
+  "_DeleteConfirmationDialog-s3_cmY3U.js": {
+    "file": "assets/DeleteConfirmationDialog-s3_cmY3U.js",
     "name": "DeleteConfirmationDialog",
     "imports": [
       "resources/js/app.jsx",
-      "_DialogTitle-DkpVRQBI.js",
-      "_Box-Bt3jkSqy.js",
-      "_Stack-CyiA1vL9.js"
+      "_DialogTitle-BGKT9-K3.js",
+      "_Box-C2PF00jf.js",
+      "_Stack-26joxvls.js"
     ]
   },
-  "_DialogTitle-DkpVRQBI.js": {
-    "file": "assets/DialogTitle-DkpVRQBI.js",
+  "_DialogTitle-BGKT9-K3.js": {
+    "file": "assets/DialogTitle-BGKT9-K3.js",
     "name": "DialogTitle",
     "imports": [
       "resources/js/app.jsx",
-      "_Box-Bt3jkSqy.js",
-      "_Stack-CyiA1vL9.js"
+      "_Box-C2PF00jf.js",
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Edit-Cz35bcF9.js": {
-    "file": "assets/Edit-Cz35bcF9.js",
+  "_Edit-DmoDUxqR.js": {
+    "file": "assets/Edit-DmoDUxqR.js",
     "name": "Edit",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Email-CHnaNv1-.js": {
-    "file": "assets/Email-CHnaNv1-.js",
+  "_Email-KwWEPecO.js": {
+    "file": "assets/Email-KwWEPecO.js",
     "name": "Email",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_FavoriteBorder-wU0lKBiM.js": {
-    "file": "assets/FavoriteBorder-wU0lKBiM.js",
+  "_FavoriteBorder-DVzo0veL.js": {
+    "file": "assets/FavoriteBorder-DVzo0veL.js",
     "name": "FavoriteBorder",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_FeaturedCard-B60F8Spj.js": {
-    "file": "assets/FeaturedCard-B60F8Spj.js",
+  "_FeaturedCard-BxH_5LkA.js": {
+    "file": "assets/FeaturedCard-BxH_5LkA.js",
     "name": "FeaturedCard",
     "imports": [
       "resources/js/app.jsx",
-      "_Star-yffUuuKr.js",
-      "_use-language-reb6vBMA.js",
-      "_Stack-CyiA1vL9.js",
-      "_Box-Bt3jkSqy.js"
+      "_Star-DC9s_UBy.js",
+      "_use-language-DtKZJM4y.js",
+      "_Stack-26joxvls.js",
+      "_Box-C2PF00jf.js"
     ]
   },
-  "_Footer-DG--L2TP.js": {
-    "file": "assets/Footer-DG--L2TP.js",
+  "_Footer-BnJykdy7.js": {
+    "file": "assets/Footer-BnJykdy7.js",
     "name": "Footer",
     "imports": [
       "resources/js/app.jsx",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Close-CKdSoYIG.js",
-      "_Stack-CyiA1vL9.js",
-      "_use-language-reb6vBMA.js",
-      "_Box-Bt3jkSqy.js"
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Close-ZvlGfhoA.js",
+      "_Stack-26joxvls.js",
+      "_use-language-DtKZJM4y.js",
+      "_Box-C2PF00jf.js"
     ]
   },
-  "_FormControlLabel-qhIGkrfp.js": {
-    "file": "assets/FormControlLabel-qhIGkrfp.js",
+  "_FormControlLabel-CLXtGcIg.js": {
+    "file": "assets/FormControlLabel-CLXtGcIg.js",
     "name": "FormControlLabel",
     "imports": [
       "resources/js/app.jsx",
-      "_Box-Bt3jkSqy.js",
-      "_useFormControl-jTL-W0PA.js",
-      "_Stack-CyiA1vL9.js"
+      "_Box-C2PF00jf.js",
+      "_useFormControl-B4piLBUM.js",
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Home-BWzn5usc.js": {
-    "file": "assets/Home-BWzn5usc.js",
+  "_Home-X92pFpTD.js": {
+    "file": "assets/Home-X92pFpTD.js",
     "name": "Home",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_HostLayout-BQ1cu41L.js": {
-    "file": "assets/HostLayout-BQ1cu41L.js",
+  "_HostLayout-Ilt2RuW7.js": {
+    "file": "assets/HostLayout-Ilt2RuW7.js",
     "name": "HostLayout",
     "imports": [
       "resources/js/app.jsx",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Message-CUZooXLN.js",
-      "_Stack-CyiA1vL9.js",
-      "_Box-Bt3jkSqy.js",
-      "_Container-DzzB6KIi.js"
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_Message-CHxf8m4Y.js",
+      "_Stack-26joxvls.js",
+      "_Box-C2PF00jf.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js"
     ]
   },
-  "_Hotel-Cxh1U2OX.js": {
-    "file": "assets/Hotel-Cxh1U2OX.js",
+  "_Hotel-DhHrj9hv.js": {
+    "file": "assets/Hotel-DhHrj9hv.js",
     "name": "Hotel",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_InputAdornment-BY20vhDA.js": {
-    "file": "assets/InputAdornment-BY20vhDA.js",
+  "_InputAdornment-Ckh5xgwH.js": {
+    "file": "assets/InputAdornment-Ckh5xgwH.js",
     "name": "InputAdornment",
     "imports": [
       "resources/js/app.jsx",
-      "_Box-Bt3jkSqy.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_Box-C2PF00jf.js",
+      "_useFormControl-B4piLBUM.js"
     ]
   },
-  "_KeyboardArrowDown-8tMyqA0w.js": {
-    "file": "assets/KeyboardArrowDown-8tMyqA0w.js",
+  "_KeyboardArrowDown-s2i05HpT.js": {
+    "file": "assets/KeyboardArrowDown-s2i05HpT.js",
     "name": "KeyboardArrowDown",
     "imports": [
       "resources/js/app.jsx",
-      "_Box-Bt3jkSqy.js",
-      "_Stack-CyiA1vL9.js"
+      "_Box-C2PF00jf.js",
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Link-DVdqieOK.js": {
-    "file": "assets/Link-DVdqieOK.js",
+  "_Link-Iuo9DvSR.js": {
+    "file": "assets/Link-Iuo9DvSR.js",
     "name": "Link",
     "imports": [
       "resources/js/app.jsx",
-      "_Box-Bt3jkSqy.js",
-      "_Stack-CyiA1vL9.js"
+      "_Box-C2PF00jf.js",
+      "_Stack-26joxvls.js"
     ]
   },
-  "_LocationOn-C4ltgbSn.js": {
-    "file": "assets/LocationOn-C4ltgbSn.js",
+  "_LocationOn-CMKNkNSq.js": {
+    "file": "assets/LocationOn-CMKNkNSq.js",
     "name": "LocationOn",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Logout-Bh6M64Sh.js": {
-    "file": "assets/Logout-Bh6M64Sh.js",
+  "_Logout-Bicf-Mku.js": {
+    "file": "assets/Logout-Bicf-Mku.js",
     "name": "Logout",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Message-CUZooXLN.js": {
-    "file": "assets/Message-CUZooXLN.js",
+  "_Message-CHxf8m4Y.js": {
+    "file": "assets/Message-CHxf8m4Y.js",
     "name": "Message",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_MoreVert-Cf9EA5gW.js": {
-    "file": "assets/MoreVert-Cf9EA5gW.js",
+  "_MoreVert-DFqSK2nv.js": {
+    "file": "assets/MoreVert-DFqSK2nv.js",
     "name": "MoreVert",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_People-BRZ6Mo9Q.js": {
-    "file": "assets/People-BRZ6Mo9Q.js",
+  "_People-CceJGhIB.js": {
+    "file": "assets/People-CceJGhIB.js",
     "name": "People",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Person-y_Px2iIG.js": {
-    "file": "assets/Person-y_Px2iIG.js",
+  "_Person-CLimTmFz.js": {
+    "file": "assets/Person-CLimTmFz.js",
     "name": "Person",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Phone-BTdxAam3.js": {
-    "file": "assets/Phone-BTdxAam3.js",
+  "_Phone-CJLEtARF.js": {
+    "file": "assets/Phone-CJLEtARF.js",
     "name": "Phone",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_PhotoCamera-C9IU4BWl.js": {
-    "file": "assets/PhotoCamera-C9IU4BWl.js",
+  "_PhotoCamera-DOjy8_nH.js": {
+    "file": "assets/PhotoCamera-DOjy8_nH.js",
     "name": "PhotoCamera",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Remove-Cx2fAnoY.js": {
-    "file": "assets/Remove-Cx2fAnoY.js",
+  "_Remove-jq17k1XE.js": {
+    "file": "assets/Remove-jq17k1XE.js",
     "name": "Remove",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Row-BC5P-dgl.js": {
-    "file": "assets/Row-BC5P-dgl.js",
+  "_Row-V3psX_1Y.js": {
+    "file": "assets/Row-V3psX_1Y.js",
     "name": "Row",
     "imports": [
-      "_Container-DzzB6KIi.js",
+      "_Container-B9bZszYJ.js",
       "resources/js/app.jsx"
     ]
   },
-  "_Save-AdhixXiu.js": {
-    "file": "assets/Save-AdhixXiu.js",
+  "_Save-CHu5Z7QJ.js": {
+    "file": "assets/Save-CHu5Z7QJ.js",
     "name": "Save",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Search-DqgkKX9t.js": {
-    "file": "assets/Search-DqgkKX9t.js",
+  "_Search-Cx0qZ2Ku.js": {
+    "file": "assets/Search-Cx0qZ2Ku.js",
     "name": "Search",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Snackbar-DsrJFk-X.js": {
-    "file": "assets/Snackbar-DsrJFk-X.js",
+  "_Snackbar-DNgACC_y.js": {
+    "file": "assets/Snackbar-DNgACC_y.js",
     "name": "Snackbar",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js",
-      "_Box-Bt3jkSqy.js"
+      "_Stack-26joxvls.js",
+      "_Box-C2PF00jf.js"
     ]
   },
-  "_Stack-CyiA1vL9.js": {
-    "file": "assets/Stack-CyiA1vL9.js",
+  "_Stack-26joxvls.js": {
+    "file": "assets/Stack-26joxvls.js",
     "name": "Stack",
     "imports": [
       "resources/js/app.jsx",
-      "_Box-Bt3jkSqy.js"
+      "_Box-C2PF00jf.js"
     ]
   },
-  "_Star-yffUuuKr.js": {
-    "file": "assets/Star-yffUuuKr.js",
+  "_Star-DC9s_UBy.js": {
+    "file": "assets/Star-DC9s_UBy.js",
     "name": "Star",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_TableRow-B65bykuw.js": {
-    "file": "assets/TableRow-B65bykuw.js",
+  "_TableRow-B585_mj-.js": {
+    "file": "assets/TableRow-B585_mj-.js",
     "name": "TableRow",
     "imports": [
       "resources/js/app.jsx",
-      "_Box-Bt3jkSqy.js"
+      "_Box-C2PF00jf.js"
     ]
   },
-  "_TextField-DblC5PLy.js": {
-    "file": "assets/TextField-DblC5PLy.js",
+  "_TextField-D8p6qWxF.js": {
+    "file": "assets/TextField-D8p6qWxF.js",
     "name": "TextField",
     "imports": [
       "resources/js/app.jsx",
-      "_Box-Bt3jkSqy.js",
-      "_Stack-CyiA1vL9.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_Box-C2PF00jf.js",
+      "_Stack-26joxvls.js",
+      "_useFormControl-B4piLBUM.js"
     ]
   },
-  "_Toast-Bc8bIYdd.js": {
-    "file": "assets/Toast-Bc8bIYdd.js",
+  "_Toast-BRGVWtV1.js": {
+    "file": "assets/Toast-BRGVWtV1.js",
     "name": "Toast",
     "imports": [
       "resources/js/app.jsx",
-      "_CheckCircle-0Orjg-2m.js",
-      "_Stack-CyiA1vL9.js",
-      "_Close-CKdSoYIG.js",
-      "_Snackbar-DsrJFk-X.js",
-      "_Box-Bt3jkSqy.js",
-      "_KeyboardArrowDown-8tMyqA0w.js"
+      "_CheckCircle-B5CoXN5y.js",
+      "_Stack-26joxvls.js",
+      "_Close-ZvlGfhoA.js",
+      "_Snackbar-DNgACC_y.js",
+      "_Box-C2PF00jf.js",
+      "_KeyboardArrowDown-s2i05HpT.js"
     ]
   },
-  "_Toast-nY178XWj.js": {
-    "file": "assets/Toast-nY178XWj.js",
+  "_Toast-C9zN_MMA.js": {
+    "file": "assets/Toast-C9zN_MMA.js",
     "name": "Toast",
     "imports": [
       "resources/js/app.jsx",
-      "_Snackbar-DsrJFk-X.js",
-      "_Box-Bt3jkSqy.js",
-      "_Stack-CyiA1vL9.js",
-      "_KeyboardArrowDown-8tMyqA0w.js"
+      "_Snackbar-DNgACC_y.js",
+      "_Box-C2PF00jf.js",
+      "_Stack-26joxvls.js",
+      "_KeyboardArrowDown-s2i05HpT.js"
     ]
   },
-  "_TrendingUp-BK3MY1vE.js": {
-    "file": "assets/TrendingUp-BK3MY1vE.js",
+  "_TrendingUp-Bp_E2I3l.js": {
+    "file": "assets/TrendingUp-Bp_E2I3l.js",
     "name": "TrendingUp",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_Visibility-B3Wg4kNG.js": {
-    "file": "assets/Visibility-B3Wg4kNG.js",
+  "_Visibility-B2edmwdG.js": {
+    "file": "assets/Visibility-B2edmwdG.js",
     "name": "Visibility",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_chatApi-DmWYDG-9.js": {
-    "file": "assets/chatApi-DmWYDG-9.js",
+  "_chatApi-Cq8LLC8n.js": {
+    "file": "assets/chatApi-Cq8LLC8n.js",
     "name": "chatApi",
     "imports": [
       "resources/js/app.jsx",
-      "_Stack-CyiA1vL9.js"
+      "_Stack-26joxvls.js"
     ]
   },
-  "_use-language-reb6vBMA.js": {
-    "file": "assets/use-language-reb6vBMA.js",
+  "_use-language-DtKZJM4y.js": {
+    "file": "assets/use-language-DtKZJM4y.js",
     "name": "use-language",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
-  "_useFormControl-jTL-W0PA.js": {
-    "file": "assets/useFormControl-jTL-W0PA.js",
+  "_useFormControl-B4piLBUM.js": {
+    "file": "assets/useFormControl-B4piLBUM.js",
     "name": "useFormControl",
     "imports": [
       "resources/js/app.jsx"
     ]
   },
   "lang/php_ar.json": {
-    "file": "assets/php_ar-C1H_-cGh.js",
+    "file": "assets/php_ar-CJyG9sVT.js",
     "name": "php_ar",
     "src": "lang/php_ar.json",
     "isDynamicEntry": true
   },
   "lang/php_en.json": {
-    "file": "assets/php_en-CYiVFGf4.js",
+    "file": "assets/php_en-BF0pL_Ka.js",
     "name": "php_en",
     "src": "lang/php_en.json",
     "isDynamicEntry": true
   },
   "lang/php_fa.json": {
-    "file": "assets/php_fa-C0D44oTn.js",
+    "file": "assets/php_fa-PIvJhD7r.js",
     "name": "php_fa",
     "src": "lang/php_fa.json",
     "isDynamicEntry": true
   },
   "lang/php_ku.json": {
-    "file": "assets/php_ku-B1Z1A5LT.js",
+    "file": "assets/php_ku-Lryc8W7j.js",
     "name": "php_ku",
     "src": "lang/php_ku.json",
     "isDynamicEntry": true
   },
   "lang/php_tr.json": {
-    "file": "assets/php_tr-_HQS3gUy.js",
+    "file": "assets/php_tr-DTgAsi1T.js",
     "name": "php_tr",
     "src": "lang/php_tr.json",
     "isDynamicEntry": true
   },
   "lang/php_ur.json": {
-    "file": "assets/php_ur-BaTaKIYb.js",
+    "file": "assets/php_ur-Dt_G0vHL.js",
     "name": "php_ur",
     "src": "lang/php_ur.json",
     "isDynamicEntry": true
@@ -579,1412 +582,1446 @@
     ]
   },
   "resources/js/Pages/About.tsx": {
-    "file": "assets/About-DIQt2FkK.js",
+    "file": "assets/About-BzQnZAZU.js",
     "name": "About",
     "src": "resources/js/Pages/About.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Footer-DG--L2TP.js",
-      "_Container-DzzB6KIi.js",
-      "_Box-Bt3jkSqy.js",
-      "_Row-BC5P-dgl.js",
-      "_Stack-CyiA1vL9.js",
-      "_use-language-reb6vBMA.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Close-CKdSoYIG.js"
+      "_Footer-BnJykdy7.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_Box-C2PF00jf.js",
+      "_Row-V3psX_1Y.js",
+      "_Stack-26joxvls.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Close-ZvlGfhoA.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/Auth/Login.tsx": {
-    "file": "assets/Login-Z9FbqeFT.js",
+    "file": "assets/Login-BbpM7JpO.js",
     "name": "Login",
     "src": "resources/js/Pages/Admin/Auth/Login.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Box-Bt3jkSqy.js",
-      "_Container-DzzB6KIi.js",
-      "_Row-BC5P-dgl.js",
-      "_Stack-CyiA1vL9.js",
-      "_TextField-DblC5PLy.js",
-      "_Link-DVdqieOK.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_Box-C2PF00jf.js",
+      "_Container-B9bZszYJ.js",
+      "_Row-V3psX_1Y.js",
+      "_Stack-26joxvls.js",
+      "_TextField-D8p6qWxF.js",
+      "_Link-Iuo9DvSR.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/Auth/SignUp.tsx": {
-    "file": "assets/SignUp-PZ-EReDw.js",
+    "file": "assets/SignUp-CNJJRJUv.js",
     "name": "SignUp",
     "src": "resources/js/Pages/Admin/Auth/SignUp.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Box-Bt3jkSqy.js",
-      "_Container-DzzB6KIi.js",
-      "_Row-BC5P-dgl.js",
-      "_Stack-CyiA1vL9.js",
-      "_TextField-DblC5PLy.js",
-      "_Link-DVdqieOK.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_Box-C2PF00jf.js",
+      "_Container-B9bZszYJ.js",
+      "_Row-V3psX_1Y.js",
+      "_Stack-26joxvls.js",
+      "_TextField-D8p6qWxF.js",
+      "_Link-Iuo9DvSR.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/Bookings/Create.tsx": {
-    "file": "assets/Create-ChrcZ4qO.js",
+    "file": "assets/Create-3YXMk0iW.js",
     "name": "Create",
     "src": "resources/js/Pages/Admin/Bookings/Create.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Row-BC5P-dgl.js",
-      "_TextField-DblC5PLy.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Container-DzzB6KIi.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Row-V3psX_1Y.js",
+      "_TextField-D8p6qWxF.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/Bookings/Edit.tsx": {
-    "file": "assets/Edit-DRUzdCKn.js",
+    "file": "assets/Edit-D-UrQLUc.js",
     "name": "Edit",
     "src": "resources/js/Pages/Admin/Bookings/Edit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_Toast-Bc8bIYdd.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Row-BC5P-dgl.js",
-      "_TextField-DblC5PLy.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Container-DzzB6KIi.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_Close-CKdSoYIG.js",
-      "_Snackbar-DsrJFk-X.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_Toast-BRGVWtV1.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Row-V3psX_1Y.js",
+      "_TextField-D8p6qWxF.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_Close-ZvlGfhoA.js",
+      "_Snackbar-DNgACC_y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/Bookings/Index.tsx": {
-    "file": "assets/Index-BbMNKYIp.js",
+    "file": "assets/Index-eKqOat9F.js",
     "name": "Index",
     "src": "resources/js/Pages/Admin/Bookings/Index.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_DeleteConfirmationDialog-BY_3QG9l.js",
-      "_ActionsMenu-drlnInKW.js",
-      "_Search-DqgkKX9t.js",
-      "_Row-BC5P-dgl.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Stack-CyiA1vL9.js",
-      "_Box-Bt3jkSqy.js",
-      "_TextField-DblC5PLy.js",
-      "_InputAdornment-BY20vhDA.js",
-      "_TableRow-B65bykuw.js",
-      "_Chip-BbbvpDpV.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Container-DzzB6KIi.js",
-      "_DialogTitle-DkpVRQBI.js",
-      "_MoreVert-Cf9EA5gW.js",
-      "_Edit-Cz35bcF9.js",
-      "_Delete-DEQZGvOM.js",
-      "_Visibility-B3Wg4kNG.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_DeleteConfirmationDialog-s3_cmY3U.js",
+      "_ActionsMenu-BSd7gS-T.js",
+      "_Search-Cx0qZ2Ku.js",
+      "_Row-V3psX_1Y.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Stack-26joxvls.js",
+      "_Box-C2PF00jf.js",
+      "_TextField-D8p6qWxF.js",
+      "_InputAdornment-Ckh5xgwH.js",
+      "_TableRow-B585_mj-.js",
+      "_Chip-3kzNJxHH.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_DialogTitle-BGKT9-K3.js",
+      "_MoreVert-DFqSK2nv.js",
+      "_Edit-DmoDUxqR.js",
+      "_Delete-BSRGypGA.js",
+      "_Visibility-B2edmwdG.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/Bookings/Show.tsx": {
-    "file": "assets/Show-DbCH6kG8.js",
+    "file": "assets/Show-DDuwK4Ge.js",
     "name": "Show",
     "src": "resources/js/Pages/Admin/Bookings/Show.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_Edit-Cz35bcF9.js",
-      "_Person-y_Px2iIG.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_CalendarToday-C5JeWs0V.js",
-      "_Email-CHnaNv1-.js",
-      "_Phone-BTdxAam3.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Chip-BbbvpDpV.js",
-      "_Row-BC5P-dgl.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Container-DzzB6KIi.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_Edit-DmoDUxqR.js",
+      "_Person-CLimTmFz.js",
+      "_Hotel-DhHrj9hv.js",
+      "_CalendarToday-Bs_XTKwr.js",
+      "_Email-KwWEPecO.js",
+      "_Phone-CJLEtARF.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Chip-3kzNJxHH.js",
+      "_Row-V3psX_1Y.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/Dashboard.tsx": {
-    "file": "assets/Dashboard-B79PE6mN.js",
+    "file": "assets/Dashboard-BXyRxi4Y.js",
     "name": "Dashboard",
     "src": "resources/js/Pages/Admin/Dashboard.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Search-DqgkKX9t.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_TrendingUp-BK3MY1vE.js",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_Row-BC5P-dgl.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Stack-CyiA1vL9.js",
-      "_Box-Bt3jkSqy.js",
-      "_TableRow-B65bykuw.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Container-DzzB6KIi.js"
+      "_Search-Cx0qZ2Ku.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_TrendingUp-Bp_E2I3l.js",
+      "_AdminLayout-CX-ZJmbw.js",
+      "_Row-V3psX_1Y.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Stack-26joxvls.js",
+      "_Box-C2PF00jf.js",
+      "_TableRow-B585_mj-.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/Properties/Create.tsx": {
-    "file": "assets/Create-LeUWT3OO.js",
+    "file": "assets/Create-B3oI9Z-r.js",
     "name": "Create",
     "src": "resources/js/Pages/Admin/Properties/Create.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_CloudUpload-db7htJNn.js",
-      "_Delete-DEQZGvOM.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Row-BC5P-dgl.js",
-      "_TextField-DblC5PLy.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Container-DzzB6KIi.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_CloudUpload-CIMqRt_N.js",
+      "_Delete-BSRGypGA.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Row-V3psX_1Y.js",
+      "_TextField-D8p6qWxF.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/Properties/Edit.tsx": {
-    "file": "assets/Edit-Bfxcwrw2.js",
+    "file": "assets/Edit-BehXtv70.js",
     "name": "Edit",
     "src": "resources/js/Pages/Admin/Properties/Edit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_CloudUpload-db7htJNn.js",
-      "_Delete-DEQZGvOM.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Row-BC5P-dgl.js",
-      "_TextField-DblC5PLy.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Container-DzzB6KIi.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_CloudUpload-CIMqRt_N.js",
+      "_Delete-BSRGypGA.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Row-V3psX_1Y.js",
+      "_TextField-D8p6qWxF.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/Properties/Index.tsx": {
-    "file": "assets/Index-BBunV6Y5.js",
+    "file": "assets/Index-z5Y4BcRZ.js",
     "name": "Index",
     "src": "resources/js/Pages/Admin/Properties/Index.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_ActionsMenu-drlnInKW.js",
-      "_Search-DqgkKX9t.js",
-      "_Row-BC5P-dgl.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Stack-CyiA1vL9.js",
-      "_Box-Bt3jkSqy.js",
-      "_TextField-DblC5PLy.js",
-      "_InputAdornment-BY20vhDA.js",
-      "_TableRow-B65bykuw.js",
-      "_Chip-BbbvpDpV.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Container-DzzB6KIi.js",
-      "_MoreVert-Cf9EA5gW.js",
-      "_Edit-Cz35bcF9.js",
-      "_Delete-DEQZGvOM.js",
-      "_Visibility-B3Wg4kNG.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_ActionsMenu-BSd7gS-T.js",
+      "_Search-Cx0qZ2Ku.js",
+      "_Row-V3psX_1Y.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Stack-26joxvls.js",
+      "_Box-C2PF00jf.js",
+      "_TextField-D8p6qWxF.js",
+      "_InputAdornment-Ckh5xgwH.js",
+      "_TableRow-B585_mj-.js",
+      "_Chip-3kzNJxHH.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_MoreVert-DFqSK2nv.js",
+      "_Edit-DmoDUxqR.js",
+      "_Delete-BSRGypGA.js",
+      "_Visibility-B2edmwdG.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/Properties/Show.tsx": {
-    "file": "assets/Show--dKk2e1p.js",
+    "file": "assets/Show-DkFf1-Th.js",
     "name": "Show",
     "src": "resources/js/Pages/Admin/Properties/Show.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_Edit-Cz35bcF9.js",
-      "_Visibility-B3Wg4kNG.js",
-      "_Bathtub-2CrrtQsT.js",
-      "_LocationOn-C4ltgbSn.js",
-      "_Bed-DauR1ox5.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Home-BWzn5usc.js",
-      "_Box-Bt3jkSqy.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Chip-BbbvpDpV.js",
-      "_Row-BC5P-dgl.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Container-DzzB6KIi.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_Edit-DmoDUxqR.js",
+      "_Visibility-B2edmwdG.js",
+      "_Bathtub-C7dXdmRU.js",
+      "_LocationOn-CMKNkNSq.js",
+      "_Bed-CnRPoRgI.js",
+      "_People-CceJGhIB.js",
+      "_Home-X92pFpTD.js",
+      "_Box-C2PF00jf.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Chip-3kzNJxHH.js",
+      "_Row-V3psX_1Y.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/Settings/Index.tsx": {
-    "file": "assets/Index-DdX2Trl8.js",
+    "file": "assets/Index-DWFI-2T0.js",
     "name": "Index",
     "src": "resources/js/Pages/Admin/Settings/Index.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_Toast-Bc8bIYdd.js",
-      "_Save-AdhixXiu.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Row-BC5P-dgl.js",
-      "_Stack-CyiA1vL9.js",
-      "_TextField-DblC5PLy.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Container-DzzB6KIi.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_Close-CKdSoYIG.js",
-      "_Snackbar-DsrJFk-X.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_Toast-BRGVWtV1.js",
+      "_Save-CHu5Z7QJ.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Row-V3psX_1Y.js",
+      "_Stack-26joxvls.js",
+      "_TextField-D8p6qWxF.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_Close-ZvlGfhoA.js",
+      "_Snackbar-DNgACC_y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/Settings/Profile.tsx": {
-    "file": "assets/Profile-NMDlXQLb.js",
+    "file": "assets/Profile-D0cfbY8t.js",
     "name": "Profile",
     "src": "resources/js/Pages/Admin/Settings/Profile.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_Toast-Bc8bIYdd.js",
-      "_Save-AdhixXiu.js",
-      "_PhotoCamera-C9IU4BWl.js",
-      "_Box-Bt3jkSqy.js",
-      "_Row-BC5P-dgl.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Stack-CyiA1vL9.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_TextField-DblC5PLy.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Container-DzzB6KIi.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_Close-CKdSoYIG.js",
-      "_Snackbar-DsrJFk-X.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_Toast-BRGVWtV1.js",
+      "_Save-CHu5Z7QJ.js",
+      "_PhotoCamera-DOjy8_nH.js",
+      "_Box-C2PF00jf.js",
+      "_Row-V3psX_1Y.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Stack-26joxvls.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_TextField-D8p6qWxF.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_Close-ZvlGfhoA.js",
+      "_Snackbar-DNgACC_y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/SupportTickets/Create.tsx": {
-    "file": "assets/Create-Dnzb6qhn.js",
+    "file": "assets/Create-DuNUQBMh.js",
     "name": "Create",
     "src": "resources/js/Pages/Admin/SupportTickets/Create.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_Toast-Bc8bIYdd.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Row-BC5P-dgl.js",
-      "_TextField-DblC5PLy.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Container-DzzB6KIi.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_Close-CKdSoYIG.js",
-      "_Snackbar-DsrJFk-X.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_Toast-BRGVWtV1.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Row-V3psX_1Y.js",
+      "_TextField-D8p6qWxF.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_Close-ZvlGfhoA.js",
+      "_Snackbar-DNgACC_y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/SupportTickets/Edit.tsx": {
-    "file": "assets/Edit-B3HtaHqW.js",
+    "file": "assets/Edit-fmmTwB27.js",
     "name": "Edit",
     "src": "resources/js/Pages/Admin/SupportTickets/Edit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_Toast-Bc8bIYdd.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Row-BC5P-dgl.js",
-      "_TextField-DblC5PLy.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Container-DzzB6KIi.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_Close-CKdSoYIG.js",
-      "_Snackbar-DsrJFk-X.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_Toast-BRGVWtV1.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Row-V3psX_1Y.js",
+      "_TextField-D8p6qWxF.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_Close-ZvlGfhoA.js",
+      "_Snackbar-DNgACC_y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/SupportTickets/Index.tsx": {
-    "file": "assets/Index-NQUYoHJP.js",
+    "file": "assets/Index-BWJTQd2R.js",
     "name": "Index",
     "src": "resources/js/Pages/Admin/SupportTickets/Index.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_DeleteConfirmationDialog-BY_3QG9l.js",
-      "_ActionsMenu-drlnInKW.js",
-      "_Search-DqgkKX9t.js",
-      "_Row-BC5P-dgl.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Stack-CyiA1vL9.js",
-      "_Box-Bt3jkSqy.js",
-      "_TextField-DblC5PLy.js",
-      "_InputAdornment-BY20vhDA.js",
-      "_TableRow-B65bykuw.js",
-      "_Chip-BbbvpDpV.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Container-DzzB6KIi.js",
-      "_DialogTitle-DkpVRQBI.js",
-      "_MoreVert-Cf9EA5gW.js",
-      "_Edit-Cz35bcF9.js",
-      "_Delete-DEQZGvOM.js",
-      "_Visibility-B3Wg4kNG.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_DeleteConfirmationDialog-s3_cmY3U.js",
+      "_ActionsMenu-BSd7gS-T.js",
+      "_Search-Cx0qZ2Ku.js",
+      "_Row-V3psX_1Y.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Stack-26joxvls.js",
+      "_Box-C2PF00jf.js",
+      "_TextField-D8p6qWxF.js",
+      "_InputAdornment-Ckh5xgwH.js",
+      "_TableRow-B585_mj-.js",
+      "_Chip-3kzNJxHH.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_DialogTitle-BGKT9-K3.js",
+      "_MoreVert-DFqSK2nv.js",
+      "_Edit-DmoDUxqR.js",
+      "_Delete-BSRGypGA.js",
+      "_Visibility-B2edmwdG.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/SupportTickets/Show.tsx": {
-    "file": "assets/Show-CWhJwTFg.js",
+    "file": "assets/Show-CXDO9xAb.js",
     "name": "Show",
     "src": "resources/js/Pages/Admin/SupportTickets/Show.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_DeleteConfirmationDialog-BY_3QG9l.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_Edit-Cz35bcF9.js",
-      "_Person-y_Px2iIG.js",
-      "_Email-CHnaNv1-.js",
-      "_Stack-CyiA1vL9.js",
-      "_AccessTime-JxTb-0cC.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Chip-BbbvpDpV.js",
-      "_Row-BC5P-dgl.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Container-DzzB6KIi.js",
-      "_DialogTitle-DkpVRQBI.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_DeleteConfirmationDialog-s3_cmY3U.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_Edit-DmoDUxqR.js",
+      "_Person-CLimTmFz.js",
+      "_Email-KwWEPecO.js",
+      "_Stack-26joxvls.js",
+      "_AccessTime-CX-SGzf7.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Chip-3kzNJxHH.js",
+      "_Row-V3psX_1Y.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_DialogTitle-BGKT9-K3.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/Users/Edit.tsx": {
-    "file": "assets/Edit-CwJRtvBx.js",
+    "file": "assets/Edit-DHKQ8U3R.js",
     "name": "Edit",
     "src": "resources/js/Pages/Admin/Users/Edit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_Box-Bt3jkSqy.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Row-BC5P-dgl.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_TextField-DblC5PLy.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Container-DzzB6KIi.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_Box-C2PF00jf.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Row-V3psX_1Y.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_TextField-D8p6qWxF.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/Users/Index.tsx": {
-    "file": "assets/Index-CcaivzoE.js",
+    "file": "assets/Index-B1Gfa5Th.js",
     "name": "Index",
     "src": "resources/js/Pages/Admin/Users/Index.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_DeleteConfirmationDialog-BY_3QG9l.js",
-      "_ActionsMenu-drlnInKW.js",
-      "_Search-DqgkKX9t.js",
-      "_Row-BC5P-dgl.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Stack-CyiA1vL9.js",
-      "_Box-Bt3jkSqy.js",
-      "_TextField-DblC5PLy.js",
-      "_InputAdornment-BY20vhDA.js",
-      "_TableRow-B65bykuw.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Container-DzzB6KIi.js",
-      "_DialogTitle-DkpVRQBI.js",
-      "_MoreVert-Cf9EA5gW.js",
-      "_Edit-Cz35bcF9.js",
-      "_Delete-DEQZGvOM.js",
-      "_Visibility-B3Wg4kNG.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_DeleteConfirmationDialog-s3_cmY3U.js",
+      "_ActionsMenu-BSd7gS-T.js",
+      "_Search-Cx0qZ2Ku.js",
+      "_Row-V3psX_1Y.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Stack-26joxvls.js",
+      "_Box-C2PF00jf.js",
+      "_TextField-D8p6qWxF.js",
+      "_InputAdornment-Ckh5xgwH.js",
+      "_TableRow-B585_mj-.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_DialogTitle-BGKT9-K3.js",
+      "_MoreVert-DFqSK2nv.js",
+      "_Edit-DmoDUxqR.js",
+      "_Delete-BSRGypGA.js",
+      "_Visibility-B2edmwdG.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Admin/Users/Show.tsx": {
-    "file": "assets/Show-B1ogK1mA.js",
+    "file": "assets/Show-BqgHc1zC.js",
     "name": "Show",
     "src": "resources/js/Pages/Admin/Users/Show.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_AdminLayout-Bcy5CJkX.js",
-      "_DeleteConfirmationDialog-BY_3QG9l.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_Edit-Cz35bcF9.js",
-      "_Email-CHnaNv1-.js",
-      "_CalendarToday-C5JeWs0V.js",
-      "_Delete-DEQZGvOM.js",
-      "_Box-Bt3jkSqy.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Row-BC5P-dgl.js",
-      "_Logout-Bh6M64Sh.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Container-DzzB6KIi.js",
-      "_DialogTitle-DkpVRQBI.js"
+      "_AdminLayout-CX-ZJmbw.js",
+      "_DeleteConfirmationDialog-s3_cmY3U.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_Edit-DmoDUxqR.js",
+      "_Email-KwWEPecO.js",
+      "_CalendarToday-Bs_XTKwr.js",
+      "_Delete-BSRGypGA.js",
+      "_Box-C2PF00jf.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Row-V3psX_1Y.js",
+      "_Logout-Bicf-Mku.js",
+      "_People-CceJGhIB.js",
+      "_Hotel-DhHrj9hv.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_DialogTitle-BGKT9-K3.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Auth/SignIn.tsx": {
-    "file": "assets/SignIn-BtFeCZoJ.js",
+    "file": "assets/SignIn-BYxhIvIt.js",
     "name": "SignIn",
     "src": "resources/js/Pages/Auth/SignIn.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Box-Bt3jkSqy.js",
-      "_Container-DzzB6KIi.js",
-      "_Stack-CyiA1vL9.js",
-      "_TextField-DblC5PLy.js",
-      "_FormControlLabel-qhIGkrfp.js",
-      "_Checkbox-Ca1RAW_A.js",
-      "_Link-DVdqieOK.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_Box-C2PF00jf.js",
+      "_Container-B9bZszYJ.js",
+      "_Stack-26joxvls.js",
+      "_TextField-D8p6qWxF.js",
+      "_FormControlLabel-CLXtGcIg.js",
+      "_Checkbox-DcRDZ7PT.js",
+      "_Link-Iuo9DvSR.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Auth/SignUp.tsx": {
-    "file": "assets/SignUp-ByPCngYM.js",
+    "file": "assets/SignUp-CjSMaP1K.js",
     "name": "SignUp",
     "src": "resources/js/Pages/Auth/SignUp.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Box-Bt3jkSqy.js",
-      "_Container-DzzB6KIi.js",
-      "_Stack-CyiA1vL9.js",
-      "_TextField-DblC5PLy.js",
-      "_Link-DVdqieOK.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_Box-C2PF00jf.js",
+      "_Container-B9bZszYJ.js",
+      "_Stack-26joxvls.js",
+      "_TextField-D8p6qWxF.js",
+      "_Link-Iuo9DvSR.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Booking.tsx": {
-    "file": "assets/Booking-B1YLhrp5.js",
+    "file": "assets/Booking-CLPyaiqZ.js",
     "name": "Booking",
     "src": "resources/js/Pages/Booking.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Footer-DG--L2TP.js",
-      "_Toast-nY178XWj.js",
-      "_Stack-CyiA1vL9.js",
-      "_BookingSummaryCard-BmrYZ8uw.js",
-      "_use-language-reb6vBMA.js",
-      "_Box-Bt3jkSqy.js",
-      "_Container-DzzB6KIi.js",
-      "_Row-BC5P-dgl.js",
-      "_TextField-DblC5PLy.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_InputAdornment-BY20vhDA.js",
-      "_Close-CKdSoYIG.js",
-      "_Snackbar-DsrJFk-X.js",
-      "_LocationOn-C4ltgbSn.js",
-      "_Star-yffUuuKr.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_Footer-BnJykdy7.js",
+      "_Toast-C9zN_MMA.js",
+      "_Stack-26joxvls.js",
+      "_BookingSummaryCard-C8RhtNuL.js",
+      "_use-language-DtKZJM4y.js",
+      "_Box-C2PF00jf.js",
+      "_Container-B9bZszYJ.js",
+      "_Row-V3psX_1Y.js",
+      "_TextField-D8p6qWxF.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_InputAdornment-Ckh5xgwH.js",
+      "_Close-ZvlGfhoA.js",
+      "_Snackbar-DNgACC_y.js",
+      "_LocationOn-CMKNkNSq.js",
+      "_Star-DC9s_UBy.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Chat.tsx": {
-    "file": "assets/Chat-CXzrqs-F.js",
+    "file": "assets/Chat-DAU-8R2v.js",
     "name": "Chat",
     "src": "resources/js/Pages/Chat.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Footer-DG--L2TP.js",
-      "_use-language-reb6vBMA.js",
-      "_AttachFile-h1Mt3fCx.js",
-      "_chatApi-DmWYDG-9.js",
-      "_MoreVert-Cf9EA5gW.js",
-      "_Add-BGJlNvZ1.js",
-      "_Close-CKdSoYIG.js",
-      "_Box-Bt3jkSqy.js",
-      "_Container-DzzB6KIi.js",
-      "_Row-BC5P-dgl.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Stack-CyiA1vL9.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_TextField-DblC5PLy.js",
-      "_DialogTitle-DkpVRQBI.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_Footer-BnJykdy7.js",
+      "_use-language-DtKZJM4y.js",
+      "_AttachFile-xFG8MVQy.js",
+      "_chatApi-Cq8LLC8n.js",
+      "_MoreVert-DFqSK2nv.js",
+      "_Add-Ze85R7No.js",
+      "_Close-ZvlGfhoA.js",
+      "_Box-C2PF00jf.js",
+      "_Container-B9bZszYJ.js",
+      "_Row-V3psX_1Y.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Stack-26joxvls.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_TextField-D8p6qWxF.js",
+      "_DialogTitle-BGKT9-K3.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Confirmation.tsx": {
-    "file": "assets/Confirmation-C6MiNKyY.js",
+    "file": "assets/Confirmation-CfZy2CaA.js",
     "name": "Confirmation",
     "src": "resources/js/Pages/Confirmation.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Footer-DG--L2TP.js",
-      "_BookingSummaryCard-BmrYZ8uw.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_use-language-reb6vBMA.js",
-      "_Box-Bt3jkSqy.js",
-      "_Container-DzzB6KIi.js",
-      "_Row-BC5P-dgl.js",
-      "_Stack-CyiA1vL9.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Close-CKdSoYIG.js",
-      "_LocationOn-C4ltgbSn.js",
-      "_Star-yffUuuKr.js"
+      "_Footer-BnJykdy7.js",
+      "_BookingSummaryCard-C8RhtNuL.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Box-C2PF00jf.js",
+      "_Container-B9bZszYJ.js",
+      "_Row-V3psX_1Y.js",
+      "_Stack-26joxvls.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Close-ZvlGfhoA.js",
+      "_LocationOn-CMKNkNSq.js",
+      "_Star-DC9s_UBy.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Contact.tsx": {
-    "file": "assets/Contact-B5T8UMrm.js",
+    "file": "assets/Contact-DDcyO_Mw.js",
     "name": "Contact",
     "src": "resources/js/Pages/Contact.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Footer-DG--L2TP.js",
-      "_Toast-nY178XWj.js",
-      "_AttachFile-h1Mt3fCx.js",
-      "_Close-CKdSoYIG.js",
-      "_use-language-reb6vBMA.js",
-      "_Box-Bt3jkSqy.js",
-      "_Container-DzzB6KIi.js",
-      "_Row-BC5P-dgl.js",
-      "_Stack-CyiA1vL9.js",
-      "_TextField-DblC5PLy.js",
-      "_Chip-BbbvpDpV.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Snackbar-DsrJFk-X.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_Footer-BnJykdy7.js",
+      "_Toast-C9zN_MMA.js",
+      "_AttachFile-xFG8MVQy.js",
+      "_Close-ZvlGfhoA.js",
+      "_use-language-DtKZJM4y.js",
+      "_Box-C2PF00jf.js",
+      "_Container-B9bZszYJ.js",
+      "_Row-V3psX_1Y.js",
+      "_Stack-26joxvls.js",
+      "_TextField-D8p6qWxF.js",
+      "_Chip-3kzNJxHH.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Snackbar-DNgACC_y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/CustomerBookings.tsx": {
-    "file": "assets/CustomerBookings-aW0Yjtp0.js",
+    "file": "assets/CustomerBookings-BpR--y56.js",
     "name": "CustomerBookings",
     "src": "resources/js/Pages/CustomerBookings.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Footer-DG--L2TP.js",
-      "_Search-DqgkKX9t.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_CalendarToday-C5JeWs0V.js",
-      "_LocationOn-C4ltgbSn.js",
-      "_use-language-reb6vBMA.js",
-      "_Box-Bt3jkSqy.js",
-      "_Container-DzzB6KIi.js",
-      "_Row-BC5P-dgl.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Stack-CyiA1vL9.js",
-      "_TextField-DblC5PLy.js",
-      "_InputAdornment-BY20vhDA.js",
-      "_Chip-BbbvpDpV.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Close-CKdSoYIG.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_Footer-BnJykdy7.js",
+      "_Search-Cx0qZ2Ku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_CalendarToday-Bs_XTKwr.js",
+      "_LocationOn-CMKNkNSq.js",
+      "_use-language-DtKZJM4y.js",
+      "_Box-C2PF00jf.js",
+      "_Container-B9bZszYJ.js",
+      "_Row-V3psX_1Y.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Stack-26joxvls.js",
+      "_TextField-D8p6qWxF.js",
+      "_InputAdornment-Ckh5xgwH.js",
+      "_Chip-3kzNJxHH.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Close-ZvlGfhoA.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Home.tsx": {
-    "file": "assets/Home-WkqY9tDS.js",
+    "file": "assets/Home-Dob6fpml.js",
     "name": "Home",
     "src": "resources/js/Pages/Home.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Footer-DG--L2TP.js",
-      "_ChevronRight-DTYTS36o.js",
-      "_FeaturedCard-B60F8Spj.js",
-      "_Box-Bt3jkSqy.js",
-      "_Stack-CyiA1vL9.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_use-language-reb6vBMA.js",
-      "_Search-DqgkKX9t.js",
-      "_Person-y_Px2iIG.js",
-      "_Add-BGJlNvZ1.js",
-      "_Remove-Cx2fAnoY.js",
-      "_LocationOn-C4ltgbSn.js",
-      "_Container-DzzB6KIi.js",
-      "_Row-BC5P-dgl.js",
-      "_TextField-DblC5PLy.js",
-      "_Close-CKdSoYIG.js",
-      "_Star-yffUuuKr.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_Footer-BnJykdy7.js",
+      "_ChevronRight-BbklG6Sm.js",
+      "_FeaturedCard-BxH_5LkA.js",
+      "_Box-C2PF00jf.js",
+      "_Stack-26joxvls.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_use-language-DtKZJM4y.js",
+      "_Search-Cx0qZ2Ku.js",
+      "_Person-CLimTmFz.js",
+      "_Add-Ze85R7No.js",
+      "_Remove-jq17k1XE.js",
+      "_LocationOn-CMKNkNSq.js",
+      "_Container-B9bZszYJ.js",
+      "_Row-V3psX_1Y.js",
+      "_TextField-D8p6qWxF.js",
+      "_Close-ZvlGfhoA.js",
+      "_Star-DC9s_UBy.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Host/Bookings/Create.tsx": {
-    "file": "assets/Create-CTNZF-Us.js",
+    "file": "assets/Create-C5Ea2B57.js",
     "name": "Create",
     "src": "resources/js/Pages/Host/Bookings/Create.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_HostLayout-BQ1cu41L.js",
-      "_Toast-Bc8bIYdd.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_ChevronRight-DTYTS36o.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Row-BC5P-dgl.js",
-      "_TextField-DblC5PLy.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Message-CUZooXLN.js",
-      "_Container-DzzB6KIi.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_Close-CKdSoYIG.js",
-      "_Snackbar-DsrJFk-X.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_HostLayout-Ilt2RuW7.js",
+      "_Toast-BRGVWtV1.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_ChevronRight-BbklG6Sm.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Row-V3psX_1Y.js",
+      "_TextField-D8p6qWxF.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_Message-CHxf8m4Y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_Close-ZvlGfhoA.js",
+      "_Snackbar-DNgACC_y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Host/Bookings/Edit.tsx": {
-    "file": "assets/Edit-DEeTIcBQ.js",
+    "file": "assets/Edit-B_yNQW7T.js",
     "name": "Edit",
     "src": "resources/js/Pages/Host/Bookings/Edit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_HostLayout-BQ1cu41L.js",
-      "_Toast-Bc8bIYdd.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_ChevronRight-DTYTS36o.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Row-BC5P-dgl.js",
-      "_TextField-DblC5PLy.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Message-CUZooXLN.js",
-      "_Container-DzzB6KIi.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_Close-CKdSoYIG.js",
-      "_Snackbar-DsrJFk-X.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_HostLayout-Ilt2RuW7.js",
+      "_Toast-BRGVWtV1.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_ChevronRight-BbklG6Sm.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Row-V3psX_1Y.js",
+      "_TextField-D8p6qWxF.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_Message-CHxf8m4Y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_Close-ZvlGfhoA.js",
+      "_Snackbar-DNgACC_y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Host/Bookings/Index.tsx": {
-    "file": "assets/Index-B0o3eHWi.js",
+    "file": "assets/Index-CR3s9k6x.js",
     "name": "Index",
     "src": "resources/js/Pages/Host/Bookings/Index.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_HostLayout-BQ1cu41L.js",
-      "_DeleteConfirmationDialog-BY_3QG9l.js",
-      "_ActionsMenu-drlnInKW.js",
-      "_Search-DqgkKX9t.js",
-      "_Row-BC5P-dgl.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Stack-CyiA1vL9.js",
-      "_Box-Bt3jkSqy.js",
-      "_TextField-DblC5PLy.js",
-      "_InputAdornment-BY20vhDA.js",
-      "_TableRow-B65bykuw.js",
-      "_Chip-BbbvpDpV.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Message-CUZooXLN.js",
-      "_Container-DzzB6KIi.js",
-      "_DialogTitle-DkpVRQBI.js",
-      "_MoreVert-Cf9EA5gW.js",
-      "_Edit-Cz35bcF9.js",
-      "_Delete-DEQZGvOM.js",
-      "_Visibility-B3Wg4kNG.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_HostLayout-Ilt2RuW7.js",
+      "_DeleteConfirmationDialog-s3_cmY3U.js",
+      "_ActionsMenu-BSd7gS-T.js",
+      "_Search-Cx0qZ2Ku.js",
+      "_Row-V3psX_1Y.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Stack-26joxvls.js",
+      "_Box-C2PF00jf.js",
+      "_TextField-D8p6qWxF.js",
+      "_InputAdornment-Ckh5xgwH.js",
+      "_TableRow-B585_mj-.js",
+      "_Chip-3kzNJxHH.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_Message-CHxf8m4Y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_DialogTitle-BGKT9-K3.js",
+      "_MoreVert-DFqSK2nv.js",
+      "_Edit-DmoDUxqR.js",
+      "_Delete-BSRGypGA.js",
+      "_Visibility-B2edmwdG.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Host/Bookings/Show.tsx": {
-    "file": "assets/Show-jDogd6W3.js",
+    "file": "assets/Show-D2JOT1zW.js",
     "name": "Show",
     "src": "resources/js/Pages/Host/Bookings/Show.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_HostLayout-BQ1cu41L.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_Edit-Cz35bcF9.js",
-      "_Person-y_Px2iIG.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_CalendarToday-C5JeWs0V.js",
-      "_Email-CHnaNv1-.js",
-      "_Phone-BTdxAam3.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Chip-BbbvpDpV.js",
-      "_Row-BC5P-dgl.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Message-CUZooXLN.js",
-      "_Container-DzzB6KIi.js"
+      "_HostLayout-Ilt2RuW7.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_Edit-DmoDUxqR.js",
+      "_Person-CLimTmFz.js",
+      "_Hotel-DhHrj9hv.js",
+      "_CalendarToday-Bs_XTKwr.js",
+      "_Email-KwWEPecO.js",
+      "_Phone-CJLEtARF.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Chip-3kzNJxHH.js",
+      "_Row-V3psX_1Y.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_Message-CHxf8m4Y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Host/Chat/Index.tsx": {
-    "file": "assets/Index-DcWbBO_w.js",
+    "file": "assets/Index-BCy1-2Yi.js",
     "name": "Index",
     "src": "resources/js/Pages/Host/Chat/Index.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_HostLayout-BQ1cu41L.js",
-      "_AttachFile-h1Mt3fCx.js",
-      "_chatApi-DmWYDG-9.js",
-      "_MoreVert-Cf9EA5gW.js",
-      "_Add-BGJlNvZ1.js",
-      "_Close-CKdSoYIG.js",
-      "_Row-BC5P-dgl.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Stack-CyiA1vL9.js",
-      "_Box-Bt3jkSqy.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_TextField-DblC5PLy.js",
-      "_DialogTitle-DkpVRQBI.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Message-CUZooXLN.js",
-      "_Container-DzzB6KIi.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_HostLayout-Ilt2RuW7.js",
+      "_AttachFile-xFG8MVQy.js",
+      "_chatApi-Cq8LLC8n.js",
+      "_MoreVert-DFqSK2nv.js",
+      "_Add-Ze85R7No.js",
+      "_Close-ZvlGfhoA.js",
+      "_Row-V3psX_1Y.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Stack-26joxvls.js",
+      "_Box-C2PF00jf.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_TextField-D8p6qWxF.js",
+      "_DialogTitle-BGKT9-K3.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_Message-CHxf8m4Y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Host/Dashboard.tsx": {
-    "file": "assets/Dashboard-C41mL-w_.js",
+    "file": "assets/Dashboard-Dj2n36AE.js",
     "name": "Dashboard",
     "src": "resources/js/Pages/Host/Dashboard.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Search-DqgkKX9t.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_TrendingUp-BK3MY1vE.js",
-      "_CalendarToday-C5JeWs0V.js",
-      "_HostLayout-BQ1cu41L.js",
-      "_Row-BC5P-dgl.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Stack-CyiA1vL9.js",
-      "_Box-Bt3jkSqy.js",
-      "_TextField-DblC5PLy.js",
-      "_InputAdornment-BY20vhDA.js",
-      "_TableRow-B65bykuw.js",
-      "_Chip-BbbvpDpV.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Message-CUZooXLN.js",
-      "_Container-DzzB6KIi.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_Search-Cx0qZ2Ku.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_TrendingUp-Bp_E2I3l.js",
+      "_CalendarToday-Bs_XTKwr.js",
+      "_HostLayout-Ilt2RuW7.js",
+      "_Row-V3psX_1Y.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Stack-26joxvls.js",
+      "_Box-C2PF00jf.js",
+      "_TextField-D8p6qWxF.js",
+      "_InputAdornment-Ckh5xgwH.js",
+      "_TableRow-B585_mj-.js",
+      "_Chip-3kzNJxHH.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Message-CHxf8m4Y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Host/Earnings/Index.tsx": {
-    "file": "assets/Index-INiWcq6X.js",
+    "file": "assets/Index-BkaPiQzg.js",
     "name": "Index",
     "src": "resources/js/Pages/Host/Earnings/Index.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_HostLayout-BQ1cu41L.js",
-      "_DeleteConfirmationDialog-BY_3QG9l.js",
-      "_ActionsMenu-drlnInKW.js",
-      "_Search-DqgkKX9t.js",
-      "_Stack-CyiA1vL9.js",
-      "_Row-BC5P-dgl.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_TextField-DblC5PLy.js",
-      "_InputAdornment-BY20vhDA.js",
-      "_TableRow-B65bykuw.js",
-      "_Chip-BbbvpDpV.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Message-CUZooXLN.js",
-      "_Container-DzzB6KIi.js",
-      "_DialogTitle-DkpVRQBI.js",
-      "_MoreVert-Cf9EA5gW.js",
-      "_Edit-Cz35bcF9.js",
-      "_Delete-DEQZGvOM.js",
-      "_Visibility-B3Wg4kNG.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_HostLayout-Ilt2RuW7.js",
+      "_DeleteConfirmationDialog-s3_cmY3U.js",
+      "_ActionsMenu-BSd7gS-T.js",
+      "_Search-Cx0qZ2Ku.js",
+      "_Stack-26joxvls.js",
+      "_Row-V3psX_1Y.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_TextField-D8p6qWxF.js",
+      "_InputAdornment-Ckh5xgwH.js",
+      "_TableRow-B585_mj-.js",
+      "_Chip-3kzNJxHH.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_Message-CHxf8m4Y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_DialogTitle-BGKT9-K3.js",
+      "_MoreVert-DFqSK2nv.js",
+      "_Edit-DmoDUxqR.js",
+      "_Delete-BSRGypGA.js",
+      "_Visibility-B2edmwdG.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Host/Earnings/Payout.tsx": {
-    "file": "assets/Payout-BqvMf42p.js",
+    "file": "assets/Payout-_U_ID7Ov.js",
     "name": "Payout",
     "src": "resources/js/Pages/Host/Earnings/Payout.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_HostLayout-BQ1cu41L.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_CalendarToday-C5JeWs0V.js",
-      "_AttachMoney-DKf0fbVD.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Chip-BbbvpDpV.js",
-      "_Row-BC5P-dgl.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Message-CUZooXLN.js",
-      "_Container-DzzB6KIi.js"
+      "_HostLayout-Ilt2RuW7.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_CalendarToday-Bs_XTKwr.js",
+      "_AttachMoney-DdLdciYt.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Chip-3kzNJxHH.js",
+      "_Row-V3psX_1Y.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_Message-CHxf8m4Y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Host/Earnings/RequestPayout.tsx": {
-    "file": "assets/RequestPayout-D4LJUBWP.js",
+    "file": "assets/RequestPayout-Db1X2Mts.js",
     "name": "RequestPayout",
     "src": "resources/js/Pages/Host/Earnings/RequestPayout.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_HostLayout-BQ1cu41L.js",
-      "_Toast-Bc8bIYdd.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Row-BC5P-dgl.js",
-      "_TextField-DblC5PLy.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Message-CUZooXLN.js",
-      "_Container-DzzB6KIi.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_Close-CKdSoYIG.js",
-      "_Snackbar-DsrJFk-X.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_HostLayout-Ilt2RuW7.js",
+      "_Toast-BRGVWtV1.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Row-V3psX_1Y.js",
+      "_TextField-D8p6qWxF.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_Message-CHxf8m4Y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_Close-ZvlGfhoA.js",
+      "_Snackbar-DNgACC_y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Host/Earnings/Show.tsx": {
-    "file": "assets/Show-IB5bogdF.js",
+    "file": "assets/Show-BJYlZeI4.js",
     "name": "Show",
     "src": "resources/js/Pages/Host/Earnings/Show.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_HostLayout-BQ1cu41L.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_Person-y_Px2iIG.js",
-      "_Home-BWzn5usc.js",
-      "_CalendarToday-C5JeWs0V.js",
-      "_AttachMoney-DKf0fbVD.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Chip-BbbvpDpV.js",
-      "_Row-BC5P-dgl.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Message-CUZooXLN.js",
-      "_Container-DzzB6KIi.js"
+      "_HostLayout-Ilt2RuW7.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_Person-CLimTmFz.js",
+      "_Home-X92pFpTD.js",
+      "_CalendarToday-Bs_XTKwr.js",
+      "_AttachMoney-DdLdciYt.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Chip-3kzNJxHH.js",
+      "_Row-V3psX_1Y.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_Message-CHxf8m4Y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Host/Properties/Create.tsx": {
-    "file": "assets/Create-DoX2BZr0.js",
+    "file": "assets/Create-Bo6PtNMK.js",
     "name": "Create",
     "src": "resources/js/Pages/Host/Properties/Create.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_HostLayout-BQ1cu41L.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_CloudUpload-db7htJNn.js",
-      "_Delete-DEQZGvOM.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Row-BC5P-dgl.js",
-      "_TextField-DblC5PLy.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Message-CUZooXLN.js",
-      "_Container-DzzB6KIi.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_HostLayout-Ilt2RuW7.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_CloudUpload-CIMqRt_N.js",
+      "_Delete-BSRGypGA.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Row-V3psX_1Y.js",
+      "_TextField-D8p6qWxF.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_Message-CHxf8m4Y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Host/Properties/Edit.tsx": {
-    "file": "assets/Edit-qkgmZLkb.js",
+    "file": "assets/Edit-CTXy7rV1.js",
     "name": "Edit",
     "src": "resources/js/Pages/Host/Properties/Edit.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_HostLayout-BQ1cu41L.js",
-      "_Toast-Bc8bIYdd.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_CloudUpload-db7htJNn.js",
-      "_Delete-DEQZGvOM.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Row-BC5P-dgl.js",
-      "_TextField-DblC5PLy.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Message-CUZooXLN.js",
-      "_Container-DzzB6KIi.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_Close-CKdSoYIG.js",
-      "_Snackbar-DsrJFk-X.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_HostLayout-Ilt2RuW7.js",
+      "_Toast-BRGVWtV1.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_CloudUpload-CIMqRt_N.js",
+      "_Delete-BSRGypGA.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Row-V3psX_1Y.js",
+      "_TextField-D8p6qWxF.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_Message-CHxf8m4Y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_Close-ZvlGfhoA.js",
+      "_Snackbar-DNgACC_y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Host/Properties/Index.tsx": {
-    "file": "assets/Index-BPNlpXi0.js",
+    "file": "assets/Index-By-iJPlr.js",
     "name": "Index",
     "src": "resources/js/Pages/Host/Properties/Index.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_HostLayout-BQ1cu41L.js",
-      "_DeleteConfirmationDialog-BY_3QG9l.js",
-      "_ActionsMenu-drlnInKW.js",
-      "_Toast-Bc8bIYdd.js",
-      "_Search-DqgkKX9t.js",
-      "_Row-BC5P-dgl.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Stack-CyiA1vL9.js",
-      "_Box-Bt3jkSqy.js",
-      "_TextField-DblC5PLy.js",
-      "_InputAdornment-BY20vhDA.js",
-      "_TableRow-B65bykuw.js",
-      "_Chip-BbbvpDpV.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Message-CUZooXLN.js",
-      "_Container-DzzB6KIi.js",
-      "_DialogTitle-DkpVRQBI.js",
-      "_MoreVert-Cf9EA5gW.js",
-      "_Edit-Cz35bcF9.js",
-      "_Delete-DEQZGvOM.js",
-      "_Visibility-B3Wg4kNG.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_Close-CKdSoYIG.js",
-      "_Snackbar-DsrJFk-X.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_HostLayout-Ilt2RuW7.js",
+      "_DeleteConfirmationDialog-s3_cmY3U.js",
+      "_ActionsMenu-BSd7gS-T.js",
+      "_Toast-BRGVWtV1.js",
+      "_Search-Cx0qZ2Ku.js",
+      "_Row-V3psX_1Y.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Stack-26joxvls.js",
+      "_Box-C2PF00jf.js",
+      "_TextField-D8p6qWxF.js",
+      "_InputAdornment-Ckh5xgwH.js",
+      "_TableRow-B585_mj-.js",
+      "_Chip-3kzNJxHH.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_Message-CHxf8m4Y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_DialogTitle-BGKT9-K3.js",
+      "_MoreVert-DFqSK2nv.js",
+      "_Edit-DmoDUxqR.js",
+      "_Delete-BSRGypGA.js",
+      "_Visibility-B2edmwdG.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_Close-ZvlGfhoA.js",
+      "_Snackbar-DNgACC_y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Host/Properties/Show.tsx": {
-    "file": "assets/Show-BVD0zc9-.js",
+    "file": "assets/Show-BciVFLm4.js",
     "name": "Show",
     "src": "resources/js/Pages/Host/Properties/Show.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_HostLayout-BQ1cu41L.js",
-      "_ArrowBack-CN_KCeog.js",
-      "_Edit-Cz35bcF9.js",
-      "_Visibility-B3Wg4kNG.js",
-      "_Bathtub-2CrrtQsT.js",
-      "_LocationOn-C4ltgbSn.js",
-      "_Bed-DauR1ox5.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Home-BWzn5usc.js",
-      "_Stack-CyiA1vL9.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Box-Bt3jkSqy.js",
-      "_Chip-BbbvpDpV.js",
-      "_Row-BC5P-dgl.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Message-CUZooXLN.js",
-      "_Container-DzzB6KIi.js"
+      "_HostLayout-Ilt2RuW7.js",
+      "_ArrowBack-BVdACbjX.js",
+      "_Edit-DmoDUxqR.js",
+      "_Visibility-B2edmwdG.js",
+      "_Bathtub-C7dXdmRU.js",
+      "_LocationOn-CMKNkNSq.js",
+      "_Bed-CnRPoRgI.js",
+      "_People-CceJGhIB.js",
+      "_Home-X92pFpTD.js",
+      "_Stack-26joxvls.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Box-C2PF00jf.js",
+      "_Chip-3kzNJxHH.js",
+      "_Row-V3psX_1Y.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_Message-CHxf8m4Y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Host/Settings/Index.tsx": {
-    "file": "assets/Index-CRx0YBCa.js",
+    "file": "assets/Index-BDJ9O_X_.js",
     "name": "Index",
     "src": "resources/js/Pages/Host/Settings/Index.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_HostLayout-BQ1cu41L.js",
-      "_Box-Bt3jkSqy.js",
-      "_Row-BC5P-dgl.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Stack-CyiA1vL9.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Message-CUZooXLN.js",
-      "_Container-DzzB6KIi.js"
+      "_HostLayout-Ilt2RuW7.js",
+      "_Box-C2PF00jf.js",
+      "_Row-V3psX_1Y.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Stack-26joxvls.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_Message-CHxf8m4Y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Host/Settings/Profile.tsx": {
-    "file": "assets/Profile-3_R3UOBI.js",
+    "file": "assets/Profile-BicgdClJ.js",
     "name": "Profile",
     "src": "resources/js/Pages/Host/Settings/Profile.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_HostLayout-BQ1cu41L.js",
-      "_Toast-Bc8bIYdd.js",
-      "_Save-AdhixXiu.js",
-      "_PhotoCamera-C9IU4BWl.js",
-      "_Box-Bt3jkSqy.js",
-      "_Row-BC5P-dgl.js",
-      "_CardContent-D0VTyrdU.js",
-      "_Stack-CyiA1vL9.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_TextField-DblC5PLy.js",
-      "_Logout-Bh6M64Sh.js",
-      "_Hotel-Cxh1U2OX.js",
-      "_Message-CUZooXLN.js",
-      "_Container-DzzB6KIi.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_Close-CKdSoYIG.js",
-      "_Snackbar-DsrJFk-X.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_HostLayout-Ilt2RuW7.js",
+      "_Toast-BRGVWtV1.js",
+      "_Save-CHu5Z7QJ.js",
+      "_PhotoCamera-DOjy8_nH.js",
+      "_Box-C2PF00jf.js",
+      "_Row-V3psX_1Y.js",
+      "_CardContent-Dv-hAY9L.js",
+      "_Stack-26joxvls.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_TextField-D8p6qWxF.js",
+      "_Logout-Bicf-Mku.js",
+      "_Hotel-DhHrj9hv.js",
+      "_Message-CHxf8m4Y.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_Close-ZvlGfhoA.js",
+      "_Snackbar-DNgACC_y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Listing.tsx": {
-    "file": "assets/Listing-CPTyI1B1.js",
+    "file": "assets/Listing-BG95kOch.js",
     "name": "Listing",
     "src": "resources/js/Pages/Listing.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Footer-DG--L2TP.js",
-      "_FeaturedCard-B60F8Spj.js",
-      "_ChevronRight-DTYTS36o.js",
-      "_Stack-CyiA1vL9.js",
-      "_Box-Bt3jkSqy.js",
+      "_Footer-BnJykdy7.js",
+      "_FeaturedCard-BxH_5LkA.js",
+      "_ChevronRight-BbklG6Sm.js",
+      "_Stack-26joxvls.js",
+      "_Box-C2PF00jf.js",
       "resources/js/components/PropertyMap.tsx",
-      "_Search-DqgkKX9t.js",
-      "_Remove-Cx2fAnoY.js",
-      "_Add-BGJlNvZ1.js",
-      "_use-language-reb6vBMA.js",
-      "_Container-DzzB6KIi.js",
-      "_Row-BC5P-dgl.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Checkbox-Ca1RAW_A.js",
-      "_useFormControl-jTL-W0PA.js",
-      "_TextField-DblC5PLy.js",
-      "_InputAdornment-BY20vhDA.js",
-      "_Close-CKdSoYIG.js",
-      "_Star-yffUuuKr.js",
-      "_FavoriteBorder-wU0lKBiM.js"
+      "_Search-Cx0qZ2Ku.js",
+      "_Remove-jq17k1XE.js",
+      "_Add-Ze85R7No.js",
+      "_use-language-DtKZJM4y.js",
+      "_Container-B9bZszYJ.js",
+      "_Row-V3psX_1Y.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Checkbox-DcRDZ7PT.js",
+      "_useFormControl-B4piLBUM.js",
+      "_TextField-D8p6qWxF.js",
+      "_InputAdornment-Ckh5xgwH.js",
+      "_Close-ZvlGfhoA.js",
+      "_Star-DC9s_UBy.js",
+      "_FavoriteBorder-DVzo0veL.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/ListingDetail.tsx": {
-    "file": "assets/ListingDetail-gqUQyXKJ.js",
+    "file": "assets/ListingDetail-BJ0UalsN.js",
     "name": "ListingDetail",
     "src": "resources/js/Pages/ListingDetail.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Footer-DG--L2TP.js",
-      "_use-language-reb6vBMA.js",
-      "_FeaturedCard-B60F8Spj.js",
-      "_LocationOn-C4ltgbSn.js",
-      "_Star-yffUuuKr.js",
-      "_CheckCircle-0Orjg-2m.js",
-      "_ChevronRight-DTYTS36o.js",
-      "_Bed-DauR1ox5.js",
-      "_Stack-CyiA1vL9.js",
-      "_People-BRZ6Mo9Q.js",
-      "_Home-BWzn5usc.js",
-      "_Message-CUZooXLN.js",
-      "_AccessTime-JxTb-0cC.js",
-      "_AttachMoney-DKf0fbVD.js",
-      "_Box-Bt3jkSqy.js",
-      "_Container-DzzB6KIi.js",
-      "_Row-BC5P-dgl.js",
-      "_FormControlLabel-qhIGkrfp.js",
-      "_Checkbox-Ca1RAW_A.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Close-CKdSoYIG.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_Footer-BnJykdy7.js",
+      "_use-language-DtKZJM4y.js",
+      "_FeaturedCard-BxH_5LkA.js",
+      "_LocationOn-CMKNkNSq.js",
+      "_Star-DC9s_UBy.js",
+      "_CheckCircle-B5CoXN5y.js",
+      "_ChevronRight-BbklG6Sm.js",
+      "_Bed-CnRPoRgI.js",
+      "_Stack-26joxvls.js",
+      "_People-CceJGhIB.js",
+      "_Home-X92pFpTD.js",
+      "_Message-CHxf8m4Y.js",
+      "_AccessTime-CX-SGzf7.js",
+      "_AttachMoney-DdLdciYt.js",
+      "_Box-C2PF00jf.js",
+      "_Container-B9bZszYJ.js",
+      "_Row-V3psX_1Y.js",
+      "_FormControlLabel-CLXtGcIg.js",
+      "_Checkbox-DcRDZ7PT.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Close-ZvlGfhoA.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/PrivacyPolicy.tsx": {
-    "file": "assets/PrivacyPolicy-CzmJM1o7.js",
+    "file": "assets/PrivacyPolicy-BYGHE_Jl.js",
     "name": "PrivacyPolicy",
     "src": "resources/js/Pages/PrivacyPolicy.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Footer-DG--L2TP.js",
-      "_use-language-reb6vBMA.js",
-      "_Box-Bt3jkSqy.js",
-      "_Stack-CyiA1vL9.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Close-CKdSoYIG.js"
+      "_Footer-BnJykdy7.js",
+      "_use-language-DtKZJM4y.js",
+      "_Box-C2PF00jf.js",
+      "_Stack-26joxvls.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Close-ZvlGfhoA.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/ProfileSettings.tsx": {
-    "file": "assets/ProfileSettings-C-Ou1F70.js",
+    "file": "assets/ProfileSettings-C1HXiYE7.js",
     "name": "ProfileSettings",
     "src": "resources/js/Pages/ProfileSettings.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Footer-DG--L2TP.js",
-      "_Toast-nY178XWj.js",
-      "_Save-AdhixXiu.js",
-      "_PhotoCamera-C9IU4BWl.js",
-      "_use-language-reb6vBMA.js",
-      "_Box-Bt3jkSqy.js",
-      "_Container-DzzB6KIi.js",
-      "_Row-BC5P-dgl.js",
-      "_Stack-CyiA1vL9.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_TextField-DblC5PLy.js",
-      "_Close-CKdSoYIG.js",
-      "_Snackbar-DsrJFk-X.js",
-      "_useFormControl-jTL-W0PA.js"
+      "_Footer-BnJykdy7.js",
+      "_Toast-C9zN_MMA.js",
+      "_Save-CHu5Z7QJ.js",
+      "_PhotoCamera-DOjy8_nH.js",
+      "_use-language-DtKZJM4y.js",
+      "_Box-C2PF00jf.js",
+      "_Container-B9bZszYJ.js",
+      "_Row-V3psX_1Y.js",
+      "_Stack-26joxvls.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_TextField-D8p6qWxF.js",
+      "_Close-ZvlGfhoA.js",
+      "_Snackbar-DNgACC_y.js",
+      "_useFormControl-B4piLBUM.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/SearchResults.tsx": {
-    "file": "assets/SearchResults-sszTWKiv.js",
+    "file": "assets/SearchResults-DTB8z3xW.js",
     "name": "SearchResults",
     "src": "resources/js/Pages/SearchResults.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Footer-DG--L2TP.js",
-      "_Star-yffUuuKr.js",
-      "_FavoriteBorder-wU0lKBiM.js",
-      "_Stack-CyiA1vL9.js",
-      "_Box-Bt3jkSqy.js",
-      "_use-language-reb6vBMA.js",
-      "_Row-BC5P-dgl.js",
-      "_Container-DzzB6KIi.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Close-CKdSoYIG.js"
+      "_Footer-BnJykdy7.js",
+      "_Star-DC9s_UBy.js",
+      "_FavoriteBorder-DVzo0veL.js",
+      "_Stack-26joxvls.js",
+      "_Box-C2PF00jf.js",
+      "_use-language-DtKZJM4y.js",
+      "_Row-V3psX_1Y.js",
+      "_Container-B9bZszYJ.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Close-ZvlGfhoA.js"
     ],
     "dynamicImports": [
       "resources/js/components/PropertyMap.tsx"
@@ -1994,64 +2031,64 @@
     ]
   },
   "resources/js/Pages/TermsOfService.tsx": {
-    "file": "assets/TermsOfService-CCuRnAje.js",
+    "file": "assets/TermsOfService-BDhQtHG4.js",
     "name": "TermsOfService",
     "src": "resources/js/Pages/TermsOfService.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Footer-DG--L2TP.js",
-      "_use-language-reb6vBMA.js",
-      "_Box-Bt3jkSqy.js",
-      "_Container-DzzB6KIi.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Stack-CyiA1vL9.js",
-      "_Close-CKdSoYIG.js"
+      "_Footer-BnJykdy7.js",
+      "_use-language-DtKZJM4y.js",
+      "_Box-C2PF00jf.js",
+      "_Container-B9bZszYJ.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Stack-26joxvls.js",
+      "_Close-ZvlGfhoA.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Welcome.tsx": {
-    "file": "assets/Welcome-CSteNS7A.js",
+    "file": "assets/Welcome-CxE9GuIr.js",
     "name": "Welcome",
     "src": "resources/js/Pages/Welcome.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_use-language-reb6vBMA.js",
-      "_Box-Bt3jkSqy.js"
+      "_use-language-DtKZJM4y.js",
+      "_Box-C2PF00jf.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/Pages/Wishlist.tsx": {
-    "file": "assets/Wishlist-BOPGIWyd.js",
+    "file": "assets/Wishlist-DZw34n6U.js",
     "name": "Wishlist",
     "src": "resources/js/Pages/Wishlist.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_Footer-DG--L2TP.js",
-      "_FeaturedCard-B60F8Spj.js",
-      "_Stack-CyiA1vL9.js",
-      "_Toast-nY178XWj.js",
-      "_use-language-reb6vBMA.js",
-      "_Box-Bt3jkSqy.js",
-      "_Container-DzzB6KIi.js",
-      "_Row-BC5P-dgl.js",
-      "_KeyboardArrowDown-8tMyqA0w.js",
-      "_Close-CKdSoYIG.js",
-      "_Star-yffUuuKr.js",
-      "_Snackbar-DsrJFk-X.js"
+      "_Footer-BnJykdy7.js",
+      "_FeaturedCard-BxH_5LkA.js",
+      "_Stack-26joxvls.js",
+      "_Toast-C9zN_MMA.js",
+      "_use-language-DtKZJM4y.js",
+      "_Box-C2PF00jf.js",
+      "_Container-B9bZszYJ.js",
+      "_Row-V3psX_1Y.js",
+      "_KeyboardArrowDown-s2i05HpT.js",
+      "_Close-ZvlGfhoA.js",
+      "_Star-DC9s_UBy.js",
+      "_Snackbar-DNgACC_y.js"
     ],
     "css": [
       "assets/app-DXQYFwPT.css"
     ]
   },
   "resources/js/app.jsx": {
-    "file": "assets/app-rC_Untpj.js",
+    "file": "assets/app-D8edOWXn.js",
     "name": "app",
     "src": "resources/js/app.jsx",
     "isEntry": true,
@@ -2122,18 +2159,18 @@
     ]
   },
   "resources/js/components/PropertyMap.tsx": {
-    "file": "assets/PropertyMap-C8ax0q1a.js",
+    "file": "assets/PropertyMap-B3-vNJtM.js",
     "name": "PropertyMap",
     "src": "resources/js/components/PropertyMap.tsx",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.jsx",
-      "_FavoriteBorder-wU0lKBiM.js",
-      "_Close-CKdSoYIG.js",
-      "_Star-yffUuuKr.js",
-      "_Box-Bt3jkSqy.js",
-      "_Stack-CyiA1vL9.js",
-      "_KeyboardArrowDown-8tMyqA0w.js"
+      "_FavoriteBorder-DVzo0veL.js",
+      "_Close-ZvlGfhoA.js",
+      "_Star-DC9s_UBy.js",
+      "_Box-C2PF00jf.js",
+      "_Stack-26joxvls.js",
+      "_KeyboardArrowDown-s2i05HpT.js"
     ],
     "css": [
       "assets/PropertyMap-CLLlcC51.css",
