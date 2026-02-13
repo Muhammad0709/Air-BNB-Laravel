@@ -74,8 +74,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
 });
 
-// Protected routes (require authentication)
-Route::middleware('auth')->group(function () {
+// Protected routes (require authentication; admin/host are redirected to their panel)
+Route::middleware(['auth', 'redirect.admin.host'])->group(function () {
     Route::get('/', [HomeController::class, 'index']);
     
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');

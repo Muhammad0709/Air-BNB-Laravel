@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Enums\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -18,7 +19,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Handle an incoming authentication request.
+     * Handle an incoming authentication request (customers only).
      */
     public function store(Request $request)
     {
@@ -28,8 +29,17 @@ class LoginController extends Controller
         ]);
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $user = Auth::user();
+            // Only allow customer (User) type to log in here
+            if ($user->type !== UserType::USER) {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return redirect()->route('admin.login')->withErrors([
+                    'email' => 'Please use the host/admin login page to sign in.',
+                ])->onlyInput('email');
+            }
             $request->session()->regenerate();
-
             return redirect()->intended('/');
         }
 

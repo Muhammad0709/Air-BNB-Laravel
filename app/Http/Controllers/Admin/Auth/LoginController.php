@@ -29,15 +29,21 @@ class LoginController extends Controller
         ]);
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            $request->session()->regenerate();
-            
-            // Redirect based on user type
             $user = Auth::user();
+            // Only allow Admin or Host to log in here; customers must use /auth/login
+            if ($user->type === UserType::USER) {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return back()->withErrors([
+                    'email' => 'Please use the main site to sign in as a customer.',
+                ])->onlyInput('email');
+            }
+            $request->session()->regenerate();
             if ($user->type === UserType::ADMIN) {
                 return redirect()->intended('/admin/dashboard');
-            } else {
-                return redirect()->intended('/host/dashboard');
             }
+            return redirect()->intended('/host/dashboard');
         }
 
         return back()->withErrors([
