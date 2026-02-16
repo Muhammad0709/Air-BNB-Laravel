@@ -54,7 +54,7 @@ class HandleInertiaRequests extends Middleware
                     'profile_picture' => $user->profile_picture
                         ? (filter_var($user->profile_picture, FILTER_VALIDATE_URL)
                             ? $user->profile_picture
-                            : Storage::url($user->profile_picture))
+                            : asset(Storage::url($user->profile_picture)))
                         : null,
                 ] : null,
             ],
