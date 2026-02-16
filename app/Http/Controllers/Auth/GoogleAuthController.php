@@ -13,34 +13,45 @@ use Laravel\Socialite\Facades\Socialite;
 class GoogleAuthController extends Controller
 {
     /**
+     * Callback URL must match the current request host so session is preserved.
+     * Ensure this exact URL is allowed in Google Cloud Console (APIs & Services → Credentials).
+     */
+    protected function getRedirectUrl(): string
+    {
+        return url('/auth/google/callback');
+    }
+
+    /**
      * Redirect to Google OAuth.
-     * intent=admin or intent=host is passed via OAuth state (survives cross-domain callback).
+     * intent=admin or intent=host stored in session; callback URL set from current host so session works.
      */
     public function redirect()
     {
         $intent = request()->query('intent');
         if (in_array($intent, ['admin', 'host'], true)) {
-            $state = $intent . '.' . Str::random(40);
-            return Socialite::driver('google')->stateless()->with(['state' => $state])->redirect();
+            request()->session()->put('google_login_intent', $intent);
         }
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')
+            ->redirectUrl($this->getRedirectUrl())
+            ->redirect();
     }
 
     /**
      * Handle callback from Google; find or create user, log in, redirect by intent and user type.
-     * Intent is read from OAuth state (state param survives when session is lost on callback domain).
      */
     public function callback()
     {
-        $stateParam = request()->input('state');
-        if ($stateParam && str_contains($stateParam, '.')) {
-            $parts = explode('.', $stateParam, 2);
-            $intent = in_array($parts[0], ['admin', 'host'], true) ? $parts[0] : null;
-            $googleUser = Socialite::driver('google')->stateless()->user();
-        } else {
-            $intent = request()->session()->pull('google_login_intent');
-            $googleUser = Socialite::driver('google')->user();
+        try {
+            $googleUser = Socialite::driver('google')
+                ->redirectUrl($this->getRedirectUrl())
+                ->user();
+        } catch (\Throwable $e) {
+            report($e);
+            return redirect()->route('admin.login')
+                ->withErrors(['email' => 'Google sign-in failed. Please try again or use email/password.']);
         }
+
+        $intent = request()->session()->pull('google_login_intent');
 
         $user = User::where('google_id', $googleUser->getId())->first()
             ?? User::where('email', $googleUser->getEmail())->first();
