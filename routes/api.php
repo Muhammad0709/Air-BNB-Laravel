@@ -91,8 +91,9 @@ Route::middleware('auth:sanctum')->group(function () {
         // Home API
         Route::get('/home', [HomeController::class, 'index']);
         
-        // Search API (auth required, GET like Stays)
+        // Search API (auth required; GET query params or POST JSON body)
         Route::get('/search', [SearchController::class, 'index']);
+        Route::post('/search', [SearchController::class, 'index']);
         
         // Stays API
         Route::get('/stays', [StaysController::class, 'index']);
