@@ -156,6 +156,13 @@ return [
         'save_settings' => 'Ayarları Kaydet',
         'saved_success' => 'Ayarlar başarıyla kaydedildi!',
         'image_size_error' => 'Görsel 2MB veya daha az olmalıdır.',
+        'settings_subtitle' => 'Profil ve hesap ayarlarınızı yönetin',
+        'profile_subtitle' => 'Profil bilgilerinizi güncelleyin',
+        'upload_picture' => 'Fotoğraf yükle',
+        'image_formats_note' => 'JPG, PNG veya GIF. Maks. 2MB.',
+        'update_password' => 'Şifreyi güncelle',
+        'password_description' => 'Güvende kalmak için uzun, rastgele bir şifre kullandığınızdan emin olun',
+        'save_password' => 'Şifreyi kaydet',
     ],
     'common' => [
         'view' => 'Görüntüle',

@@ -156,6 +156,13 @@ return [
         'save_settings' => 'سیٹنگز محفوظ کریں',
         'saved_success' => 'سیٹنگز کامیابی سے محفوظ ہو گئیں!',
         'image_size_error' => 'تصویر 2MB یا اس سے کم ہونی چاہیے۔',
+        'settings_subtitle' => 'اپنے پروفائل اور اکاؤنٹ کی ترتیبات کا انتظام کریں',
+        'profile_subtitle' => 'اپنی پروفائل کی تفصیلات اپڈیٹ کریں',
+        'upload_picture' => 'تصویر اپ لوڈ کریں',
+        'image_formats_note' => 'JPG، PNG یا GIF۔ زیادہ سے زیادہ 2MB۔',
+        'update_password' => 'پاس ورڈ اپڈیٹ کریں',
+        'password_description' => 'محفوظ رہنے کے لیے لمبا، بے ترتیب پاس ورڈ استعمال کریں',
+        'save_password' => 'پاس ورڈ محفوظ کریں',
     ],
     'common' => [
         'view' => 'دیکھیں',

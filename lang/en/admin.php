@@ -156,6 +156,13 @@ return [
         'save_settings' => 'Save Settings',
         'saved_success' => 'Settings saved successfully!',
         'image_size_error' => 'Image must be 2MB or less.',
+        'settings_subtitle' => 'Manage your profile and account settings',
+        'profile_subtitle' => 'Update your profile details',
+        'upload_picture' => 'Upload picture',
+        'image_formats_note' => 'JPG, PNG or GIF. 2MB max.',
+        'update_password' => 'Update password',
+        'password_description' => 'Ensure your account is using a long, random password to stay secure',
+        'save_password' => 'Save password',
     ],
     'common' => [
         'view' => 'View',

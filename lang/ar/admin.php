@@ -156,6 +156,13 @@ return [
         'save_settings' => 'حفظ الإعدادات',
         'saved_success' => 'تم حفظ الإعدادات بنجاح!',
         'image_size_error' => 'يجب أن تكون الصورة 2 ميجابايت أو أقل.',
+        'settings_subtitle' => 'إدارة الملف الشخصي وإعدادات الحساب',
+        'profile_subtitle' => 'تحديث تفاصيل الملف الشخصي',
+        'upload_picture' => 'رفع صورة',
+        'image_formats_note' => 'JPG أو PNG أو GIF. الحد الأقصى 2 ميجابايت.',
+        'update_password' => 'تحديث كلمة المرور',
+        'password_description' => 'تأكد من استخدام كلمة مرور طويلة وعشوائية للأمان',
+        'save_password' => 'حفظ كلمة المرور',
     ],
     'common' => [
         'view' => 'عرض',

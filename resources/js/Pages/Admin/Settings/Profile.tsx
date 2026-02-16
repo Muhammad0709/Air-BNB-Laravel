@@ -6,11 +6,13 @@ import Toast from '../../../Components/Admin/Toast'
 import { Head, usePage, router } from '@inertiajs/react'
 import SaveIcon from '@mui/icons-material/Save'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
+import { useLanguage } from '../../../hooks/use-language'
 
 type UserProp = { id: number; name: string; email: string; profile_picture?: string | null }
 type PageProps = { user?: UserProp; flash?: { success?: string; error?: string } }
 
 export default function ProfileSettings() {
+  const { t } = useLanguage()
   const { url, props } = usePage<PageProps>()
   const user = props.user
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
@@ -55,7 +57,7 @@ export default function ProfileSettings() {
     const file = e.target.files?.[0]
     if (!file) return
     if (file.size > 2 * 1024 * 1024) {
-      setToast({ open: true, message: 'Image must be 2MB or less.', severity: 'error' })
+      setToast({ open: true, message: t('admin.settings.image_size_error'), severity: 'error' })
       e.target.value = ''
       return
     }
@@ -89,19 +91,19 @@ export default function ProfileSettings() {
   const profilePictureUrl = profileData.profileImage || user?.profile_picture || null
 
   const settingsTabs = [
-    { id: 'profile', label: 'Profile', path: '/admin/settings/profile' },
-    { id: 'password', label: 'Password', path: '/admin/settings/password' },
+    { id: 'profile', labelKey: 'admin.settings.profile', path: '/admin/settings/profile' },
+    { id: 'password', labelKey: 'admin.settings.password', path: '/admin/settings/password' },
   ]
   const currentActiveTab = url.includes('profile') ? 'profile' : url.includes('password') ? 'password' : 'profile'
-  const getPageTitle = () => currentActiveTab === 'profile' ? 'Profile settings' : currentActiveTab === 'password' ? 'Password settings' : 'Settings'
+  const getPageTitle = () => currentActiveTab === 'profile' ? t('admin.settings.profile_settings') : currentActiveTab === 'password' ? t('admin.settings.password_settings') : t('admin.settings.title')
 
   return (
     <>
       <Head title={getPageTitle()} />
       <AdminLayout title={getPageTitle()}>
         <Box sx={{ mb: 4 }}>
-          <Typography variant="h4" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>Settings</Typography>
-          <Typography variant="body1" sx={{ color: '#717171' }}>Manage your profile and account settings</Typography>
+          <Typography variant="h4" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>{t('admin.settings.title')}</Typography>
+          <Typography variant="body1" sx={{ color: '#717171' }}>{t('admin.settings.settings_subtitle')}</Typography>
         </Box>
         <Row>
           <Col xs={12} md={3}>
@@ -128,7 +130,7 @@ export default function ProfileSettings() {
                           '&:hover': { bgcolor: isActive ? '#FFF5F7' : '#F9FAFB' }
                         }}
                       >
-                        {tab.label}
+                        {t(tab.labelKey)}
                       </Button>
                     )
                   })}
@@ -140,8 +142,8 @@ export default function ProfileSettings() {
             {currentActiveTab === 'profile' && (
               <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '20px', width: '100%', maxWidth: '800px' }}>
                 <CardContent sx={{ p: 4 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>Profile</Typography>
-                  <Typography variant="body2" sx={{ color: '#717171', mb: 4 }}>Update your profile details</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>{t('admin.settings.profile')}</Typography>
+                  <Typography variant="body2" sx={{ color: '#717171', mb: 4 }}>{t('admin.settings.profile_subtitle')}</Typography>
                   <form onSubmit={handleProfileSubmit}>
                     <Stack spacing={4}>
                       <Box>
@@ -157,17 +159,17 @@ export default function ProfileSettings() {
                           </Box>
                           <Box>
                             <Button variant="outlined" component="label" sx={{ borderColor: '#D0D5DD', color: '#344054', textTransform: 'none', borderRadius: 2, '&:hover': { borderColor: '#D0D5DD', bgcolor: '#F9FAFB' } }}>
-                              Upload picture
+                              {t('admin.settings.upload_picture')}
                               <input type="file" accept="image/*" onChange={handleImageChange} hidden />
                             </Button>
-                            <Typography variant="body2" sx={{ color: '#717171', mt: 1 }}>JPG, PNG or GIF. 2MB max.</Typography>
+                            <Typography variant="body2" sx={{ color: '#717171', mt: 1 }}>{t('admin.settings.image_formats_note')}</Typography>
                           </Box>
                         </Stack>
                       </Box>
-                      <TextField label="Name" name="name" value={profileData.name} onChange={handleProfileChange} fullWidth required />
-                      <TextField label="Email address" name="email" type="email" value={profileData.email} onChange={handleProfileChange} fullWidth required />
+                      <TextField label={t('admin.settings.name')} name="name" value={profileData.name} onChange={handleProfileChange} fullWidth required />
+                      <TextField label={t('admin.settings.email_address')} name="email" type="email" value={profileData.email} onChange={handleProfileChange} fullWidth required />
                       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button type="submit" variant="contained" startIcon={<SaveIcon />} sx={{ bgcolor: '#AD542D', textTransform: 'none', borderRadius: 2, fontWeight: 700, px: 4, py: 1.5, '&:hover': { bgcolor: '#78381C' } }}>Save</Button>
+                        <Button type="submit" variant="contained" startIcon={<SaveIcon />} sx={{ bgcolor: '#AD542D', textTransform: 'none', borderRadius: 2, fontWeight: 700, px: 4, py: 1.5, '&:hover': { bgcolor: '#78381C' } }}>{t('admin.common.save')}</Button>
                       </Box>
                     </Stack>
                   </form>
@@ -177,15 +179,15 @@ export default function ProfileSettings() {
             {currentActiveTab === 'password' && (
               <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '20px', width: '100%', maxWidth: '800px' }}>
                 <CardContent sx={{ p: 4 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>Update password</Typography>
-                  <Typography variant="body2" sx={{ color: '#717171', mb: 4 }}>Ensure your account is using a long, random password to stay secure</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>{t('admin.settings.update_password')}</Typography>
+                  <Typography variant="body2" sx={{ color: '#717171', mb: 4 }}>{t('admin.settings.password_description')}</Typography>
                   <form onSubmit={handlePasswordSubmit}>
                     <Stack spacing={3}>
-                      <TextField label="Current password" name="currentPassword" type="password" value={passwordData.currentPassword} onChange={handlePasswordChange} fullWidth required />
-                      <TextField label="New password" name="newPassword" type="password" value={passwordData.newPassword} onChange={handlePasswordChange} fullWidth required />
-                      <TextField label="Confirm password" name="confirmPassword" type="password" value={passwordData.confirmPassword} onChange={handlePasswordChange} fullWidth required />
+                      <TextField label={t('admin.settings.current_password')} name="currentPassword" type="password" value={passwordData.currentPassword} onChange={handlePasswordChange} fullWidth required />
+                      <TextField label={t('admin.settings.new_password')} name="newPassword" type="password" value={passwordData.newPassword} onChange={handlePasswordChange} fullWidth required />
+                      <TextField label={t('admin.settings.confirm_password')} name="confirmPassword" type="password" value={passwordData.confirmPassword} onChange={handlePasswordChange} fullWidth required />
                       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button type="submit" variant="contained" startIcon={<SaveIcon />} sx={{ bgcolor: '#AD542D', textTransform: 'none', borderRadius: 2, fontWeight: 700, px: 4, py: 1.5, '&:hover': { bgcolor: '#78381C' } }}>Save password</Button>
+                        <Button type="submit" variant="contained" startIcon={<SaveIcon />} sx={{ bgcolor: '#AD542D', textTransform: 'none', borderRadius: 2, fontWeight: 700, px: 4, py: 1.5, '&:hover': { bgcolor: '#78381C' } }}>{t('admin.settings.save_password')}</Button>
                       </Box>
                     </Stack>
                   </form>

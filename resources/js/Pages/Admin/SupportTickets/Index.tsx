@@ -86,37 +86,37 @@ export default function AdminSupportTickets() {
 
   return (
     <>
-      <Head title="Support Tickets" />
-      <AdminLayout title="Support Tickets">
+      <Head title={t('admin.support_tickets.title')} />
+      <AdminLayout title={t('admin.support_tickets.title')}>
         <Row>
           <Col xs={12}>
             <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2 }}>
               <CardContent>
                 <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>All Support Tickets</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>{t('admin.support_tickets.all_tickets')}</Typography>
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap alignItems="center" sx={{ width: { xs: '100%', sm: 'auto' } }}>
-                    <TextField value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search tickets..." size="small" sx={{ width: { xs: '100%', sm: 250 } }} InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon fontSize="small" sx={{ color: '#9CA3AF' }} /></InputAdornment> }} />
-                    <Button variant="contained" onClick={() => router.visit('/admin/support-tickets/create')} sx={{ bgcolor: '#AD542D', textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>Create Ticket</Button>
+                    <TextField value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t('admin.support_tickets.search_placeholder')} size="small" sx={{ width: { xs: '100%', sm: 250 } }} InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon fontSize="small" sx={{ color: '#9CA3AF' }} /></InputAdornment> }} />
+                    <Button variant="contained" onClick={() => router.visit('/admin/support-tickets/create')} sx={{ bgcolor: '#AD542D', textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>{t('admin.support_tickets.create_ticket')}</Button>
                   </Stack>
                 </Stack>
                 <TableContainer sx={{ overflowX: 'auto', maxWidth: '100%', WebkitOverflowScrolling: 'touch' }}>
                   <Table sx={{ minWidth: 800, width: '100%' }}>
                     <TableHead>
                       <TableRow sx={{ bgcolor: '#F9FAFB' }}>
-                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Subject</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>User</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Email</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Status</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Priority</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Created</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Actions</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.support_tickets.subject')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.support_tickets.user_name')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.support_tickets.email')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.support_tickets.status')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.support_tickets.priority')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.support_tickets.created_at')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.common.actions')}</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {filteredTickets.length === 0 ? (
                         <TableRow>
                           <TableCell colSpan={7} sx={{ border: 'none', py: 8 }}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}><Typography variant="body1" sx={{ color: '#717171', fontWeight: 600 }}>No data found</Typography></Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}><Typography variant="body1" sx={{ color: '#717171', fontWeight: 600 }}>{t('admin.support_tickets.no_tickets_found')}</Typography></Box>
                           </TableCell>
                         </TableRow>
                       ) : (
@@ -125,11 +125,11 @@ export default function AdminSupportTickets() {
                             <TableCell><Typography sx={{ fontWeight: 600, color: '#222222' }}>{ticket.subject}</Typography></TableCell>
                             <TableCell sx={{ color: '#717171' }}>{ticket.user}</TableCell>
                             <TableCell sx={{ color: '#717171' }}>{ticket.email}</TableCell>
-                            <TableCell><Chip label={ticket.status} size="small" sx={{ bgcolor: `${getStatusColor(ticket.status)}15`, color: getStatusColor(ticket.status), fontWeight: 600, fontSize: 12 }} /></TableCell>
-                            <TableCell><Chip label={ticket.priority} size="small" sx={{ bgcolor: `${getPriorityColor(ticket.priority)}15`, color: getPriorityColor(ticket.priority), fontWeight: 600, fontSize: 12 }} /></TableCell>
+                            <TableCell><Chip label={getStatusLabel(ticket.status)} size="small" sx={{ bgcolor: `${getStatusColor(ticket.status)}15`, color: getStatusColor(ticket.status), fontWeight: 600, fontSize: 12 }} /></TableCell>
+                            <TableCell><Chip label={getPriorityLabel(ticket.priority)} size="small" sx={{ bgcolor: `${getPriorityColor(ticket.priority)}15`, color: getPriorityColor(ticket.priority), fontWeight: 600, fontSize: 12 }} /></TableCell>
                             <TableCell sx={{ color: '#717171' }}>{new Date(ticket.createdAt).toLocaleDateString()}</TableCell>
                             <TableCell>
-                              <ActionsMenu onView={() => router.visit(`/admin/support-tickets/${ticket.id}`)} onEdit={() => router.visit(`/admin/support-tickets/${ticket.id}/edit`)} onDelete={() => handleDeleteClick({ id: ticket.id, subject: ticket.subject })} viewLabel="View" editLabel="Edit" />
+                              <ActionsMenu onView={() => router.visit(`/admin/support-tickets/${ticket.id}`)} onEdit={() => router.visit(`/admin/support-tickets/${ticket.id}/edit`)} onDelete={() => handleDeleteClick({ id: ticket.id, subject: ticket.subject })} viewLabel={t('admin.common.view')} editLabel={t('admin.common.edit')} />
                             </TableCell>
                           </TableRow>
                         ))
@@ -141,7 +141,7 @@ export default function AdminSupportTickets() {
             </Card>
           </Col>
         </Row>
-        <DeleteConfirmationDialog open={deleteDialogOpen} onClose={handleDeleteCancel} onConfirm={handleDeleteConfirm} title="Are you sure you want to delete this ticket?" itemName="the ticket" />
+        <DeleteConfirmationDialog open={deleteDialogOpen} onClose={handleDeleteCancel} onConfirm={handleDeleteConfirm} title={t('admin.support_tickets.delete_confirm')} itemName={t('admin.support_tickets.item_name')} />
       </AdminLayout>
     </>
   )

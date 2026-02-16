@@ -156,6 +156,13 @@ return [
         'save_settings' => 'ڕێکخستنەکان پاشەکەوت بکە',
         'saved_success' => 'ڕێکخستنەکان بە سەرکەوتوویی پاشەکەوتکران!',
         'image_size_error' => 'وێنەکە دەبێت 2MB یان کەمتر بێت.',
+        'settings_subtitle' => 'بەڕێوەبردنی پرۆفایل و ڕێکخستنەکانی هەژمار',
+        'profile_subtitle' => 'وردەکارییەکانی پرۆفایلت نوێ بکەرەوە',
+        'upload_picture' => 'وێنە بار بکە',
+        'image_formats_note' => 'JPG، PNG یان GIF. بەرزترین 2MB.',
+        'update_password' => 'وشەی نهێنی نوێ بکەرەوە',
+        'password_description' => 'دڵنیابە لە بەکارهێنانی وشەیەکی درێژ و هەڕەمەکی بۆ پاراستن',
+        'save_password' => 'وشەی نهێنی پاشەکەوت بکە',
     ],
     'common' => [
         'view' => 'بینین',
