@@ -14,6 +14,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->validateCsrfTokens(except: [
+            'auth/login',
+            'auth/register',
+            'login',
+            'register',
+            'logout',
+            'admin/logout',
+            'host/logout',
+        ]);
+
         $middleware->web(append: [
             \App\Http\Middleware\SetLocaleFromSession::class,
             \App\Http\Middleware\HandleInertiaRequests::class,
