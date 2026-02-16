@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-import { Box, Button, Link, Menu, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, IconButton, InputAdornment, Link, Menu, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { Container, Row, Col } from 'react-bootstrap'
 import { Head, Link as InertiaLink, useForm } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
@@ -24,6 +26,7 @@ const inputSx = {
 export default function AdminLogin() {
   const { t, language, switchLanguage, isRtl } = useLanguage()
   const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null)
+  const [showPassword, setShowPassword] = useState(false)
   const currentLanguage = languages.find((l) => l.code === language) || languages[0]
   const { data, setData, post, processing, errors } = useForm({ email: '', password: '' })
 
@@ -112,7 +115,7 @@ export default function AdminLogin() {
                       fullWidth
                       label={t('auth.admin_login.password')}
                       name="password"
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       value={data.password}
                       onChange={(e) => setData('password', e.target.value)}
                       error={!!errors.password}
@@ -120,6 +123,22 @@ export default function AdminLogin() {
                       required
                       variant="outlined"
                       sx={inputSx}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              size="small"
+                              aria-label={showPassword ? 'Hide password' : 'Show password'}
+                              onClick={() => setShowPassword((p) => !p)}
+                              onMouseDown={(e) => e.preventDefault()}
+                              edge="end"
+                              sx={{ color: '#717171' }}
+                            >
+                              {showPassword ? <VisibilityOff sx={{ fontSize: 20 }} /> : <Visibility sx={{ fontSize: 20 }} />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
                     />
 
                     <Button
