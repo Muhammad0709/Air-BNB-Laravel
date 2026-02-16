@@ -142,7 +142,7 @@ export default function AdminLogin() {
 
                     <Button
                       component="a"
-                      href="/auth/google"
+                      href="/auth/google?intent=admin"
                       fullWidth
                       variant="outlined"
                       {...(isRtl ? { endIcon: googleIconEl } : { startIcon: googleIconEl })}
