@@ -94,35 +94,33 @@ Route::middleware(['auth', 'redirect.admin.host'])->group(function () {
     Route::patch('/profile/update', [ProfileSettingsController::class, 'updateProfile'])->name('profile.update');
     Route::patch('/profile/password', [ProfileSettingsController::class, 'updatePassword'])->name('profile.password');
     Route::post('/profile/picture', [ProfileSettingsController::class, 'uploadProfilePicture'])->name('profile.picture');
-    
-    
-    // Admin routes (require admin authentication)
-    Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        Route::post('/logout', [AdminLoginController::class, 'destroy'])->name('logout');
-        // Properties routes (admin can only view and edit, not create or delete)
-        Route::get('/properties', [PropertyController::class, 'index'])->name('properties.index');
-        Route::get('/properties/{property}', [PropertyController::class, 'show'])->name('properties.show');
-        Route::get('/properties/{property}/edit', [PropertyController::class, 'edit'])->name('properties.edit');
-        Route::put('/properties/{property}', [PropertyController::class, 'update'])->name('properties.update');
-        Route::patch('/properties/{property}/approve', [PropertyController::class, 'approve'])->name('properties.approve');
-        Route::patch('/properties/{property}/reject', [PropertyController::class, 'reject'])->name('properties.reject');
-        Route::resource('users', UserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
-        Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings.index');
-        Route::get('/bookings/create', [AdminBookingController::class, 'create'])->name('bookings.create');
-        Route::get('/bookings/{id}', [AdminBookingController::class, 'show'])->name('bookings.show');
-        Route::get('/bookings/{id}/edit', [AdminBookingController::class, 'edit'])->name('bookings.edit');
-        Route::get('/support-tickets', [SupportTicketController::class, 'index'])->name('support-tickets.index');
-        Route::get('/support-tickets/create', [SupportTicketController::class, 'create'])->name('support-tickets.create');
-        Route::get('/support-tickets/{id}', [SupportTicketController::class, 'show'])->name('support-tickets.show');
-        Route::get('/support-tickets/{id}/edit', [SupportTicketController::class, 'edit'])->name('support-tickets.edit');
-        Route::get('/settings', [AdminSettingsController::class, 'index'])->name('settings.index');
-        Route::get('/settings/profile', [AdminSettingsController::class, 'profile'])->name('settings.profile');
-        Route::get('/settings/password', [AdminSettingsController::class, 'password'])->name('settings.password');
-        Route::put('/settings/profile', [AdminSettingsController::class, 'updateProfile'])->name('settings.profile.update');
-        Route::put('/settings/password', [AdminSettingsController::class, 'updatePassword'])->name('settings.password.update');
-        Route::post('/settings/picture', [AdminSettingsController::class, 'uploadProfilePicture'])->name('settings.picture');
-    });
+});
+
+// Admin routes: only 'admin' middleware – unauthenticated or non-admin go to /login (admin login)
+Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/logout', [AdminLoginController::class, 'destroy'])->name('logout');
+    Route::get('/properties', [PropertyController::class, 'index'])->name('properties.index');
+    Route::get('/properties/{property}', [PropertyController::class, 'show'])->name('properties.show');
+    Route::get('/properties/{property}/edit', [PropertyController::class, 'edit'])->name('properties.edit');
+    Route::put('/properties/{property}', [PropertyController::class, 'update'])->name('properties.update');
+    Route::patch('/properties/{property}/approve', [PropertyController::class, 'approve'])->name('properties.approve');
+    Route::patch('/properties/{property}/reject', [PropertyController::class, 'reject'])->name('properties.reject');
+    Route::resource('users', UserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
+    Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings.index');
+    Route::get('/bookings/create', [AdminBookingController::class, 'create'])->name('bookings.create');
+    Route::get('/bookings/{id}', [AdminBookingController::class, 'show'])->name('bookings.show');
+    Route::get('/bookings/{id}/edit', [AdminBookingController::class, 'edit'])->name('bookings.edit');
+    Route::get('/support-tickets', [SupportTicketController::class, 'index'])->name('support-tickets.index');
+    Route::get('/support-tickets/create', [SupportTicketController::class, 'create'])->name('support-tickets.create');
+    Route::get('/support-tickets/{id}', [SupportTicketController::class, 'show'])->name('support-tickets.show');
+    Route::get('/support-tickets/{id}/edit', [SupportTicketController::class, 'edit'])->name('support-tickets.edit');
+    Route::get('/settings', [AdminSettingsController::class, 'index'])->name('settings.index');
+    Route::get('/settings/profile', [AdminSettingsController::class, 'profile'])->name('settings.profile');
+    Route::get('/settings/password', [AdminSettingsController::class, 'password'])->name('settings.password');
+    Route::put('/settings/profile', [AdminSettingsController::class, 'updateProfile'])->name('settings.profile.update');
+    Route::put('/settings/password', [AdminSettingsController::class, 'updatePassword'])->name('settings.password.update');
+    Route::post('/settings/picture', [AdminSettingsController::class, 'uploadProfilePicture'])->name('settings.picture');
 });
 
 // Host routes (require host authentication) - separate from auth group to avoid default redirect
