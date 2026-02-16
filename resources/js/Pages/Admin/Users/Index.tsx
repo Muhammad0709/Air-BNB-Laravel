@@ -6,8 +6,10 @@ import DeleteConfirmationDialog from '../../../Components/Admin/DeleteConfirmati
 import ActionsMenu from '../../../Components/Admin/ActionsMenu'
 import { router, usePage } from '@inertiajs/react'
 import SearchIcon from '@mui/icons-material/Search'
+import { useLanguage } from '../../../hooks/use-language'
 
 export default function AdminUsers() {
+  const { t } = useLanguage()
   const { users, filters } = usePage().props as any
   const [search, setSearch] = useState(filters?.search || '')
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -49,7 +51,7 @@ export default function AdminUsers() {
   const usersList = users?.data || []
 
   return (
-    <AdminLayout title="Users">
+    <AdminLayout title={t('admin.users.title')}>
       {/* Users Table */}
       <Row>
         <Col xs={12}>
@@ -57,12 +59,12 @@ export default function AdminUsers() {
             <CardContent>
               <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827' }}>
-                  All Users
+                  {t('admin.users.all_users')}
                 </Typography>
                 <TextField
                   value={search}
                   onChange={(e) => handleSearchChange(e.target.value)}
-                  placeholder="Search users..."
+                  placeholder={t('admin.users.search_placeholder')}
                   size="small"
                   variant="outlined"
                   sx={{
@@ -97,17 +99,17 @@ export default function AdminUsers() {
                 <Table sx={{ minWidth: 800, width: '100%' }}>
                   <TableHead>
                     <TableRow sx={{ bgcolor: '#F9FAFB' }}>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Name</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Email</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Joined</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Actions</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('admin.users.name')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('admin.users.email')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('admin.users.joined')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('admin.common.actions')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {usersList.length === 0 ? (
                       <TableRow>
                         <TableCell colSpan={4} sx={{ textAlign: 'center', py: 4 }}>
-                          <Typography sx={{ color: '#6B7280' }}>No users found</Typography>
+                          <Typography sx={{ color: '#6B7280' }}>{t('admin.users.no_users_found')}</Typography>
                         </TableCell>
                       </TableRow>
                     ) : (
@@ -154,8 +156,8 @@ export default function AdminUsers() {
                               onView={() => router.visit(`/admin/users/${user.id}`)}
                               onEdit={() => router.visit(`/admin/users/${user.id}/edit`)}
                               onDelete={() => handleDeleteClick({ id: user.id, name: user.name })}
-                              viewLabel="View"
-                              editLabel="Edit"
+                              viewLabel={t('admin.common.view')}
+                              editLabel={t('admin.common.edit')}
                             />
                           </TableCell>
                         </TableRow>
@@ -174,8 +176,8 @@ export default function AdminUsers() {
         open={deleteDialogOpen}
         onClose={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
-        title="Are you sure you want to delete this user?"
-        itemName="the user"
+        title={t('admin.users.delete_confirm')}
+        itemName={t('admin.users.item_name')}
       />
     </AdminLayout>
   )

@@ -5,10 +5,12 @@ import AdminLayout from '../../../Components/Admin/AdminLayout'
 import ActionsMenu from '../../../Components/Admin/ActionsMenu'
 import SearchIcon from '@mui/icons-material/Search'
 import { router, usePage } from '@inertiajs/react'
+import { useLanguage } from '../../../hooks/use-language'
 
 const DEFAULT_IMAGE = '/images/filter-1.svg'
 
 export default function AdminProperties() {
+  const { t } = useLanguage()
   const { properties, filters } = usePage().props as any
   const [search, setSearch] = useState(filters?.search || '')
 
@@ -29,11 +31,20 @@ export default function AdminProperties() {
     }
   }
 
+  const getApprovalStatusLabel = (status: string) => {
+    switch (status) {
+      case 'Approved': return t('admin.properties.approved')
+      case 'Rejected': return t('admin.properties.rejected')
+      case 'Pending': return t('admin.properties.pending')
+      default: return status
+    }
+  }
+
 
   const propertiesList = properties?.data || []
 
   return (
-    <AdminLayout title="Properties">
+    <AdminLayout title={t('admin.properties.title')}>
       {/* Properties Table */}
       <Row>
         <Col xs={12}>
@@ -41,12 +52,12 @@ export default function AdminProperties() {
             <CardContent>
               <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827' }}>
-                  Manage Properties
+                  {t('admin.properties.manage_properties')}
                 </Typography>
                 <TextField
                   value={search}
                   onChange={(e) => handleSearchChange(e.target.value)}
-                  placeholder="Search properties..."
+                  placeholder={t('admin.properties.search_placeholder')}
                   size="small"
                   sx={{ width: { xs: '100%', sm: 250 } }}
                   InputProps={{
@@ -63,18 +74,18 @@ export default function AdminProperties() {
                 <Table sx={{ minWidth: 800, width: '100%' }}>
                   <TableHead>
                     <TableRow sx={{ bgcolor: '#F9FAFB' }}>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Property</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Location</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Price</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Approval</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Actions</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('admin.properties.property')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('admin.properties.location')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('admin.properties.price')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('admin.properties.approval')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('admin.common.actions')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {propertiesList.length === 0 ? (
                       <TableRow>
                         <TableCell colSpan={5} sx={{ textAlign: 'center', py: 4 }}>
-                          <Typography sx={{ color: '#6B7280' }}>No properties found</Typography>
+                          <Typography sx={{ color: '#6B7280' }}>{t('admin.properties.no_properties_found')}</Typography>
                         </TableCell>
                       </TableRow>
                     ) : (
@@ -104,7 +115,7 @@ export default function AdminProperties() {
                           </TableCell>
                           <TableCell>
                             <Chip
-                              label={property.approval_status}
+                              label={getApprovalStatusLabel(property.approval_status)}
                               size="small"
                               sx={{
                                 bgcolor: `${getApprovalStatusColor(property.approval_status)}15`,
@@ -120,10 +131,10 @@ export default function AdminProperties() {
                               onEdit={() => router.visit(`/admin/properties/${property.id}/edit`)}
                               onApprove={property.approval_status === 'Pending' ? () => router.patch(`/admin/properties/${property.id}/approve`) : undefined}
                               onReject={property.approval_status === 'Pending' ? () => router.patch(`/admin/properties/${property.id}/reject`) : undefined}
-                              viewLabel="View"
-                              editLabel="Edit"
-                              approveLabel="Approve"
-                              rejectLabel="Reject"
+                              viewLabel={t('admin.common.view')}
+                              editLabel={t('admin.common.edit')}
+                              approveLabel={t('admin.properties.approve')}
+                              rejectLabel={t('admin.properties.reject')}
                             />
                           </TableCell>
                         </TableRow>

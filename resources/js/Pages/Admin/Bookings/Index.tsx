@@ -6,8 +6,10 @@ import DeleteConfirmationDialog from '../../../Components/Admin/DeleteConfirmati
 import ActionsMenu from '../../../Components/Admin/ActionsMenu'
 import SearchIcon from '@mui/icons-material/Search'
 import { Head, router } from '@inertiajs/react'
+import { useLanguage } from '../../../hooks/use-language'
 
 export default function AdminBookings() {
+  const { t } = useLanguage()
   const [search, setSearch] = useState('')
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [bookingToDelete, setBookingToDelete] = useState<{ id: number; guest: string } | null>(null)
@@ -36,6 +38,15 @@ export default function AdminBookings() {
     }
   }
 
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'Confirmed': return t('admin.bookings.confirmed')
+      case 'Pending': return t('admin.bookings.pending')
+      case 'Cancelled': return t('admin.bookings.cancelled')
+      default: return status
+    }
+  }
+
   const handleDeleteClick = (booking: { id: number; guest: string }) => {
     setBookingToDelete(booking)
     setDeleteDialogOpen(true)
@@ -55,21 +66,21 @@ export default function AdminBookings() {
 
   return (
     <>
-      <Head title="Bookings" />
-      <AdminLayout title="Bookings">
+      <Head title={t('admin.bookings.title')} />
+      <AdminLayout title={t('admin.bookings.title')}>
         <Row>
           <Col xs={12}>
             <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2 }}>
               <CardContent>
                 <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
                   <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>
-                    All Bookings
+                    {t('admin.bookings.all_bookings')}
                   </Typography>
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap alignItems="center" sx={{ width: { xs: '100%', sm: 'auto' } }}>
                     <TextField
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
-                      placeholder="Search bookings..."
+                      placeholder={t('admin.bookings.search_placeholder')}
                       size="small"
                       sx={{ width: { xs: '100%', sm: 250 } }}
                       InputProps={{
@@ -90,7 +101,7 @@ export default function AdminBookings() {
                         '&:hover': { bgcolor: '#78381C' }
                       }}
                     >
-                      Add Booking
+                      {t('admin.bookings.add_booking')}
                     </Button>
                   </Stack>
                 </Stack>
@@ -99,13 +110,13 @@ export default function AdminBookings() {
                   <Table sx={{ minWidth: 800, width: '100%' }}>
                     <TableHead>
                       <TableRow sx={{ bgcolor: '#F9FAFB' }}>
-                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Guest</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Property</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Check-in</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Check-out</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Status</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Amount</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Actions</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.bookings.guest')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.bookings.property')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.bookings.check_in')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.bookings.check_out')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.bookings.status')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.bookings.amount')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.common.actions')}</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -113,7 +124,7 @@ export default function AdminBookings() {
                         <TableRow>
                           <TableCell colSpan={7} sx={{ border: 'none', py: 8 }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
-                              <Typography variant="body1" sx={{ color: '#717171', fontWeight: 600 }}>No data found</Typography>
+                              <Typography variant="body1" sx={{ color: '#717171', fontWeight: 600 }}>{t('admin.bookings.no_bookings_found')}</Typography>
                             </Box>
                           </TableCell>
                         </TableRow>
@@ -126,7 +137,7 @@ export default function AdminBookings() {
                             <TableCell sx={{ color: '#717171' }}>{booking.checkout}</TableCell>
                             <TableCell>
                               <Chip
-                                label={booking.status}
+                                label={getStatusLabel(booking.status)}
                                 size="small"
                                 sx={{ bgcolor: `${getStatusColor(booking.status)}15`, color: getStatusColor(booking.status), fontWeight: 600, fontSize: 12 }}
                               />
@@ -137,8 +148,8 @@ export default function AdminBookings() {
                                 onView={() => router.visit(`/admin/bookings/${booking.id}`)}
                                 onEdit={() => router.visit(`/admin/bookings/${booking.id}/edit`)}
                                 onDelete={() => handleDeleteClick({ id: booking.id, guest: booking.guest })}
-                                viewLabel="View"
-                                editLabel="Edit"
+                                viewLabel={t('admin.common.view')}
+                                editLabel={t('admin.common.edit')}
                               />
                             </TableCell>
                           </TableRow>
@@ -156,8 +167,8 @@ export default function AdminBookings() {
           open={deleteDialogOpen}
           onClose={handleDeleteCancel}
           onConfirm={handleDeleteConfirm}
-          title="Are you sure you want to delete this booking?"
-          itemName="the booking"
+          title={t('admin.bookings.delete_confirm')}
+          itemName={t('admin.bookings.item_name')}
         />
       </AdminLayout>
     </>

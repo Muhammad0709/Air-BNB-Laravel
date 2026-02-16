@@ -8,15 +8,17 @@ import HotelIcon from '@mui/icons-material/Hotel'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import AdminLayout from '../../Components/Admin/AdminLayout'
 import { usePage } from '@inertiajs/react'
+import { useLanguage } from '../../hooks/use-language'
 
 export default function AdminDashboard() {
+  const { t } = useLanguage()
   const { stats, recentBookings } = usePage().props as any
 
   const statsData = [
-    { title: 'Total Bookings', value: stats?.totalBookings?.toLocaleString() || '0', icon: DashboardIcon, color: '#AD542D', change: '+12%' },
-    { title: 'Total Users', value: stats?.totalUsers?.toLocaleString() || '0', icon: PeopleIcon, color: '#4F46E5', change: '+8%' },
-    { title: 'Properties', value: stats?.totalProperties?.toLocaleString() || '0', icon: HotelIcon, color: '#10B981', change: '+5%' },
-    { title: 'Revenue', value: stats?.revenue ? `$${stats.revenue.toLocaleString()}` : '$0', icon: TrendingUpIcon, color: '#F59E0B', change: '+15%' },
+    { titleKey: 'admin.dashboard.total_bookings', value: stats?.totalBookings?.toLocaleString() || '0', icon: DashboardIcon, color: '#AD542D', change: '+12%' },
+    { titleKey: 'admin.dashboard.total_users', value: stats?.totalUsers?.toLocaleString() || '0', icon: PeopleIcon, color: '#4F46E5', change: '+8%' },
+    { titleKey: 'admin.dashboard.properties', value: stats?.totalProperties?.toLocaleString() || '0', icon: HotelIcon, color: '#10B981', change: '+5%' },
+    { titleKey: 'admin.dashboard.revenue', value: stats?.revenue ? `$${stats.revenue.toLocaleString()}` : '$0', icon: TrendingUpIcon, color: '#F59E0B', change: '+15%' },
   ]
 
   const getStatusColor = (status: string) => {
@@ -29,7 +31,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <AdminLayout title="Dashboard">
+    <AdminLayout title={t('admin.dashboard.title')}>
       {/* Stats Cards */}
       <Row className="g-3 mb-4">
         {statsData.map((stat, idx) => (
@@ -68,7 +70,7 @@ export default function AdminDashboard() {
                   {stat.value}
                 </Typography>
                 <Typography variant="body2" sx={{ color: '#6B7280' }}>
-                  {stat.title}
+                  {t(stat.titleKey)}
                 </Typography>
               </CardContent>
             </Card>
@@ -83,7 +85,7 @@ export default function AdminDashboard() {
             <CardContent>
               <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 3 }}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827' }}>
-                  Recent Bookings
+                  {t('admin.dashboard.recent_bookings')}
                 </Typography>
                 <Button
                   variant="outlined"
@@ -96,7 +98,7 @@ export default function AdminDashboard() {
                     '&:hover': { borderColor: '#D0D5DD', bgcolor: '#F9FAFB' }
                   }}
                 >
-                  Search
+                  {t('admin.dashboard.search')}
                 </Button>
               </Stack>
 
@@ -104,12 +106,12 @@ export default function AdminDashboard() {
                 <Table sx={{ minWidth: 650, width: '100%' }}>
                   <TableHead>
                     <TableRow sx={{ bgcolor: '#F9FAFB' }}>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Guest</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Property</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Check-in</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Check-out</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Status</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Amount</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('admin.dashboard.guest')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('admin.dashboard.property')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('admin.dashboard.check_in')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('admin.dashboard.check_out')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('admin.dashboard.status')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('admin.dashboard.amount')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -142,7 +144,7 @@ export default function AdminDashboard() {
                     ) : (
                       <TableRow>
                         <TableCell colSpan={6} sx={{ textAlign: 'center', py: 4 }}>
-                          <Typography sx={{ color: '#6B7280' }}>No bookings found</Typography>
+                          <Typography sx={{ color: '#6B7280' }}>{t('admin.dashboard.no_bookings_found')}</Typography>
                         </TableCell>
                       </TableRow>
                     )}

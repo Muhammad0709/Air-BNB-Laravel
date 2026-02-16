@@ -6,8 +6,10 @@ import DeleteConfirmationDialog from '../../../Components/Admin/DeleteConfirmati
 import ActionsMenu from '../../../Components/Admin/ActionsMenu'
 import SearchIcon from '@mui/icons-material/Search'
 import { Head, router } from '@inertiajs/react'
+import { useLanguage } from '../../../hooks/use-language'
 
 export default function AdminSupportTickets() {
+  const { t } = useLanguage()
   const [search, setSearch] = useState('')
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [ticketToDelete, setTicketToDelete] = useState<{ id: number; subject: string } | null>(null)
@@ -43,6 +45,25 @@ export default function AdminSupportTickets() {
       case 'Medium': return '#F59E0B'
       case 'Low': return '#10B981'
       default: return '#717171'
+    }
+  }
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'Open': return t('admin.support_tickets.open')
+      case 'In Progress': return t('admin.support_tickets.in_progress')
+      case 'Resolved': return t('admin.support_tickets.resolved')
+      case 'Closed': return t('admin.support_tickets.closed')
+      default: return status
+    }
+  }
+
+  const getPriorityLabel = (priority: string) => {
+    switch (priority) {
+      case 'High': return t('admin.support_tickets.high')
+      case 'Medium': return t('admin.support_tickets.medium')
+      case 'Low': return t('admin.support_tickets.low')
+      default: return priority
     }
   }
 

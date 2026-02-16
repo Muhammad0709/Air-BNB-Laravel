@@ -4,8 +4,10 @@ import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import { router, useForm, usePage } from '@inertiajs/react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { useLanguage } from '../../../hooks/use-language'
 
 export default function EditUser() {
+  const { t } = useLanguage()
   const { user } = usePage().props as any
   const { data, setData, put, processing, errors } = useForm({
     name: user?.name || '',
@@ -27,14 +29,14 @@ export default function EditUser() {
 
   if (!user) {
     return (
-      <AdminLayout title="Edit User">
-        <Typography>User not found</Typography>
+      <AdminLayout title={t('admin.users.edit_user')}>
+        <Typography>{t('admin.users.user_not_found')}</Typography>
       </AdminLayout>
     )
   }
 
   return (
-    <AdminLayout title="Edit User">
+    <AdminLayout title={t('admin.users.edit_user')}>
       <Button
         startIcon={<ArrowBackIcon />}
         onClick={() => router.visit('/admin/users')}
@@ -45,13 +47,13 @@ export default function EditUser() {
           '&:hover': { bgcolor: '#F9FAFB', color: '#111827' }
         }}
       >
-        Back to Users
+        {t('admin.users.back_to_users')}
       </Button>
 
       <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '16px' }}>
         <CardContent sx={{ p: { xs: 2, md: 4 } }}>
           <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 4 }}>
-            User Information
+            {t('admin.users.user_information')}
           </Typography>
 
           <form onSubmit={handleSubmit}>
@@ -72,7 +74,7 @@ export default function EditUser() {
                   </Avatar>
                   <Stack spacing={2} sx={{ flex: 1 }}>
                     <Typography variant="body2" sx={{ color: '#6B7280' }}>
-                      Profile picture is generated from user initials
+                      {t('admin.users.profile_picture_note')}
                     </Typography>
                   </Stack>
                 </Stack>
@@ -83,7 +85,7 @@ export default function EditUser() {
               <Col xs={12} md={6}>
                 <Stack spacing={3}>
                   <TextField
-                    label="Full Name"
+                    label={t('admin.users.full_name')}
                     name="name"
                     value={data.name}
                     onChange={(e) => setData('name', e.target.value)}
@@ -102,7 +104,7 @@ export default function EditUser() {
                     }}
                   />
                   <TextField
-                    label="Email Address"
+                    label={t('admin.users.email_address')}
                     name="email"
                     type="email"
                     value={data.email}
@@ -139,7 +141,7 @@ export default function EditUser() {
                       '&:hover': { borderColor: '#9CA3AF', bgcolor: '#F9FAFB' }
                     }}
                   >
-                    Cancel
+                    {t('admin.common.cancel')}
                   </Button>
                   <Button
                     type="submit"
@@ -153,7 +155,7 @@ export default function EditUser() {
                       '&:hover': { bgcolor: '#78381C' }
                     }}
                   >
-                    {processing ? 'Updating...' : 'Update User'}
+                    {processing ? t('admin.users.updating') : t('admin.users.update_user')}
                   </Button>
                 </Stack>
               </Col>

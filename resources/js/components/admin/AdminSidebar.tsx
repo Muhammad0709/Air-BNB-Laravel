@@ -16,7 +16,7 @@ type AdminSidebarProps = {
 }
 
 export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
-  const { isRtl } = useLanguage()
+  const { isRtl, t } = useLanguage()
   const { url } = usePage()
   const pathname = url
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -56,42 +56,12 @@ export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
   }
 
   const menuItems = [
-    {
-      label: 'Dashboard',
-      icon: DashboardIcon,
-      path: '/admin/dashboard',
-      onClick: () => router.visit('/admin/dashboard')
-    },
-    {
-      label: 'Users',
-      icon: PeopleIcon,
-      path: '/admin/users',
-      onClick: () => router.visit('/admin/users')
-    },
-    {
-      label: 'Properties',
-      icon: HotelIcon,
-      path: '/admin/properties',
-      onClick: () => router.visit('/admin/properties')
-    },
-    {
-      label: 'Bookings',
-      icon: BookOnlineIcon,
-      path: '/admin/bookings',
-      onClick: () => router.visit('/admin/bookings')
-    },
-    {
-      label: 'Support Tickets',
-      icon: SupportAgentIcon,
-      path: '/admin/support-tickets',
-      onClick: () => router.visit('/admin/support-tickets')
-    },
-    {
-      label: 'System Settings',
-      icon: SettingsIcon,
-      path: '/admin/settings',
-      onClick: () => router.visit('/admin/settings')
-    }
+    { labelKey: 'admin.sidebar.dashboard', icon: DashboardIcon, path: '/admin/dashboard', onClick: () => router.visit('/admin/dashboard') },
+    { labelKey: 'admin.sidebar.users', icon: PeopleIcon, path: '/admin/users', onClick: () => router.visit('/admin/users') },
+    { labelKey: 'admin.sidebar.properties', icon: HotelIcon, path: '/admin/properties', onClick: () => router.visit('/admin/properties') },
+    { labelKey: 'admin.sidebar.bookings', icon: BookOnlineIcon, path: '/admin/bookings', onClick: () => router.visit('/admin/bookings') },
+    { labelKey: 'admin.sidebar.support_tickets', icon: SupportAgentIcon, path: '/admin/support-tickets', onClick: () => router.visit('/admin/support-tickets') },
+    { labelKey: 'admin.sidebar.system_settings', icon: SettingsIcon, path: '/admin/settings', onClick: () => router.visit('/admin/settings') },
   ]
 
   return (
@@ -114,7 +84,7 @@ export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
       >
         <Box sx={{ p: 3, borderBottom: '1px solid #E5E7EB' }}>
           <Typography variant="h6" sx={{ fontWeight: 800, color: '#111827' }}>
-            Admin Panel
+            {t('admin.sidebar.panel')}
           </Typography>
         </Box>
         <Stack spacing={1} sx={{ p: 2, flex: 1, overflowY: 'auto' }}>
@@ -138,7 +108,7 @@ export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
                   }
                 }}
               >
-                {item.label}
+                {t(item.labelKey)}
               </Button>
             )
           })}
@@ -294,7 +264,7 @@ export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
           >
             <SettingsIcon sx={{ fontSize: 18, color: '#6B7280', marginInlineEnd: 1.5 }} />
             <Typography sx={{ fontSize: 14, color: '#111827', fontWeight: 500 }}>
-              Settings
+              {t('admin.sidebar.settings')}
             </Typography>
           </MenuItem>
           <Box sx={{ px: 1, py: 0.5 }}>
@@ -318,7 +288,7 @@ export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
           >
             <LogoutIcon sx={{ fontSize: 18, color: '#6B7280', marginInlineEnd: 1.5 }} />
             <Typography sx={{ fontSize: 14, color: '#111827', fontWeight: 500 }}>
-              Log out
+              {t('admin.sidebar.log_out')}
             </Typography>
           </MenuItem>
         </Box>
