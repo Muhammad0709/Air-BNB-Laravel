@@ -12,7 +12,7 @@ use Illuminate\Http\JsonResponse;
 /**
  * @OA\Tag(
  *     name="Search",
- *     description="Property search (destination, dates, guests) – requires User auth"
+ *     description="Public API for property search (destination, dates, guests) – no auth required"
  * )
  */
 class SearchController extends Controller
@@ -20,10 +20,9 @@ class SearchController extends Controller
     /**
      * @OA\Get(
      *     path="/api/search",
-     *     summary="Search properties",
-     *     description="Search properties by destination/location, check-in/check-out dates, guests. GET with query params. Requires Bearer token (User role). Same as Stays.",
+     *     summary="Search properties (GET)",
+     *     description="Search properties by destination/location, check-in/check-out dates, guests. Query params. No authentication required.",
      *     tags={"Search"},
-     *     security={{"apiAuth": {}}},
      *     @OA\Parameter(name="location", in="query", required=false, @OA\Schema(type="string", example="California")),
      *     @OA\Parameter(name="checkin", in="query", required=false, @OA\Schema(type="string", format="date", example="2026-03-01")),
      *     @OA\Parameter(name="checkout", in="query", required=false, @OA\Schema(type="string", format="date", example="2026-03-07")),
@@ -36,41 +35,59 @@ class SearchController extends Controller
      *     @OA\Parameter(name="sort_by", in="query", required=false, @OA\Schema(type="string", enum={"featured", "price_low", "price_high", "rating_high", "newest"}, example="featured")),
      *     @OA\Parameter(name="page", in="query", required=false, @OA\Schema(type="integer", example=1)),
      *     @OA\Parameter(name="per_page", in="query", required=false, @OA\Schema(type="integer", example=12)),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Search results",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="success"),
-     *             @OA\Property(property="message", type="string", example="Search results retrieved successfully"),
-     *             @OA\Property(
-     *                 property="data",
-     *                 type="object",
-     *                 @OA\Property(
-     *                     property="properties",
-     *                     type="array",
-     *                     @OA\Items(ref="#/components/schemas/Property")
-     *                 ),
-     *                 @OA\Property(
-     *                     property="pagination",
-     *                     type="object",
-     *                     @OA\Property(property="current_page", type="integer", example=1),
-     *                     @OA\Property(property="last_page", type="integer", example=5),
-     *                     @OA\Property(property="per_page", type="integer", example=12),
-     *                     @OA\Property(property="total", type="integer", example=50),
-     *                     @OA\Property(property="from", type="integer", example=1),
-     *                     @OA\Property(property="to", type="integer", example=12)
-     *                 ),
-     *                 @OA\Property(property="checkin", type="string", nullable=true, example="2026-03-01"),
-     *                 @OA\Property(property="checkout", type="string", nullable=true, example="2026-03-07"),
-     *                 @OA\Property(property="nights", type="integer", nullable=true, example=6)
-     *             )
+     *     @OA\Response(response=200, description="Search results", @OA\JsonContent(
+     *         @OA\Property(property="status", type="string", example="success"),
+     *         @OA\Property(property="message", type="string", example="Search results retrieved successfully"),
+     *         @OA\Property(property="data", type="object",
+     *             @OA\Property(property="properties", type="array", @OA\Items(ref="#/components/schemas/Property")),
+     *             @OA\Property(property="pagination", type="object",
+     *                 @OA\Property(property="current_page", type="integer"),
+     *                 @OA\Property(property="last_page", type="integer"),
+     *                 @OA\Property(property="per_page", type="integer"),
+     *                 @OA\Property(property="total", type="integer"),
+     *                 @OA\Property(property="from", type="integer"),
+     *                 @OA\Property(property="to", type="integer")),
+     *             @OA\Property(property="checkin", type="string", nullable=true),
+     *             @OA\Property(property="checkout", type="string", nullable=true),
+     *             @OA\Property(property="nights", type="integer", nullable=true)
      *         )
-     *     ),
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated",
-     *         @OA\JsonContent(@OA\Property(property="message", type="string", example="Unauthenticated."))
-     *     ),
+     *     )),
+     *     @OA\Response(response=422, description="Validation error", @OA\JsonContent(
+     *         @OA\Property(property="message", type="string"),
+     *         @OA\Property(property="errors", type="object")
+     *     ))
+     * )
+     *
+     * @OA\Post(
+     *     path="/api/search",
+     *     summary="Search properties (POST)",
+     *     description="Search properties by destination/location, check-in/check-out dates, guests. POST body (JSON or form). No authentication required.",
+     *     tags={"Search"},
+     *     @OA\RequestBody(required=false, @OA\JsonContent(
+     *         @OA\Property(property="location", type="string", example="California"),
+     *         @OA\Property(property="checkin", type="string", format="date", example="2026-03-01"),
+     *         @OA\Property(property="checkout", type="string", format="date", example="2026-03-07"),
+     *         @OA\Property(property="adults", type="integer", example=2),
+     *         @OA\Property(property="children", type="integer", example=1),
+     *         @OA\Property(property="rooms", type="integer", example=1),
+     *         @OA\Property(property="search", type="string", example="beachfront"),
+     *         @OA\Property(property="min_price", type="number", example=100),
+     *         @OA\Property(property="max_price", type="number", example=500),
+     *         @OA\Property(property="sort_by", type="string", example="featured"),
+     *         @OA\Property(property="page", type="integer", example=1),
+     *         @OA\Property(property="per_page", type="integer", example=12)
+     *     )),
+     *     @OA\Response(response=200, description="Search results", @OA\JsonContent(
+     *         @OA\Property(property="status", type="string", example="success"),
+     *         @OA\Property(property="message", type="string", example="Search results retrieved successfully"),
+     *         @OA\Property(property="data", type="object",
+     *             @OA\Property(property="properties", type="array", @OA\Items(ref="#/components/schemas/Property")),
+     *             @OA\Property(property="pagination", type="object"),
+     *             @OA\Property(property="checkin", type="string", nullable=true),
+     *             @OA\Property(property="checkout", type="string", nullable=true),
+     *             @OA\Property(property="nights", type="integer", nullable=true)
+     *         )
+     *     )),
      *     @OA\Response(response=422, description="Validation error", @OA\JsonContent(
      *         @OA\Property(property="message", type="string"),
      *         @OA\Property(property="errors", type="object")
