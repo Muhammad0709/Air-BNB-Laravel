@@ -41,20 +41,7 @@ class ConfirmationController extends Controller
                 ->find($propertyId);
 
             if ($property) {
-                $image = null;
-                if ($property->images) {
-                    $imagesRaw = $property->images;
-                    $imagesArray = is_array($imagesRaw) ? $imagesRaw : (is_string($imagesRaw) ? json_decode($imagesRaw, true) : []);
-                    if (is_array($imagesArray) && !empty($imagesArray)) {
-                        $image = Storage::url($imagesArray[0]);
-                    }
-                }
-                if (!$image && $property->image) {
-                    $image = Storage::url($property->image);
-                }
-                if (!$image) {
-                    $image = '/images/popular-stay-1.svg';
-                }
+                $image = $property->getPrimaryImageUrl() ?? '/images/popular-stay-1.svg';
 
                 if ($checkin && $checkout) {
                     try {

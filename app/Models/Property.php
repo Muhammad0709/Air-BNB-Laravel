@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -61,5 +62,20 @@ class Property extends Model
     public function bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    /**
+     * First image from images array, or single image; full URL or null.
+     */
+    public function getPrimaryImageUrl(): ?string
+    {
+        $path = null;
+        if ($this->images !== null) {
+            $arr = is_array($this->images) ? $this->images : (is_string($this->images) ? json_decode($this->images, true) : []);
+            $path = is_array($arr) && $arr !== [] ? $arr[0] : null;
+        }
+        $path = $path ?? $this->image;
+
+        return $path ? asset(Storage::url($path)) : null;
     }
 }

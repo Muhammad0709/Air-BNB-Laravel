@@ -106,7 +106,7 @@ class MessagesController extends Controller
             if ($host && $host->profile_picture) {
                 $hostAvatar = filter_var($host->profile_picture, FILTER_VALIDATE_URL)
                     ? $host->profile_picture
-                    : Storage::url($host->profile_picture);
+                    : asset(Storage::url($host->profile_picture));
             }
             return [
                 'propertyId' => $property->id,

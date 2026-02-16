@@ -433,7 +433,7 @@ export default function Chat() {
                       }}
                     >
                       <Stack direction="row" spacing={2} useFlexGap alignItems="flex-start">
-                        <Avatar sx={{ bgcolor: '#AD542D', width: 48, height: 48 }}>
+                        <Avatar src={conversation.hostAvatar ?? undefined} sx={{ bgcolor: '#AD542D', width: 48, height: 48 }}>
                           {conversation.hostName.charAt(0)}
                         </Avatar>
                         <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -518,7 +518,7 @@ export default function Chat() {
                   <Box sx={{ p: 2, borderBottom: '1px solid #E5E7EB' }}>
                     <Stack direction="row" spacing={2} useFlexGap alignItems="center" justifyContent="space-between">
 <Stack direction="row" spacing={2} useFlexGap alignItems="center">
-                      <Avatar sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}>
+                      <Avatar src={currentConversation.hostAvatar ?? undefined} sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}>
                           {currentConversation.hostName.charAt(0)}
                         </Avatar>
                         <Box>

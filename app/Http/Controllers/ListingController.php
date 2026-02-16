@@ -98,7 +98,7 @@ class ListingController extends Controller
                     'bedrooms' => $property->bedrooms,
                     'bathrooms' => $property->bathrooms,
                     'property_type' => $property->property_type,
-                    'image' => $property->image,
+                    'image' => $property->getPrimaryImageUrl(),
                     'amenities' => is_string($property->amenities) ? explode(',', $property->amenities) : ($property->amenities ?? []),
                     'rating' => $property->reviews_avg_rating ? round((float) $property->reviews_avg_rating, 2) : null,
                     'reviews' => (int) ($property->reviews_count ?? 0),
