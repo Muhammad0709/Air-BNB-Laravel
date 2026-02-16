@@ -20,10 +20,10 @@ class HostConversationResource extends JsonResource
         return [
             'id' => $this->id,
             'customerName' => $this->user->name ?? 'Unknown',
-            'customerAvatar' => $this->user->profile_picture 
-                ? (str_starts_with($this->user->profile_picture, 'http') 
-                    ? $this->user->profile_picture 
-                    : Storage::disk('public')->url($this->user->profile_picture))
+            'customerAvatar' => $this->user->profile_picture
+                ? (filter_var($this->user->profile_picture, FILTER_VALIDATE_URL)
+                    ? $this->user->profile_picture
+                    : asset(Storage::disk('public')->url($this->user->profile_picture)))
                 : null,
             'property' => $this->property->title ?? 'Unknown Property',
             'propertyId' => $this->property->id ?? null,

@@ -323,7 +323,7 @@ export default function HostChat() {
                   }}
                 >
                   <Stack direction="row" spacing={2} useFlexGap alignItems="flex-start">
-                    <Avatar sx={{ bgcolor: '#AD542D', width: 48, height: 48 }}>
+                    <Avatar src={conversation.customerAvatar ?? undefined} sx={{ bgcolor: '#AD542D', width: 48, height: 48 }}>
                       {conversation.customerName.charAt(0)}
                     </Avatar>
                     <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -408,7 +408,7 @@ export default function HostChat() {
               <Box sx={{ p: 2, borderBottom: '1px solid #E5E7EB' }}>
                 <Stack direction="row" spacing={2} useFlexGap alignItems="center" justifyContent="space-between">
                   <Stack direction="row" spacing={2} useFlexGap alignItems="center">
-                    <Avatar sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}>
+                    <Avatar src={currentConversation.customerAvatar ?? undefined} sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}>
                       {currentConversation.customerName.charAt(0)}
                     </Avatar>
                     <Box>
