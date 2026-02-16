@@ -24,6 +24,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'logout',
             'admin/logout',
             'host/logout',
+            // API auth routes: called without session (e.g. Swagger, Postman, mobile app)
+            'api/register',
+            'api/login',
+            'api/logout',
+            'api/password/forgot',
+            'api/password/reset',
         ]);
 
         $middleware->web(append: [
