@@ -1,48 +1,58 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Box, Button, Card, CardContent, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, InputAdornment, Chip } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import DeleteConfirmationDialog from '../../../Components/Admin/DeleteConfirmationDialog'
 import ActionsMenu from '../../../Components/Admin/ActionsMenu'
 import SearchIcon from '@mui/icons-material/Search'
-import { Head, router } from '@inertiajs/react'
+import { Head, router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
+
+type BookingRow = {
+  id: number
+  guest: string
+  property: string
+  checkin: string
+  checkout: string
+  status: string
+  amount: string
+}
 
 export default function AdminBookings() {
   const { t } = useLanguage()
+  const { bookings: bookingsProp = [] } = (usePage().props as { bookings?: BookingRow[] }) ?? {}
   const [search, setSearch] = useState('')
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [bookingToDelete, setBookingToDelete] = useState<{ id: number; guest: string } | null>(null)
 
-  const bookings = [
-    { id: 1, guest: 'John Doe', property: 'Luxury Beachfront Villa', checkin: '2025-01-15', checkout: '2025-01-20', status: 'Confirmed', amount: '$1,495' },
-    { id: 2, guest: 'Jane Smith', property: 'Modern Apartment', checkin: '2025-01-18', checkout: '2025-01-22', status: 'Pending', amount: '$899' },
-    { id: 3, guest: 'Mike Johnson', property: 'Cozy Studio', checkin: '2025-01-20', checkout: '2025-01-25', status: 'Confirmed', amount: '$625' },
-    { id: 4, guest: 'Sarah Williams', property: 'Luxury Beachfront Villa', checkin: '2025-01-22', checkout: '2025-01-28', status: 'Confirmed', amount: '$1,794' },
-    { id: 5, guest: 'David Brown', property: 'Modern Apartment', checkin: '2025-01-25', checkout: '2025-01-30', status: 'Cancelled', amount: '$899' },
-    { id: 6, guest: 'Emily Davis', property: 'Cozy Studio', checkin: '2025-02-01', checkout: '2025-02-05', status: 'Pending', amount: '$596' },
-  ]
-
-  const filteredBookings = bookings.filter(booking =>
-    booking.guest.toLowerCase().includes(search.toLowerCase()) ||
-    booking.property.toLowerCase().includes(search.toLowerCase()) ||
-    booking.status.toLowerCase().includes(search.toLowerCase())
-  )
+  const filteredBookings = useMemo(() => {
+    const list = Array.isArray(bookingsProp) ? bookingsProp : []
+    if (!search.trim()) return list
+    const q = search.toLowerCase()
+    return list.filter(
+      (booking) =>
+        booking.guest.toLowerCase().includes(q) ||
+        booking.property.toLowerCase().includes(q) ||
+        booking.status.toLowerCase().includes(q)
+    )
+  }, [bookingsProp, search])
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Confirmed': return '#10B981'
-      case 'Pending': return '#F59E0B'
-      case 'Cancelled': return '#EF4444'
+    switch (String(status).toLowerCase()) {
+      case 'confirmed': return '#10B981'
+      case 'pending': return '#F59E0B'
+      case 'cancelled': return '#EF4444'
+      case 'completed': return '#6366F1'
       default: return '#717171'
     }
   }
 
   const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'Confirmed': return t('admin.bookings.confirmed')
-      case 'Pending': return t('admin.bookings.pending')
-      case 'Cancelled': return t('admin.bookings.cancelled')
+    switch (String(status).toLowerCase()) {
+      case 'confirmed': return t('admin.bookings.confirmed')
+      case 'pending': return t('admin.bookings.pending')
+      case 'cancelled': return t('admin.bookings.cancelled')
+      case 'completed': return t('admin.bookings.completed') || 'Completed'
       default: return status
     }
   }
