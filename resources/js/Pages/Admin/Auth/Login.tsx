@@ -1,10 +1,20 @@
-import React from 'react'
-import { Box, Button, Paper, Stack, TextField, Typography, Link } from '@mui/material'
+import React, { useState } from 'react'
+import { Box, Button, Link, Menu, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import { Container, Row, Col } from 'react-bootstrap'
 import { Head, Link as InertiaLink, useForm } from '@inertiajs/react'
+import { useLanguage } from '../../../hooks/use-language'
 
 const logoUrl = '/images/lipabnb-logo.svg'
 const socialIcon = '/images/Social-icon.svg'
+const languages = [
+  { code: 'en', name: 'English', flag: '🇺🇸' },
+  { code: 'ar', name: 'Arabic', flag: '🇸🇦' },
+  { code: 'ur', name: 'Urdu', flag: '🇵🇰' },
+  { code: 'fa', name: 'Persian', flag: '🇮🇷' },
+  { code: 'tr', name: 'Turkish', flag: '🇹🇷' },
+  { code: 'ku', name: 'Kurdish', flag: '🇮🇶' },
+]
 
 const inputSx = {
   '& .MuiOutlinedInput-root': { borderRadius: '24px' },
@@ -12,20 +22,53 @@ const inputSx = {
 }
 
 export default function AdminLogin() {
-  const { data, setData, post, processing, errors } = useForm({
-    email: '',
-    password: '',
-  })
+  const { t, language, switchLanguage, isRtl } = useLanguage()
+  const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null)
+  const currentLanguage = languages.find((l) => l.code === language) || languages[0]
+  const { data, setData, post, processing, errors } = useForm({ email: '', password: '' })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     post('/login', { onSuccess: () => {} })
   }
 
+  const googleIconEl = <Box component="img" src={socialIcon} alt="Google" sx={{ width: 24, height: 24 }} />
+
   return (
     <>
-      <Head title="Login" />
+      <Head title={t('auth.admin_login.title')} />
       <Box className="auth-login-page" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: '#F9FAFB' }}>
+        <Box sx={{ position: 'fixed', top: 16, ...(isRtl ? { left: 16 } : { right: 16 }), zIndex: 1300 }}>
+          <Box
+            onClick={(e: React.MouseEvent<HTMLElement>) => setLanguageAnchor(e.currentTarget)}
+            sx={{
+              display: 'flex', alignItems: 'center', gap: 0.75, px: 1.5, py: 0.75, borderRadius: 2,
+              border: '1px solid #DDDDDD', cursor: 'pointer', bgcolor: '#fff', boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+              '&:hover': { borderColor: '#AD542D', bgcolor: '#F7F7F7' },
+            }}
+          >
+            <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{currentLanguage.flag}</Typography>
+            <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem', marginInlineStart: 0.75 }}>{currentLanguage.code.toUpperCase()}</Typography>
+            <ArrowDropDownIcon sx={{ fontSize: 22, color: '#222222' }} />
+          </Box>
+          <Menu
+            anchorEl={languageAnchor}
+            open={Boolean(languageAnchor)}
+            onClose={() => setLanguageAnchor(null)}
+            PaperProps={{ sx: { mt: 1, minWidth: 180, borderRadius: 2, boxShadow: '0 2px 16px rgba(0,0,0,0.12)' } }}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          >
+            {languages.map((lang) => (
+              <MenuItem key={lang.code} onClick={() => { switchLanguage(lang.code as any); setLanguageAnchor(null); }} sx={{ py: 1.5, px: 2, '&:hover': { bgcolor: '#F7F7F7' } }}>
+                <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
+                  <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{lang.flag}</Typography>
+                  <Typography sx={{ fontWeight: 400, fontSize: '0.875rem', color: '#222222' }}>{lang.name}</Typography>
+                </Stack>
+              </MenuItem>
+            ))}
+          </Menu>
+        </Box>
         <Container>
           <Row className="justify-content-center">
             <Col xs={12} sm={10} md={8} lg={6} xl={5}>
@@ -42,10 +85,10 @@ export default function AdminLogin() {
                 <Box sx={{ textAlign: 'center', mb: 4 }}>
                   <Box component="img" src={logoUrl} alt="lipabnb" sx={{ height: 40, mb: 2 }} />
                   <Typography variant="h4" sx={{ fontWeight: 800, color: '#222222', mb: 1 }}>
-                    Login
+                    {t('auth.admin_login.heading')}
                   </Typography>
                   <Typography variant="body2" sx={{ color: '#717171' }}>
-                    Sign in to access the admin dashboard
+                    {t('auth.admin_login.subtitle')}
                   </Typography>
                 </Box>
 
@@ -53,7 +96,7 @@ export default function AdminLogin() {
                   <Stack spacing={3}>
                     <TextField
                       fullWidth
-                      label="Email"
+                      label={t('auth.admin_login.email')}
                       name="email"
                       type="email"
                       value={data.email}
@@ -67,7 +110,7 @@ export default function AdminLogin() {
 
                     <TextField
                       fullWidth
-                      label="Password"
+                      label={t('auth.admin_login.password')}
                       name="password"
                       type="password"
                       value={data.password}
@@ -94,14 +137,15 @@ export default function AdminLogin() {
                         '&:hover': { bgcolor: '#78381C' },
                       }}
                     >
-                      {processing ? 'Signing in...' : 'Sign In'}
+                      {processing ? t('auth.admin_login.signing_in') : t('auth.admin_login.submit')}
                     </Button>
 
                     <Button
+                      component="a"
+                      href="/auth/google"
                       fullWidth
                       variant="outlined"
-                      type="button"
-                      startIcon={<Box component="img" src={socialIcon} alt="Google" sx={{ width: 24, height: 24 }} />}
+                      {...(isRtl ? { endIcon: googleIconEl } : { startIcon: googleIconEl })}
                       sx={{
                         borderRadius: '24px',
                         py: 1.5,
@@ -111,21 +155,24 @@ export default function AdminLogin() {
                         borderColor: '#D0D5DD',
                         color: '#344054',
                         bgcolor: '#FFFFFF',
+                        textDecoration: 'none',
+                        gap: 1,
+                        '& .MuiButton-startIcon, & .MuiButton-endIcon': { margin: 0 },
                         '&:hover': { borderColor: '#9CA3AF', bgcolor: '#F9FAFB' },
                       }}
                     >
-                      Sign in with Google
+                      {t('auth.admin_login.sign_in_google')}
                     </Button>
 
                     <Box sx={{ textAlign: 'center', mt: 2 }}>
                       <Typography variant="body2" sx={{ color: '#717171' }}>
-                        Don't have an account?{' '}
+                        {t('auth.admin_login.no_account')}{' '}
                         <Link
                           component={InertiaLink}
                           href="/register"
                           sx={{ color: '#AD542D', fontWeight: 600, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
                         >
-                          Sign Up
+                          {t('auth.admin_login.sign_up_link')}
                         </Link>
                       </Typography>
                     </Box>

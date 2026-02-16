@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Admin\PropertyController;
 use App\Http\Controllers\Admin\UserController;
@@ -38,7 +39,10 @@ Route::middleware('guest')->group(function () {
     Route::prefix('auth')->group(function () {
         Route::get('/login', [LoginController::class, 'create'])->name('login');
         Route::post('/login', [LoginController::class, 'store']);
-        
+
+        Route::get('/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
+        Route::get('/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
+
         Route::get('/register', [RegisterController::class, 'create'])->name('register');
         Route::post('/register', [RegisterController::class, 'store']);
     });
