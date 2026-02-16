@@ -127,6 +127,11 @@ export default function HostSidebar({ sidebarOpen }: HostSidebarProps) {
                   color: active ? '#AD542D' : '#717171',
                   fontWeight: active ? 700 : 600,
                   textTransform: 'none',
+                  gap: 1.5,
+                  '& .MuiButton-startIcon': {
+                    marginInlineEnd: 1.5,
+                    marginInlineStart: 0
+                  },
                   '&:hover': {
                     bgcolor: active ? '#FFF5F5' : '#F9FAFB'
                   }

@@ -85,7 +85,7 @@ class PropertyController extends Controller
             foreach ($request->file('images') as $index => $file) {
                 if ($file->getSize() > $maxBytes) {
                     throw ValidationException::withMessages([
-                        "images.{$index}" => ['Each image must not be greater than 2MB.'],
+                        "images.{$index}" => [__('host.property.image_max_size')],
                     ]);
                 }
             }
@@ -105,9 +105,9 @@ class PropertyController extends Controller
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 2048 KB = 2MB
         ], [
-            'images.*.max' => 'Each image must not be greater than 2MB.',
-            'images.*.mimes' => 'Each image must be a file of type: jpeg, png, jpg, gif.',
-            'images.*.image' => 'Each file must be an image.',
+            'images.*.max' => __('host.property.image_max_size'),
+            'images.*.mimes' => __('host.property.image_mimes'),
+            'images.*.image' => __('host.property.image_file'),
         ]);
 
         $imagePaths = [];
@@ -125,7 +125,7 @@ class PropertyController extends Controller
         $property = Property::create($validated);
         
         return redirect()->route('host.properties.index')
-            ->with('success', 'Property created successfully! It will be reviewed by admin.');
+            ->with('success', __('host.property.created_success'));
     }
 
     /**
@@ -135,7 +135,7 @@ class PropertyController extends Controller
     {
         // Ensure host can only view their own properties
         if ($property->user_id !== Auth::id()) {
-            abort(403, 'Unauthorized action.');
+            abort(403, __('host.property.unauthorized'));
         }
         
         $property->image = $property->image ? Storage::url($property->image) : null;
@@ -154,7 +154,7 @@ class PropertyController extends Controller
     {
         // Ensure host can only edit their own properties
         if ($property->user_id !== Auth::id()) {
-            abort(403, 'Unauthorized action.');
+            abort(403, __('host.property.unauthorized'));
         }
         
         $property->image = $property->image ? Storage::url($property->image) : null;
@@ -174,7 +174,7 @@ class PropertyController extends Controller
     {
         // Ensure host can only update their own properties
         if ($property->user_id !== Auth::id()) {
-            abort(403, 'Unauthorized action.');
+            abort(403, __('host.property.unauthorized'));
         }
         
         // Image rules: max 2048 KB = 2MB per file (backend validation)
@@ -193,9 +193,9 @@ class PropertyController extends Controller
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 2048 KB = 2MB
         ], [
-            'images.*.max' => 'Each image must not be greater than 2MB.',
-            'images.*.mimes' => 'Each image must be a file of type: jpeg, png, jpg, gif.',
-            'images.*.image' => 'Each file must be an image.',
+            'images.*.max' => __('host.property.image_max_size'),
+            'images.*.mimes' => __('host.property.image_mimes'),
+            'images.*.image' => __('host.property.image_file'),
         ]);
 
         $imagePaths = $property->images ?? [];
@@ -211,7 +211,7 @@ class PropertyController extends Controller
         $property->update($validated);
         
         return redirect()->route('host.properties.index')
-            ->with('success', 'Property updated successfully! It will be reviewed by admin again.');
+            ->with('success', __('host.property.updated_success'));
     }
 
     /**
@@ -221,7 +221,7 @@ class PropertyController extends Controller
     {
         // Ensure host can only delete their own properties
         if ($property->user_id !== Auth::id()) {
-            abort(403, 'Unauthorized action.');
+            abort(403, __('host.property.unauthorized'));
         }
         
         if ($property->image) {
@@ -235,6 +235,6 @@ class PropertyController extends Controller
         $property->delete();
         
         return redirect()->route('host.properties.index')
-            ->with('success', 'Property deleted successfully!');
+            ->with('success', __('host.property.deleted_success'));
     }
 }

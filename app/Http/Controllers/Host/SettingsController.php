@@ -51,7 +51,7 @@ class SettingsController extends Controller
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
         ]);
         $user->update($validated);
-        return redirect()->back()->with('success', 'Profile updated successfully!');
+        return redirect()->back()->with('success', __('host.settings.profile_updated_success'));
     }
 
     public function updatePassword(Request $request)
@@ -61,7 +61,7 @@ class SettingsController extends Controller
             'new_password' => ['required', 'confirmed', Password::min(8)],
         ]);
         Auth::user()->update(['password' => Hash::make($request->new_password)]);
-        return redirect()->back()->with('success', 'Password changed successfully!');
+        return redirect()->back()->with('success', __('host.settings.password_changed_success'));
     }
 
     public function uploadProfilePicture(Request $request)
@@ -75,6 +75,6 @@ class SettingsController extends Controller
         }
         $path = $request->file('profile_picture')->store('profile-pictures', 'public');
         $user->update(['profile_picture' => $path]);
-        return redirect()->back()->with('success', 'Profile picture updated successfully!');
+        return redirect()->back()->with('success', __('host.settings.picture_updated_success'));
     }
 }
