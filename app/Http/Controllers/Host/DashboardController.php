@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Host;
 
 use App\Http\Controllers\Controller;
+use App\Enums\BookingStatus;
+use App\Models\Booking;
 use App\Models\Property;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -14,68 +14,37 @@ class DashboardController extends Controller
     public function index()
     {
         $host = Auth::user();
-        
-        // Get all properties for this host
-        $properties = Property::where('user_id', $host->id)->get();
-        
-        // For now, we'll use mock booking data since bookings table doesn't exist yet
-        // In a real application, you would fetch from a bookings table
-        $mockBookings = [
-            [
-                'id' => 1,
-                'guest' => 'John Doe',
-                'property' => 'Luxury Beachfront Villa',
-                'checkin' => '2025-01-20',
-                'checkout' => '2025-01-25',
-                'status' => 'Confirmed',
-                'amount' => '$1,495'
-            ],
-            [
-                'id' => 2,
-                'guest' => 'Jane Smith',
-                'property' => 'Modern Apartment',
-                'checkin' => '2025-01-22',
-                'checkout' => '2025-01-26',
-                'status' => 'Pending',
-                'amount' => '$799'
-            ],
-            [
-                'id' => 3,
-                'guest' => 'Mike Johnson',
-                'property' => 'Cozy Studio',
-                'checkin' => '2025-01-25',
-                'checkout' => '2025-01-30',
-                'status' => 'Confirmed',
-                'amount' => '$625'
-            ],
-            [
-                'id' => 4,
-                'guest' => 'Sarah Williams',
-                'property' => 'Luxury Beachfront Villa',
-                'checkin' => '2025-01-28',
-                'checkout' => '2025-02-02',
-                'status' => 'Confirmed',
-                'amount' => '$1,495'
-            ],
-        ];
-        
-        // Calculate dynamic stats based on actual data
-        $totalBookings = count($mockBookings);
-        $confirmedBookings = count(array_filter($mockBookings, fn($b) => $b['status'] === 'Confirmed'));
-        $totalRevenue = array_sum(array_map(fn($b) => (int)str_replace(['$', ','], '', $b['amount']), $mockBookings));
-        $upcomingBookings = count(array_filter($mockBookings, fn($b) => strtotime($b['checkin']) > time()));
-        
+        $propertyIds = Property::where('user_id', $host->id)->pluck('id');
+
+        $bookingsQuery = Booking::whereIn('property_id', $propertyIds);
+
         $stats = [
-            'total_properties' => $properties->count(),
-            'total_bookings' => $totalBookings,
-            'revenue' => '$' . number_format($totalRevenue),
-            'upcoming_bookings' => $upcomingBookings,
+            'total_properties' => $propertyIds->count(),
+            'total_bookings' => (clone $bookingsQuery)->count(),
+            'revenue' => '$' . number_format((float) (clone $bookingsQuery)->whereIn('status', BookingStatus::paid())->sum('total_amount'), 2),
+            'upcoming_bookings' => (clone $bookingsQuery)->where('check_in_date', '>', now()->startOfDay())->whereIn('status', BookingStatus::upcoming())->count(),
         ];
-        
+
+        $recentBookings = Booking::query()
+            ->whereIn('property_id', $propertyIds)
+            ->with(['property:id,title', 'user:id,name'])
+            ->orderByDesc('created_at')
+            ->limit(10)
+            ->get()
+            ->map(fn (Booking $b) => [
+                'id' => $b->id,
+                'guest' => $b->name ?: $b->user?->name ?? '—',
+                'property' => $b->property?->title ?? '—',
+                'checkin' => $b->check_in_date->format('Y-m-d'),
+                'checkout' => $b->check_out_date->format('Y-m-d'),
+                'status' => $b->status->value,
+                'amount' => '$' . number_format((float) $b->total_amount, 2),
+            ]);
+
         return Inertia::render('Host/Dashboard', [
             'stats' => $stats,
-            'recentBookings' => $mockBookings,
-            'host' => $host,
+            'recentBookings' => $recentBookings,
+            'host' => ['name' => $host->name, 'email' => $host->email],
         ]);
     }
 }

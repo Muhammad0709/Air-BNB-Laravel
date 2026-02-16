@@ -32,13 +32,8 @@ interface Host {
 }
 
 export default function HostDashboard() {
-  const { stats, recentBookings, host } = usePage<{ stats: Stats, recentBookings: Booking[], host: Host }>().props
+  const { stats = {}, recentBookings = [], host = { name: '', email: '' } } = (usePage().props as { stats?: Stats; recentBookings?: Booking[]; host?: Host }) ?? {}
   const [search, setSearch] = useState('')
-  
-  // Add safety checks
-  if (!stats || !recentBookings || !host) {
-    return <HostLayout title="Dashboard">Loading...</HostLayout>
-  }
   
   const statsCards = [
     { title: 'Total Properties', value: (stats.total_properties || 0).toString(), icon: HotelIcon, color: '#AD542D' },
@@ -54,10 +49,11 @@ export default function HostDashboard() {
   )
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Confirmed': return '#10B981'
-      case 'Pending': return '#F59E0B'
-      case 'Cancelled': return '#EF4444'
+    switch (String(status).toLowerCase()) {
+      case 'confirmed': return '#10B981'
+      case 'pending': return '#F59E0B'
+      case 'cancelled': return '#EF4444'
+      case 'completed': return '#6366F1'
       default: return '#6B7280'
     }
   }

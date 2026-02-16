@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\BookingStatus;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BookingHistoryRequest extends FormRequest
@@ -24,7 +25,7 @@ class BookingHistoryRequest extends FormRequest
         return [
             'type' => 'sometimes|string|in:upcoming,past,all',
             'search' => 'sometimes|string|max:255',
-            'status' => 'sometimes|string|in:pending,confirmed,cancelled,completed',
+            'status' => 'sometimes|string|in:' . implode(',', BookingStatus::values()),
         ];
     }
 }

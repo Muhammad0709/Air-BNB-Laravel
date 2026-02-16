@@ -31,8 +31,7 @@ class BookingHistoryResource extends JsonResource
             }
         }
 
-        // Format status - capitalize first letter
-        $status = ucfirst($this->status);
+        $status = $this->status->value;
 
         // Format amount with currency
         $amount = '$' . number_format((float) $this->total_amount, 0);

@@ -16,7 +16,7 @@ class HostBookingResource extends JsonResource
             'propertyId' => $this->property_id,
             'checkin' => $this->check_in_date->format('Y-m-d'),
             'checkout' => $this->check_out_date->format('Y-m-d'),
-            'status' => ucfirst($this->status),
+            'status' => $this->status->value,
             'amount' => '$' . number_format((float) $this->total_amount, 2, '.', ','),
             'total_amount' => (float) $this->total_amount,
             'email' => $this->email,

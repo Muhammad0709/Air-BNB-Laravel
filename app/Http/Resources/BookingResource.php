@@ -31,7 +31,7 @@ class BookingResource extends JsonResource
             'cleaning_fee' => (float) $this->cleaning_fee,
             'service_fee' => (float) $this->service_fee,
             'total_amount' => (float) $this->total_amount,
-            'status' => $this->status,
+            'status' => $this->status->value,
             'payment_method' => $this->payment_method,
             'card_last_four' => $this->card_last_four,
             'created_at' => $this->created_at->toISOString(),

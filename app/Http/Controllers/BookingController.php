@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Property;
+use App\Enums\BookingStatus;
 use App\Enums\PropertyStatus;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Illuminate\Support\Facades\Storage;
+use App\Enums\UserType;
+use App\Models\Booking;
+use App\Models\Property;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class BookingController extends Controller
 {
@@ -156,6 +161,87 @@ class BookingController extends Controller
             'costs' => $costs,
             'totalAmount' => $totalAmount,
             'rules' => $rules,
+        ]);
+    }
+
+    /**
+     * Save booking to DB and redirect to confirmation (web flow).
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'property_id' => 'required|integer|exists:properties,id',
+            'checkin' => 'required|date',
+            'checkout' => 'required|date|after:checkin',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone_code' => 'nullable|string|max:10',
+            'phone' => 'required|string|max:20',
+            'rooms' => 'nullable|integer|min:1|max:20',
+            'adults' => 'nullable|integer|min:1|max:50',
+            'children' => 'nullable|integer|min:0|max:20',
+        ]);
+
+        $property = Property::where('id', $validated['property_id'])
+            ->where('status', 'Active')
+            ->where('approval_status', PropertyStatus::APPROVED)
+            ->firstOrFail();
+
+        $checkin = Carbon::parse($validated['checkin']);
+        $checkout = Carbon::parse($validated['checkout']);
+        $nights = max(1, (int) $checkin->diffInDays($checkout));
+
+        $nightlyRate = (float) $property->price;
+        $cleaningFee = 25.00;
+        $serviceFee = round($nightlyRate * $nights * 0.12, 2);
+        $totalAmount = $nightlyRate * $nights + $cleaningFee + $serviceFee;
+
+        $user = Auth::user();
+        if (! $user) {
+            $user = User::where('email', $validated['email'])->first();
+            if (! $user) {
+                $user = User::create([
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'password' => bcrypt(str()->random(32)),
+                    'type' => UserType::USER,
+                ]);
+            }
+        }
+
+        $phoneCode = $validated['phone_code'] ?? '+31';
+        $cardLastFour = null;
+        if ($request->filled('card_last_four')) {
+            $cardLastFour = preg_replace('/\D/', '', $request->input('card_last_four'));
+            $cardLastFour = strlen($cardLastFour) >= 4 ? substr($cardLastFour, -4) : null;
+        }
+
+        Booking::create([
+            'property_id' => $property->id,
+            'user_id' => $user->id,
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone_code' => $phoneCode,
+            'phone' => $validated['phone'],
+            'rooms' => $validated['rooms'] ?? 1,
+            'adults' => $validated['adults'] ?? 1,
+            'children' => $validated['children'] ?? 0,
+            'check_in_date' => $checkin,
+            'check_out_date' => $checkout,
+            'nights' => $nights,
+            'nightly_rate' => $nightlyRate,
+            'cleaning_fee' => $cleaningFee,
+            'service_fee' => $serviceFee,
+            'total_amount' => $totalAmount,
+            'status' => BookingStatus::PENDING,
+            'payment_method' => $request->input('payment_method', 'credit_card'),
+            'card_last_four' => $cardLastFour,
+        ]);
+
+        return redirect()->route('confirmation', [
+            'property_id' => $property->id,
+            'checkin' => $validated['checkin'],
+            'checkout' => $validated['checkout'],
         ]);
     }
 }

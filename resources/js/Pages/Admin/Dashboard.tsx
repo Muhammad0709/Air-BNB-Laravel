@@ -7,7 +7,7 @@ import PeopleIcon from '@mui/icons-material/People'
 import HotelIcon from '@mui/icons-material/Hotel'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import AdminLayout from '../../Components/Admin/AdminLayout'
-import { usePage } from '@inertiajs/react'
+import { usePage, router } from '@inertiajs/react'
 import { useLanguage } from '../../hooks/use-language'
 
 export default function AdminDashboard() {
@@ -22,10 +22,11 @@ export default function AdminDashboard() {
   ]
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Confirmed': return '#10B981'
-      case 'Pending': return '#F59E0B'
-      case 'Cancelled': return '#EF4444'
+    switch (String(status).toLowerCase()) {
+      case 'confirmed': return '#10B981'
+      case 'pending': return '#F59E0B'
+      case 'cancelled': return '#EF4444'
+      case 'completed': return '#6366F1'
       default: return '#6B7280'
     }
   }
@@ -90,6 +91,7 @@ export default function AdminDashboard() {
                 <Button
                   variant="outlined"
                   startIcon={<SearchIcon />}
+                  onClick={() => router.visit('/admin/bookings')}
                   sx={{
                     borderColor: '#D0D5DD',
                     color: '#344054',

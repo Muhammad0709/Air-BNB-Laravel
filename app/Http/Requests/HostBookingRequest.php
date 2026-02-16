@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\BookingStatus;
 use Illuminate\Foundation\Http\FormRequest;
 
 class HostBookingRequest extends FormRequest
@@ -13,16 +14,18 @@ class HostBookingRequest extends FormRequest
 
     public function rules(): array
     {
+        $statusRule = 'sometimes|string|in:' . implode(',', BookingStatus::values());
+
         // For index/list requests (GET with query params)
-        if ($this->isMethod('GET') && !$this->route('id')) {
+        if ($this->isMethod('GET') && ! $this->route('id')) {
             return [
                 'search' => 'sometimes|string|max:255',
-                'status' => 'sometimes|string|in:pending,confirmed,cancelled,completed',
+                'status' => $statusRule,
                 'page' => 'sometimes|integer|min:1',
                 'per_page' => 'sometimes|integer|min:1|max:50',
             ];
         }
-        
+
         // For store/create requests
         if ($this->isMethod('POST')) {
             return [
@@ -33,10 +36,10 @@ class HostBookingRequest extends FormRequest
                 'checkin' => 'required|date',
                 'checkout' => 'required|date|after:checkin',
                 'amount' => 'required|numeric|min:0',
-                'status' => 'sometimes|string|in:Pending,Confirmed,Cancelled',
+                'status' => $statusRule,
             ];
         }
-        
+
         // For update requests
         if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
             return [
@@ -47,10 +50,10 @@ class HostBookingRequest extends FormRequest
                 'checkin' => 'sometimes|required|date',
                 'checkout' => 'sometimes|required|date|after:checkin',
                 'amount' => 'sometimes|required|numeric|min:0',
-                'status' => 'sometimes|string|in:Pending,Confirmed,Cancelled',
+                'status' => $statusRule,
             ];
         }
-        
+
         return [];
     }
 }

@@ -63,6 +63,7 @@ Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/booking/redirect', [BookingController::class, 'redirectToBooking'])->name('booking.redirect');
 Route::get('/booking', [BookingController::class, 'index'])->name('booking');
+Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
 Route::get('/confirmation', [ConfirmationController::class, 'index'])->name('confirmation');
 
 // Public pages (PageController)

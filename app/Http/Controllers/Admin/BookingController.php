@@ -20,7 +20,7 @@ class BookingController extends Controller
                 'property' => $b->property?->title ?? '—',
                 'checkin' => $b->check_in_date->format('Y-m-d'),
                 'checkout' => $b->check_out_date->format('Y-m-d'),
-                'status' => $b->status,
+                'status' => $b->status->value,
                 'amount' => '$' . number_format((float) $b->total_amount, 2),
             ]);
 

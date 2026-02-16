@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\BookingStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -40,6 +41,7 @@ class Booking extends Model
         'adults' => 'integer',
         'children' => 'integer',
         'nights' => 'integer',
+        'status' => BookingStatus::class,
     ];
 
     /**

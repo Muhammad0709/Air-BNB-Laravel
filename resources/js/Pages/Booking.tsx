@@ -113,21 +113,38 @@ export default function Booking() {
     if (errors[field]) setErrors({ ...errors, [field]: '' })
   }
 
+  const [submitting, setSubmitting] = useState(false)
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (validate()) {
-      setToast({ open: true, message: t('booking.toast_success'), severity: 'success' })
-      let url = '/confirmation'
-      if (property) {
-        const params = new URLSearchParams({ property_id: String(property.id) })
-        if (checkin) params.set('checkin', checkin)
-        if (checkout) params.set('checkout', checkout)
-        url = `/confirmation?${params.toString()}`
-      }
-      setTimeout(() => router.visit(url), 1000)
-    } else {
+    if (!validate()) {
       setToast({ open: true, message: t('booking.toast_fix_errors'), severity: 'error' })
+      return
     }
+    if (!property?.id) {
+      setToast({ open: true, message: t('booking.select_property'), severity: 'error' })
+      return
+    }
+    const cardNum = formData.cardNumber.replace(/\s|-/g, '')
+    const cardLastFour = cardNum.length >= 4 ? cardNum.slice(-4) : ''
+    setSubmitting(true)
+    router.post('/booking', {
+      property_id: property.id,
+      checkin,
+      checkout,
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      phone_code: formData.phoneCode || '+31',
+      phone: formData.phone.trim(),
+      rooms: formData.rooms ?? 1,
+      adults: formData.adults ?? 1,
+      children: formData.children ?? 0,
+      card_last_four: cardLastFour,
+      payment_method: formData.paymentMethod === 'ideal' ? 'ideal' : 'credit_card',
+    }, {
+      onFinish: () => setSubmitting(false),
+      onError: (errors) => setErrors(errors as Record<string, string>),
+    })
   }
 
   return (
@@ -341,7 +358,7 @@ export default function Booking() {
                       <Typography>{t('booking.total')}</Typography>
                       <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                         <Typography className="grand-total">{totalAmount}</Typography>
-                        <Button type="submit" variant="contained" className="request-btn">{t('booking.book_btn')}</Button>
+                        <Button type="submit" variant="contained" className="request-btn" disabled={submitting}>{submitting ? '...' : t('booking.book_btn')}</Button>
                       </Stack>
                     </Paper>
                   </form>
