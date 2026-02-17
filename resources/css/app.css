@@ -89,6 +89,7 @@ p.hero-subtitle {
   padding: 0 20px !important;
   border-right: 1px solid #e5e7eb !important;
   flex: 1;
+  min-width: 0;
   position: relative;
   height: 100% !important;
 }
@@ -110,6 +111,7 @@ p.hero-subtitle {
 .search-field .MuiTextField-root,
 .search-field .MuiFormControl-root {
   width: 100%;
+  min-width: 0;
 }
 
 .search-field .MuiInputBase-root {
@@ -122,8 +124,11 @@ p.hero-subtitle {
   padding: 0 !important;
   margin: 0 !important;
   width: 100% !important;
+  min-width: 0 !important;
   height: auto !important;
   line-height: 1.2 !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .search-field .MuiInputBase-root:focus,

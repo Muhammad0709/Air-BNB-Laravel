@@ -57,6 +57,7 @@ Route::middleware('guest')->group(function () {
 });
 
 // Public routes (accessible to all users)
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/listing', [ListingController::class, 'index'])->name('listing');
 Route::get('/detail/{id}', [PropertyDetailController::class, 'show'])->name('property.detail');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
@@ -80,8 +81,6 @@ Route::middleware('auth')->group(function () {
 
 // Protected routes (require authentication; admin/host are redirected to their panel)
 Route::middleware(['auth', 'redirect.admin.host'])->group(function () {
-    Route::get('/', [HomeController::class, 'index']);
-    
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
     
     Route::get('/chat', [PageController::class, 'chat'])->name('chat');

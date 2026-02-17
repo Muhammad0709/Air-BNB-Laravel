@@ -55,14 +55,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
   const user = (props as any)?.auth?.user || null
   const isAuthenticated = !!user
 
-  const links: NavbarLink[] = linksProp ?? linkKeys
-    .filter((l) => {
-      if (l.href === '/wishlist' || l.href === '/booking' || l.href === '/profile/settings' || l.href === '/chat') {
-        return isAuthenticated
-      }
-      return true
-    })
-    .map((l) => ({ label: t('nav.' + l.key), href: l.href }))
+  const links: NavbarLink[] = linksProp ?? linkKeys.map((l) => ({ label: t('nav.' + l.key), href: l.href }))
 
   const isActive = (href: string) => {
     if (href === '/') return pathname === '/'

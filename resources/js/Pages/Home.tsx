@@ -214,16 +214,16 @@ export default function Home() {
                             mt: 1,
                             borderRadius: 3,
                             boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
-                            minWidth: 400,
+                            width: { xs: 'calc(100vw - 32px)', sm: 400 },
                             maxWidth: 600
                           }
                         }}
                       >
-                        <Paper elevation={0} sx={{ p: 3 }}>
-                          <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 3 }}>
+                        <Paper elevation={0} sx={{ p: 3, overflow: 'hidden' }}>
+                          <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 3, wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                             {t('home.where_to')}
                           </Typography>
-                          <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222', mb: 2, fontSize: '0.875rem' }}>
+                          <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222', mb: 2, fontSize: '0.875rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                             {t('home.popular_destinations_label')}
                           </Typography>
                           <Stack spacing={0}>
@@ -236,18 +236,19 @@ export default function Home() {
                                   cursor: 'pointer',
                                   borderRadius: 2,
                                   transition: 'background-color 0.2s',
+                                  minWidth: 0,
                                   '&:hover': {
                                     bgcolor: '#F7F7F7'
                                   }
                                 }}
                               >
-                                <Stack direction="row" spacing={2} useFlexGap alignItems="flex-start">
-                                  <LocationOnIcon sx={{ color: '#222222', fontSize: 20, mt: 0.5 }} />
-                                  <Stack spacing={0.5}>
-                                    <Typography variant="body1" sx={{ fontWeight: 600, color: '#222222' }}>
+                                <Stack direction="row" spacing={2} useFlexGap alignItems="flex-start" sx={{ minWidth: 0 }}>
+                                  <LocationOnIcon sx={{ color: '#222222', fontSize: 20, mt: 0.5, flexShrink: 0 }} />
+                                  <Stack spacing={0.5} sx={{ minWidth: 0, overflow: 'hidden' }}>
+                                    <Typography variant="body1" sx={{ fontWeight: 600, color: '#222222', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                                       {dest.name}
                                     </Typography>
-                                    <Typography variant="body2" sx={{ color: '#717171', fontSize: '0.875rem' }}>
+                                    <Typography variant="body2" sx={{ color: '#717171', fontSize: '0.875rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                                       {dest.location}
                                     </Typography>
                                   </Stack>
