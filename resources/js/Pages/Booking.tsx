@@ -9,6 +9,8 @@ import { router, Head, usePage } from '@inertiajs/react'
 import ListingPreviewCard from '../components/ListingPreviewCard'
 import BookingSummaryCard from '../components/BookingSummaryCard'
 import { useLanguage } from '../hooks/use-language'
+import { useCurrency } from '../contexts/CurrencyContext'
+import { formatPrice } from '../utils/currency'
 
 const PLACEHOLDER_IMAGE = '/images/popular-stay-1.svg'
 
@@ -30,13 +32,14 @@ type BookingPageProps = {
   nights: number
   checkin: string
   checkout: string
-  costs: Array<{ label: string; amount: string }>
-  totalAmount: string
+  costs: Array<{ label: string; amount: number }>
+  totalAmount: number
   rules: string[]
 }
 
 export default function Booking() {
   const { t } = useLanguage()
+  const { currency } = useCurrency()
   const { property, nights, checkin, checkout, costs, totalAmount, rules } = usePage<BookingPageProps>().props
 
   const updateDates = (newCheckin: string, newCheckout: string) => {
@@ -357,7 +360,7 @@ export default function Booking() {
                     <Paper elevation={0} className="booking-total">
                       <Typography>{t('booking.total')}</Typography>
                       <Stack direction="row" spacing={2} useFlexGap alignItems="center">
-                        <Typography className="grand-total">{totalAmount}</Typography>
+                        <Typography className="grand-total">{formatPrice(totalAmount, currency)}</Typography>
                         <Button type="submit" variant="contained" className="request-btn" disabled={submitting}>{submitting ? '...' : t('booking.book_btn')}</Button>
                       </Stack>
                     </Paper>
@@ -376,8 +379,8 @@ export default function Booking() {
 
                 <BookingSummaryCard
                   rules={rules}
-                  costs={costs}
-                  totalAmount={totalAmount}
+                  costs={costs.map((c) => ({ label: c.label, amount: formatPrice(c.amount, currency) }))}
+                  totalAmount={formatPrice(totalAmount, currency)}
                 />
               </Col>
             </Row>

@@ -472,6 +472,7 @@ p.hero-subtitle {
   flex-wrap: wrap;
   gap: 4px;
   line-height: 1.2;
+  width: 100%;
 }
 
 .airbnb-card-price-text {
@@ -492,7 +493,7 @@ p.hero-subtitle {
   margin-left: auto;
 }
 
-/* RTL: property name right, rating left */
+/* RTL: property name right, rating left, price right */
 [dir="rtl"] .airbnb-card-body {
   text-align: right;
 }
@@ -500,11 +501,18 @@ p.hero-subtitle {
   text-align: right;
 }
 [dir="rtl"] .airbnb-card-price-rating {
-  flex-direction: row-reverse;
+  flex-direction: row;
+  justify-content: space-between;
 }
+/* In RTL: rating on the left (inline-end), price on the right (inline-start). Use margin-inline-start: auto so rating stays left. */
 [dir="rtl"] .airbnb-card-rating-inline {
-  margin-left: 0;
-  margin-right: auto;
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+  order: 1;
+}
+[dir="rtl"] .airbnb-card-price-text,
+[dir="rtl"] .airbnb-card-night-text {
+  order: -1;
 }
 
 /* Legacy card styles for backward compatibility */

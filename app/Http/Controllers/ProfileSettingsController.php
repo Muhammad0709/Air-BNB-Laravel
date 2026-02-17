@@ -61,6 +61,15 @@ class ProfileSettingsController extends Controller
         return redirect()->back()->with('success', 'Password changed successfully!');
     }
 
+    public function updateCurrency(Request $request)
+    {
+        $request->validate(['currency' => 'required|string|in:USD,PKR']);
+
+        Auth::user()->update(['currency' => $request->input('currency')]);
+
+        return redirect()->back();
+    }
+
     public function uploadProfilePicture(Request $request)
     {
         try {

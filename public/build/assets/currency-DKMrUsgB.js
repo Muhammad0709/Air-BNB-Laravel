@@ -1,0 +1,1 @@
+function o(e,t){const r=Number(e);return Number.isNaN(r)||r<0?t==="PKR"?"Rs 0":"$0":t==="PKR"?"Rs "+Math.round(r*278).toLocaleString():"$"+(Number.isInteger(r)?r.toLocaleString():r.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g,","))}export{o as f};

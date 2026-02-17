@@ -3,6 +3,8 @@ import { Box, Button, Checkbox, FormControlLabel, Paper, Stack, Typography } fro
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { useLanguage } from '../hooks/use-language'
+import { useCurrency } from '../contexts/CurrencyContext'
+import { formatPrice as formatPriceUtil } from '../utils/currency'
 import FeaturedCard from '../components/FeaturedCard'
 import { Container as RBContainer, Row, Col } from 'react-bootstrap'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
@@ -108,10 +110,11 @@ export default function ListingDetail() {
   const [bookGuidedTour, setBookGuidedTour] = useState(false)
 
   // Airport Pickup / Guided Tours from property (host-configured)
+  const { currency } = useCurrency()
   const airportPickupEnabled = Boolean(property.airport_pickup_enabled)
   const guidedToursEnabled = Boolean(property.guided_tours_enabled)
   const formatPrice = (value: number | string | null | undefined) =>
-    value != null ? (typeof value === 'number' ? `$${value}` : value) : '—'
+    value != null ? formatPriceUtil(Number(value), currency) : '—'
 
   // Gallery: use property images; fallback to single image or placeholder
   const galleryImages = useMemo(() => {
@@ -230,7 +233,7 @@ export default function ListingDetail() {
                     <Col md={2}>
                       <Box className="booking-info">
                         <Box className="price">
-                          <Typography component="span" className="price-amount">${priceDisplay}</Typography>
+                          <Typography component="span" className="price-amount">{formatPriceUtil(priceDisplay, currency)}</Typography>
                           <Typography component="span" className="price-period">{t('listing_detail.per_night')}</Typography>
                         </Box>
                         <Button

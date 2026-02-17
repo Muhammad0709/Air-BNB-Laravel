@@ -34,8 +34,7 @@ class BookingHistoryResource extends JsonResource
         $status = $this->status->value;
         $statusLabel = $this->status->label();
 
-        // Format amount with currency
-        $amount = '$' . number_format((float) $this->total_amount, 0);
+        $totalAmountUsd = (float) $this->total_amount;
 
         // Calculate total guests
         $totalGuests = $this->adults + $this->children;
@@ -49,7 +48,7 @@ class BookingHistoryResource extends JsonResource
             'checkout' => $this->check_out_date->format('Y-m-d'),
             'status' => $status,
             'status_label' => $statusLabel,
-            'amount' => $amount,
+            'total_amount' => $totalAmountUsd,
             'nights' => $this->nights,
             'guests' => $totalGuests,
         ];

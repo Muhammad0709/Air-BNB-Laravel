@@ -3,6 +3,8 @@ import { Box, Paper, Typography } from '@mui/material'
 import { router } from '@inertiajs/react'
 import StarIcon from '@mui/icons-material/Star'
 import { useLanguage } from '../hooks/use-language'
+import { useCurrency } from '../contexts/CurrencyContext'
+import { formatPrice } from '../utils/currency'
 
 type FeaturedCardProps = {
   image: string
@@ -28,6 +30,7 @@ export default function FeaturedCard({
   fallbackImage = '/images/popular-stay-1.svg',
 }: FeaturedCardProps) {
   const { t } = useLanguage()
+  const { currency } = useCurrency()
   const [imgSrc, setImgSrc] = useState(image)
   const [imgError, setImgError] = useState(false)
 
@@ -79,10 +82,10 @@ export default function FeaturedCard({
         </Typography>
         <Box className="airbnb-card-price-rating">
           <Typography component="span" className="airbnb-card-price-text">
-            ${price}
+            {formatPrice(Number(price), currency)}
           </Typography>
           <Typography component="span" className="airbnb-card-night-text">
-            {' '}{t('listing.night')}
+            {' / '}{t('listing.night')}
           </Typography>
           <Box className="airbnb-card-rating-inline">
             <StarIcon sx={{ fontSize: 12, color: '#222222', marginInlineStart: 1 }} />

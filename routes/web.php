@@ -93,6 +93,7 @@ Route::middleware(['auth', 'redirect.admin.host'])->group(function () {
     Route::get('/profile/settings', [ProfileSettingsController::class, 'index'])->name('profile.settings');
     Route::patch('/profile/update', [ProfileSettingsController::class, 'updateProfile'])->name('profile.update');
     Route::patch('/profile/password', [ProfileSettingsController::class, 'updatePassword'])->name('profile.password');
+    Route::patch('/profile/currency', [ProfileSettingsController::class, 'updateCurrency'])->name('profile.currency');
     Route::post('/profile/picture', [ProfileSettingsController::class, 'uploadProfilePicture'])->name('profile.picture');
 });
 

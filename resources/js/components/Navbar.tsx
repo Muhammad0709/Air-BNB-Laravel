@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import { useLanguage } from '../hooks/use-language'
+import { useCurrency } from '../contexts/CurrencyContext'
 
 const logoUrl = '/images/logo-main.png'
 
@@ -43,10 +44,10 @@ const languages = [
 
 export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/' }: NavbarProps) {
   const { t, language, switchLanguage, isRtl } = useLanguage()
+  const { currency, setCurrency } = useCurrency()
   const { url, props } = usePage()
   const pathname = url.split('?')[0]
   const [open, setOpen] = useState(false)
-  const [currency, setCurrency] = useState('USD')
   const [currencyAnchor, setCurrencyAnchor] = useState<null | HTMLElement>(null)
   const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null)
   const [profileAnchor, setProfileAnchor] = useState<null | HTMLElement>(null)
@@ -80,7 +81,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
   }
 
   const handleCurrencySelect = (code: string) => {
-    setCurrency(code)
+    setCurrency(code as 'USD' | 'PKR')
     handleCurrencyClose()
   }
 

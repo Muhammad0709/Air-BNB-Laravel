@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { LaravelReactI18nProvider } from "laravel-react-i18n";
+import { CurrencyProvider } from "./contexts/CurrencyContext";
 
 const appName = import.meta.env.VITE_APP_NAME || "LipaBnb";
 
@@ -20,13 +21,16 @@ createInertiaApp({
     setup({ el, App, props }) {
         const root = createRoot(el);
         const initialLocale = props.initialPage?.props?.locale || "en";
+        const initialCurrency = props.initialPage?.props?.auth?.user?.currency || null;
         root.render(
             <LaravelReactI18nProvider
                 locale={initialLocale}
                 fallbackLocale="en"
                 files={import.meta.glob("/lang/*.json")}
             >
-                <App {...props} />
+                <CurrencyProvider initialCurrency={initialCurrency}>
+                    <App {...props} />
+                </CurrencyProvider>
             </LaravelReactI18nProvider>
         );
     },

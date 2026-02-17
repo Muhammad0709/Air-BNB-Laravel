@@ -9,6 +9,8 @@ import HotelIcon from '@mui/icons-material/Hotel'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import { useLanguage } from '../hooks/use-language'
+import { useCurrency } from '../contexts/CurrencyContext'
+import { formatPrice } from '../utils/currency'
 
 interface Booking {
   id: number
@@ -19,7 +21,7 @@ interface Booking {
   checkout: string
   status: string
   status_label: string
-  amount: string
+  total_amount: number
   nights: number
   guests: number
 }
@@ -33,6 +35,7 @@ interface CustomerBookingsPageProps {
 
 export default function CustomerBookings() {
   const { t } = useLanguage()
+  const { currency } = useCurrency()
   const { props: pageProps } = usePage<CustomerBookingsPageProps>()
   const { upcoming = [], past = [], upcoming_count = 0, past_count = 0 } = pageProps
   const [activeTab, setActiveTab] = useState(0)
@@ -187,7 +190,7 @@ export default function CustomerBookings() {
                                   </Box>
                                 </Stack>
                                 <Box sx={{ pt: 1, borderTop: '1px solid #E5E7EB' }}>
-                                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>{booking.amount}</Typography>
+                                  <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>{formatPrice(booking.total_amount, currency)}</Typography>
                                 </Box>
                               </Stack>
                             </Stack>

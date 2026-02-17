@@ -107,12 +107,12 @@ class BookingController extends Controller
                 $serviceFeePercent = 10;
                 $subtotal = round($pricePerNight * $nights, 2);
                 $serviceFee = round($subtotal * ($serviceFeePercent / 100), 2);
-                $totalAmount = '$' . number_format($subtotal + $cleaningFee + $serviceFee, 0);
+                $totalAmount = round($subtotal + $cleaningFee + $serviceFee, 2);
 
                 $costs = [
-                    ['label' => '$' . number_format($pricePerNight, 0) . ' × ' . $nights . ' night' . ($nights !== 1 ? 's' : ''), 'amount' => '$' . number_format($subtotal, 0)],
-                    ['label' => 'Cleaning fee', 'amount' => '$' . number_format($cleaningFee, 0)],
-                    ['label' => 'Service fee', 'amount' => '$' . number_format($serviceFee, 0)],
+                    ['label' => number_format($pricePerNight, 0) . ' × ' . $nights . ' night' . ($nights !== 1 ? 's' : ''), 'amount' => $subtotal],
+                    ['label' => 'Cleaning fee', 'amount' => $cleaningFee],
+                    ['label' => 'Service fee', 'amount' => $serviceFee],
                 ];
 
                 $propertyData = [
@@ -133,11 +133,11 @@ class BookingController extends Controller
         if ($propertyData === null) {
             $nights = 7;
             $costs = [
-                ['label' => '$87 × 7 nights', 'amount' => '$585'],
-                ['label' => 'Cleaning fee', 'amount' => '$25'],
-                ['label' => 'Service fee', 'amount' => '$71'],
+                ['label' => '87 × 7 nights', 'amount' => 585],
+                ['label' => 'Cleaning fee', 'amount' => 25],
+                ['label' => 'Service fee', 'amount' => 71],
             ];
-            $totalAmount = '$631';
+            $totalAmount = 631;
         }
 
         return Inertia::render('Booking', [
