@@ -1,6 +1,14 @@
 html, body, #root { height: 100%; }
 #root { margin: 0; display: flex; flex-direction: column; }
 
+/* Smaller base font on mobile – applies to user, host and admin */
+@media (max-width: 768px) {
+  html { font-size: 14px; }
+}
+@media (max-width: 576px) {
+  html { font-size: 14px; }
+}
+
 /* Hero Section */
 section.hero-section {
   position: relative !important;

@@ -26,6 +26,27 @@ enum BookingStatus: string
     }
 
     /**
+     * Statuses that count as past (stayed or cancelled).
+     */
+    public static function past(): array
+    {
+        return [self::COMPLETED->value, self::CANCELLED->value];
+    }
+
+    /**
+     * Human-readable label for the status.
+     */
+    public function label(): string
+    {
+        return match ($this) {
+            self::PENDING => 'Pending',
+            self::CONFIRMED => 'Confirmed',
+            self::CANCELLED => 'Cancelled',
+            self::COMPLETED => 'Completed',
+        };
+    }
+
+    /**
      * All values for validation rules.
      */
     public static function values(): array

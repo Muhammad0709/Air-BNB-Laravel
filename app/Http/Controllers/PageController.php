@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BookingStatus;
 use App\Enums\PropertyStatus;
+use App\Http\Resources\BookingHistoryResource;
 use App\Http\Resources\ConversationResource;
+use App\Models\Booking;
 use App\Models\Conversation;
 use App\Models\Property;
 use Illuminate\Http\Request;
@@ -65,9 +68,24 @@ class PageController extends Controller
         ]);
     }
 
-    public function customerBookings()
+    public function customerBookings(Request $request)
     {
-        return Inertia::render('CustomerBookings');
+        $userId = Auth::id();
+        $upcoming = Booking::with('property')
+            ->where('user_id', $userId)
+            ->whereIn('status', BookingStatus::upcoming())
+            ->get();
+        $past = Booking::with('property')
+            ->where('user_id', $userId)
+            ->whereIn('status', BookingStatus::past())
+            ->get();
+
+        return Inertia::render('CustomerBookings', [
+            'upcoming' => BookingHistoryResource::collection($upcoming)->resolve(),
+            'past' => BookingHistoryResource::collection($past)->resolve(),
+            'upcoming_count' => $upcoming->count(),
+            'past_count' => $past->count(),
+        ]);
     }
 
     public function privacyPolicy()

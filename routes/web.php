@@ -68,7 +68,6 @@ Route::get('/confirmation', [ConfirmationController::class, 'index'])->name('con
 
 // Public pages (PageController)
 Route::get('/about', [PageController::class, 'about'])->name('about');
-Route::get('/bookings', [PageController::class, 'customerBookings'])->name('bookings');
 Route::get('/privacy-policy', [PageController::class, 'privacyPolicy'])->name('privacy-policy');
 Route::get('/terms', [PageController::class, 'terms'])->name('terms');
 Route::get('/search', [PageController::class, 'search'])->name('search');
@@ -86,6 +85,7 @@ Route::middleware(['auth', 'redirect.admin.host'])->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
     
     Route::get('/chat', [PageController::class, 'chat'])->name('chat');
+    Route::get('/bookings', [PageController::class, 'customerBookings'])->name('bookings');
     
     // User-specific routes
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\BookingStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookingHistoryRequest;
 use App\Http\Resources\BookingHistoryResource;
@@ -109,8 +110,7 @@ class BookingHistoryController extends Controller
 
         // Base query - get all bookings for authenticated user with property
         $baseQuery = Booking::with(['property'])
-            ->where('user_id', $user->id)
-            ->orderBy('check_in_date', 'desc');
+            ->where('user_id', $user->id);
 
         // Apply status filter if provided
         if ($statusFilter) {
@@ -127,26 +127,11 @@ class BookingHistoryController extends Controller
 
         $allBookings = $baseQuery->get();
 
-        // Separate upcoming and past bookings
-        // UPCOMING bookings:
-        // - Pending bookings (regardless of date)
-        // - Confirmed bookings with check-in date >= today (future bookings)
-        $upcomingBookings = $allBookings->filter(function ($booking) {
-            $today = now()->toDateString();
-            return $booking->status === 'pending' || 
-                   ($booking->status === 'confirmed' && $booking->check_in_date >= $today);
-        });
-
-        // PAST bookings:
-        // - Completed bookings (regardless of date)
-        // - Cancelled bookings (regardless of date)
-        // - Confirmed bookings with check-in date < today (past bookings)
-        $pastBookings = $allBookings->filter(function ($booking) {
-            $today = now()->toDateString();
-            return $booking->status === 'completed' || 
-                   $booking->status === 'cancelled' ||
-                   ($booking->status === 'confirmed' && $booking->check_in_date < $today);
-        });
+        // Separate upcoming and past by status only (not check-in/check-out dates)
+        $upcomingStatuses = BookingStatus::upcoming();
+        $pastStatuses = BookingStatus::past();
+        $upcomingBookings = $allBookings->filter(fn ($b) => in_array($b->status->value, $upcomingStatuses, true));
+        $pastBookings = $allBookings->filter(fn ($b) => in_array($b->status->value, $pastStatuses, true));
 
         // Apply type filter
         if ($type === 'upcoming') {

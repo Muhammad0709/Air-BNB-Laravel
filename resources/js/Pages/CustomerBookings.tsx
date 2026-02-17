@@ -4,52 +4,49 @@ import { Container, Row, Col } from 'react-bootstrap'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import SearchIcon from '@mui/icons-material/Search'
-import { router, Head } from '@inertiajs/react'
+import { Head, usePage } from '@inertiajs/react'
 import HotelIcon from '@mui/icons-material/Hotel'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import { useLanguage } from '../hooks/use-language'
 
-const img1 = '/images/popular-stay-1.svg'
-const img2 = '/images/popular-stay-2.svg'
-const img3 = '/images/popular-stay-3.svg'
-
 interface Booking {
   id: number
   property: string
   propertyLocation: string
-  image: string
+  image: string | null
   checkin: string
   checkout: string
-  status: 'Confirmed' | 'Pending' | 'Cancelled' | 'Completed'
+  status: string
+  status_label: string
   amount: string
   nights: number
   guests: number
 }
 
+interface CustomerBookingsPageProps {
+  upcoming: Booking[]
+  past: Booking[]
+  upcoming_count: number
+  past_count: number
+}
+
 export default function CustomerBookings() {
   const { t } = useLanguage()
+  const { props: pageProps } = usePage<CustomerBookingsPageProps>()
+  const { upcoming = [], past = [], upcoming_count = 0, past_count = 0 } = pageProps
   const [activeTab, setActiveTab] = useState(0)
   const [search, setSearch] = useState('')
 
-  const allBookings: Booking[] = [
-    { id: 1, property: 'Luxury Beachfront Villa', propertyLocation: 'Malibu, California', image: img1, checkin: '2025-02-15', checkout: '2025-02-20', status: 'Confirmed', amount: '$1,495', nights: 5, guests: 2 },
-    { id: 2, property: 'Modern Apartment', propertyLocation: 'Los Angeles, California', image: img2, checkin: '2025-03-01', checkout: '2025-03-05', status: 'Confirmed', amount: '$899', nights: 4, guests: 3 },
-    { id: 3, property: 'Cozy Studio', propertyLocation: 'San Francisco, California', image: img3, checkin: '2025-01-10', checkout: '2025-01-15', status: 'Completed', amount: '$625', nights: 5, guests: 2 },
-    { id: 4, property: 'Luxury Beachfront Villa', propertyLocation: 'Malibu, California', image: img1, checkin: '2024-12-20', checkout: '2024-12-25', status: 'Completed', amount: '$1,794', nights: 5, guests: 4 },
-    { id: 5, property: 'Modern Apartment', propertyLocation: 'Los Angeles, California', image: img2, checkin: '2025-04-01', checkout: '2025-04-07', status: 'Pending', amount: '$1,299', nights: 6, guests: 2 },
-    { id: 6, property: 'Mountain View Cabin', propertyLocation: 'Lake Tahoe, California', image: img3, checkin: '2024-11-15', checkout: '2024-11-18', status: 'Completed', amount: '$596', nights: 3, guests: 2 },
-  ]
-
-  const upcomingBookings = allBookings.filter(b => b.status === 'Pending')
-  const pastBookings = allBookings.filter(b => b.status === 'Confirmed' || b.status === 'Completed')
+  const upcomingBookings: Booking[] = upcoming ?? []
+  const pastBookings: Booking[] = past ?? []
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Confirmed': return '#10B981'
-      case 'Pending': return '#F59E0B'
-      case 'Cancelled': return '#EF4444'
-      case 'Completed': return '#6366F1'
+      case 'confirmed': return '#10B981'
+      case 'pending': return '#F59E0B'
+      case 'cancelled': return '#EF4444'
+      case 'completed': return '#6366F1'
       default: return '#717171'
     }
   }
@@ -69,7 +66,7 @@ export default function CustomerBookings() {
     return bookings.filter(booking =>
       booking.property.toLowerCase().includes(search.toLowerCase()) ||
       booking.propertyLocation.toLowerCase().includes(search.toLowerCase()) ||
-      booking.status.toLowerCase().includes(search.toLowerCase())
+      (booking.status_label && booking.status_label.toLowerCase().includes(search.toLowerCase()))
     )
   }
 
@@ -100,8 +97,8 @@ export default function CustomerBookings() {
                         '& .MuiTabs-indicator': { backgroundColor: '#AD542D', height: 3 }
                       }}
                     >
-                      <Tab label={`${t('customer_bookings.upcoming')} (${upcomingBookings.length})`} />
-                      <Tab label={`${t('customer_bookings.past')} (${pastBookings.length})`} />
+                      <Tab label={`${t('customer_bookings.upcoming')} (${upcoming_count})`} />
+                      <Tab label={`${t('customer_bookings.past')} (${past_count})`} />
                     </Tabs>
                   </Box>
                   <Box sx={{ p: 3, borderBottom: '1px solid #E5E7EB' }}>
@@ -146,10 +143,14 @@ export default function CustomerBookings() {
                               cursor: 'pointer',
                               '&:hover': { borderColor: '#AD542D', boxShadow: '0 2px 8px rgba(173, 82, 45, 0.1)' }
                             }}
-                            onClick={() => router.visit('/bookings')}
                           >
                             <Stack direction={{ xs: 'column', md: 'row' }} spacing={3} useFlexGap>
-                              <Box component="img" src={booking.image} alt={booking.property} sx={{ width: { xs: '100%', md: 200 }, height: { xs: 200, md: 150 }, objectFit: 'cover', borderRadius: 2, flexShrink: 0 }} />
+                              <Box
+                              component="img"
+                              src={booking.image ?? '/images/popular-stay-1.svg'}
+                              alt={booking.property}
+                              sx={{ width: { xs: '100%', md: 200 }, height: { xs: 200, md: 150 }, objectFit: 'cover', borderRadius: 2, flexShrink: 0 }}
+                            />
                               <Stack spacing={2} sx={{ flex: 1 }}>
                                 <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} spacing={2} useFlexGap>
                                   <Box>
@@ -159,7 +160,7 @@ export default function CustomerBookings() {
                                       <Typography variant="body2" sx={{ color: '#717171' }}>{booking.propertyLocation}</Typography>
                                     </Stack>
                                   </Box>
-                                  <Chip label={booking.status} size="small" sx={{ bgcolor: `${getStatusColor(booking.status)}15`, color: getStatusColor(booking.status), fontWeight: 600, fontSize: 12, height: 28 }} />
+                                  <Chip label={booking.status_label} size="small" sx={{ bgcolor: `${getStatusColor(booking.status)}15`, color: getStatusColor(booking.status), fontWeight: 600, fontSize: 12, height: 28 }} />
                                 </Stack>
                                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} useFlexGap sx={{ mt: 1 }}>
                                   <Stack direction="row" spacing={1} useFlexGap alignItems="center">
