@@ -11,6 +11,8 @@ return [
     'log_in' => 'Giriş',
     'sign_up' => 'Kayıt ol',
     'currency' => 'Para birimi',
+    'currency_usd' => 'ABD Doları',
+    'currency_pkr' => 'Pakistan Rupisi',
     'language' => 'Dil',
     'become_host' => 'Ev sahibi ol',
     'become_host_sub' => 'Ev sahipliği yapmaya başlayın ve ek gelir elde edin',

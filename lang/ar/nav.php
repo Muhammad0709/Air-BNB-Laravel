@@ -11,6 +11,8 @@ return [
     'log_in' => 'تسجيل الدخول',
     'sign_up' => 'إنشاء حساب',
     'currency' => 'العملة',
+    'currency_usd' => 'دولار أمريكي',
+    'currency_pkr' => 'روبية باكستانية',
     'language' => 'اللغة',
     'become_host' => 'كن مضيفاً',
     'become_host_sub' => 'ابدأ الاستضافة واكسب دخلاً إضافياً',
