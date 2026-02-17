@@ -30,6 +30,10 @@ class Property extends Model
         'pickup_start_time',
         'pickup_end_time',
         'airport_pickup_price',
+        'guided_tours_enabled',
+        'guided_tours_description',
+        'guided_tours_duration',
+        'guided_tours_price',
     ];
 
     protected $casts = [
@@ -39,6 +43,8 @@ class Property extends Model
         'is_guest_favorite' => 'boolean',
         'airport_pickup_enabled' => 'boolean',
         'airport_pickup_price' => 'decimal:2',
+        'guided_tours_enabled' => 'boolean',
+        'guided_tours_price' => 'decimal:2',
     ];
 
     /**

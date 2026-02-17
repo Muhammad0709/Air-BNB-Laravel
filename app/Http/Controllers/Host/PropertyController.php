@@ -104,6 +104,15 @@ class PropertyController extends Controller
             'amenities.*' => 'string',
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 2048 KB = 2MB
+            'airport_pickup_enabled' => 'nullable|boolean',
+            'airport' => 'nullable|required_if:airport_pickup_enabled,true|string|max:255',
+            'pickup_start_time' => 'nullable|required_if:airport_pickup_enabled,true|string|max:10',
+            'pickup_end_time' => 'nullable|required_if:airport_pickup_enabled,true|string|max:10',
+            'airport_pickup_price' => 'nullable|required_if:airport_pickup_enabled,true|numeric|min:0',
+            'guided_tours_enabled' => 'nullable|boolean',
+            'guided_tours_description' => 'nullable|required_if:guided_tours_enabled,true|string|max:2000',
+            'guided_tours_duration' => 'nullable|required_if:guided_tours_enabled,true|string|max:255',
+            'guided_tours_price' => 'nullable|required_if:guided_tours_enabled,true|numeric|min:0',
         ], [
             'images.*.max' => __('host.property.image_max_size'),
             'images.*.mimes' => __('host.property.image_mimes'),
@@ -121,6 +130,8 @@ class PropertyController extends Controller
         $validated['user_id'] = $host->id;
         $validated['status'] = 'Active';
         $validated['approval_status'] = PropertyStatus::PENDING->value;
+        $validated['airport_pickup_enabled'] = $validated['airport_pickup_enabled'] ?? false;
+        $validated['guided_tours_enabled'] = $validated['guided_tours_enabled'] ?? false;
 
         $property = Property::create($validated);
         
@@ -192,6 +203,15 @@ class PropertyController extends Controller
             'amenities.*' => 'string',
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 2048 KB = 2MB
+            'airport_pickup_enabled' => 'nullable|boolean',
+            'airport' => 'nullable|required_if:airport_pickup_enabled,true|string|max:255',
+            'pickup_start_time' => 'nullable|required_if:airport_pickup_enabled,true|string|max:10',
+            'pickup_end_time' => 'nullable|required_if:airport_pickup_enabled,true|string|max:10',
+            'airport_pickup_price' => 'nullable|required_if:airport_pickup_enabled,true|numeric|min:0',
+            'guided_tours_enabled' => 'nullable|boolean',
+            'guided_tours_description' => 'nullable|required_if:guided_tours_enabled,true|string|max:2000',
+            'guided_tours_duration' => 'nullable|required_if:guided_tours_enabled,true|string|max:255',
+            'guided_tours_price' => 'nullable|required_if:guided_tours_enabled,true|numeric|min:0',
         ], [
             'images.*.max' => __('host.property.image_max_size'),
             'images.*.mimes' => __('host.property.image_mimes'),
@@ -207,6 +227,8 @@ class PropertyController extends Controller
         $validated['images'] = $imagePaths;
         $validated['image'] = $imagePaths[0] ?? null;
         $validated['approval_status'] = PropertyStatus::PENDING->value;
+        $validated['airport_pickup_enabled'] = $validated['airport_pickup_enabled'] ?? false;
+        $validated['guided_tours_enabled'] = $validated['guided_tours_enabled'] ?? false;
 
         $property->update($validated);
         

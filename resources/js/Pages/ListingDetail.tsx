@@ -46,6 +46,15 @@ type Property = {
   image: string | null
   images: string[]
   host: PropertyHost
+  airport_pickup_enabled?: boolean
+  airport?: string | null
+  pickup_start_time?: string | null
+  pickup_end_time?: string | null
+  airport_pickup_price?: number | null
+  guided_tours_enabled?: boolean
+  guided_tours_description?: string | null
+  guided_tours_duration?: string | null
+  guided_tours_price?: number | null
 }
 
 type Review = {
@@ -98,20 +107,11 @@ export default function ListingDetail() {
   const [bookPickupService, setBookPickupService] = useState(false)
   const [bookGuidedTour, setBookGuidedTour] = useState(false)
 
-  // Airport Pickup / Guided Tours (mock – backend could pass these later)
-  const airportPickupService = {
-    enabled: true,
-    airport: 'Los Angeles International Airport (LAX)',
-    pickupStartTime: '08:00',
-    pickupEndTime: '22:00',
-    price: '$50',
-  }
-  const guidedToursService = {
-    enabled: true,
-    description: 'Explore the beautiful city with our expert local guide. Visit historical landmarks, cultural sites, and hidden gems.',
-    duration: 'Half Day (4-5 hours)',
-    price: '$75',
-  }
+  // Airport Pickup / Guided Tours from property (host-configured)
+  const airportPickupEnabled = Boolean(property.airport_pickup_enabled)
+  const guidedToursEnabled = Boolean(property.guided_tours_enabled)
+  const formatPrice = (value: number | string | null | undefined) =>
+    value != null ? (typeof value === 'number' ? `$${value}` : value) : '—'
 
   // Gallery: use property images; fallback to single image or placeholder
   const galleryImages = useMemo(() => {
@@ -410,8 +410,8 @@ export default function ListingDetail() {
                   </Typography>
                 </Paper>
 
-                {/* Airport Pickup Service Section */}
-                {airportPickupService.enabled && (
+                {/* Airport Pickup Service Section – from host property data */}
+                {airportPickupEnabled && (
                   <Paper className="about-section mt-4" elevation={0} sx={{ bgcolor: '#F9FAFB', border: '1px solid #E5E7EB' }}>
                     <Typography className="section-title" component="h2">{t('listing_detail.airport_pickup')}</Typography>
                     <Box sx={{ mt: 2 }}>
@@ -435,7 +435,7 @@ export default function ListingDetail() {
                               <Box>
                                 <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Airport</Typography>
                                 <Typography sx={{ fontWeight: 600, color: '#222222' }}>
-                                  {airportPickupService.airport}
+                                  {property.airport || '—'}
                                 </Typography>
                               </Box>
                             </Box>
@@ -445,7 +445,9 @@ export default function ListingDetail() {
                               <Box>
                                 <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Pickup Time</Typography>
                                 <Typography sx={{ fontWeight: 600, color: '#222222' }}>
-                                  {airportPickupService.pickupStartTime} - {airportPickupService.pickupEndTime}
+                                  {property.pickup_start_time && property.pickup_end_time
+                                    ? `${property.pickup_start_time} - ${property.pickup_end_time}`
+                                    : '—'}
                                 </Typography>
                               </Box>
                             </Box>
@@ -455,7 +457,7 @@ export default function ListingDetail() {
                               <Box>
                                 <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Price</Typography>
                                 <Typography sx={{ fontWeight: 600, color: '#222222', fontSize: '1.125rem' }}>
-                                  {airportPickupService.price}
+                                  {formatPrice(property.airport_pickup_price)}
                                 </Typography>
                               </Box>
                             </Box>
@@ -466,8 +468,8 @@ export default function ListingDetail() {
                   </Paper>
                 )}
 
-                {/* Guided Tours Service Section */}
-                {guidedToursService.enabled && (
+                {/* Guided Tours Service Section – from host property data */}
+                {guidedToursEnabled && (
                   <Paper className="about-section mt-4" elevation={0} sx={{ bgcolor: '#F9FAFB', border: '1px solid #E5E7EB' }}>
                     <Typography className="section-title" component="h2">{t('listing_detail.guided_tours')}</Typography>
                     <Box sx={{ mt: 2 }}>
@@ -486,32 +488,36 @@ export default function ListingDetail() {
                       {bookGuidedTour && (
                         <Box sx={{ mt: 2 }}>
                           <Stack spacing={3}>
-                            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-                              <TourIcon sx={{ color: '#AD542D', fontSize: 24, mt: 0.5 }} />
-                              <Box>
-                                <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Tour Description</Typography>
-                                <Typography sx={{ fontWeight: 400, color: '#222222', fontSize: '0.9rem' }}>
-                                  {guidedToursService.description}
-                                </Typography>
+                            {property.guided_tours_description && (
+                              <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                                <TourIcon sx={{ color: '#AD542D', fontSize: 24, mt: 0.5 }} />
+                                <Box>
+                                  <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Tour Description</Typography>
+                                  <Typography sx={{ fontWeight: 400, color: '#222222', fontSize: '0.9rem' }}>
+                                    {property.guided_tours_description}
+                                  </Typography>
+                                </Box>
                               </Box>
-                            </Box>
+                            )}
 
-                            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-                              <ScheduleIcon sx={{ color: '#AD542D', fontSize: 24, mt: 0.5 }} />
-                              <Box>
-                                <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Duration</Typography>
-                                <Typography sx={{ fontWeight: 600, color: '#222222' }}>
-                                  {guidedToursService.duration}
-                                </Typography>
+                            {property.guided_tours_duration && (
+                              <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                                <ScheduleIcon sx={{ color: '#AD542D', fontSize: 24, mt: 0.5 }} />
+                                <Box>
+                                  <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Duration</Typography>
+                                  <Typography sx={{ fontWeight: 600, color: '#222222' }}>
+                                    {property.guided_tours_duration}
+                                  </Typography>
+                                </Box>
                               </Box>
-                            </Box>
+                            )}
 
                             <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                               <AttachMoneyIcon sx={{ color: '#AD542D', fontSize: 24, mt: 0.5 }} />
                               <Box>
                                 <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Price</Typography>
                                 <Typography sx={{ fontWeight: 600, color: '#222222', fontSize: '1.125rem' }}>
-                                  {guidedToursService.price}
+                                  {formatPrice(property.guided_tours_price)}
                                 </Typography>
                               </Box>
                             </Box>

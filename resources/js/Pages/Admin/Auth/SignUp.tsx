@@ -7,7 +7,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import { Head, Link as InertiaLink, useForm } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 
-const logoUrl = '/images/lipabnb-logo.svg'
+const logoUrl = '/images/logo-main.png'
 const socialIcon = '/images/Social-icon.svg'
 const languages = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -90,7 +90,7 @@ export default function HostSignup() {
             <Col xs={12} sm={10} md={8} lg={6} xl={5}>
               <Paper elevation={0} sx={{ p: 4, borderRadius: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
                 <Box sx={{ textAlign: 'center', mb: 4 }}>
-                  <Box component="img" src={logoUrl} alt="lipabnb" sx={{ height: 40, mb: 2 }} />
+                  <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: 100, width: 'auto', maxWidth: 380, objectFit: 'contain', display: 'block', margin: '0 auto', mb: 2 }} />
                   <Typography variant="h4" sx={{ fontWeight: 800, color: '#222222', mb: 1 }}>
                     {t('auth.admin_signup.heading')}
                   </Typography>

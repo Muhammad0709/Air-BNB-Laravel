@@ -158,6 +158,19 @@ p.hero-subtitle {
   background: #78381C !important;
 }
 
+/* RTL: radius on left for search button, on right for first field (destination) */
+[dir="rtl"] .search-button {
+  border-radius: 50px 0 0 50px !important;
+}
+[dir="rtl"] .search-field {
+  border-right: none !important;
+  border-left: 1px solid #e5e7eb !important;
+}
+[dir="rtl"] .search-input-group .search-field:first-of-type {
+  border-radius: 0 50px 50px 0 !important;
+  border-left: none !important;
+}
+
 /* Navbar Overlay Styles */
 
 

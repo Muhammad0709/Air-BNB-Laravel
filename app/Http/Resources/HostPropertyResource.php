@@ -51,6 +51,10 @@ class HostPropertyResource extends JsonResource
             'pickup_start_time' => $this->pickup_start_time,
             'pickup_end_time' => $this->pickup_end_time,
             'airport_pickup_price' => $this->airport_pickup_price ? (float) $this->airport_pickup_price : null,
+            'guided_tours_enabled' => $this->guided_tours_enabled ?? false,
+            'guided_tours_description' => $this->guided_tours_description,
+            'guided_tours_duration' => $this->guided_tours_duration,
+            'guided_tours_price' => $this->guided_tours_price !== null ? (float) $this->guided_tours_price : null,
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
         ];

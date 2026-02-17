@@ -29,6 +29,14 @@ class HostPropertyRequest extends FormRequest
                 ]);
             }
         }
+        if ($this->has('guided_tours_enabled')) {
+            $value = $this->input('guided_tours_enabled');
+            if (is_string($value)) {
+                $this->merge([
+                    'guided_tours_enabled' => in_array(strtolower($value), ['true', '1', 'yes'], true),
+                ]);
+            }
+        }
     }
 
     /**
@@ -67,6 +75,10 @@ class HostPropertyRequest extends FormRequest
                 'pickup_start_time' => 'nullable|required_if:airport_pickup_enabled,true|date_format:H:i',
                 'pickup_end_time' => 'nullable|required_if:airport_pickup_enabled,true|date_format:H:i|after:pickup_start_time',
                 'airport_pickup_price' => 'nullable|required_if:airport_pickup_enabled,true|numeric|min:0',
+                'guided_tours_enabled' => 'nullable|boolean',
+                'guided_tours_description' => 'nullable|required_if:guided_tours_enabled,true|string|max:2000',
+                'guided_tours_duration' => 'nullable|required_if:guided_tours_enabled,true|string|max:255',
+                'guided_tours_price' => 'nullable|required_if:guided_tours_enabled,true|numeric|min:0',
             ];
         }
         
@@ -88,6 +100,10 @@ class HostPropertyRequest extends FormRequest
                 'pickup_start_time' => 'nullable|required_if:airport_pickup_enabled,true|date_format:H:i',
                 'pickup_end_time' => 'nullable|required_if:airport_pickup_enabled,true|date_format:H:i|after:pickup_start_time',
                 'airport_pickup_price' => 'nullable|required_if:airport_pickup_enabled,true|numeric|min:0',
+                'guided_tours_enabled' => 'nullable|boolean',
+                'guided_tours_description' => 'nullable|required_if:guided_tours_enabled,true|string|max:2000',
+                'guided_tours_duration' => 'nullable|required_if:guided_tours_enabled,true|string|max:255',
+                'guided_tours_price' => 'nullable|required_if:guided_tours_enabled,true|numeric|min:0',
             ];
         }
         
