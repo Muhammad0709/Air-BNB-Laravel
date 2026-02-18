@@ -25,4 +25,6 @@ return [
     'no_popular_sub' => 'کاتێک شوێنە زیادەکان زیاد دەکرێن لێرە دەردەکەون.',
     'no_favorites' => 'هێشتا دڵخواز نییە',
     'no_favorites_sub' => 'بە کرتە کردنی ئایکۆنی دڵ لە هەر لیستێک شوێنەکان هەڵبگرە.',
+    'search_destinations_placeholder' => 'گەڕان بۆ شوێنەکان',
+    'add_guests_placeholder' => 'میوان زیاد بکە',
 ];

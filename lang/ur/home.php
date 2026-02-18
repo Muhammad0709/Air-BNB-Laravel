@@ -25,4 +25,6 @@ return [
     'no_popular_sub' => 'جیسے جیسے مزید پراپرٹیز شامل ہوں گی یہاں دکھائی دیں گی۔',
     'no_favorites' => 'ابھی کوئی پسندیدہ نہیں',
     'no_favorites_sub' => 'کسی لسٹنگ پر دل کے آئیکون پر کلک کر کے پراپرٹیز محفوظ کریں۔',
+    'search_destinations_placeholder' => 'مقامات تلاش کریں',
+    'add_guests_placeholder' => 'مہمان شامل کریں',
 ];

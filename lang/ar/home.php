@@ -25,4 +25,6 @@ return [
     'no_popular_sub' => 'ستظهر القوائم الشائعة هنا مع إضافة المزيد.',
     'no_favorites' => 'لا مفضلات بعد',
     'no_favorites_sub' => 'احفظ العقارات التي تعجبك بالنقر على أيقونة القلب في أي قائمة.',
+    'search_destinations_placeholder' => 'البحث عن الوجهات',
+    'add_guests_placeholder' => 'إضافة ضيوف',
 ];

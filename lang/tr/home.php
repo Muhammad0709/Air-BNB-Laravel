@@ -25,4 +25,6 @@ return [
     'no_popular_sub' => 'Daha fazla ilan eklendikçe burada görünecektir.',
     'no_favorites' => 'Henüz favori yok',
     'no_favorites_sub' => 'Beğendiğiniz ilanlarda kalp simgesine tıklayarak kaydedin.',
+    'search_destinations_placeholder' => 'Destinasyon ara',
+    'add_guests_placeholder' => 'Misafir ekle',
 ];

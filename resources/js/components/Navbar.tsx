@@ -21,11 +21,8 @@ type NavbarProps = {
 const linkKeys: { key: string; href: string }[] = [
   { key: 'home', href: '/' },
   { key: 'stays', href: '/listing' },
-  { key: 'contact_us', href: '/contact' },
-  { key: 'wishlist', href: '/wishlist' },
   { key: 'messages', href: '/chat' },
-  { key: 'bookings', href: '/booking' },
-  { key: 'profile', href: '/profile/settings' },
+  // { key: 'bookings', href: '/booking' },
 ]
 
 const currencies = [
@@ -277,6 +274,22 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                     transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                   >
+                    <MenuItem
+                      component={Link}
+                      href="/profile/settings"
+                      onClick={handleProfileClose}
+                      sx={{ py: 1.5, px: 2, '&:hover': { bgcolor: '#F7F7F7' } }}
+                    >
+                      <Typography sx={{ fontWeight: 400, fontSize: '0.875rem', color: '#222222' }}>{t('nav.profile')}</Typography>
+                    </MenuItem>
+                    <MenuItem
+                      component={Link}
+                      href="/wishlist"
+                      onClick={handleProfileClose}
+                      sx={{ py: 1.5, px: 2, '&:hover': { bgcolor: '#F7F7F7' } }}
+                    >
+                      <Typography sx={{ fontWeight: 400, fontSize: '0.875rem', color: '#222222' }}>{t('nav.wishlist')}</Typography>
+                    </MenuItem>
                     <MenuItem
                       component={Link}
                       href="/bookings"

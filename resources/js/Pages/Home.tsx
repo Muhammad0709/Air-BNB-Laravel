@@ -6,10 +6,8 @@ import HorizontalScrollSection from '../components/HorizontalScrollSection'
 import { useLanguage } from '../hooks/use-language'
 import { Box, Button, TextField, Popover, Stack, Typography, IconButton, Paper } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
-import PersonIcon from '@mui/icons-material/Person'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import { Container, Row, Col, Container as RBContainer } from 'react-bootstrap'
 import { router, usePage } from '@inertiajs/react'
@@ -45,14 +43,14 @@ export default function Home() {
   const popularDestinations = pageProps.popularDestinations || []
   const guestsAnchorRef = useRef<HTMLDivElement>(null)
   const destinationAnchorRef = useRef<HTMLDivElement>(null)
-  const [destination, setDestination] = useState('California')
+  const [destination, setDestination] = useState('')
   const [checkin, setCheckin] = useState('')
   const [checkout, setCheckout] = useState('')
   const [guestsOpen, setGuestsOpen] = useState(false)
   const [destinationOpen, setDestinationOpen] = useState(false)
-  const [adults, setAdults] = useState(2)
+  const [adults, setAdults] = useState(0)
   const [children, setChildren] = useState(0)
-  const [rooms, setRooms] = useState(1)
+  const [rooms, setRooms] = useState(0)
 
   // Use dynamic popular destinations from backend, fallback to default if empty
   const defaultDestinations: Destination[] = [
@@ -106,9 +104,9 @@ export default function Home() {
   }
 
   const handleDecrement = (type: 'adults' | 'children' | 'rooms') => {
-    if (type === 'adults') setAdults(prev => Math.max(1, prev - 1))
+    if (type === 'adults') setAdults(prev => Math.max(0, prev - 1))
     if (type === 'children') setChildren(prev => Math.max(0, prev - 1))
-    if (type === 'rooms') setRooms(prev => Math.max(1, prev - 1))
+    if (type === 'rooms') setRooms(prev => Math.max(0, prev - 1))
   }
 
   const getGuestsText = () => {
@@ -177,22 +175,22 @@ export default function Home() {
                 <Box className="hero-search-form">
                   <form className="search-form" onSubmit={handleSearch}>
                     <Box className="search-input-group">
-                      <Box className="search-field" ref={destinationAnchorRef} onClick={handleDestinationClick}>
+                      <Box className={`search-field${destination ? ' has-value' : ''}`} ref={destinationAnchorRef} onClick={handleDestinationClick}>
                         <label htmlFor="destination">Destination</label>
                         <TextField
                           id="destination"
                           name="destination"
                           value={destination}
                           onChange={(e) => setDestination(e.target.value)}
-                          placeholder="Where are you going?"
+                          placeholder={t('home.search_destinations_placeholder')}
                           variant="standard"
                           InputProps={{ 
                             disableUnderline: true,
-                            readOnly: true,
-                            endAdornment: <KeyboardArrowDownIcon sx={{ color: '#717171', fontSize: 20 }} />
+                            readOnly: true
                           }}
                           sx={{ 
-                            '& .MuiInput-input': { border: 'none', padding: 0, cursor: 'pointer' },
+                            '& .MuiInput-input': { border: 'none', padding: 0, cursor: 'pointer', fontWeight: 400, color: destination ? '#222222' : '#717171' },
+                            '& .MuiInput-input::placeholder': { color: '#717171', opacity: 1 },
                             cursor: 'pointer'
                           }}
                         />
@@ -258,7 +256,7 @@ export default function Home() {
                           </Stack>
                         </Paper>
                       </Popover>
-                      <Box className="search-field">
+                      <Box className={`search-field${checkin ? ' has-value' : ''}`}>
                         <label htmlFor="checkin">{t('home.checkin')}</label>
                         <TextField
                           id="checkin"
@@ -268,11 +266,11 @@ export default function Home() {
                           onChange={(e) => setCheckin(e.target.value)}
                           variant="standard"
                           InputProps={{ disableUnderline: true }}
-                          sx={{ '& .MuiInput-input': { border: 'none', padding: 0 } }}
+                          sx={{ '& .MuiInput-input': { border: 'none', padding: 0, fontWeight: 400, color: checkin ? '#222222' : '#717171' } }}
                           InputLabelProps={{ shrink: true }}
                         />
                       </Box>
-                      <Box className="search-field">
+                      <Box className={`search-field${checkout ? ' has-value' : ''}`}>
                         <label htmlFor="checkout">{t('home.checkout')}</label>
                         <TextField
                           id="checkout"
@@ -282,27 +280,25 @@ export default function Home() {
                           onChange={(e) => setCheckout(e.target.value)}
                           variant="standard"
                           InputProps={{ disableUnderline: true }}
-                          sx={{ '& .MuiInput-input': { border: 'none', padding: 0 } }}
+                          sx={{ '& .MuiInput-input': { border: 'none', padding: 0, fontWeight: 400, color: checkout ? '#222222' : '#717171' } }}
                           InputLabelProps={{ shrink: true }}
                         />
                       </Box>
-                      <Box className="search-field" ref={guestsAnchorRef}>
+                      <Box className={`search-field${(adults > 0 || children > 0 || rooms > 0) ? ' has-value' : ''}`} ref={guestsAnchorRef}>
                         <label htmlFor="guests">{t('home.guests')}</label>
                         <Box
                           onClick={handleGuestsClick}
+                          className="search-field-guests-value"
                           sx={{
                             display: 'flex',
                             alignItems: 'center',
-                            gap: 1,
                             cursor: 'pointer',
                             py: 0.5
                           }}
                         >
-                          <PersonIcon sx={{ fontSize: 18, color: '#717171' }} />
-                          <Typography sx={{ color: '#222222', fontSize: '0.875rem', fontWeight: 400 }}>
-                            {getGuestsText()}
+                          <Typography component="span" sx={{ color: (adults === 0 && children === 0 && rooms === 0) ? '#717171' : '#222222', fontSize: '0.875rem', fontWeight: 400 }}>
+                            {adults === 0 && children === 0 && rooms === 0 ? t('home.add_guests_placeholder') : getGuestsText()}
                           </Typography>
-                          <KeyboardArrowDownIcon sx={{ fontSize: 18, color: '#717171' }} />
                         </Box>
                       </Box>
                       <Popover
@@ -335,7 +331,7 @@ export default function Home() {
                               <IconButton
                                 size="small"
                                 onClick={() => handleDecrement('adults')}
-                                disabled={adults <= 1}
+                                disabled={adults <= 0}
                                 sx={{
                                   color: adults <= 1 ? '#D1D5DB' : '#AD542D',
                                   '&:hover': { bgcolor: adults <= 1 ? 'transparent' : '#FFF5F7' },
@@ -399,7 +395,7 @@ export default function Home() {
                               <IconButton
                                 size="small"
                                 onClick={() => handleDecrement('rooms')}
-                                disabled={rooms <= 1}
+                                disabled={rooms <= 0}
                                 sx={{
                                   color: rooms <= 1 ? '#D1D5DB' : '#AD542D',
                                   '&:hover': { bgcolor: rooms <= 1 ? 'transparent' : '#FFF5F7' },
@@ -446,9 +442,8 @@ export default function Home() {
                           </Button>
                         </Stack>
                       </Popover>
-                      <Button type="submit" className="search-button">
-                        <SearchIcon sx={{ fontSize: '1.3rem' }} />
-                        <span>{t('home.search')}</span>
+                      <Button type="submit" className="search-button" aria-label={t('home.search')}>
+                        <SearchIcon sx={{ fontSize: '1.75rem' }} />
                       </Button>
                     </Box>
                   </form>

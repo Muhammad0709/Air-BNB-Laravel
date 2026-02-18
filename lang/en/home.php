@@ -25,4 +25,6 @@ return [
     'no_popular_sub' => 'Popular listings will appear here as more properties are added.',
     'no_favorites' => 'No favorites yet',
     'no_favorites_sub' => 'Save properties you like by clicking the heart icon on any listing.',
+    'search_destinations_placeholder' => 'Search destinations',
+    'add_guests_placeholder' => 'Add guests',
 ];
