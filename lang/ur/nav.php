@@ -5,7 +5,7 @@ return [
     'stays' => 'قیمے',
     'contact_us' => 'رابطہ کریں',
     'wishlist' => 'پسندیدہ',
-    'messages' => 'پیغامات',
+    'messages' => 'چیٹ',
     'bookings' => 'بکنگز',
     'profile' => 'پروفائل',
     'log_in' => 'لاگ ان',

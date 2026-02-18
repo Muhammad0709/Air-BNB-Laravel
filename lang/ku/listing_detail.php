@@ -10,7 +10,7 @@ return [
     'entire_place' => 'هەموو شوێنەکە',
     'about_host' => 'دەربارەی خاوەن ماڵ',
     'joined_in' => 'بەشداری لە',
-    'message' => 'نامە',
+    'message' => 'گوتوگۆ',
     'about_property' => 'دەربارەی شوێنەکە',
     'no_description' => 'وەسف بەردەست نییە.',
     'airport_pickup' => 'خزمەتگوزاری فڕۆکەخانە',

@@ -5,7 +5,7 @@ return [
     'stays' => 'Stays',
     'contact_us' => 'Contact us',
     'wishlist' => 'Wishlist',
-    'messages' => 'Messages',
+    'messages' => 'Chat',
     'bookings' => 'Bookings',
     'profile' => 'Profile',
     'log_in' => 'Log in',

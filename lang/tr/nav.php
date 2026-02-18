@@ -5,7 +5,7 @@ return [
     'stays' => 'Konaklamalar',
     'contact_us' => 'İletişim',
     'wishlist' => 'Favoriler',
-    'messages' => 'Mesajlar',
+    'messages' => 'Sohbet',
     'bookings' => 'Rezervasyonlar',
     'profile' => 'Profil',
     'log_in' => 'Giriş',

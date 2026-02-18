@@ -10,7 +10,7 @@ return [
     'entire_place' => 'کل مکان',
     'about_host' => 'درباره میزبان',
     'joined_in' => 'عضویت در',
-    'message' => 'پیام',
+    'message' => 'چت',
     'about_property' => 'درباره اقامتگاه',
     'no_description' => 'توضیحی موجود نیست.',
     'airport_pickup' => 'سرویس فرودگاه',

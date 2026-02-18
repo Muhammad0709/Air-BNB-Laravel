@@ -5,7 +5,7 @@ return [
     'stays' => 'مانەوەکان',
     'contact_us' => 'پەیوەندیمان پێوە بکە',
     'wishlist' => 'دڵخواز',
-    'messages' => 'نامەکان',
+    'messages' => 'چات',
     'bookings' => 'حجزەکان',
     'profile' => 'پرۆفایل',
     'log_in' => 'چوونەژوورەوە',

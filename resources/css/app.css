@@ -549,7 +549,7 @@ p.hero-subtitle {
 
 .airbnb-card-price-text {
   font-size: 15px !important;
-  font-weight: 600 !important;
+  font-weight: 400 !important;
   color: #222222 !important;
 }
 
@@ -827,8 +827,8 @@ p.hero-subtitle {
 .property-detail-page { padding: 50px 0; background: white; }
 .breadcrumb-section { padding: 20px 0; border-bottom: none; }
 .property-details-section { background: transparent; padding-top: 0; }
-.property-info-card { background: white; padding: 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); margin-top: 0; position: relative; z-index: 10; border-radius: 12px; }
-.property-title { font-size: 32px; font-weight: 700; color: #1a1a1a; margin-bottom: 16px; line-height: 1.2; }
+.property-info-card { background: white; padding: 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); margin-top: 0; position: relative; z-index: 10; border-radius: 14px !important; }
+.property-title { font-size: 32px; font-weight: 700 !important; color: #1a1a1a; margin-bottom: 16px; line-height: 1.2; }
 .property-meta { display: flex; align-items: center; gap: 24px; margin-bottom: 24px; }
 .property-meta .location { display: flex; align-items: center; gap: 8px; font-size: 16px; color: #4a4a4a; }
 .property-meta .rating { display: flex; align-items: center; gap: 8px; }
@@ -838,7 +838,7 @@ p.hero-subtitle {
 .price { margin-bottom: 16px; }
 .price-amount { font-size: 32px; font-weight: 700; color: #1a1a1a; }
 .price-period { font-size: 16px; color: #666666; margin-left: 4px; }
-.btn-book { background: #AD542D !important; border: none !important; border-radius: 58px !important; padding: 12px 24px !important; font-size: 16px !important; font-weight: 600 !important; color: white !important; width: 100% !important; text-transform: none !important; }
+.btn-book { background: #AD542D !important; border: none !important; border-radius: 58px !important; padding: 12px 24px !important; font-size: 16px !important; font-weight: 600 !important; color: white !important; width: auto !important; min-width: 0 !important; text-transform: none !important; }
 .btn-book:hover { background: #78381C !important; }
 .booking-note { font-size: 12px; color: #666666; margin-top: 8px; margin-bottom: 0; }
 .gallery-section {padding: 0; }
@@ -855,7 +855,7 @@ p.hero-subtitle {
 .gallery-image { width: 100%; height: 100%; object-fit: cover; display: block; }
 .gallery-more-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent); padding: 12px 16px; display: flex; align-items: flex-end; justify-content: flex-start; }
 .gallery-more-overlay span { color: white; font-size: 14px; font-weight: 600; line-height: 1.2; }
-.quick-info-section { padding: 24px 32px; border: 1px solid #E7E7F4; border-radius: 4px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
+.quick-info-section { padding: 24px 32px; border: 1px solid #E7E7F4; border-radius: 14px !important; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
 .quick-info-section .section-title { font-size: 24px; font-weight: 700; color: #1a1a1a; margin-bottom: 15px; }
 .about-section .section-title { font-size: 24px; font-weight: 700; color: #1a1a1a; margin-bottom: 15px; }
 .amenities-section .section-title { font-size: 24px; font-weight: 700; color: #1a1a1a; margin-bottom: 15px; }
@@ -871,14 +871,14 @@ p.hero-subtitle {
 .info-text { display: flex; gap: 8px; align-items: center; }
 .info-number { font-size: 24px; font-weight: 700; color: #1a1a1a; line-height: 1; }
 .info-label { font-size: 14px; color: #666666; text-transform: capitalize; }
-.about-section { padding: 24px 32px; border: 1px solid #E7E7F4; border-radius: 4px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
+.about-section { padding: 24px 32px; border: 1px solid #E7E7F4; border-radius: 14px !important; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
 .about-text { font-size: 16px; line-height: 1.6; color: #4a4a4a; margin-bottom: 20px; }
-.amenities-section { padding: 24px 32px; border: 1px solid #E7E7F4; border-radius: 4px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
-.rules-section { padding: 24px 32px; border: 1px solid #E7E7F4; border-radius: 4px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); background: white; }
+.amenities-section { padding: 24px 32px; border: 1px solid #E7E7F4; border-radius: 14px !important; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
+.rules-section { padding: 24px 32px; border: 1px solid #E7E7F4; border-radius: 14px !important; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); background: white; }
 .rules-list { display: flex; flex-direction: column; gap: 16px; }
 .rule-item { display: flex; align-items: center; gap: 12px; padding: 0; }
-.availability-section { padding: 24px 32px; border: 1px solid #E7E7F4; border-radius: 4px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); background: #F9FAFB; }
-.calendar-widget { background: white; border: 1px solid #e9ecef; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); }
+.availability-section { padding: 24px 32px; border: 1px solid #E7E7F4; border-radius: 14px !important; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); background: #F9FAFB; }
+.calendar-widget { background: white; border: 1px solid #e9ecef; border-radius: 14px !important; padding: 20px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); }
 .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
 .calendar-header .MuiButton-root { min-width: 32px; width: 32px; height: 32px; padding: 0; border: 1px solid #d0d0d0; color: #666666; border-radius: 50%; }
 .month-year { font-size: 18px; font-weight: 700; color: #2c2c2c; }
@@ -903,7 +903,7 @@ p.hero-subtitle {
 .review-content .stars { display: flex; gap: 2px; margin-bottom: 0.5rem; }
 .review-text { font-size: 14px; line-height: 1.5; color: #4a4a4a; margin: 0 0 0.5rem 0; }
 .helpful-text { font-size: 12px; color: #8a8a8a; margin: 0; }
-.rating-summary { padding: 1.5rem; border-radius: 12px; height: fit-content; background: #fff; border: 1px solid #E7E7F4; }
+.rating-summary { padding: 1.5rem; border-radius: 14px !important; height: fit-content; background: #fff; border: 1px solid #E7E7F4; }
 .average-rating { text-align: center; margin-bottom: 1.5rem; }
 .rating-title { font-size: 16px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px; }
 .rating-score { font-size: 2rem; font-weight: 700; color: #AD542D; margin-bottom: 0.5rem; }
@@ -917,7 +917,7 @@ p.hero-subtitle {
 .rating-count { font-size: 0.875rem; color: #495057; min-width: 35px; text-align: right; }
 .explore-more { background: #AD542D !important; border: none !important; border-radius: 58px !important; padding: 0.75rem 2rem !important; font-weight: 600 !important; text-transform: none !important; }
 .explore-more:hover { background: #78381C !important; }
-.host-section { padding: 24px 32px; border: 1px solid #E7E7F4; border-radius: 4px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); background: white; }
+.host-section { padding: 24px 32px; border: 1px solid #E7E7F4; border-radius: 14px !important; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); background: white; }
 .host-info { display: flex; align-items: flex-start; gap: 20px; padding: 0; }
 .host-avatar { width: 60px; height: 60px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
 .host-avatar img { width: 100%; height: 100%; object-fit: cover; }

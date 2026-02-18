@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import { Box, Button, Checkbox, FormControlLabel, Paper, Stack, Typography } from '@mui/material'
+import { Box, Button, Checkbox, FormControlLabel, Paper, Stack, TextField, Typography } from '@mui/material'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { useLanguage } from '../hooks/use-language'
@@ -97,7 +97,9 @@ function parseDateFromBackend(dateStr: string): { year: number; month: number; d
 
 export default function ListingDetail() {
   const { t } = useLanguage()
-  const { property, relatedProperties, reviews, ratingStats, defaultCheckin, defaultCheckout } = usePage<ListingDetailProps>().props
+  const page = usePage<ListingDetailProps>().props
+  const { property, relatedProperties, reviews, ratingStats, defaultCheckin, defaultCheckout } = page
+  const authUser = (page as { auth?: { user?: { id: number; name: string } | null } }).auth?.user
 
   const today = new Date()
   const defaultStart = defaultCheckin ? parseDateFromBackend(defaultCheckin) : { year: today.getFullYear(), month: today.getMonth(), day: today.getDate() }
@@ -108,6 +110,12 @@ export default function ListingDetail() {
   const [selectedDate2, setSelectedDate2] = useState(defaultEnd.day)
   const [bookPickupService, setBookPickupService] = useState(false)
   const [bookGuidedTour, setBookGuidedTour] = useState(false)
+  const [reviewRating, setReviewRating] = useState(0)
+  const [reviewComment, setReviewComment] = useState('')
+  const [reviewSubmitting, setReviewSubmitting] = useState(false)
+  const [showAllReviews, setShowAllReviews] = useState(false)
+
+  const displayedReviews = showAllReviews ? reviews : reviews.slice(0, 3)
 
   // Airport Pickup / Guided Tours from property (host-configured)
   const { currency } = useCurrency()
@@ -199,6 +207,22 @@ export default function ListingDetail() {
   const priceDisplay = typeof property.price === 'number' ? property.price : Number(property.price) || 0
   const hostJoinedYear = property.host?.created_at ? new Date(property.host.created_at).getFullYear() : ''
 
+  const handleSubmitReview = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (reviewRating < 1 || reviewRating > 5) return
+    setReviewSubmitting(true)
+    router.post('/reviews', {
+      property_id: property.id,
+      rating: reviewRating,
+      comment: reviewComment.trim() || '',
+    }, {
+      preserveScroll: true,
+      onFinish: () => setReviewSubmitting(false),
+    })
+  }
+
+  const errors: Record<string, string[]> = (page as unknown as { errors?: Record<string, string[]> }).errors ?? {}
+
   return (
     <Box>
       <Head title={property.title || 'Property Detail'} />
@@ -212,7 +236,7 @@ export default function ListingDetail() {
                 <Paper className="property-info-card" elevation={0}>
                   <Row className="align-items-center">
                     <Col md={10}>
-                      <Typography className="property-title" component="h1">
+                      <Typography className="property-title" component="h1" sx={{ fontWeight: 700 }}>
                         {property.title}
                       </Typography>
                       <Box className="property-meta">
@@ -319,7 +343,7 @@ export default function ListingDetail() {
                 <Col md={6} sm={6}>
                   <Box className="info-item d-flex gap-2">
                       <Box className="info-icon">
-                     <BedIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px', marginInlineEnd: 1.5 }} />
+                     <BedIcon sx={{ color: '#AD542D', fontSize: '30px', width: '30px', height: '30px', marginInlineEnd: 1.5 }} />
                       </Box>
                     <Box className="info-text">
                       <Typography component="span" className="info-number">{property.bedrooms}</Typography>
@@ -330,7 +354,7 @@ export default function ListingDetail() {
                 <Col md={6} sm={6}>
                   <Box className="info-item d-flex gap-2">
                     <Box className="info-icon">
-                    <BathroomIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px', marginInlineEnd: 1.5 }} />
+                    <BathroomIcon sx={{ color: '#AD542D', fontSize: '30px', width: '30px', height: '30px', marginInlineEnd: 1.5 }} />
                     </Box>
                     <Typography component="span" className="info-number">{property.bathrooms}</Typography>
                     <Typography component="span" className="info-label">{t('listing_detail.bathrooms')}</Typography>
@@ -341,7 +365,7 @@ export default function ListingDetail() {
                 <Col md={6} sm={6}>
                   <Box className="info-item d-flex gap-2">
                     <Box className="info-icon">
-                    <PeopleIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px', marginInlineEnd: 1.5 }} />
+                    <PeopleIcon sx={{ color: '#AD542D', fontSize: '30px', width: '30px', height: '30px', marginInlineEnd: 1.5 }} />
                     </Box>
                     <Box className="info-text">
                       <Typography component="span" className="info-number">{property.guests}</Typography>
@@ -352,7 +376,7 @@ export default function ListingDetail() {
                 <Col md={6} sm={6}>
                   <Box className="info-item d-flex gap-2">
                     <Box className="info-icon">
-                    <HomeIcon sx={{ color: '#AD542D', fontSize: '24px', width: '24px', height: '24px', marginInlineEnd: 1.5 }} />
+                    <HomeIcon sx={{ color: '#AD542D', fontSize: '30px', width: '30px', height: '30px', marginInlineEnd: 1.5 }} />
                     </Box>
                     <Typography component="span" className="info-label">{property.property_type || t('listing_detail.entire_place')}</Typography>
                   </Box>
@@ -379,29 +403,33 @@ export default function ListingDetail() {
                         style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
                       />
                     </Box>
-                    <Box className="host-details" sx={{ flex: 1 }}>
-                      <Typography className="host-name" component="h5">{property.host?.name || 'Host'}</Typography>
-                      <Typography className="host-joined">{hostJoinedYear ? `${t('listing_detail.joined_in')} ${hostJoinedYear}` : ''}</Typography>
-                      <Button
-                        variant="outlined"
-                        startIcon={<MessageIcon />}
-                        onClick={() => router.visit(`/chat?property_id=${property.id}`)}
-                        sx={{
-                          mt: 2,
-                          borderColor: '#AD542D',
-                          color: '#AD542D',
-                          textTransform: 'none',
-                          fontWeight: 600,
-                          borderRadius: 2,
-                          px: 3,
-                          '&:hover': {
-                            borderColor: '#78381C',
-                            bgcolor: '#FFF5F7'
-                          }
-                        }}
-                      >
-                        {t('listing_detail.message')}
-                      </Button>
+                    <Box className="host-details" sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 2, flexWrap: 'wrap' }}>
+                        <Box>
+                          <Typography className="host-name" component="h5" sx={{ fontWeight: 700 }}>{property.host?.name || 'Host'}</Typography>
+                          <Typography className="host-joined">{hostJoinedYear ? `${t('listing_detail.joined_in')} ${hostJoinedYear}` : ''}</Typography>
+                        </Box>
+                        <Button
+                          variant="outlined"
+                          startIcon={<MessageIcon />}
+                          onClick={() => router.visit(`/chat?property_id=${property.id}`)}
+                          sx={{
+                            flexShrink: 0,
+                            borderColor: '#AD542D',
+                            color: '#AD542D',
+                            textTransform: 'none',
+                            fontWeight: 600,
+                            borderRadius: 2,
+                            px: 3,
+                            '&:hover': {
+                              borderColor: '#78381C',
+                              bgcolor: '#FFF5F7'
+                            }
+                          }}
+                        >
+                          {t('listing_detail.message')}
+                        </Button>
+                      </Box>
                     </Box>
                   </Box>
                 </Paper>
@@ -615,9 +643,71 @@ export default function ListingDetail() {
                 <Box className="reviews-section mt-4">
                   <Row>
                     <Typography className="reviews-title" component="h2">Reviews ({ratingStats.total})</Typography>
-                    <Col lg={8}>
+                    <Col lg={12}>
+                      {authUser ? (
+                        <Paper component="form" onSubmit={handleSubmitReview} elevation={0} sx={{ p: 3, mb: 3, border: '1px solid #E5E7EB', borderRadius: 2 }}>
+                          <Typography sx={{ fontWeight: 700, color: '#1a1a1a', mb: 2 }}>{t('listing_detail.write_review')}</Typography>
+                          <Box sx={{ mb: 2 }}>
+                            <Box sx={{ display: 'flex', gap: 0.25 }}>
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Box
+                                  key={star}
+                                  component="button"
+                                  type="button"
+                                  onClick={() => setReviewRating(star)}
+                                  sx={{
+                                    p: 0,
+                                    border: 'none',
+                                    background: 'none',
+                                    cursor: 'pointer',
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    '&:hover .review-star': { color: '#ffdb4d' },
+                                    '&:focus': { outline: 'none' },
+                                  }}
+                                  aria-label={`${star} ${star === 1 ? 'star' : 'stars'}`}
+                                >
+                                  <StarIcon
+                                    className="review-star"
+                                    sx={{
+                                      fontSize: 36,
+                                      color: star <= reviewRating ? '#ffc107' : '#e9ecef',
+                                      transition: 'color 0.2s',
+                                    }}
+                                  />
+                                </Box>
+                              ))}
+                            </Box>
+                            {(errors.rating as string[])?.[0] && <Typography sx={{ color: '#d32f2f', fontSize: '0.75rem', mt: 0.5 }}>{errors.rating[0]}</Typography>}
+                          </Box>
+                          <Box sx={{ mb: 2 }}>
+                            <Typography sx={{ fontSize: '0.875rem', fontWeight: 600, color: '#222', mb: 1 }}>{t('listing_detail.your_comment')}</Typography>
+                            <TextField
+                              fullWidth
+                              multiline
+                              rows={3}
+                              value={reviewComment}
+                              onChange={(e) => setReviewComment(e.target.value)}
+                              placeholder={t('listing_detail.your_comment')}
+                              variant="outlined"
+                              size="small"
+                              inputProps={{ maxLength: 5000 }}
+                              error={Boolean((errors.comment as string[])?.[0])}
+                              helperText={(errors.comment as string[])?.[0] || (reviewComment.length > 0 ? `${reviewComment.length} / 5000` : undefined)}
+                              sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+                            />
+                          </Box>
+                          <Button type="submit" variant="contained" disabled={reviewSubmitting || reviewRating < 1} sx={{ bgcolor: '#AD542D', '&:hover': { bgcolor: '#78381C' }, textTransform: 'none', fontWeight: 600 }}>
+                            {reviewSubmitting ? '...' : t('listing_detail.submit_review')}
+                          </Button>
+                        </Paper>
+                      ) : (
+                        <Typography sx={{ color: '#717171', mb: 2 }}>
+                          <Box component="a" href="/login" sx={{ color: '#AD542D', fontWeight: 600, textDecoration: 'none' }}>{t('listing_detail.login_to_review')}</Box>
+                        </Typography>
+                      )}
                       <Box className="reviews-list">
-                        {reviews.length > 0 ? reviews.map((review) => (
+                        {reviews.length > 0 ? displayedReviews.map((review) => (
                           <Box key={review.id} className="review-item">
                             <Box className="reviewer-info">
                               <Box className="reviewer-avatar">
@@ -633,7 +723,6 @@ export default function ListingDetail() {
                                 ))}
                               </Box>
                               <Typography className="review-text">{review.comment}</Typography>
-                              <Typography className="helpful-text">Was this review helpful to you?</Typography>
                             </Box>
                           </Box>
                         )) : (
@@ -641,39 +730,18 @@ export default function ListingDetail() {
                         )}
                       </Box>
                     </Col>
-                    <Col lg={4}>
-                      <Paper className="rating-summary" elevation={0}>
-                        <Box className="average-rating">
-                          <Typography className="rating-title">{t('listing_detail.average_rating')}</Typography>
-                          <Typography className="rating-score">{ratingStats.average}/5</Typography>
-                          <Box className="stars">
-                            {[...Array(5)].map((_, i) => (
-                              <StarIcon key={i} sx={{ fontSize: 16, color: i < Math.round(ratingStats.average) ? '#ffc107' : '#e9ecef' }} />
-                            ))}
-                          </Box>
-                          <Typography className="total-reviews">({ratingStats.total} {t('listing_detail.reviews')})</Typography>
-                        </Box>
-                        <Box className="rating-breakdown">
-                          {[5, 4, 3, 2, 1].map((stars) => {
-                            const count = ratingStats.breakdown[stars] ?? 0
-                            const pct = ratingStats.total > 0 ? (count / ratingStats.total) * 100 : 0
-                            return (
-                              <Box key={stars} className="rating-bar">
-                                <Typography className="rating-label">{stars} star</Typography>
-                                <Box className="bar-container">
-                                  <Box className="bar-fill" sx={{ width: `${pct}%` }}></Box>
-                                </Box>
-                                <Typography className="rating-count">{count}</Typography>
-                              </Box>
-                            )
-                          })}
-                        </Box>
-                      </Paper>
-                    </Col>
                   </Row>
+                  {reviews.length > 3 && (
                   <Box className="text-center mt-4">
-                    <Button className="explore-more" variant="contained">Explore More</Button>
+                    <Button
+                      className="explore-more"
+                      variant="contained"
+                      onClick={() => setShowAllReviews((v) => !v)}
+                    >
+                      {showAllReviews ? t('listing_detail.show_less') : t('listing_detail.explore_more')}
+                    </Button>
                   </Box>
+                )}
                 </Box>
 
               </Col>

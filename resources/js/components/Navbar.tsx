@@ -3,7 +3,6 @@ import { Link, usePage, router } from '@inertiajs/react'
 import { AppBar, Avatar, Box, Button, Container, IconButton, Stack, Toolbar, Typography, Menu, MenuItem } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import { useLanguage } from '../hooks/use-language'
 import { useCurrency } from '../contexts/CurrencyContext'
@@ -105,29 +104,45 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
   }
 
   return (
-    <AppBar position="static" elevation={0} sx={{ bgcolor: 'transparent', color: 'inherit' }}>
-      <Container maxWidth={false} sx={{ px: { xs: 2, md: 3 }, py: 1.5, maxWidth: { xs: '100%', md: 1160, xl: 1440 }, mx: 'auto' }}>
-        <Toolbar disableGutters sx={{ gap: 2 }}>
-          <Box component={Link} href={brandTo} sx={{ ...(isRtl ? { ml: 2 } : { mr: 2 }), display: 'flex', alignItems: 'center' }}>
-            <Box
-              component="img"
-              src={logoUrl}
-              alt="lipabnb"
-              sx={{
-                height: { xs: 80, md: 100 },
-                width: 'auto',
-                maxWidth: { xs: 400, md: 500 },
-                objectFit: 'contain',
-                display: 'block'
-              }}
-            />
+    <AppBar position="static" elevation={0} sx={{ bgcolor: { xs: '#ffffff', md: 'transparent' }, color: 'inherit', boxShadow: { xs: '0 1px 3px rgba(0,0,0,0.06)', md: 'none' } }}>
+      <Container maxWidth={false} sx={{ px: { xs: 2, md: 3 }, py: { xs: 1.25, md: 1.5 }, maxWidth: { xs: '100%', md: 1160, xl: 1440 }, mx: 'auto' }}>
+        <Toolbar
+          disableGutters
+          sx={{
+            gap: 2,
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', minWidth: 0 }}>
+            <Box component={Link} href={brandTo} sx={{ display: 'flex', alignItems: 'center', minWidth: 0 }}>
+              <Box
+                component="img"
+                src={logoUrl}
+                alt="Bondoqi"
+                sx={{
+                  height: { xs: 48, sm: 56, md: 100 },
+                  width: 'auto',
+                  maxWidth: { xs: 160, sm: 220, md: 500 },
+                  objectFit: 'contain',
+                  display: 'block'
+                }}
+              />
+            </Box>
           </Box>
 
-          <IconButton edge="start" sx={{ display: { md: 'none' }, ...(isRtl ? { mr: 'auto' } : { ml: 'auto' }) }} onClick={() => setOpen(true)}>
-            <MenuIcon />
-          </IconButton>
-
-          <Stack direction="row" spacing={5} useFlexGap sx={{ display: { xs: 'none', md: 'flex' }, mx: 'auto' }}>
+          <Stack
+            direction="row"
+            spacing={{ md: 3, lg: 5 }}
+            useFlexGap
+            sx={{
+              display: { xs: 'none', md: 'flex' },
+              flex: '0 0 auto',
+              justifyContent: 'center',
+              }}
+          >
             {links.map((l) => (
               <Typography
                 key={l.label}
@@ -141,8 +156,16 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
             ))}
           </Stack>
 
+          <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', minWidth: 0 }}>
+            <IconButton
+              aria-label="Menu"
+              sx={{ display: { xs: 'flex', md: 'none' }, color: '#222222', p: 1.25 }}
+              onClick={() => setOpen(true)}
+            >
+              <MenuIcon sx={{ fontSize: 28 }} />
+            </IconButton>
           {showAuth && (
-            <Stack direction="row" spacing={2} useFlexGap sx={{ display: { xs: 'none', md: 'flex' }, ...(isRtl ? { mr: 'auto' } : { ml: 'auto' }) }} alignItems="center">
+            <Stack direction="row" spacing={2} useFlexGap sx={{ display: { xs: 'none', md: 'flex' } }} alignItems="center">
               <Box
                 onClick={handleLanguageClick}
                 sx={{
@@ -211,7 +234,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                 <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem' }}>
                   {currentCurrency.code}
                 </Typography>
-                <KeyboardArrowDownIcon sx={{ fontSize: 16, color: '#222222' }} />
+                <ArrowDropDownIcon sx={{ fontSize: 22, color: '#222222', ...(isRtl ? { mr: 0.25 } : { ml: 0.25 }) }} />
               </Box>
               <Menu
                 anchorEl={currencyAnchor}
@@ -298,7 +321,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                     >
                       <Typography sx={{ fontWeight: 400, fontSize: '0.875rem', color: '#222222' }}>{t('nav.booking_history')}</Typography>
                     </MenuItem>
-                    <MenuItem
+                    {/* <MenuItem
                       component={Link}
                       href="/auth/register"
                       onClick={handleProfileClose}
@@ -313,7 +336,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                           <Typography sx={{ fontSize: '0.75rem', color: '#717171' }}>{t('nav.become_host_sub')}</Typography>
                         </Box>
                       </Stack>
-                    </MenuItem>
+                    </MenuItem> */}
                     <MenuItem
                       onClick={(e) => { handleProfileClose(); handleLogout(e) }}
                       sx={{ py: 1.5, px: 2, borderTop: '1px solid #E5E7EB', '&:hover': { bgcolor: '#F7F7F7' } }}
@@ -332,6 +355,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
               )}
             </Stack>
           )}
+          </Box>
         </Toolbar>
       </Container>
 
@@ -455,7 +479,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                     <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem' }}>
                       {currentCurrency.code} - {currentCurrency.name}
                     </Typography>
-                    <KeyboardArrowDownIcon sx={{ fontSize: 20, color: '#222222' }} />
+                    <ArrowDropDownIcon sx={{ fontSize: 24, color: '#222222' }} />
                   </Box>
                   <Menu
                     anchorEl={currencyAnchor}

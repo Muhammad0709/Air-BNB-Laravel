@@ -5,7 +5,7 @@ return [
     'stays' => 'الإقامات',
     'contact_us' => 'اتصل بنا',
     'wishlist' => 'المفضلة',
-    'messages' => 'الرسائل',
+    'messages' => 'محادثة',
     'bookings' => 'الحجوزات',
     'profile' => 'الملف الشخصي',
     'log_in' => 'تسجيل الدخول',

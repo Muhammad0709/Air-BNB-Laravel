@@ -23,7 +23,7 @@ class ReviewController extends Controller
         $validator = Validator::make($request->all(), [
             'property_id' => 'required|exists:properties,id',
             'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'nullable|string|max:1000',
+            'comment' => 'nullable|string|max:5000',
         ]);
 
         if ($validator->fails()) {

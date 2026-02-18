@@ -176,7 +176,7 @@ export default function Home() {
                   <form className="search-form" onSubmit={handleSearch}>
                     <Box className="search-input-group">
                       <Box className={`search-field${destination ? ' has-value' : ''}`} ref={destinationAnchorRef} onClick={handleDestinationClick}>
-                        <label htmlFor="destination">Destination</label>
+                        <label htmlFor="destination">{t('home.destination')}</label>
                         <TextField
                           id="destination"
                           name="destination"

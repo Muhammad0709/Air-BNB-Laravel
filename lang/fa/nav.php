@@ -5,7 +5,7 @@ return [
     'stays' => 'اقامت‌ها',
     'contact_us' => 'تماس با ما',
     'wishlist' => 'لیست علاقه‌مندی',
-    'messages' => 'پیام‌ها',
+    'messages' => 'چت',
     'bookings' => 'رزروها',
     'profile' => 'پروفایل',
     'log_in' => 'ورود',

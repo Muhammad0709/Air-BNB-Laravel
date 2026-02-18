@@ -10,7 +10,7 @@ return [
     'entire_place' => 'Tüm mekan',
     'about_host' => 'Ev sahibi hakkında',
     'joined_in' => 'katılım tarihi',
-    'message' => 'Mesaj',
+    'message' => 'Sohbet',
     'about_property' => 'İlan hakkında',
     'no_description' => 'Açıklama mevcut değil.',
     'airport_pickup' => 'Havaalanı transferi',
