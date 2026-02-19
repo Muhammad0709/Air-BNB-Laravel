@@ -32,13 +32,11 @@ export default function Home() {
   const { t } = useLanguage()
   const pageProps = usePage().props as {
     featuredProperties?: Property[]
-    favoriteProperties?: Property[]
     popularProperties?: Property[]
     popularDestinations?: Destination[]
   }
   
   const featuredProperties = pageProps.featuredProperties || []
-  const favoriteProperties = pageProps.favoriteProperties || []
   const popularProperties = pageProps.popularProperties || []
   const popularDestinations = pageProps.popularDestinations || []
   const guestsAnchorRef = useRef<HTMLDivElement>(null)
@@ -121,17 +119,6 @@ export default function Home() {
   const featuredItems = featuredProperties.map(property => ({
     id: property.id,
     image: property.image || '/images/filter-1.svg',
-    title: property.title,
-    location: property.location,
-    price: property.price,
-    rating: property.rating || 0,
-    reviews: property.reviews || 0,
-    isGuestFavorite: property.isGuestFavorite || false,
-  }))
-
-  const favoritesItems = favoriteProperties.map(property => ({
-    id: property.id,
-    image: property.image || '/images/popular-stay-1.svg',
     title: property.title,
     location: property.location,
     price: property.price,
@@ -467,16 +454,6 @@ export default function Home() {
       <section className="popular-stays-section">
         <RBContainer fluid>
           <PopularStays items={popularItems} />
-        </RBContainer>
-      </section>
-      <section className="favorites-section" style={{ flex: 1 }}>
-        <RBContainer fluid>
-          <HorizontalScrollSection 
-            title={t('home.favorites')}
-            items={favoritesItems}
-            emptyMessage={t('home.no_favorites')}
-            emptySubtext={t('home.no_favorites_sub')}
-          />
         </RBContainer>
       </section>
       <Footer />
