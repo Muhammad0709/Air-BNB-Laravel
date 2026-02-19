@@ -50,7 +50,7 @@ class HomeController extends Controller
             ->map($formatProperty);
 
         // Popular Properties - Approved, rating >= 3.9 only, sorted by rating (then latest)
-        $minPopularRating = 3.2;
+        $minPopularRating = 4.0;
         $popularProperties = Property::with('reviews')
             ->where('status', 'Active')
             ->where('approval_status', PropertyStatus::APPROVED)

@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
-import { Avatar, Box, Button, Divider, Menu, MenuItem, Stack, Typography } from '@mui/material'
+import React from 'react'
+import { Box, Button, Stack, Typography } from '@mui/material'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import PeopleIcon from '@mui/icons-material/People'
 import HotelIcon from '@mui/icons-material/Hotel'
 import BookOnlineIcon from '@mui/icons-material/BookOnline'
 import SupportAgentIcon from '@mui/icons-material/SupportAgent'
 import SettingsIcon from '@mui/icons-material/Settings'
-import LogoutIcon from '@mui/icons-material/Logout'
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../hooks/use-language'
 
@@ -16,37 +14,9 @@ type AdminSidebarProps = {
 }
 
 export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
-  const { isRtl, t } = useLanguage()
+  const { t, isRtl } = useLanguage()
   const { url } = usePage()
   const pathname = url
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const menuOpen = Boolean(anchorEl)
-
-  const user = (usePage().props as any)?.auth?.user
-  const adminUser = {
-    name: user?.name || 'Admin',
-    email: user?.email || 'admin@admin.com',
-    profile_picture: user?.profile_picture ?? null,
-    initials: user?.name ? user.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) : 'AU'
-  }
-
-  const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const handleMenuClose = () => {
-    setAnchorEl(null)
-  }
-
-  const handleSettingsClick = () => {
-    router.visit('/admin/settings/profile')
-    handleMenuClose()
-  }
-
-  const handleLogoutClick = () => {
-    router.post('/admin/logout')
-    handleMenuClose()
-  }
 
   const isActive = (path: string) => {
     if (path === '/admin/dashboard') {
@@ -118,186 +88,7 @@ export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
             )
           })}
         </Stack>
-
-        {/* User Profile Section */}
-        <Box
-          sx={{
-            borderTop: '1px solid #E5E7EB',
-            p: 2,
-            bgcolor: '#FFFFFF',
-            flexShrink: 0,
-            mt: 'auto'
-          }}
-        >
-          <Button
-            fullWidth
-            onClick={handleMenuClick}
-            sx={{
-              justifyContent: 'flex-start',
-              textTransform: 'none',
-              p: 1.5,
-              borderRadius: 1,
-              bgcolor: menuOpen ? '#FFF2EE' : 'transparent',
-              '&:hover': {
-                bgcolor: menuOpen ? '#FFF2EE' : '#F9FAFB'
-              }
-            }}
-          >
-            <Stack direction="row" spacing={2} useFlexGap alignItems="center" sx={{ width: '100%' }}>
-              <Avatar
-                src={adminUser.profile_picture ?? undefined}
-                sx={{
-                  width: 40,
-                  height: 40,
-                  bgcolor: '#AD542D',
-                  fontSize: '0.875rem',
-                  fontWeight: 700
-                }}
-              >
-                {adminUser.initials}
-              </Avatar>
-              <Box sx={{ flex: 1, textAlign: isRtl ? 'right' : 'left' }}>
-                <Typography
-                  sx={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    color: '#111827',
-                    lineHeight: 1.2
-                  }}
-                >
-                  {adminUser.name}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: 12,
-                    color: '#6B7280',
-                    lineHeight: 1.2,
-                    mt: 0.5
-                  }}
-                >
-                  {adminUser.email}
-                </Typography>
-              </Box>
-              <KeyboardArrowDownIcon
-                sx={{
-                  fontSize: 20,
-                  color: '#6B7280',
-                  transform: menuOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                  transition: 'transform 0.2s'
-                }}
-              />
-            </Stack>
-          </Button>
-        </Box>
       </Box>
-
-      {/* User Menu Dropdown */}
-      <Menu
-        anchorEl={anchorEl}
-        open={menuOpen}
-        onClose={handleMenuClose}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right'
-        }}
-        PaperProps={{
-          sx: {
-            mt: 1,
-            minWidth: 240,
-            borderRadius: 1,
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-            border: '1px solid #E5E7EB',
-            overflow: 'hidden'
-          }
-        }}
-      >
-        {/* User Info Section */}
-        <Box sx={{ p: 2, bgcolor: '#F9FAFB', borderBottom: '1px solid #E5E7EB' }}>
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Avatar
-              src={adminUser.profile_picture ?? undefined}
-              sx={{
-                width: 40,
-                height: 40,
-                bgcolor: '#AD542D',
-                fontSize: '0.875rem',
-                fontWeight: 700
-              }}
-            >
-              {adminUser.initials}
-            </Avatar>
-            <Box>
-              <Typography
-                sx={{
-                  fontSize: 14,
-                  fontWeight: 600,
-                  color: '#111827',
-                  lineHeight: 1.2
-                }}
-              >
-                {adminUser.name}
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: 12,
-                  color: '#6B7280',
-                  lineHeight: 1.2,
-                  mt: 0.5
-                }}
-              >
-                {adminUser.email}
-              </Typography>
-            </Box>
-          </Stack>
-        </Box>
-
-        {/* Menu Items */}
-        <Box sx={{ py: 1 }}>
-          <MenuItem
-            onClick={handleSettingsClick}
-            sx={{
-              py: 1.5,
-              px: 2,
-              mx: 1,
-              borderRadius: 1,
-              '&:hover': { bgcolor: '#F9FAFB' }
-            }}
-          >
-            <SettingsIcon sx={{ fontSize: 18, color: '#6B7280', marginInlineEnd: 1.5 }} />
-            <Typography sx={{ fontSize: 14, color: '#111827', fontWeight: 500 }}>
-              {t('admin.sidebar.settings')}
-            </Typography>
-          </MenuItem>
-          <Box sx={{ px: 1, py: 0.5 }}>
-            <Divider 
-              sx={{ 
-                borderColor: '#E5E7EB',
-                borderWidth: '1px',
-                borderStyle: 'solid'
-              }} 
-            />
-          </Box>
-          <MenuItem
-            onClick={handleLogoutClick}
-            sx={{
-              py: 1.5,
-              px: 2,
-              mx: 1,
-              borderRadius: 1,
-              '&:hover': { bgcolor: '#F9FAFB' }
-            }}
-          >
-            <LogoutIcon sx={{ fontSize: 18, color: '#6B7280', marginInlineEnd: 1.5 }} />
-            <Typography sx={{ fontSize: 14, color: '#111827', fontWeight: 500 }}>
-              {t('admin.sidebar.log_out')}
-            </Typography>
-          </MenuItem>
-        </Box>
-      </Menu>
     </>
   )
 }
