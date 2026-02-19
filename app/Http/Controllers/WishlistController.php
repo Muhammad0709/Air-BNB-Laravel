@@ -36,15 +36,25 @@ class WishlistController extends Controller
         ]);
     }
 
+    public function add($id)
+    {
+        $property = Property::findOrFail($id);
+
+        $property->update([
+            'is_guest_favorite' => true,
+        ]);
+
+        return redirect()->back()->with('success', 'Property added to wishlist.');
+    }
+
     public function remove(Request $request, $id)
     {
         $property = Property::findOrFail($id);
-        
+
         $property->update([
             'is_guest_favorite' => false,
         ]);
 
-        return redirect()->route('wishlist')
-            ->with('success', 'Property removed from wishlist successfully.');
+        return redirect()->back()->with('success', 'Property removed from wishlist successfully.');
     }
 }

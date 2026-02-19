@@ -8,4 +8,6 @@ return [
     'property_saved' => 'عقار محفوظ',
     'properties_saved' => 'عقارات محفوظة',
     'remove_error' => 'فشل في إزالة العقار من المفضلة. يرجى المحاولة مرة أخرى.',
+    'add_to_wishlist' => 'أضف إلى المفضلة',
+    'remove_from_wishlist' => 'إزالة من المفضلة',
 ];

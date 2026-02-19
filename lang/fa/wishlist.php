@@ -8,4 +8,6 @@ return [
     'property_saved' => 'ملک ذخیره شد',
     'properties_saved' => 'املاک ذخیره شد',
     'remove_error' => 'حذف ملک از لیست علاقه‌مندی ناموفق بود. لطفاً دوباره تلاش کنید.',
+    'add_to_wishlist' => 'افزودن به علاقه‌مندی',
+    'remove_from_wishlist' => 'حذف از علاقه‌مندی',
 ];

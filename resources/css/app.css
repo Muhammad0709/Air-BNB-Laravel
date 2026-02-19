@@ -507,9 +507,22 @@ p.hero-subtitle {
   border-radius: 16px;
 }
 
-/* Hidden: do not show guest favorite badge or favorite icon */
-.airbnb-guest-favorite-tag,
-.airbnb-favorite-button {
+/* Favorite icon: two-layer so outline always shows; fill color is set by component (default vs favorited) */
+.airbnb-favorite-button .card-favorite-icon-outline,
+.card-favorite-icon-outline {
+  fill: transparent !important;
+  stroke: #ffffff !important;
+  stroke-width: 2.5px !important;
+  font-size: 26px !important;
+}
+.airbnb-favorite-button .card-favorite-icon-fill,
+.card-favorite-icon-fill {
+  stroke: none !important;
+  font-size: 26px !important;
+}
+
+/* Guest favorite badge – optional; favorite icon is shown on cards */
+.airbnb-guest-favorite-tag {
   display: none !important;
 }
 
@@ -744,6 +757,36 @@ p.hero-subtitle {
 .filter-group { font-weight: 800; color: #111827; margin: 14px 0 8px; }
 .check-row { color: #6B7280; }
 .check-label { color: #111827; }
+/* Location filter scroll: thin scrollbar, content never cut off */
+.location-filter-scroll {
+  padding-right: 12px;
+  margin-right: -4px;
+  scrollbar-width: thin;
+  scrollbar-color: #D1D5DB #f3f4f6;
+}
+.location-filter-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.location-filter-scroll::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 3px;
+}
+.location-filter-scroll::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 3px;
+}
+.location-filter-scroll::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+/* Keep count visible: don't let it shrink; row uses padding from Stack */
+.location-filter-scroll .check-row {
+  min-width: 0;
+}
+.location-filter-scroll .check-count {
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
 .check-count { color: #9CA3AF; font-size: 12px; }
 .check-count::before { content: '('; }
 .check-count::after { content: ')'; }
@@ -835,7 +878,7 @@ p.hero-subtitle {
 .price { margin-bottom: 16px; }
 .price-amount { font-size: 32px; font-weight: 700; color: #1a1a1a; }
 .price-period { font-size: 16px; color: #666666; margin-left: 4px; }
-.btn-book { background: #AD542D !important; border: none !important; border-radius: 58px !important; padding: 12px 24px !important; font-size: 16px !important; font-weight: 600 !important; color: white !important; width: auto !important; min-width: 0 !important; text-transform: none !important; }
+.btn-book { background: #AD542D !important; border: none !important; border-radius: 58px !important; padding: 8px 24px !important; font-size: 16px !important; font-weight: 600 !important; color: white !important; width: auto !important; min-width: 0 !important; text-transform: none !important; }
 .btn-book:hover { background: #78381C !important; }
 .booking-note { font-size: 12px; color: #666666; margin-top: 8px; margin-bottom: 0; }
 .gallery-section {padding: 0; }

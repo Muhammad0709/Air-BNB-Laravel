@@ -8,4 +8,6 @@ return [
     'property_saved' => 'property saved',
     'properties_saved' => 'properties saved',
     'remove_error' => 'Failed to remove property from wishlist. Please try again.',
+    'add_to_wishlist' => 'Add to wishlist',
+    'remove_from_wishlist' => 'Remove from wishlist',
 ];

@@ -90,6 +90,7 @@ export default function Chat() {
     return new URLSearchParams(q)
   }, [url])
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messageContainerRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [selectedConversation, setSelectedConversation] = useState<number | null>(null)
   const [messageText, setMessageText] = useState('')
@@ -172,7 +173,10 @@ export default function Chat() {
   )
 
   const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    const el = messageContainerRef.current
+    if (el) {
+      el.scrollTop = el.scrollHeight
+    }
   }, [])
 
   const addMessageToConversation = useCallback((conversationId: number, message: Message) => {
@@ -353,63 +357,66 @@ export default function Chat() {
             {/* Conversations List */}
             <Col xs={12} md={4} lg={3}>
               <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, height: 'calc(100vh - 250px)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-                <CardContent sx={{ p: 2 }}>
-                  <Button
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    fullWidth
-                    onClick={() => setOpenModal(true)}
-                    sx={{
-                      bgcolor: '#AD542D',
-                      textTransform: 'none',
-                      fontWeight: 700,
-                      borderRadius: 2,
-                      mb: 2,
-                      py: 1.5,
-                      '&:hover': { bgcolor: '#78381C' }
-                    }}
-                  >
-                    {t('chat.start_conversation')}
-                  </Button>
-                  {hostsToMessage.length > 0 && (
-                    <>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#717171', mb: 1, px: 0.5 }}>
-                        {t('chat.select_property')}
-                      </Typography>
-                      {hostsToMessage.map((item) => (
-                        <Box
-                          key={item.propertyId}
-                          onClick={() => handleStartFromHost(item.propertyId)}
-                          sx={{
-                            p: 1.5,
-                            mb: 0.5,
-                            borderRadius: 1.5,
-                            cursor: 'pointer',
-                            border: '1px solid #E5E7EB',
-                            '&:hover': { bgcolor: '#F9FAFB', borderColor: '#AD542D' },
-                            opacity: startingConversation ? 0.7 : 1,
-                            pointerEvents: startingConversation ? 'none' : 'auto',
-                          }}
-                        >
-                          <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
-                            <Avatar src={item.hostAvatar ?? undefined} sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}>
-                              {item.hostName.charAt(0)}
-                            </Avatar>
-                            <Box sx={{ minWidth: 0, flex: 1 }}>
-                              <Typography variant="body2" sx={{ fontWeight: 600, color: '#222222' }}>
-                                {item.hostName}
-                              </Typography>
-                              <Typography variant="caption" sx={{ color: '#717171', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                {item.property}
-                              </Typography>
+                <CardContent sx={{ p: 0, flex: 1, minHeight: 0, overflowY: 'scroll', display: 'flex', flexDirection: 'column' }}>
+                  <Box sx={{ p: 2, flex: '0 0 auto' }}>
+                    <Button
+                      variant="contained"
+                      startIcon={<AddIcon />}
+                      fullWidth
+                      onClick={() => setOpenModal(true)}
+                      sx={{
+                        bgcolor: '#AD542D',
+                        textTransform: 'none',
+                        fontWeight: 700,
+                        borderRadius: 2,
+                        mb: 2,
+                        py: 1.5,
+                        '&:hover': { bgcolor: '#78381C' }
+                      }}
+                    >
+                      {t('chat.start_conversation')}
+                    </Button>
+                    {hostsToMessage.length > 0 && (
+                      <>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#717171', mb: 1, px: 0.5 }}>
+                          {t('chat.select_property')}
+                        </Typography>
+                        <Box sx={{ overflowX: 'hidden', pr: 0.5 }}>
+                          {hostsToMessage.map((item) => (
+                            <Box
+                              key={item.propertyId}
+                              onClick={() => handleStartFromHost(item.propertyId)}
+                              sx={{
+                                p: 1.5,
+                                mb: 0.5,
+                                borderRadius: 1.5,
+                                cursor: 'pointer',
+                                border: '1px solid #E5E7EB',
+                                '&:hover': { bgcolor: '#F9FAFB', borderColor: '#AD542D' },
+                                opacity: startingConversation ? 0.7 : 1,
+                                pointerEvents: startingConversation ? 'none' : 'auto',
+                              }}
+                            >
+                              <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
+                                <Avatar src={item.hostAvatar ?? undefined} sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}>
+                                  {item.hostName.charAt(0)}
+                                </Avatar>
+                                <Box sx={{ minWidth: 0, flex: 1 }}>
+                                  <Typography variant="body2" sx={{ fontWeight: 600, color: '#222222' }}>
+                                    {item.hostName}
+                                  </Typography>
+                                  <Typography variant="caption" sx={{ color: '#717171', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                    {item.property}
+                                  </Typography>
+                                </Box>
+                              </Stack>
                             </Box>
-                          </Stack>
+                          ))}
                         </Box>
-                      ))}
-                    </>
-                  )}
-                </CardContent>
-                <CardContent sx={{ p: 0, flex: 1, overflowY: 'auto' }}>
+                      </>
+                    )}
+                  </Box>
+                  <Box sx={{ flex: '0 0 auto' }}>
                   {conversations.map((conversation) => (
                     <Box
                       key={conversation.id}
@@ -506,6 +513,7 @@ export default function Chat() {
                       </Stack>
                     </Box>
                   ))}
+                  </Box>
                 </CardContent>
               </Card>
             </Col>
@@ -534,7 +542,7 @@ export default function Chat() {
                   </Box>
 
                   {/* Messages */}
-                  <Box sx={{ flex: 1, overflowY: 'auto', p: 2, bgcolor: '#F9FAFB' }}>
+                  <Box ref={messageContainerRef} sx={{ flex: 1, overflowY: 'auto', p: 2, bgcolor: '#F9FAFB' }}>
                     {loadingMessages ? (
                       <Box sx={{ textAlign: 'center', py: 4 }}>
                         <Typography variant="body2" sx={{ color: '#717171' }}>{t('chat.loading')}</Typography>

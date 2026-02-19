@@ -561,7 +561,7 @@ export default function ListingDetail() {
 
                 {/* Rules Section */}
                 <Paper className="rules-section mt-4" elevation={0}>
-                  <Typography className="section-title" component="h2">Roles</Typography>
+                  <Typography className="section-title" component="h2">Rules</Typography>
                   <Box className="rules-list">
                     {[
                       'Check-in: 3:00 PM - 10:00 PM',
@@ -701,11 +701,7 @@ export default function ListingDetail() {
                             {reviewSubmitting ? '...' : t('listing_detail.submit_review')}
                           </Button>
                         </Paper>
-                      ) : (
-                        <Typography sx={{ color: '#717171', mb: 2 }}>
-                          <Box component="a" href="/login" sx={{ color: '#AD542D', fontWeight: 600, textDecoration: 'none' }}>{t('listing_detail.login_to_review')}</Box>
-                        </Typography>
-                      )}
+                      ) : null}
                       <Box className="reviews-list">
                         {reviews.length > 0 ? displayedReviews.map((review) => (
                           <Box key={review.id} className="review-item">

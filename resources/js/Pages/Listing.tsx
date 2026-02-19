@@ -196,36 +196,38 @@ export default function Listing() {
                   <Divider sx={{ mb: 2 }} />
 
                   <Typography className="filter-group">{t('listing.location')}</Typography>
-                  <Stack spacing={1} sx={{ mb: 2 }}>
-                    {availableLocations.length > 0 ? (
-                      availableLocations.map((location) => {
-                        const count = items.filter((p) =>
-                          p.location.toLowerCase().includes(location.toLowerCase())
-                        ).length
-                        return (
-                          <Stack
-                            key={location}
-                            direction="row"
-                            alignItems="center"
-                            justifyContent="space-between"
-                            className="check-row"
-                          >
-                            <Stack direction="row" alignItems="center" spacing={1.2} useFlexGap>
-                              <Checkbox
-                                size="small"
-                                checked={selectedLocations.includes(location)}
-                                onChange={(e) => handleLocationChange(location, e.target.checked)}
-                              />
-                              <Typography className="check-label">{location}</Typography>
+                  <Box className="location-filter-scroll" sx={{ maxHeight: 380, overflowY: 'auto', mb: 2 }}>
+                    <Stack spacing={1} sx={{ pr: 2, boxSizing: 'border-box' }}>
+                      {availableLocations.length > 0 ? (
+                        availableLocations.map((location) => {
+                          const count = items.filter((p) =>
+                            p.location.toLowerCase().includes(location.toLowerCase())
+                          ).length
+                          return (
+                            <Stack
+                              key={location}
+                              direction="row"
+                              alignItems="center"
+                              justifyContent="space-between"
+                              className="check-row"
+                            >
+                              <Stack direction="row" alignItems="center" spacing={1.2} useFlexGap>
+                                <Checkbox
+                                  size="small"
+                                  checked={selectedLocations.includes(location)}
+                                  onChange={(e) => handleLocationChange(location, e.target.checked)}
+                                />
+                                <Typography className="check-label">{location}</Typography>
+                              </Stack>
+                              <Typography className="check-count">{count}</Typography>
                             </Stack>
-                            <Typography className="check-count">{count}</Typography>
-                          </Stack>
-                        )
-                      })
-                    ) : (
-                      <Typography variant="body2" color="text.secondary">{t('listing.no_locations')}</Typography>
-                    )}
-                  </Stack>
+                          )
+                        })
+                      ) : (
+                        <Typography variant="body2" color="text.secondary">{t('listing.no_locations')}</Typography>
+                      )}
+                    </Stack>
+                  </Box>
 
                   <Typography className="filter-group">{t('listing.price_range')}</Typography>
                   <Box sx={{ px: 1 }}>

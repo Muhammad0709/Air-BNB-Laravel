@@ -8,4 +8,6 @@ return [
     'property_saved' => 'mal hatin hilanîn',
     'properties_saved' => 'mal hatin hilanîn',
     'remove_error' => 'Rakirina milkê ji lîsteya dilê we têk çû. Ji kerema xwe dîsa biceribînin.',
+    'add_to_wishlist' => 'Têxe lîsteya dilê',
+    'remove_from_wishlist' => 'Rake ji lîsteya dilê',
 ];

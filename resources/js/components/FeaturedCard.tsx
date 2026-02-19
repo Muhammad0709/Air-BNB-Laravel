@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Paper, Typography } from '@mui/material'
+import { Box, IconButton, Paper, Typography } from '@mui/material'
 import { router } from '@inertiajs/react'
 import StarIcon from '@mui/icons-material/Star'
+import CardFavoriteIcon from './CardFavoriteIcon'
 import { useLanguage } from '../hooks/use-language'
 import { useCurrency } from '../contexts/CurrencyContext'
 import { formatPrice } from '../utils/currency'
@@ -26,18 +27,36 @@ export default function FeaturedCard({
   id = 1,
   rating = 4.93,
   reviews: _reviews,
-  isGuestFavorite: _isGuestFavorite,
+  isGuestFavorite = false,
   fallbackImage = '/images/popular-stay-1.svg',
 }: FeaturedCardProps) {
   const { t } = useLanguage()
   const { currency } = useCurrency()
   const [imgSrc, setImgSrc] = useState(image)
   const [imgError, setImgError] = useState(false)
+  const [isFavorited, setIsFavorited] = useState(isGuestFavorite)
 
   useEffect(() => {
     setImgSrc(image)
     setImgError(false)
   }, [image])
+
+  useEffect(() => {
+    setIsFavorited(isGuestFavorite)
+  }, [isGuestFavorite])
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    e.preventDefault()
+    const propertyId = String(id)
+    if (isFavorited) {
+      router.delete(`/wishlist/${propertyId}`, { preserveScroll: true })
+      setIsFavorited(false)
+    } else {
+      router.post(`/wishlist/${propertyId}`, {}, { preserveScroll: true })
+      setIsFavorited(true)
+    }
+  }
 
   const handleClick = () => {
     router.visit(`/detail/${id}`)
@@ -75,6 +94,23 @@ export default function FeaturedCard({
           className="airbnb-card-image"
           onError={handleImageError}
         />
+        <IconButton
+          className="airbnb-favorite-button"
+          onClick={handleFavoriteClick}
+          size="small"
+          aria-label={isFavorited ? t('wishlist.remove_from_wishlist') : t('wishlist.add_to_wishlist')}
+          sx={{
+            position: 'absolute',
+            top: 12,
+            right: 12,
+            padding: '6px',
+            bgcolor: 'transparent',
+            color: '#222222',
+            '&:hover': { bgcolor: 'transparent', color: '#222222' },
+          }}
+        >
+          <CardFavoriteIcon isFavorited={isFavorited} />
+        </IconButton>
       </Box>
       <Box className="airbnb-card-body">
         <Typography className="airbnb-card-title" component="h3" title={title}>

@@ -56,8 +56,11 @@ class PropertyDetailController extends Controller
             }
         }
 
-        // Format reviews
-        $reviews = $property->reviews->map(function ($review) {
+        // Format reviews (latest first)
+        $reviews = $property->reviews
+            ->sortByDesc('created_at')
+            ->values()
+            ->map(function ($review) {
             $profilePicture = null;
             if ($review->user->profile_picture) {
                 // If profile_picture is a full URL, use it as is

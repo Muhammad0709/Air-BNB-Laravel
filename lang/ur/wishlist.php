@@ -8,4 +8,6 @@ return [
     'property_saved' => 'پراپرٹی محفوظ',
     'properties_saved' => 'پراپرٹیز محفوظ',
     'remove_error' => 'پسندیدہ فہرست سے پراپرٹی ہٹانے میں ناکامی۔ براہ کرم دوبارہ کوشش کریں۔',
+    'add_to_wishlist' => 'پسندیدہ میں شامل کریں',
+    'remove_from_wishlist' => 'پسندیدہ سے ہٹائیں',
 ];

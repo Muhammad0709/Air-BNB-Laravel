@@ -1,7 +1,9 @@
-import { Box, Paper, Typography } from '@mui/material'
+import { useState, useEffect } from 'react'
+import { Box, IconButton, Paper, Typography } from '@mui/material'
 import { router } from '@inertiajs/react'
 import StarIcon from '@mui/icons-material/Star'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import CardFavoriteIcon from './CardFavoriteIcon'
+import { useLanguage } from '../hooks/use-language'
 
 type SearchResultCardProps = {
   image: string
@@ -19,6 +21,7 @@ type SearchResultCardProps = {
   rating?: number
   reviews?: number
   isNew?: boolean
+  isGuestFavorite?: boolean
 }
 
 export default function SearchResultCard({
@@ -36,10 +39,31 @@ export default function SearchResultCard({
   id = 1,
   rating,
   reviews,
-  isNew = false
+  isNew = false,
+  isGuestFavorite = false,
 }: SearchResultCardProps) {
+  const { t } = useLanguage()
+  const [isFavorited, setIsFavorited] = useState(isGuestFavorite)
+
+  useEffect(() => {
+    setIsFavorited(isGuestFavorite)
+  }, [isGuestFavorite])
+
   const handleClick = () => {
     router.visit(`/detail/${id}`)
+  }
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    e.preventDefault()
+    const propertyId = String(id)
+    if (isFavorited) {
+      router.delete(`/wishlist/${propertyId}`, { preserveScroll: true })
+      setIsFavorited(false)
+    } else {
+      router.post(`/wishlist/${propertyId}`, {}, { preserveScroll: true })
+      setIsFavorited(true)
+    }
   }
 
   const formatDates = () => {
@@ -80,19 +104,23 @@ export default function SearchResultCard({
           alt={title}
           sx={{ width: '100%', height: 300, objectFit: 'cover', borderRadius: '12px', mb: 1.5 }}
         />
-        <Box
+        <IconButton
+          className="airbnb-favorite-button"
+          onClick={handleFavoriteClick}
+          size="small"
+          aria-label={isFavorited ? t('wishlist.remove_from_wishlist') : t('wishlist.add_to_wishlist')}
           sx={{
             position: 'absolute',
             top: 12,
             right: 12,
-            cursor: 'pointer',
-            zIndex: 2,
-            '&:hover': { transform: 'scale(1.1)', transition: 'transform 0.2s' }
+            padding: '6px',
+            bgcolor: 'transparent',
+            color: '#222222',
+            '&:hover': { bgcolor: 'transparent', color: '#222222' },
           }}
-          onClick={(e) => e.stopPropagation()}
         >
-          <FavoriteBorderIcon sx={{ color: '#FFFFFF', fontSize: 24 }} />
-        </Box>
+          <CardFavoriteIcon isFavorited={isFavorited} />
+        </IconButton>
       </Box>
       <Box>
         <Typography sx={{ fontSize: '0.9375rem', fontWeight: 600, color: '#222222', mb: 0.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>

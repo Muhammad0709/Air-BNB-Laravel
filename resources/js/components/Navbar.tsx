@@ -4,6 +4,7 @@ import { AppBar, Avatar, Box, Button, Container, IconButton, Stack, Toolbar, Typ
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import MessageIcon from '@mui/icons-material/Message'
 import { useLanguage } from '../hooks/use-language'
 import { useCurrency } from '../contexts/CurrencyContext'
 
@@ -20,8 +21,6 @@ type NavbarProps = {
 const linkKeys: { key: string; href: string }[] = [
   { key: 'home', href: '/' },
   { key: 'stays', href: '/listing' },
-  { key: 'messages', href: '/chat' },
-  // { key: 'bookings', href: '/booking' },
 ]
 
 const currencies = [
@@ -166,6 +165,16 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
             </IconButton>
           {showAuth && (
             <Stack direction="row" spacing={2} useFlexGap sx={{ display: { xs: 'none', md: 'flex' } }} alignItems="center">
+              {isAuthenticated && (
+                <IconButton
+                  component={Link}
+                  href="/chat"
+                  aria-label={t('nav.messages')}
+                  sx={{ color: '#222222', p: 1}}
+                >
+                  <MessageIcon sx={{ fontSize: 24 }} />
+                </IconButton>
+              )}
               <Box
                 onClick={handleLanguageClick}
                 sx={{
@@ -346,12 +355,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                   </Menu>
                 </>
               ) : (
-                <>
-                  <Typography component={Link} href="/auth/login" sx={{ textDecoration: 'none', color: '#222222', fontWeight: 700 }}>{t('nav.log_in')}</Typography>
-                  <Button component={Link} href="/auth/register" variant="contained" sx={{ bgcolor: '#AD542D', borderRadius: 999, px: 3, py: 1.25, textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>
-                    {t('nav.sign_up')}
-                  </Button>
-                </>
+                <Typography component={Link} href="/auth/login" sx={{ textDecoration: 'none', color: '#222222', fontWeight: 700 }}>{t('nav.log_in')}</Typography>
               )}
             </Stack>
           )}
@@ -375,6 +379,12 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                   {l.label}
                 </Typography>
               ))}
+              {isAuthenticated && (
+                <Typography component={Link} href="/chat" onClick={() => setOpen(false)} sx={{ textDecoration: 'none', color: isActive('/chat') ? '#AD542D' : '#222222', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <MessageIcon sx={{ fontSize: 22 }} />
+                  {t('nav.messages')}
+                </Typography>
+              )}
               <Box
                 component={Link}
                 href="/register"
@@ -529,10 +539,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                       </Button>
                     </>
                   ) : (
-                    <>
-                      <Button component={Link} href="/auth/login" variant="text" onClick={() => setOpen(false)} sx={{ textTransform: 'none', fontWeight: 700 }}>{t('nav.log_in')}</Button>
-                      <Button component={Link} href="/auth/register" variant="contained" onClick={() => setOpen(false)} sx={{ bgcolor: '#AD542D', borderRadius: 999, px: 3, textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>{t('nav.sign_up')}</Button>
-                    </>
+                    <Button component={Link} href="/auth/login" variant="text" onClick={() => setOpen(false)} sx={{ textTransform: 'none', fontWeight: 700 }}>{t('nav.log_in')}</Button>
                   )}
                 </Stack>
               </Stack>

@@ -88,6 +88,7 @@ Route::middleware(['auth', 'redirect.admin.host'])->group(function () {
     
     // User-specific routes
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
+    Route::post('/wishlist/{id}', [WishlistController::class, 'add'])->name('wishlist.add');
     Route::delete('/wishlist/{id}', [WishlistController::class, 'remove'])->name('wishlist.remove');
     Route::get('/profile/settings', [ProfileSettingsController::class, 'index'])->name('profile.settings');
     Route::patch('/profile/update', [ProfileSettingsController::class, 'updateProfile'])->name('profile.update');
