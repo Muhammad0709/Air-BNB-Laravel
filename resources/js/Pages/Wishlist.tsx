@@ -22,30 +22,24 @@ interface Property {
 }
 
 type WishlistProps = {
-  properties: {
-    data: Property[]
-    current_page: number
-    last_page: number
-    per_page: number
-    total: number
-  }
+  properties: { data: Property[]; current_page: number; last_page: number; total: number } | Property[]
 }
 
 export default function Wishlist() {
   const { t } = useLanguage()
   const { props } = usePage<WishlistProps>()
-  const paginated = props.properties || { data: [], current_page: 1, last_page: 1, per_page: 9, total: 0 }
-  const { data: propertiesData, current_page, last_page, total } = paginated
+  const p = props.properties as any
+  const list: Property[] = Array.isArray(p) ? p : (p?.data ?? [])
+  const current_page = p?.current_page ?? 1
+  const last_page = p?.last_page ?? 1
+  const total = p?.total ?? list.length
 
-  const [wishlistItems, setWishlistItems] = useState<Property[]>(propertiesData)
+  const [wishlistItems, setWishlistItems] = useState<Property[]>(list)
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
 
-  // Update wishlist items when props change
   useEffect(() => {
-    if (propertiesData?.length !== undefined) {
-      setWishlistItems(propertiesData)
-    }
-  }, [propertiesData])
+    setWishlistItems(list)
+  }, [props.properties])
 
   // Show success message from backend redirect
   useEffect(() => {
