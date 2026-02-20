@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Property;
+use App\Models\Review;
 use App\Models\User;
 use App\Enums\PropertyStatus;
 use App\Enums\PropertyType;
@@ -12,11 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class PropertySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     * Creates 50 properties with approval_status = Approved.
-     * Each property gets a unique image from Picsum (picsum.photos).
-     */
+
     public function run(): void
     {
         $user = User::first();
@@ -37,7 +34,72 @@ class PropertySeeder extends Seeder
             Property::create($data);
         }
 
-        $this->command->info('PropertySeeder: Created ' . count($properties) . ' properties with approved status and unique images.');
+        // Add 3 high-rated properties (avg rating 4.6, 4.7, 4.9) with reviews
+        $this->seedTopRatedProperties($user);
+
+        $this->command->info('PropertySeeder: Created ' . count($properties) . ' properties + 3 top-rated, with approved status and unique images.');
+    }
+
+    /**
+     * Create 3 properties with target average ratings 4.6, 4.7, 4.9 via reviews.
+     */
+    private function seedTopRatedProperties(User $user): void
+    {
+        $targets = [
+            ['title' => 'Santorini Premium Villa', 'location' => 'Santorini, Greece', 'rating' => 4.6],
+            ['title' => 'Bali Paradise Villa', 'location' => 'Bali, Indonesia', 'rating' => 4.7],
+            ['title' => 'Dubai Luxury Villa', 'location' => 'Dubai, UAE', 'rating' => 4.9],
+        ];
+
+        // Ratings that produce exact average (integer reviews 1-5 only)
+        // 4.6 = (5+5+5+5+3)/5; 4.7 = (5*7+4*3)/10; 4.9 = (5*9+4*1)/10
+        $ratingsForTarget = [
+            4.6 => [5, 5, 5, 5, 3],
+            4.7 => array_merge(array_fill(0, 7, 5), array_fill(0, 3, 4)),
+            4.9 => array_merge(array_fill(0, 9, 5), [4]),
+        ];
+
+        $baseSeed = 51;
+        foreach ($targets as $i => $target) {
+            $imagePath = $this->downloadImageForProperty($baseSeed + $i);
+            $data = [
+                'title' => $target['title'],
+                'location' => $target['location'],
+                'price' => 299 + ($i * 50),
+                'bedrooms' => 3,
+                'bathrooms' => 2,
+                'guests' => 6,
+                'property_type' => PropertyType::VILLA->value,
+                'status' => 'Active',
+                'approval_status' => PropertyStatus::APPROVED->value,
+                'is_guest_favorite' => false,
+                'description' => 'Stunning property with panoramic views and premium amenities.',
+                'amenities' => ['WiFi', 'Parking', 'Pool', 'AC', 'Kitchen', 'Balcony'],
+                'user_id' => $user->id,
+            ];
+            if ($imagePath) {
+                $data['image'] = $imagePath;
+                $data['images'] = [$imagePath];
+            }
+            $property = Property::create($data);
+
+            $ratings = $ratingsForTarget[$target['rating']];
+            $reviewUserIds = User::pluck('id')->unique()->values()->all();
+            if (empty($reviewUserIds)) {
+                $reviewUserIds = [$user->id];
+            }
+            // One review per user (unique constraint); use as many reviews as we have users
+            $maxReviews = min(count($ratings), count($reviewUserIds));
+            $ratingsToUse = array_slice($ratings, 0, $maxReviews);
+            foreach ($ratingsToUse as $rIndex => $rating) {
+                Review::create([
+                    'property_id' => $property->id,
+                    'user_id' => $reviewUserIds[$rIndex],
+                    'rating' => $rating,
+                    'comment' => 'Excellent stay, highly recommend!',
+                ]);
+            }
+        }
     }
 
     /**
@@ -138,7 +200,7 @@ class PropertySeeder extends Seeder
             $baths = max(1, (int) ceil($beds / 2) + ($i % 2));
             $guests = $beds * 2 + ($i % 3);
             $data[] = [
-                'title' => $titles[$i % count($titles)] . ' ' . ($i + 1),
+                'title' => $titles[$i % count($titles)],
                 'location' => $locations[$i % count($locations)],
                 'price' => [99, 129, 159, 199, 249, 299, 349, 399][$i % 8] + ($i % 5) * 10,
                 'bedrooms' => $beds,

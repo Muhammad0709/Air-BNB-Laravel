@@ -73,6 +73,7 @@ type RelatedProperty = {
   location: string
   price: number | string
   image: string | null
+  rating?: number
 }
 
 type RatingStats = {
@@ -758,6 +759,7 @@ export default function ListingDetail() {
                     location={stay.location}
                     price={typeof stay.price === 'number' ? stay.price : Number(stay.price) || 0}
                     id={stay.id}
+                    rating={stay.rating != null ? Number(stay.rating) : undefined}
                   />
                 </Col>
               )) : (

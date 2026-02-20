@@ -11,12 +11,11 @@ import { Head, router } from '@inertiajs/react'
 export default function HostEarnings() {
   const [search, setSearch] = useState('')
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-  const [itemToDelete, setItemToDelete] = useState<{ id: number; type: 'earning' | 'payout'; identifier: string } | null>(null)
+  const [itemToDelete, setItemToDelete] = useState<{ id: number; type: 'earning'; identifier: string } | null>(null)
 
   const earningsStats = [
     { title: 'Total Earnings', value: '$24,560', color: '#10B981', change: '+22% this month' },
-    { title: 'Available Balance', value: '$8,450', color: '#4F46E5', change: 'Ready to withdraw' },
-    { title: 'Pending Payouts', value: '$3,200', color: '#F59E0B', change: 'Processing' },
+    { title: 'Available Balance', value: '$8,450', color: '#4F46E5', change: 'Available' },
   ]
 
   const earnings = [
@@ -25,13 +24,6 @@ export default function HostEarnings() {
     { id: 3, bookingId: 'BK-003', guest: 'Mike Johnson', property: 'Cozy Studio', date: '2025-01-20', amount: '$625', status: 'Paid', payoutDate: '2025-01-25' },
     { id: 4, bookingId: 'BK-004', guest: 'Sarah Williams', property: 'Luxury Beachfront Villa', date: '2025-01-22', amount: '$1,495', status: 'Paid', payoutDate: '2025-01-27' },
     { id: 5, bookingId: 'BK-005', guest: 'David Brown', property: 'Modern Apartment', date: '2025-01-25', amount: '$899', status: 'Pending', payoutDate: '-' },
-  ]
-
-  const payouts = [
-    { id: 1, payoutId: 'PO-001', amount: '$5,200', date: '2025-01-20', method: 'Bank Transfer', status: 'Completed', account: '****1234' },
-    { id: 2, payoutId: 'PO-002', amount: '$3,100', date: '2025-01-15', method: 'PayPal', status: 'Completed', account: 'host@example.com' },
-    { id: 3, payoutId: 'PO-003', amount: '$2,800', date: '2025-01-10', method: 'Bank Transfer', status: 'Completed', account: '****1234' },
-    { id: 4, payoutId: 'PO-004', amount: '$4,500', date: '2025-01-05', method: 'PayPal', status: 'Completed', account: 'host@example.com' },
   ]
 
   const filteredEarnings = earnings.filter(earning =>
@@ -82,7 +74,7 @@ export default function HostEarnings() {
     document.body.removeChild(link)
   }
 
-  const handleDeleteClick = (item: { id: number; type: 'earning' | 'payout'; identifier: string }) => {
+  const handleDeleteClick = (item: { id: number; type: 'earning'; identifier: string }) => {
     setItemToDelete(item)
     setDeleteDialogOpen(true)
   }
@@ -105,8 +97,8 @@ export default function HostEarnings() {
 
   return (
     <>
-      <Head title="Earnings / Payouts" />
-      <HostLayout title="Earnings / Payouts">
+      <Head title="Earnings" />
+      <HostLayout title="Earnings">
       {/* Stats Cards */}
       <Row className="g-3 mb-4">
         {earningsStats.map((stat, idx) => (
@@ -248,89 +240,13 @@ export default function HostEarnings() {
         </Col>
       </Row>
 
-      {/* Payouts Table */}
-      <Row>
-        <Col xs={12}>
-          <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2 }}>
-            <CardContent>
-              <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
-                <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>
-                  Payout History
-                </Typography>
-                <Button
-                  variant="contained"
-                  onClick={() => router.visit('/host/earnings/request-payout')}
-                  fullWidth={window.innerWidth < 600}
-                  sx={{
-                    bgcolor: '#AD542D',
-                    textTransform: 'none',
-                    fontWeight: 700,
-                    '&:hover': { bgcolor: '#78381C' }
-                  }}
-                >
-                  Request Payout
-                </Button>
-              </Stack>
-
-              <TableContainer sx={{ overflowX: 'auto', maxWidth: '100%', WebkitOverflowScrolling: 'touch' }}>
-                <Table sx={{ minWidth: 700, width: '100%' }}>
-                  <TableHead>
-                    <TableRow sx={{ bgcolor: '#F9FAFB' }}>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Payout ID</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Amount</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Date</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Method</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Account</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Status</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Actions</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {payouts.map((payout) => (
-                      <TableRow key={payout.id} sx={{ '&:hover': { bgcolor: '#F9FAFB' } }}>
-                        <TableCell sx={{ fontWeight: 600, color: '#222222' }}>{payout.payoutId}</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#222222' }}>{payout.amount}</TableCell>
-                        <TableCell sx={{ color: '#717171' }}>{payout.date}</TableCell>
-                        <TableCell sx={{ color: '#717171' }}>{payout.method}</TableCell>
-                        <TableCell sx={{ color: '#717171' }}>{payout.account}</TableCell>
-                        <TableCell>
-                          <Chip
-                            label={payout.status}
-                            size="small"
-                            sx={{
-                              bgcolor: `${getStatusColor(payout.status)}15`,
-                              color: getStatusColor(payout.status),
-                              fontWeight: 600,
-                              fontSize: 12
-                            }}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <ActionsMenu
-                            onView={() => router.visit(`/host/earnings/payout/${payout.id}`)}
-                            onDelete={() => handleDeleteClick({ id: payout.id, type: 'payout', identifier: payout.payoutId })}
-                            viewLabel="View"
-                          />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </CardContent>
-          </Card>
-        </Col>
-      </Row>
-
       {/* Delete Confirmation Dialog */}
       <DeleteConfirmationDialog
         open={deleteDialogOpen}
         onClose={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
-        title={itemToDelete?.type === 'earning' 
-          ? `Are you sure you want to delete this earning?` 
-          : `Are you sure you want to delete this payout?`}
-        itemName={itemToDelete ? (itemToDelete.type === 'earning' ? `earning ${itemToDelete.identifier}` : `payout ${itemToDelete.identifier}`) : 'this item'}
+        title="Are you sure you want to delete this earning?"
+        itemName={itemToDelete ? `earning ${itemToDelete.identifier}` : 'this item'}
       />
       </HostLayout>
     </>

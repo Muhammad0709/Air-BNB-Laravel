@@ -144,7 +144,7 @@ return [
         'earning_details' => 'Earning Details',
     ],
     'properties' => [
-        'manage_properties' => 'Manage Properties',
+        'manage_properties' => 'Properties',
         'my_properties' => 'My Properties',
         'search_placeholder' => 'Search properties...',
         'add_property' => 'Add Property',

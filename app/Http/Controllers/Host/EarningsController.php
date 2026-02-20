@@ -16,14 +16,4 @@ class EarningsController extends Controller
     {
         return Inertia::render('Host/Earnings/Show', ['id' => $id]);
     }
-
-    public function requestPayout()
-    {
-        return Inertia::render('Host/Earnings/RequestPayout');
-    }
-
-    public function payout(string $id)
-    {
-        return Inertia::render('Host/Earnings/Payout', ['id' => $id]);
-    }
 }

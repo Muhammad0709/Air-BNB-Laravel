@@ -135,8 +135,6 @@ Route::prefix('host')->name('host.')->middleware('host')->group(function () {
     Route::get('/bookings/{id}/edit', [HostBookingController::class, 'edit'])->name('bookings.edit');
     Route::get('/earnings', [EarningsController::class, 'index'])->name('earnings.index');
     Route::get('/earnings/show/{id}', [EarningsController::class, 'show'])->name('earnings.show');
-    Route::get('/earnings/request-payout', [EarningsController::class, 'requestPayout'])->name('earnings.request-payout');
-    Route::get('/earnings/payout/{id}', [EarningsController::class, 'payout'])->name('earnings.payout');
     Route::get('/settings', [HostSettingsController::class, 'index'])->name('settings.index');
     Route::get('/settings/profile', [HostSettingsController::class, 'profile'])->name('settings.profile');
     Route::get('/settings/password', [HostSettingsController::class, 'password'])->name('settings.password');

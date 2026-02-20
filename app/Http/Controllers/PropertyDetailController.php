@@ -129,22 +129,35 @@ class PropertyDetailController extends Controller
             ],
         ];
 
-        // Get related properties (same location, different property)
-        $relatedProperties = Property::where('status', 'Active')
+        // Top 3 properties by rating (excluding current property)
+        $relatedProperties = Property::with('reviews')
+            ->where('status', 'Active')
             ->where('approval_status', PropertyStatus::APPROVED)
-            ->where('location', 'like', "%{$property->location}%")
             ->where('id', '!=', $property->id)
-            ->limit(3)
             ->get()
             ->map(function ($prop) {
+                $reviews = $prop->reviews;
+                $avgRating = $reviews->count() > 0 ? round($reviews->avg('rating'), 2) : 0;
                 return [
                     'id' => $prop->id,
                     'title' => $prop->title,
                     'location' => $prop->location,
                     'price' => $prop->price,
                     'image' => $prop->image ? Storage::url($prop->image) : null,
+                    'rating' => $avgRating,
                 ];
-            });
+            })
+            ->sortByDesc('rating')
+            ->take(3)
+            ->values()
+            ->map(fn ($item) => [
+                'id' => $item['id'],
+                'title' => $item['title'],
+                'location' => $item['location'],
+                'price' => $item['price'],
+                'image' => $item['image'],
+                'rating' => (float) $item['rating'],
+            ]);
 
         $defaultCheckin = Carbon::today()->format('Y-m-d');
         $defaultCheckout = Carbon::today()->addDays(7)->format('Y-m-d');

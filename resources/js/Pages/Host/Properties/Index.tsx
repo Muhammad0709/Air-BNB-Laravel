@@ -95,7 +95,7 @@ export default function HostProperties() {
   }
 
   return (
-    <HostLayout title="Manage Properties">
+    <HostLayout title="Properties">
       {/* Properties Table */}
       <Row>
         <Col xs={12}>

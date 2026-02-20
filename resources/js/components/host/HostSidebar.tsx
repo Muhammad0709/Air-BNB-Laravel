@@ -29,7 +29,7 @@ export default function HostSidebar({ sidebarOpen }: HostSidebarProps) {
       onClick: () => router.visit('/host/dashboard')
     },
     {
-      label: 'Manage Properties',
+      label: 'Properties',
       icon: HotelIcon,
       path: '/host/properties',
       onClick: () => router.visit('/host/properties')
@@ -41,7 +41,7 @@ export default function HostSidebar({ sidebarOpen }: HostSidebarProps) {
       onClick: () => router.visit('/host/bookings')
     },
     {
-      label: 'Earnings / Payouts',
+      label: 'Earnings',
       icon: AccountBalanceWalletIcon,
       path: '/host/earnings',
       onClick: () => router.visit('/host/earnings')
