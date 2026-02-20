@@ -87,7 +87,7 @@ class ListingController extends Controller
 
         $properties = $query->withCount('reviews')
             ->withAvg('reviews', 'rating')
-            ->paginate(10)
+            ->paginate(8)
             ->through(function ($property) {
                 return [
                     'id' => $property->id,
