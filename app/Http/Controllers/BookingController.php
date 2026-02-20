@@ -197,11 +197,6 @@ class BookingController extends Controller
         }
 
         $phoneCode = $validated['phone_code'] ?? '+31';
-        $cardLastFour = null;
-        if ($request->filled('card_last_four')) {
-            $cardLastFour = preg_replace('/\D/', '', $request->input('card_last_four'));
-            $cardLastFour = strlen($cardLastFour) >= 4 ? substr($cardLastFour, -4) : null;
-        }
 
         Booking::create([
             'property_id' => $property->id,
@@ -221,8 +216,6 @@ class BookingController extends Controller
             'service_fee' => $serviceFee,
             'total_amount' => $totalAmount,
             'status' => BookingStatus::PENDING,
-            'payment_method' => $request->input('payment_method', 'credit_card'),
-            'card_last_four' => $cardLastFour,
         ]);
 
         return redirect()->route('confirmation', [

@@ -58,8 +58,23 @@ export default function AdminLayout({ title, children }: AdminLayoutProps) {
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: '#F9FAFB' }}>
-      {/* Sidebar */}
-      <AdminSidebar sidebarOpen={sidebarOpen} />
+      {/* Mobile backdrop - tap to close sidebar */}
+      <Box
+        onClick={() => setSidebarOpen(false)}
+        sx={{
+          display: { xs: sidebarOpen ? 'block' : 'none', md: 'none' },
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          bgcolor: 'rgba(0,0,0,0.4)',
+          zIndex: 999,
+          transition: 'opacity 0.2s',
+        }}
+      />
+      {/* Sidebar - onNavigate closes sidebar on mobile after link click */}
+      <AdminSidebar sidebarOpen={sidebarOpen} onNavigate={() => setSidebarOpen(false)} />
 
       {/* Main Content */}
       <Box sx={{ 

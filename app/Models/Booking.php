@@ -26,8 +26,6 @@ class Booking extends Model
         'service_fee',
         'total_amount',
         'status',
-        'payment_method',
-        'card_last_four',
     ];
 
     protected $casts = [

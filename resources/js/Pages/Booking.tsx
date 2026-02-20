@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Button, FormControl, InputAdornment, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, FormControl, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import Toast from '../components/shared/Toast'
 import { Container, Row, Col } from 'react-bootstrap'
-import CreditCardIcon from '@mui/icons-material/CreditCard'
 import { router, Head, usePage } from '@inertiajs/react'
 import ListingPreviewCard from '../components/ListingPreviewCard'
 import BookingSummaryCard from '../components/BookingSummaryCard'
@@ -65,10 +64,6 @@ export default function Booking() {
     rooms: 1,
     adults: 1,
     children: 0,
-    paymentMethod: 'ideal',
-    cardNumber: '',
-    expiryDate: '',
-    csv: ''
   })
 
   useEffect(() => {
@@ -98,15 +93,6 @@ export default function Booking() {
     if (!formData.phone.trim()) newErrors.phone = t('booking.err_phone_required')
     else if (!/^\d{7,15}$/.test(formData.phone.replace(/[\s\-\(\)]/g, ''))) newErrors.phone = t('booking.err_phone_invalid')
 
-    if (!formData.cardNumber.trim()) newErrors.cardNumber = t('booking.err_card_required')
-    else if (!/^\d{13,19}$/.test(formData.cardNumber.replace(/\s|-/g, ''))) newErrors.cardNumber = t('booking.err_card_invalid')
-
-    if (!formData.expiryDate.trim()) newErrors.expiryDate = t('booking.err_expiry_required')
-    else if (!/^(0[1-9]|1[0-2])\/\d{2,4}$/.test(formData.expiryDate)) newErrors.expiryDate = t('booking.err_expiry_invalid')
-
-    if (!formData.csv.trim()) newErrors.csv = t('booking.err_csv_required')
-    else if (!/^\d{3,4}$/.test(formData.csv)) newErrors.csv = t('booking.err_csv_invalid')
-
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -128,8 +114,6 @@ export default function Booking() {
       setToast({ open: true, message: t('booking.select_property'), severity: 'error' })
       return
     }
-    const cardNum = formData.cardNumber.replace(/\s|-/g, '')
-    const cardLastFour = cardNum.length >= 4 ? cardNum.slice(-4) : ''
     setSubmitting(true)
     router.post('/booking', {
       property_id: property.id,
@@ -142,8 +126,6 @@ export default function Booking() {
       rooms: formData.rooms ?? 1,
       adults: formData.adults ?? 1,
       children: formData.children ?? 0,
-      card_last_four: cardLastFour,
-      payment_method: formData.paymentMethod === 'ideal' ? 'ideal' : 'credit_card',
     }, {
       onFinish: () => setSubmitting(false),
       onError: (errors) => setErrors(errors as Record<string, string>),
@@ -158,7 +140,7 @@ export default function Booking() {
         <Box className="booking-page">
           <Container className="px-0">
             <Box sx={{ mb: 2, mt: 4 }}>
-              <Typography variant="h2" sx={{ fontSize: '2.5rem', fontWeight: 800, color: '#222222', mb: 2 }}>
+              <Typography variant="h2" sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' }, fontWeight: 800, color: '#222222', mb: 2 }}>
                 {t('booking.title')}
               </Typography>
             </Box>
@@ -166,7 +148,7 @@ export default function Booking() {
             <Row>
               <Col xs={12} md={7} lg={8} className="px-0">
                 <Paper elevation={0} className="booking-form">
-                  <Typography className="section-title" sx={{ fontSize: '1.5rem', fontWeight: 700, color: '#222222', mb: 2 }}>{t('booking.guest_details')}</Typography>
+                  <Typography className="section-title" sx={{ fontSize: { xs: '1.125rem', sm: '1.5rem' }, fontWeight: 700, color: '#222222', mb: 2 }}>{t('booking.guest_details')}</Typography>
 
                   <form onSubmit={handleSubmit}>
                     {property && (
@@ -315,47 +297,6 @@ export default function Booking() {
                       </Stack>
                       <Typography className="help">{t('booking.phone_note')}</Typography>
                     </Box>
-
-                    <Typography className="section-title" sx={{ fontSize: '1.5rem', fontWeight: 700, color: '#222222', mb: 2, mt: 1.5 }}>{t('booking.card_info')}</Typography>
-                    <Box className="field">
-                      <Typography className="label">{t('booking.card_number')}</Typography>
-                      <TextField 
-                        size="small" 
-                        fullWidth 
-                        value={formData.cardNumber}
-                        onChange={(e) => handleChange('cardNumber', e.target.value)}
-                        InputProps={{ startAdornment: <InputAdornment position="start"><CreditCardIcon sx={{ color: '#9CA3AF' }} /></InputAdornment> }}
-                        error={!!errors.cardNumber}
-                        helperText={errors.cardNumber}
-                      />
-                    </Box>
-
-                    <Stack direction="row" spacing={1.5} useFlexGap className="field">
-                      <Box sx={{ flex: 1 }}>
-                        <Typography className="label">{t('booking.expiry_date')}</Typography>
-                        <TextField 
-                          size="small" 
-                          fullWidth 
-                          placeholder={t('booking.expiry_placeholder')} 
-                          value={formData.expiryDate}
-                          onChange={(e) => handleChange('expiryDate', e.target.value)}
-                          error={!!errors.expiryDate}
-                          helperText={errors.expiryDate}
-                        />
-                      </Box>
-                      <Box sx={{ flex: 1 }}>
-                        <Typography className="label">{t('booking.csv')}</Typography>
-                        <TextField 
-                          size="small" 
-                          fullWidth 
-                          placeholder={t('booking.csv_placeholder')} 
-                          value={formData.csv}
-                          onChange={(e) => handleChange('csv', e.target.value)}
-                          error={!!errors.csv}
-                          helperText={errors.csv}
-                        />
-                      </Box>
-                    </Stack>
 
                     <Paper elevation={0} className="booking-total">
                       <Typography>{t('booking.total')}</Typography>

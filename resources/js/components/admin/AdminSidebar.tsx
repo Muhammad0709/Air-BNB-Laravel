@@ -11,9 +11,10 @@ import { useLanguage } from '../../hooks/use-language'
 
 type AdminSidebarProps = {
   sidebarOpen: boolean
+  onNavigate?: () => void
 }
 
-export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
+export default function AdminSidebar({ sidebarOpen, onNavigate }: AdminSidebarProps) {
   const { t, isRtl } = useLanguage()
   const { url } = usePage()
   const pathname = url
@@ -25,13 +26,17 @@ export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
     return pathname.startsWith(path)
   }
 
+  const handleNav = (path: string) => {
+    router.visit(path, { onFinish: () => onNavigate?.() })
+  }
+
   const menuItems = [
-    { labelKey: 'admin.sidebar.dashboard', icon: DashboardIcon, path: '/admin/dashboard', onClick: () => router.visit('/admin/dashboard') },
-    { labelKey: 'admin.sidebar.users', icon: PeopleIcon, path: '/admin/users', onClick: () => router.visit('/admin/users') },
-    { labelKey: 'admin.sidebar.properties', icon: HotelIcon, path: '/admin/properties', onClick: () => router.visit('/admin/properties') },
-    { labelKey: 'admin.sidebar.bookings', icon: BookOnlineIcon, path: '/admin/bookings', onClick: () => router.visit('/admin/bookings') },
-    { labelKey: 'admin.sidebar.support_tickets', icon: SupportAgentIcon, path: '/admin/support-tickets', onClick: () => router.visit('/admin/support-tickets') },
-    { labelKey: 'admin.sidebar.system_settings', icon: SettingsIcon, path: '/admin/settings', onClick: () => router.visit('/admin/settings') },
+    { labelKey: 'admin.sidebar.dashboard', icon: DashboardIcon, path: '/admin/dashboard', onClick: () => handleNav('/admin/dashboard') },
+    { labelKey: 'admin.sidebar.users', icon: PeopleIcon, path: '/admin/users', onClick: () => handleNav('/admin/users') },
+    { labelKey: 'admin.sidebar.properties', icon: HotelIcon, path: '/admin/properties', onClick: () => handleNav('/admin/properties') },
+    { labelKey: 'admin.sidebar.bookings', icon: BookOnlineIcon, path: '/admin/bookings', onClick: () => handleNav('/admin/bookings') },
+    { labelKey: 'admin.sidebar.support_tickets', icon: SupportAgentIcon, path: '/admin/support-tickets', onClick: () => handleNav('/admin/support-tickets') },
+    { labelKey: 'admin.sidebar.system_settings', icon: SettingsIcon, path: '/admin/settings', onClick: () => handleNav('/admin/settings') },
   ]
 
   return (
@@ -41,7 +46,7 @@ export default function AdminSidebar({ sidebarOpen }: AdminSidebarProps) {
           position: { xs: 'fixed', md: 'fixed' },
           top: 0,
           ...(isRtl ? { right: 0 } : { left: 0 }),
-          width: sidebarOpen ? { xs: 0, md: 280 } : 0,
+          width: sidebarOpen ? 280 : 0,
           bgcolor: '#FFFFFF',
           ...(isRtl ? { borderLeft: '1px solid #E5E7EB' } : { borderRight: '1px solid #E5E7EB' }),
           transition: 'width 0.3s',

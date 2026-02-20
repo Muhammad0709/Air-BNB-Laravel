@@ -43,8 +43,6 @@ class CreateBookingsSeeder extends Seeder
                 'check_out_date' => now()->subDays(23),
                 'nights' => 7,
                 'status' => 'completed',
-                'payment_method' => 'credit_card',
-                'card_last_four' => '1234',
             ],
             // Current confirmed booking
             [
@@ -61,8 +59,6 @@ class CreateBookingsSeeder extends Seeder
                 'check_out_date' => now()->addDays(4),
                 'nights' => 7,
                 'status' => 'confirmed',
-                'payment_method' => 'credit_card',
-                'card_last_four' => '5678',
             ],
             // Upcoming pending booking
             [
@@ -79,8 +75,6 @@ class CreateBookingsSeeder extends Seeder
                 'check_out_date' => now()->addDays(17),
                 'nights' => 7,
                 'status' => 'pending',
-                'payment_method' => 'ideal',
-                'card_last_four' => null,
             ],
             // Future confirmed booking
             [
@@ -97,8 +91,6 @@ class CreateBookingsSeeder extends Seeder
                 'check_out_date' => now()->addDays(27),
                 'nights' => 7,
                 'status' => 'confirmed',
-                'payment_method' => 'credit_card',
-                'card_last_four' => '9012',
             ],
             // Short stay booking
             [
@@ -115,8 +107,6 @@ class CreateBookingsSeeder extends Seeder
                 'check_out_date' => now()->addDays(7),
                 'nights' => 2,
                 'status' => 'pending',
-                'payment_method' => 'paypal',
-                'card_last_four' => null,
             ],
             // Cancelled booking
             [
@@ -133,8 +123,6 @@ class CreateBookingsSeeder extends Seeder
                 'check_out_date' => now()->addDays(22),
                 'nights' => 7,
                 'status' => 'cancelled',
-                'payment_method' => 'credit_card',
-                'card_last_four' => '3456',
             ],
         ];
 
@@ -167,8 +155,6 @@ class CreateBookingsSeeder extends Seeder
                 'service_fee' => $serviceFee,
                 'total_amount' => $totalAmount,
                 'status' => $bookingData['status'],
-                'payment_method' => $bookingData['payment_method'],
-                'card_last_four' => $bookingData['card_last_four'],
                 'created_at' => now()->subDays(rand(1, 60)),
             ]);
         }

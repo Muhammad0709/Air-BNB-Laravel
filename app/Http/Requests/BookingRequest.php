@@ -46,8 +46,6 @@ class BookingRequest extends FormRequest
             'nights' => 'required|integer|min:1|max:365',
             'check_in_date' => 'required|date|after_or_equal:today',
             'check_out_date' => 'required|date|after:check_in_date',
-            'payment_method' => 'sometimes|string|in:credit_card,ideal,paypal',
-            'card_last_four' => 'sometimes|string|size:4|regex:/^\d{4}$/',
         ];
     }
 }

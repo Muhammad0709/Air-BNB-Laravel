@@ -30,8 +30,6 @@ return new class extends Migration
             $table->decimal('service_fee', 10, 2)->default(0);
             $table->integer('nights')->default(1);
             $table->enum('status', ['pending', 'confirmed', 'cancelled', 'completed'])->default('pending');
-            $table->string('payment_method')->nullable();
-            $table->string('card_last_four', 4)->nullable();
             $table->timestamps();
         });
     }
