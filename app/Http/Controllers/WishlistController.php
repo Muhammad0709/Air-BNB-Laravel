@@ -11,23 +11,24 @@ use Inertia\Inertia;
 
 class WishlistController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $properties = Property::with(['reviews', 'user'])
+        $properties = Property::withCount('reviews')
+            ->withAvg('reviews', 'rating')
             ->where('status', 'Active')
             ->where('approval_status', PropertyStatus::APPROVED)
             ->where('is_guest_favorite', true)
             ->orderBy('created_at', 'desc')
-            ->get()
-            ->map(function ($property) {
+            ->paginate(9)
+            ->through(function ($property) {
                 return [
                     'id' => $property->id,
                     'title' => $property->title,
                     'location' => $property->location,
                     'price' => (float) $property->price,
-                    'image' => $property->image ? Storage::url($property->image) : '/images/filter-1.svg',
-                    'rating' => $property->reviews->avg('rating') ? round($property->reviews->avg('rating'), 2) : null,
-                    'reviews_count' => $property->reviews->count(),
+                    'image' => $property->getPrimaryImageUrl() ?: ($property->image ? Storage::url($property->image) : '/images/filter-1.svg'),
+                    'rating' => $property->reviews_avg_rating ? round((float) $property->reviews_avg_rating, 2) : null,
+                    'reviews_count' => (int) ($property->reviews_count ?? 0),
                 ];
             });
 

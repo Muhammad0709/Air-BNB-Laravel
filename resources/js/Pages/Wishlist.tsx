@@ -4,6 +4,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import FeaturedCard from '../components/FeaturedCard'
+import Pagination from '../components/Pagination'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import { Head, usePage, router } from '@inertiajs/react'
@@ -20,20 +21,31 @@ interface Property {
   reviews_count?: number
 }
 
+type WishlistProps = {
+  properties: {
+    data: Property[]
+    current_page: number
+    last_page: number
+    per_page: number
+    total: number
+  }
+}
+
 export default function Wishlist() {
   const { t } = useLanguage()
-  const { props } = usePage()
-  const properties = (props as any).properties || []
-  
-  const [wishlistItems, setWishlistItems] = useState<Property[]>(properties)
+  const { props } = usePage<WishlistProps>()
+  const paginated = props.properties || { data: [], current_page: 1, last_page: 1, per_page: 9, total: 0 }
+  const { data: propertiesData, current_page, last_page, total } = paginated
+
+  const [wishlistItems, setWishlistItems] = useState<Property[]>(propertiesData)
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
 
   // Update wishlist items when props change
   useEffect(() => {
-    if (properties) {
-      setWishlistItems(properties)
+    if (propertiesData?.length !== undefined) {
+      setWishlistItems(propertiesData)
     }
-  }, [properties])
+  }, [propertiesData])
 
   // Show success message from backend redirect
   useEffect(() => {
@@ -43,7 +55,6 @@ export default function Wishlist() {
         message: (props as any).flash.success,
         severity: 'success'
       })
-      // Reload to get updated data
       router.reload({ only: ['properties'] })
     }
   }, [(props as any)?.flash?.success])
@@ -83,7 +94,7 @@ export default function Wishlist() {
               </Typography>
             </Box>
 
-            {wishlistItems.length === 0 ? (
+            {total === 0 ? (
               // Empty State
               <Box sx={{ textAlign: 'center', py: 8 }}>
                 <FavoriteIcon sx={{ color: '#D1D5DB', fontSize: 80, mb: 2 }} />
@@ -98,7 +109,7 @@ export default function Wishlist() {
               <>
                 <Box sx={{ mb: 3, textAlign: { xs: 'center', md: 'left' } }}>
                   <Typography variant="body1" sx={{ color: '#717171', fontWeight: 600 }}>
-                    {wishlistItems.length} {wishlistItems.length === 1 ? t('wishlist.property_saved') : t('wishlist.properties_saved')}
+                    {total} {total === 1 ? t('wishlist.property_saved') : t('wishlist.properties_saved')}
                   </Typography>
                 </Box>
 
@@ -133,6 +144,14 @@ export default function Wishlist() {
                     </Col>
                   ))}
                 </Row>
+
+                {last_page > 1 && (
+                  <Pagination
+                    currentPage={current_page}
+                    lastPage={last_page}
+                    onPageChange={(page) => router.get('/wishlist', { page }, { preserveState: true })}
+                  />
+                )}
               </>
             )}
           </Container>
