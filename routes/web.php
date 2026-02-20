@@ -39,6 +39,8 @@ Route::middleware('guest')->group(function () {
     Route::prefix('auth')->group(function () {
         Route::get('/login', [LoginController::class, 'create'])->name('login');
         Route::post('/login', [LoginController::class, 'store']);
+        // Avoid 405 when a redirect lands here with DELETE (e.g. session expired during a delete request)
+        Route::delete('/login', fn () => redirect()->route('login'));
 
         Route::get('/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
         Route::get('/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
