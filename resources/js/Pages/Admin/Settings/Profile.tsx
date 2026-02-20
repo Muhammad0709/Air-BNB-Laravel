@@ -9,12 +9,17 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { useLanguage } from '../../../hooks/use-language'
 
 type UserProp = { id: number; name: string; email: string; profile_picture?: string | null }
-type PageProps = { user?: UserProp; flash?: { success?: string; error?: string } }
+type PageProps = {
+  user?: UserProp
+  flash?: { success?: string; error?: string }
+  configuration?: { commission_rate: number }
+}
 
 export default function ProfileSettings() {
   const { t } = useLanguage()
   const { url, props } = usePage<PageProps>()
   const user = props.user
+  const config = props.configuration ?? { commission_rate: 10 }
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
 
   const [profileData, setProfileData] = useState({
@@ -26,6 +31,9 @@ export default function ProfileSettings() {
     currentPassword: '',
     newPassword: '',
     confirmPassword: ''
+  })
+  const [configurationData, setConfigurationData] = useState({
+    commission_rate: config.commission_rate
   })
 
   useEffect(() => {
@@ -42,6 +50,10 @@ export default function ProfileSettings() {
     if (props.flash?.success) setToast({ open: true, message: props.flash.success, severity: 'success' })
     if (props.flash?.error) setToast({ open: true, message: props.flash.error, severity: 'error' })
   }, [props.flash?.success, props.flash?.error])
+
+  useEffect(() => {
+    setConfigurationData({ commission_rate: config.commission_rate })
+  }, [config.commission_rate])
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -87,15 +99,28 @@ export default function ProfileSettings() {
     })
   }
 
+  const handleConfigurationSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    router.put('/admin/settings/configuration', {
+      commission_rate: configurationData.commission_rate
+    }, { preserveScroll: true })
+  }
+
   const getInitials = (name: string) => (name || '').split(' ').map(n => n[0]).join('').slice(0, 2)
   const profilePictureUrl = profileData.profileImage || user?.profile_picture || null
+
+  const mainTabs = [
+    { id: 'profile', labelKey: 'admin.settings.profile', path: '/admin/settings/profile' },
+    { id: 'settings', labelKey: 'admin.settings.settings_tab', path: '/admin/settings/configuration' },
+  ]
+  const currentMainTab = url.includes('configuration') ? 'settings' : 'profile'
 
   const settingsTabs = [
     { id: 'profile', labelKey: 'admin.settings.profile', path: '/admin/settings/profile' },
     { id: 'password', labelKey: 'admin.settings.password', path: '/admin/settings/password' },
   ]
   const currentActiveTab = url.includes('profile') ? 'profile' : url.includes('password') ? 'password' : 'profile'
-  const getPageTitle = () => currentActiveTab === 'profile' ? t('admin.settings.profile_settings') : currentActiveTab === 'password' ? t('admin.settings.password_settings') : t('admin.settings.title')
+  const getPageTitle = () => currentMainTab === 'settings' ? t('admin.settings.configuration_settings') : currentActiveTab === 'profile' ? t('admin.settings.profile_settings') : currentActiveTab === 'password' ? t('admin.settings.password_settings') : t('admin.settings.title')
 
   return (
     <>
@@ -105,6 +130,75 @@ export default function ProfileSettings() {
           <Typography variant="h4" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>{t('admin.settings.title')}</Typography>
           <Typography variant="body1" sx={{ color: '#717171' }}>{t('admin.settings.settings_subtitle')}</Typography>
         </Box>
+
+        {/* Pill-style tabs (All / Admins style) - existing theme */}
+        <Box
+          sx={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            p: 0.5,
+            borderRadius: 3,
+            bgcolor: '#F3F4F6',
+            border: '1px solid #E5E7EB',
+            mb: 4
+          }}
+        >
+          {mainTabs.map((tab) => {
+            const isActive = currentMainTab === tab.id
+            return (
+              <Button
+                key={tab.id}
+                onClick={() => router.visit(tab.path)}
+                sx={{
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  fontSize: '0.9375rem',
+                  px: 3,
+                  py: 1.25,
+                  borderRadius: 2.5,
+                  minWidth: 120,
+                  bgcolor: isActive ? '#AD542D' : 'transparent',
+                  color: isActive ? '#fff' : '#717171',
+                  boxShadow: isActive ? '0 1px 2px rgba(0,0,0,0.05)' : 'none',
+                  '&:hover': {
+                    bgcolor: isActive ? '#78381C' : 'rgba(0,0,0,0.04)',
+                    color: isActive ? '#fff' : '#222222'
+                  }
+                }}
+              >
+                {t(tab.labelKey)}
+              </Button>
+            )
+          })}
+        </Box>
+
+        {currentMainTab === 'settings' && (
+          <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '20px', width: '100%', maxWidth: '800px' }}>
+            <CardContent sx={{ p: 4 }}>
+              <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>{t('admin.settings.configuration_settings')}</Typography>
+              <Typography variant="body2" sx={{ color: '#717171', mb: 4 }}>{t('admin.settings.configuration_subtitle')}</Typography>
+              <form onSubmit={handleConfigurationSubmit}>
+                <Stack spacing={3}>
+                  <TextField
+                    label={t('admin.settings.commission_rate')}
+                    name="commission_rate"
+                    type="number"
+                    value={configurationData.commission_rate}
+                    onChange={(e) => setConfigurationData(prev => ({ ...prev, commission_rate: Number(e.target.value) || 0 }))}
+                    fullWidth
+                    inputProps={{ min: 0, max: 100, step: 0.5 }}
+                    helperText={t('admin.settings.commission_rate_hint')}
+                  />
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button type="submit" variant="contained" startIcon={<SaveIcon />} sx={{ bgcolor: '#AD542D', textTransform: 'none', borderRadius: 2, fontWeight: 700, px: 4, py: 1.5, '&:hover': { bgcolor: '#78381C' } }}>{t('admin.common.save')}</Button>
+                  </Box>
+                </Stack>
+              </form>
+            </CardContent>
+          </Card>
+        )}
+
+        {currentMainTab === 'profile' && (
         <Row>
           <Col xs={12} md={3}>
             <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, mb: 3 }}>
@@ -196,6 +290,7 @@ export default function ProfileSettings() {
             )}
           </Col>
         </Row>
+        )}
         <Toast open={toast.open} onClose={() => setToast(t => ({ ...t, open: false }))} message={toast.message} severity={toast.severity} />
       </AdminLayout>
     </>

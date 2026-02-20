@@ -163,6 +163,13 @@ return [
         'update_password' => 'Update password',
         'password_description' => 'Ensure your account is using a long, random password to stay secure',
         'save_password' => 'Save password',
+        'settings_tab' => 'Settings',
+        'configuration' => 'Configuration',
+        'configuration_settings' => 'Configuration',
+        'configuration_subtitle' => 'Set platform commission and other configuration.',
+        'commission_rate' => 'Commission (%)',
+        'commission_rate_hint' => 'Platform commission percentage applied to host earnings.',
+        'configuration_saved' => 'Configuration saved successfully!',
     ],
     'common' => [
         'view' => 'View',

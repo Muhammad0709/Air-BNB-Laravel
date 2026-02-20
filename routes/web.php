@@ -118,8 +118,10 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/support-tickets/{id}/edit', [SupportTicketController::class, 'edit'])->name('support-tickets.edit');
     Route::get('/settings', [AdminSettingsController::class, 'index'])->name('settings.index');
     Route::get('/settings/profile', [AdminSettingsController::class, 'profile'])->name('settings.profile');
+    Route::get('/settings/configuration', [AdminSettingsController::class, 'configuration'])->name('settings.configuration');
     Route::get('/settings/password', [AdminSettingsController::class, 'password'])->name('settings.password');
     Route::put('/settings/profile', [AdminSettingsController::class, 'updateProfile'])->name('settings.profile.update');
+    Route::put('/settings/configuration', [AdminSettingsController::class, 'updateConfiguration'])->name('settings.configuration.update');
     Route::put('/settings/password', [AdminSettingsController::class, 'updatePassword'])->name('settings.password.update');
     Route::post('/settings/picture', [AdminSettingsController::class, 'uploadProfilePicture'])->name('settings.picture');
 });

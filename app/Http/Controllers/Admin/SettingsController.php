@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -31,13 +32,46 @@ class SettingsController extends Controller
                         : Storage::url($user->profile_picture))
                     : null,
             ],
+            'configuration' => [
+                'commission_rate' => Setting::get('commission_rate', 10),
+            ],
         ]);
+    }
+
+    public function configuration()
+    {
+        $user = Auth::user();
+        return Inertia::render('Admin/Settings/Profile', [
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'profile_picture' => $user->profile_picture
+                    ? (filter_var($user->profile_picture, FILTER_VALIDATE_URL)
+                        ? $user->profile_picture
+                        : Storage::url($user->profile_picture))
+                    : null,
+            ],
+            'configuration' => [
+                'commission_rate' => Setting::get('commission_rate', 10),
+            ],
+        ]);
+    }
+
+    public function updateConfiguration(Request $request)
+    {
+        $request->validate([
+            'commission_rate' => 'required|numeric|min:0|max:100',
+        ]);
+        Setting::set('commission_rate', $request->commission_rate);
+        return redirect()->back()->with('success', __('admin.settings.configuration_saved'));
     }
 
     public function password()
     {
         $user = Auth::user();
         return Inertia::render('Admin/Settings/Profile', [
+            'configuration' => ['commission_rate' => Setting::get('commission_rate', 10)],
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,

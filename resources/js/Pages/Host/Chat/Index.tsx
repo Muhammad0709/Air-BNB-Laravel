@@ -89,13 +89,20 @@ export default function HostChat() {
     })
   }, [conversationsList])
 
-  const [users] = useState<User[]>([
-    { id: 1, name: 'John Doe', email: 'john.doe@example.com', avatar: '' },
-    { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com', avatar: '' },
-    { id: 3, name: 'Mike Johnson', email: 'mike.johnson@example.com', avatar: '' },
-    { id: 4, name: 'Emily Davis', email: 'emily.davis@example.com', avatar: '' },
-    { id: 5, name: 'Robert Wilson', email: 'robert.wilson@example.com', avatar: '' },
-  ])
+  const [users, setUsers] = useState<User[]>([])
+  const [loadingUsers, setLoadingUsers] = useState(false)
+
+  useEffect(() => {
+    if (!openModal) return
+    setLoadingUsers(true)
+    apiGet<{ data: { users: { id: number; name: string; email: string; avatar: string | null }[] } }>('/api/host/chat/users')
+      .then((res) => {
+        const list = res.data?.users ?? []
+        setUsers(list.map((u) => ({ id: u.id, name: u.name, email: u.email, avatar: u.avatar ?? '' })))
+      })
+      .catch(() => setUsers([]))
+      .finally(() => setLoadingUsers(false))
+  }, [openModal])
 
   const currentConversation = conversations.find((c) => c.id === selectedConversation)
 
@@ -781,36 +788,49 @@ export default function HostChat() {
             Select Participants
           </Typography>
           <Box sx={{ maxHeight: '50vh', overflowY: 'auto' }}>
-            {users.map((user) => (
-              <Box
-                key={user.id}
-                onClick={() => setSelectedUser(user.id)}
-                sx={{
-                  px: 3,
-                  py: 2,
-                  cursor: 'pointer',
-                  bgcolor: selectedUser === user.id ? '#FFF5F7' : 'transparent',
-                  borderBottom: '1px solid #E5E7EB',
-                  '&:hover': {
-                    bgcolor: selectedUser === user.id ? '#FFF5F7' : '#F9FAFB'
-                  }
-                }}
-              >
-                <Stack direction="row" spacing={2} useFlexGap alignItems="center">
-                  <Avatar sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}>
-                    {user.name.charAt(0)}
-                  </Avatar>
-                  <Box sx={{ flex: 1 }}>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222', mb: 0.5 }}>
-                      {user.name}
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: '#717171', fontSize: '0.875rem' }}>
-                      {user.email}
-                    </Typography>
-                  </Box>
-                </Stack>
+            {loadingUsers ? (
+              <Box sx={{ py: 4, textAlign: 'center' }}>
+                <Typography variant="body2" sx={{ color: '#717171' }}>Loading users...</Typography>
               </Box>
-            ))}
+            ) : users.length === 0 ? (
+              <Box sx={{ py: 4, textAlign: 'center' }}>
+                <Typography variant="body2" sx={{ color: '#717171' }}>No users found.</Typography>
+              </Box>
+            ) : (
+              users.map((user) => (
+                <Box
+                  key={user.id}
+                  onClick={() => setSelectedUser(user.id)}
+                  sx={{
+                    px: 3,
+                    py: 2,
+                    cursor: 'pointer',
+                    bgcolor: selectedUser === user.id ? '#FFF5F7' : 'transparent',
+                    borderBottom: '1px solid #E5E7EB',
+                    '&:hover': {
+                      bgcolor: selectedUser === user.id ? '#FFF5F7' : '#F9FAFB'
+                    }
+                  }}
+                >
+                  <Stack direction="row" spacing={2} useFlexGap alignItems="center">
+                    <Avatar
+                      src={user.avatar || undefined}
+                      sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}
+                    >
+                      {user.name.charAt(0)}
+                    </Avatar>
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222', mb: 0.5 }}>
+                        {user.name}
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: '#717171', fontSize: '0.875rem' }}>
+                        {user.email}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </Box>
+              ))
+            )}
           </Box>
         </DialogContent>
         <DialogActions sx={{ p: 2, borderTop: '1px solid #E5E7EB' }}>

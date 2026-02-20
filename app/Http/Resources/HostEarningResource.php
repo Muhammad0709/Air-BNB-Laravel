@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -9,7 +10,7 @@ class HostEarningResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $commissionRate = 0.10; // 10% commission
+        $commissionRate = (float) (Setting::get('commission_rate', 10) / 100);
         $commission = (float) $this->total_amount * $commissionRate;
         $netAmount = (float) $this->total_amount - $commission;
         

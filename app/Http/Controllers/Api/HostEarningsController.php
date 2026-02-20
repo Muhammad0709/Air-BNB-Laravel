@@ -9,6 +9,7 @@ use App\Http\Resources\HostPayoutResource;
 use App\Models\Booking;
 use App\Models\Payout;
 use App\Models\Property;
+use App\Models\Setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -114,7 +115,7 @@ class HostEarningsController extends Controller
             ->whereIn('status', ['pending', 'processing'])
             ->sum('amount');
         
-        $commissionRate = 0.10;
+        $commissionRate = (float) (Setting::get('commission_rate', 10) / 100);
         $totalNetEarnings = $totalEarnings * (1 - $commissionRate);
         $availableBalance = $totalNetEarnings - $completedPayouts - $pendingPayouts;
         
@@ -445,7 +446,7 @@ class HostEarningsController extends Controller
             ->where('status', 'completed')
             ->sum('total_amount');
         
-        $commissionRate = 0.10;
+        $commissionRate = (float) (Setting::get('commission_rate', 10) / 100);
         $totalNetEarnings = $totalEarnings * (1 - $commissionRate);
         
         $completedPayouts = Payout::where('user_id', $host->id)
