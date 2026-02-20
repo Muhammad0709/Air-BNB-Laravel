@@ -380,10 +380,20 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                 </Typography>
               ))}
               {isAuthenticated && (
-                <Typography component={Link} href="/chat" onClick={() => setOpen(false)} sx={{ textDecoration: 'none', color: isActive('/chat') ? '#AD542D' : '#222222', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <MessageIcon sx={{ fontSize: 22 }} />
-                  {t('nav.messages')}
-                </Typography>
+                <>
+                  <Typography component={Link} href="/chat" onClick={() => setOpen(false)} sx={{ textDecoration: 'none', color: isActive('/chat') ? '#AD542D' : '#222222', fontWeight: 700 }}>
+                    {t('nav.messages')}
+                  </Typography>
+                  <Typography component={Link} href="/wishlist" onClick={() => setOpen(false)} sx={{ textDecoration: 'none', color: isActive('/wishlist') ? '#AD542D' : '#222222', fontWeight: 700 }}>
+                    {t('nav.wishlist')}
+                  </Typography>
+                  <Typography component={Link} href="/profile/settings" onClick={() => setOpen(false)} sx={{ textDecoration: 'none', color: isActive('/profile/settings') ? '#AD542D' : '#222222', fontWeight: 700 }}>
+                    {t('nav.profile')}
+                  </Typography>
+                  <Typography component={Link} href="/bookings" onClick={() => setOpen(false)} sx={{ textDecoration: 'none', color: isActive('/bookings') ? '#AD542D' : '#222222', fontWeight: 700 }}>
+                    {t('nav.booking_history')}
+                  </Typography>
+                </>
               )}
               <Box
                 component={Link}

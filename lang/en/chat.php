@@ -12,4 +12,5 @@ return [
     'cancel' => 'Cancel',
     'start' => 'Start',
     'no_properties' => 'No properties available to message.',
+    'back' => 'Back',
 ];

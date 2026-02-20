@@ -12,4 +12,5 @@ return [
     'cancel' => 'İptal',
     'start' => 'Başlat',
     'no_properties' => 'Mesaj göndermek için ilan bulunamadı.',
+    'back' => 'Geri',
 ];

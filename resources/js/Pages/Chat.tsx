@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { usePage, router, Head } from '@inertiajs/react'
-import { Box, Button, Card, CardContent, Stack, TextField, Typography, Avatar, Paper, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
+import { Box, Button, Card, CardContent, Stack, TextField, Typography, Avatar, Paper, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, useTheme, useMediaQuery } from '@mui/material'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { useLanguage } from '../hooks/use-language'
@@ -11,6 +11,7 @@ import VideoFileIcon from '@mui/icons-material/VideoFile'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
+import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { apiGet, apiPostForm, apiPostJson } from '../chatApi'
 
 interface MessageFile {
@@ -104,12 +105,17 @@ export default function Chat() {
   const [startingConversation, setStartingConversation] = useState(false)
   const [loadingMessages, setLoadingMessages] = useState(false)
   const [sending, setSending] = useState(false)
+  const conversationsRef = useRef<Conversation[]>([])
+
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
   const conversationsList = useMemo(() => {
     const arr = Array.isArray(props.conversations) ? props.conversations : []
     return arr.map((c) => ({ ...c, messages: [] as Message[] }))
   }, [props.conversations])
   const [conversations, setConversations] = useState<Conversation[]>(conversationsList)
+  conversationsRef.current = conversations
 
   useEffect(() => {
     setConversations((prev) => {
@@ -204,7 +210,7 @@ export default function Chat() {
 
   useEffect(() => {
     if (!selectedConversation) return
-    const conv = conversations.find((c) => c.id === selectedConversation)
+    const conv = conversationsRef.current.find((c) => c.id === selectedConversation)
     if (conv?.messages.length) return
     setLoadingMessages(true)
     apiGet(`/api/messages/conversations/${selectedConversation}`)
@@ -216,7 +222,7 @@ export default function Chat() {
       })
       .catch(() => {})
       .finally(() => setLoadingMessages(false))
-  }, [selectedConversation, conversations])
+  }, [selectedConversation])
 
   useEffect(() => {
     if (!selectedConversation || typeof window === 'undefined' || !(window as unknown as { Echo?: { private: (ch: string) => { listen: (e: string, cb: (payload: unknown) => void) => void } } }).Echo) return
@@ -354,7 +360,8 @@ export default function Chat() {
           </Box>
 
           <Row>
-            {/* Conversations List */}
+            {/* Conversations List - on mobile hide when a chat is open */}
+            {(!isMobile || !selectedConversation) && (
             <Col xs={12} md={4} lg={3}>
               <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, height: 'calc(100vh - 250px)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                 <CardContent sx={{ p: 0, flex: 1, minHeight: 0, overflowY: 'scroll', display: 'flex', flexDirection: 'column' }}>
@@ -517,23 +524,30 @@ export default function Chat() {
                 </CardContent>
               </Card>
             </Col>
+            )}
 
-            {/* Chat Window */}
+            {/* Chat Window - on mobile only show when a conversation is selected */}
+            {(!isMobile || selectedConversation) && (
             <Col xs={12} md={8} lg={9}>
               {currentConversation ? (
                 <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, height: 'calc(100vh - 250px)', display: 'flex', flexDirection: 'column' }}>
                   {/* Chat Header */}
                   <Box sx={{ p: 2, borderBottom: '1px solid #E5E7EB' }}>
                     <Stack direction="row" spacing={2} useFlexGap alignItems="center" justifyContent="space-between">
-<Stack direction="row" spacing={2} useFlexGap alignItems="center">
-                      <Avatar src={currentConversation.hostAvatar ?? undefined} sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}>
+                      {isMobile && (
+                        <IconButton onClick={() => setSelectedConversation(null)} sx={{ mr: -1 }} aria-label={t('chat.back')}>
+                          <ArrowBackIcon sx={{ fontSize: 24, color: '#222222' }} />
+                        </IconButton>
+                      )}
+                      <Stack direction="row" spacing={2} useFlexGap alignItems="center" sx={{ minWidth: 0, flex: 1 }}>
+                        <Avatar src={currentConversation.hostAvatar ?? undefined} sx={{ bgcolor: '#AD542D', width: 40, height: 40, flexShrink: 0 }}>
                           {currentConversation.hostName.charAt(0)}
                         </Avatar>
-                        <Box>
-                          <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#222222' }}>
+                        <Box sx={{ minWidth: 0 }}>
+                          <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#222222' }} noWrap>
                             {currentConversation.hostName}
                           </Typography>
-                          <Typography variant="caption" sx={{ color: '#717171' }}>
+                          <Typography variant="caption" sx={{ color: '#717171' }} noWrap display="block">
                             {currentConversation.property}
                           </Typography>
                         </Box>
@@ -542,9 +556,9 @@ export default function Chat() {
                   </Box>
 
                   {/* Messages */}
-                  <Box ref={messageContainerRef} sx={{ flex: 1, overflowY: 'auto', p: 2, bgcolor: '#F9FAFB' }}>
+                  <Box ref={messageContainerRef} sx={{ flex: 1, overflowY: 'auto', p: 2, bgcolor: '#F9FAFB', display: 'flex', flexDirection: 'column', minHeight: 0 }}>
                     {loadingMessages ? (
-                      <Box sx={{ textAlign: 'center', py: 4 }}>
+                      <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 200 }}>
                         <Typography variant="body2" sx={{ color: '#717171' }}>{t('chat.loading')}</Typography>
                       </Box>
                     ) : (
@@ -862,6 +876,7 @@ export default function Chat() {
                 </Card>
               )}
             </Col>
+            )}
           </Row>
         </Container>
       </Box>
