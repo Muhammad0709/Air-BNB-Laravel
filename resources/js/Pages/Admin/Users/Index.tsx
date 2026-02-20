@@ -4,6 +4,7 @@ import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import DeleteConfirmationDialog from '../../../Components/Admin/DeleteConfirmationDialog'
 import ActionsMenu from '../../../Components/Admin/ActionsMenu'
+import Pagination from '../../../components/Pagination'
 import { router, usePage } from '@inertiajs/react'
 import SearchIcon from '@mui/icons-material/Search'
 import { useLanguage } from '../../../hooks/use-language'
@@ -21,10 +22,14 @@ export default function AdminUsers() {
 
   const handleSearchChange = (value: string) => {
     setSearch(value)
-    router.get('/admin/users', { search: value }, { 
+    router.get('/admin/users', { search: value, page: 1 }, {
       preserveState: true,
       replace: true
     })
+  }
+
+  const handlePageChange = (page: number) => {
+    router.get('/admin/users', { search, page }, { preserveState: true })
   }
 
   const handleDeleteClick = (user: { id: number; name: string }) => {
@@ -49,6 +54,8 @@ export default function AdminUsers() {
   }
 
   const usersList = users?.data || []
+  const currentPage = users?.current_page ?? 1
+  const lastPage = users?.last_page ?? 1
 
   return (
     <AdminLayout title={t('admin.users.title')}>
@@ -166,6 +173,13 @@ export default function AdminUsers() {
                   </TableBody>
                 </Table>
               </TableContainer>
+              {lastPage > 1 && (
+                <Pagination
+                  currentPage={currentPage}
+                  lastPage={lastPage}
+                  onPageChange={handlePageChange}
+                />
+              )}
             </CardContent>
           </Card>
         </Col>

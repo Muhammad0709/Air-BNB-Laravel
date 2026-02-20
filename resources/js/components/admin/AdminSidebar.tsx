@@ -4,7 +4,8 @@ import DashboardIcon from '@mui/icons-material/Dashboard'
 import PeopleIcon from '@mui/icons-material/People'
 import HotelIcon from '@mui/icons-material/Hotel'
 import BookOnlineIcon from '@mui/icons-material/BookOnline'
-import SupportAgentIcon from '@mui/icons-material/SupportAgent'
+import HistoryIcon from '@mui/icons-material/History'
+// import SupportAgentIcon from '@mui/icons-material/SupportAgent'
 import SettingsIcon from '@mui/icons-material/Settings'
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../hooks/use-language'
@@ -35,7 +36,8 @@ export default function AdminSidebar({ sidebarOpen, onNavigate }: AdminSidebarPr
     { labelKey: 'admin.sidebar.users', icon: PeopleIcon, path: '/admin/users', onClick: () => handleNav('/admin/users') },
     { labelKey: 'admin.sidebar.properties', icon: HotelIcon, path: '/admin/properties', onClick: () => handleNav('/admin/properties') },
     { labelKey: 'admin.sidebar.bookings', icon: BookOnlineIcon, path: '/admin/bookings', onClick: () => handleNav('/admin/bookings') },
-    { labelKey: 'admin.sidebar.support_tickets', icon: SupportAgentIcon, path: '/admin/support-tickets', onClick: () => handleNav('/admin/support-tickets') },
+    { labelKey: 'admin.sidebar.history', icon: HistoryIcon, path: '/admin/history', onClick: () => handleNav('/admin/history') },
+    // { labelKey: 'admin.sidebar.support_tickets', icon: SupportAgentIcon, path: '/admin/support-tickets', onClick: () => handleNav('/admin/support-tickets') },
     { labelKey: 'admin.sidebar.system_settings', icon: SettingsIcon, path: '/admin/settings', onClick: () => handleNav('/admin/settings') },
   ]
 

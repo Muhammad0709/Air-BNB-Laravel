@@ -170,7 +170,12 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                   component={Link}
                   href="/chat"
                   aria-label={t('nav.messages')}
-                  sx={{ color: '#222222', p: 1}}
+                  sx={{
+                    color: '#AD542D',
+                    p: 1,
+                    transition: 'all 0.2s',
+                    '&:hover': { color: '#8a4224', bgcolor: 'rgba(173, 84, 45, 0.08)' }
+                  }}
                 >
                   <MessageIcon sx={{ fontSize: 24 }} />
                 </IconButton>

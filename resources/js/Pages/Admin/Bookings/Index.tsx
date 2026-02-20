@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState } from 'react'
 import { Box, Button, Card, CardContent, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, InputAdornment, Chip } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import DeleteConfirmationDialog from '../../../Components/Admin/DeleteConfirmationDialog'
 import ActionsMenu from '../../../Components/Admin/ActionsMenu'
+import Pagination from '../../../components/Pagination'
 import SearchIcon from '@mui/icons-material/Search'
 import { Head, router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
@@ -18,24 +19,29 @@ type BookingRow = {
   amount: string
 }
 
+type BookingsProp = BookingRow[] | { data: BookingRow[]; current_page: number; last_page: number }
+
 export default function AdminBookings() {
   const { t } = useLanguage()
-  const { bookings: bookingsProp = [] } = (usePage().props as { bookings?: BookingRow[] }) ?? {}
-  const [search, setSearch] = useState('')
+  const props = usePage().props as { bookings?: BookingsProp; filters?: { search?: string } }
+  const bookingsProp = props.bookings
+  const filters = props.filters ?? {}
+  const [search, setSearch] = useState(filters.search ?? '')
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [bookingToDelete, setBookingToDelete] = useState<{ id: number; guest: string } | null>(null)
 
-  const filteredBookings = useMemo(() => {
-    const list = Array.isArray(bookingsProp) ? bookingsProp : []
-    if (!search.trim()) return list
-    const q = search.toLowerCase()
-    return list.filter(
-      (booking) =>
-        booking.guest.toLowerCase().includes(q) ||
-        booking.property.toLowerCase().includes(q) ||
-        booking.status.toLowerCase().includes(q)
-    )
-  }, [bookingsProp, search])
+  const list = Array.isArray(bookingsProp) ? bookingsProp : (bookingsProp?.data ?? [])
+  const currentPage = (bookingsProp as any)?.current_page ?? 1
+  const lastPage = (bookingsProp as any)?.last_page ?? 1
+
+  const handleSearchChange = (value: string) => {
+    setSearch(value)
+    router.get('/admin/bookings', { search: value, page: 1 }, { preserveState: true, replace: true })
+  }
+
+  const handlePageChange = (page: number) => {
+    router.get('/admin/bookings', { search, page }, { preserveState: true })
+  }
 
   const getStatusColor = (status: string) => {
     switch (String(status).toLowerCase()) {
@@ -89,7 +95,7 @@ export default function AdminBookings() {
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap alignItems="center" sx={{ width: { xs: '100%', sm: 'auto' } }}>
                     <TextField
                       value={search}
-                      onChange={(e) => setSearch(e.target.value)}
+                      onChange={(e) => handleSearchChange(e.target.value)}
                       placeholder={t('admin.bookings.search_placeholder')}
                       size="small"
                       sx={{ width: { xs: '100%', sm: 250 } }}
@@ -130,7 +136,7 @@ export default function AdminBookings() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {filteredBookings.length === 0 ? (
+                      {list.length === 0 ? (
                         <TableRow>
                           <TableCell colSpan={7} sx={{ border: 'none', py: 8 }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
@@ -139,7 +145,7 @@ export default function AdminBookings() {
                           </TableCell>
                         </TableRow>
                       ) : (
-                        filteredBookings.map((booking) => (
+                        list.map((booking) => (
                           <TableRow key={booking.id} sx={{ '&:hover': { bgcolor: '#F9FAFB' } }}>
                             <TableCell sx={{ fontWeight: 600, color: '#222222' }}>{booking.guest}</TableCell>
                             <TableCell sx={{ color: '#717171' }}>{booking.property}</TableCell>
@@ -168,6 +174,13 @@ export default function AdminBookings() {
                     </TableBody>
                   </Table>
                 </TableContainer>
+                {lastPage > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    lastPage={lastPage}
+                    onPageChange={handlePageChange}
+                  />
+                )}
               </CardContent>
             </Card>
           </Col>

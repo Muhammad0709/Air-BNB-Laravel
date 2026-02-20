@@ -3,6 +3,7 @@ import { Box, Card, CardContent, Stack, Table, TableBody, TableCell, TableContai
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import ActionsMenu from '../../../Components/Admin/ActionsMenu'
+import Pagination from '../../../components/Pagination'
 import SearchIcon from '@mui/icons-material/Search'
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
@@ -16,10 +17,14 @@ export default function AdminProperties() {
 
   const handleSearchChange = (value: string) => {
     setSearch(value)
-    router.get('/admin/properties', { search: value }, { 
+    router.get('/admin/properties', { search: value, page: 1 }, {
       preserveState: true,
-      replace: true 
+      replace: true
     })
+  }
+
+  const handlePageChange = (page: number) => {
+    router.get('/admin/properties', { search, page }, { preserveState: true })
   }
 
   const getApprovalStatusColor = (status: string) => {
@@ -42,6 +47,8 @@ export default function AdminProperties() {
 
 
   const propertiesList = properties?.data || []
+  const currentPage = properties?.current_page ?? 1
+  const lastPage = properties?.last_page ?? 1
 
   return (
     <AdminLayout title={t('admin.properties.title')}>
@@ -143,6 +150,13 @@ export default function AdminProperties() {
                   </TableBody>
                 </Table>
               </TableContainer>
+              {lastPage > 1 && (
+                <Pagination
+                  currentPage={currentPage}
+                  lastPage={lastPage}
+                  onPageChange={handlePageChange}
+                />
+              )}
             </CardContent>
           </Card>
         </Col>
