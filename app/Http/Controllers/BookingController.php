@@ -180,8 +180,10 @@ class BookingController extends Controller
 
         $nightlyRate = (float) $property->price;
         $cleaningFee = 25.00;
-        $serviceFee = round($nightlyRate * $nights * 0.12, 2);
-        $totalAmount = $nightlyRate * $nights + $cleaningFee + $serviceFee;
+        $subtotal = round($nightlyRate * $nights, 2);
+        $serviceFeePercent = 10;
+        $serviceFee = round($subtotal * ($serviceFeePercent / 100), 2);
+        $totalAmount = round($subtotal + $cleaningFee + $serviceFee, 2);
 
         $user = Auth::user();
         if (! $user) {

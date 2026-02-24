@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Box, Button, Card, CardContent, FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
@@ -9,91 +9,56 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 
 export default function EditBooking() {
-  const { id } = (usePage().props as { id?: string }) || {}
+  const { booking, properties: propertiesList } = usePage().props as {
+    booking: {
+      id: string
+      guest: string
+      guestEmail: string
+      guestPhone: string
+      propertyId: number
+      property: string
+      checkin: string
+      checkout: string
+      status: string
+      amount: string
+    }
+    properties: Array<{ id: number; title: string; location: string }>
+  }
+  const id = booking?.id ?? ''
   const [toastOpen, setToastOpen] = useState(false)
-  const [currentMonth, setCurrentMonth] = useState(new Date())
-  const [selectedCheckin, setSelectedCheckin] = useState<Date | null>(null)
-  const [selectedCheckout, setSelectedCheckout] = useState<Date | null>(null)
+  const [currentMonth, setCurrentMonth] = useState(() => {
+    if (!booking?.checkin) return new Date()
+    const [y, m, d] = booking.checkin.split('-').map(Number)
+    return new Date(y, (m ?? 1) - 1, 1)
+  })
+  const [selectedCheckin, setSelectedCheckin] = useState<Date | null>(() => {
+    if (!booking?.checkin) return null
+    const [y, m, d] = booking.checkin.split('-').map(Number)
+    const dte = new Date(y, (m ?? 1) - 1, d ?? 1)
+    dte.setHours(0, 0, 0, 0)
+    return dte
+  })
+  const [selectedCheckout, setSelectedCheckout] = useState<Date | null>(() => {
+    if (!booking?.checkout) return null
+    const [y, m, d] = booking.checkout.split('-').map(Number)
+    const dte = new Date(y, (m ?? 1) - 1, d ?? 1)
+    dte.setHours(0, 0, 0, 0)
+    return dte
+  })
   const [renderKey, setRenderKey] = useState(0)
   
   const [formData, setFormData] = useState({
-    guest: '',
-    guestEmail: '',
-    guestPhone: '',
-    property: '',
-    checkin: '',
-    checkout: '',
-    status: 'Pending',
-    amount: ''
+    guest: booking?.guest ?? '',
+    guestEmail: booking?.guestEmail ?? '',
+    guestPhone: booking?.guestPhone ?? '',
+    property: String(booking?.propertyId ?? ''),
+    checkin: booking?.checkin ?? '',
+    checkout: booking?.checkout ?? '',
+    status: booking?.status ?? 'Pending',
+    amount: booking?.amount ?? ''
   })
 
-  // Mock properties - in real app, fetch from API
-  const properties = [
-    { id: 1, title: 'Luxury Beachfront Villa', location: 'Malibu, California' },
-    { id: 2, title: 'Modern Apartment', location: 'Los Angeles, CA' },
-    { id: 3, title: 'Cozy Studio', location: 'San Francisco, CA' },
-  ]
-
-  // Mock data - in real app, fetch from API
-  useEffect(() => {
-    const mockBooking = {
-      id: id || '1',
-      guest: 'John Doe',
-      guestEmail: 'john.doe@example.com',
-      guestPhone: '+1 (555) 123-4567',
-      property: 'Luxury Beachfront Villa',
-      checkin: '2025-01-15',
-      checkout: '2025-01-20',
-      status: 'Confirmed',
-      amount: '1495'
-    }
-
-    setFormData({
-      guest: mockBooking.guest,
-      guestEmail: mockBooking.guestEmail,
-      guestPhone: mockBooking.guestPhone,
-      property: mockBooking.property,
-      checkin: mockBooking.checkin,
-      checkout: mockBooking.checkout,
-      status: mockBooking.status,
-      amount: mockBooking.amount
-    })
-
-    // Set calendar month and selected dates
-    // Parse date string manually to avoid timezone issues
-    const [checkinYear, checkinMonth, checkinDay] = mockBooking.checkin.split('-').map(Number)
-    const checkinDate = new Date(checkinYear, checkinMonth - 1, checkinDay)
-    checkinDate.setHours(0, 0, 0, 0)
-    
-    const [checkoutYear, checkoutMonth, checkoutDay] = mockBooking.checkout.split('-').map(Number)
-    const checkoutDate = new Date(checkoutYear, checkoutMonth - 1, checkoutDay)
-    checkoutDate.setHours(0, 0, 0, 0)
-    
-    // Ensure we create new Date objects to trigger re-render
-    const checkinDateCopy = new Date(checkinDate.getTime())
-    const checkoutDateCopy = new Date(checkoutDate.getTime())
-    
-    // Set dates in a batch to ensure React re-renders
-    setCurrentMonth(new Date(checkinDateCopy))
-    setSelectedCheckin(new Date(checkinDateCopy))
-    setSelectedCheckout(new Date(checkoutDateCopy))
-    
-    // Debug: Log the dates being set
-    console.log('Setting dates:', {
-      checkin: checkinDateCopy.toISOString(),
-      checkout: checkoutDateCopy.toISOString(),
-      checkinTime: checkinDateCopy.getTime(),
-      checkoutTime: checkoutDateCopy.getTime()
-    })
-  }, [id])
-
-  // Force re-render when dates are set
-  useEffect(() => {
-    if (selectedCheckin && selectedCheckout) {
-      // Force a re-render by updating a counter
-      setRenderKey(prev => prev + 1)
-    }
-  }, [selectedCheckin, selectedCheckout])
+  const properties = propertiesList ?? []
 
   const handlePrevMonth = () => {
     const newDate = new Date(currentMonth)
@@ -306,7 +271,7 @@ export default function EditBooking() {
                       label="Property"
                     >
                       {properties.map((property) => (
-                        <MenuItem key={property.id} value={property.title}>
+                        <MenuItem key={property.id} value={String(property.id)}>
                           {property.title} - {property.location}
                         </MenuItem>
                       ))}

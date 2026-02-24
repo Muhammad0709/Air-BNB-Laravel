@@ -3,17 +3,19 @@ import { Box, Button, Card, CardContent, FormControl, InputLabel, MenuItem, Pape
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import Toast from '../../../Components/Admin/Toast'
-import { Head, router } from '@inertiajs/react'
+import { Head, router, usePage } from '@inertiajs/react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 
 export default function CreateBooking() {
+  const { properties: propertiesList } = usePage().props as { properties?: Array<{ id: number; title: string; location: string }> }
+  const properties = propertiesList ?? []
+
   const [toastOpen, setToastOpen] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [selectedCheckin, setSelectedCheckin] = useState<Date | null>(null)
   const [selectedCheckout, setSelectedCheckout] = useState<Date | null>(null)
-  
   const [formData, setFormData] = useState({
     guest: '',
     guestEmail: '',
@@ -24,13 +26,6 @@ export default function CreateBooking() {
     status: 'Pending',
     amount: ''
   })
-
-  // Mock properties - in real app, fetch from API
-  const properties = [
-    { id: 1, title: 'Luxury Beachfront Villa', location: 'Malibu, California' },
-    { id: 2, title: 'Modern Apartment', location: 'Los Angeles, CA' },
-    { id: 3, title: 'Cozy Studio', location: 'San Francisco, CA' },
-  ]
 
   const handlePrevMonth = () => {
     const newDate = new Date(currentMonth)
@@ -229,7 +224,7 @@ export default function CreateBooking() {
                       label="Property"
                     >
                       {properties.map((property) => (
-                        <MenuItem key={property.id} value={property.title}>
+                        <MenuItem key={property.id} value={String(property.id)}>
                           {property.title} - {property.location}
                         </MenuItem>
                       ))}

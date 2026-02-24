@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { Box, Button, Card, CardContent, Chip, Divider, Stack, Typography } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
@@ -12,40 +11,21 @@ import EmailIcon from '@mui/icons-material/Email'
 import PhoneIcon from '@mui/icons-material/Phone'
 
 export default function ShowBooking() {
-  const { id } = (usePage().props as { id?: string }) || {}
-  const [booking, setBooking] = useState({
-    id: '',
-    guest: '',
-    guestEmail: '',
-    guestPhone: '',
-    property: '',
-    propertyLocation: '',
-    checkin: '',
-    checkout: '',
-    status: '',
-    amount: '',
-    nights: 0,
-    createdAt: ''
-  })
-
-  // Mock data - in real app, fetch from API
-  useEffect(() => {
-    const mockBooking = {
-      id: id || '1',
-      guest: 'John Doe',
-      guestEmail: 'john.doe@example.com',
-      guestPhone: '+1 (555) 123-4567',
-      property: 'Luxury Beachfront Villa',
-      propertyLocation: 'Malibu, California',
-      checkin: '2025-01-15',
-      checkout: '2025-01-20',
-      status: 'Confirmed',
-      amount: '$1,495',
-      nights: 5,
-      createdAt: '2025-01-10'
-    }
-    setBooking(mockBooking)
-  }, [id])
+  const { booking } = usePage().props as { booking: {
+    id: string
+    guest: string
+    guestEmail: string
+    guestPhone: string
+    property: string
+    propertyLocation: string
+    checkin: string
+    checkout: string
+    status: string
+    amount: string
+    nights: number
+    createdAt: string
+  } }
+  const id = booking?.id ?? ''
 
   const getStatusColor = (status: string) => {
     switch (status) {

@@ -8,6 +8,8 @@ import BookingSummaryCard from '../components/BookingSummaryCard'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { router, Head, usePage } from '@inertiajs/react'
 import { useLanguage } from '../hooks/use-language'
+import { useCurrency } from '../contexts/CurrencyContext'
+import { formatPrice } from '../utils/currency'
 
 const PLACEHOLDER_IMAGE = '/images/popular-stay-1.svg'
 
@@ -29,14 +31,18 @@ type ConfirmationPageProps = {
   nights: number
   checkin: string | null
   checkout: string | null
-  costs: Array<{ label: string; amount: string }>
-  totalAmount: string
+  costs: Array<{ label: string; amount: number }>
+  totalAmount: number
   rules: string[]
 }
 
 export default function Confirmation() {
   const { t } = useLanguage()
+  const { currency } = useCurrency()
   const { property, costs, totalAmount, rules } = usePage<ConfirmationPageProps>().props
+
+  const formattedCosts = costs.map((c) => ({ label: c.label, amount: formatPrice(c.amount, currency) }))
+  const formattedTotal = formatPrice(totalAmount, currency)
 
   return (
     <>
@@ -69,9 +75,9 @@ export default function Confirmation() {
               <Col xs={12} md={10} lg={8}>
                 <BookingSummaryCard
                   rules={rules}
-                  costs={costs}
+                  costs={formattedCosts}
                   totalLabel={t('confirmation.total')}
-                  totalAmount={totalAmount}
+                  totalAmount={formattedTotal}
                 />
               </Col>
             </Row>
