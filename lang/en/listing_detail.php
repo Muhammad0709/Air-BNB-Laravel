@@ -27,6 +27,7 @@ return [
     'your_comment' => 'Your comment (optional)',
     'submit_review' => 'Submit review',
     'login_to_review' => 'Log in to leave a review',
+    'login_to_book' => 'You are not logged in. Please login to book.',
     'explore_more' => 'Explore More',
     'show_less' => 'Show less',
 ];

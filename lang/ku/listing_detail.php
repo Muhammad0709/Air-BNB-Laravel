@@ -21,4 +21,5 @@ return [
     'more_photos' => 'وێنە',
     'average_rating' => 'Navîn nêrîn',
     'reviews' => 'nêrîn',
+    'login_to_book' => 'تۆ چوونەژوورەوە نیت. بۆ حجز چوونەژوورەوە بکە.',
 ];

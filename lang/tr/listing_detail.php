@@ -21,4 +21,5 @@ return [
     'more_photos' => 'fotoğraf',
     'average_rating' => 'Ortalama puan',
     'reviews' => 'değerlendirme',
+    'login_to_book' => 'Giriş yapmadınız. Rezervasyon yapmak için giriş yapın.',
 ];

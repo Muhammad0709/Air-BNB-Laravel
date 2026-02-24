@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react'
 import { Box, Button, Checkbox, FormControlLabel, Paper, Stack, TextField, Typography } from '@mui/material'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import Toast from '../components/shared/Toast'
 import { useLanguage } from '../hooks/use-language'
 import { useCurrency } from '../contexts/CurrencyContext'
 import { formatPrice as formatPriceUtil } from '../utils/currency'
@@ -115,6 +116,7 @@ export default function ListingDetail() {
   const [reviewComment, setReviewComment] = useState('')
   const [reviewSubmitting, setReviewSubmitting] = useState(false)
   const [showAllReviews, setShowAllReviews] = useState(false)
+  const [toast, setToast] = useState({ open: false, message: '', severity: 'warning' as 'success' | 'error' | 'warning' | 'info' })
 
   const displayedReviews = showAllReviews ? reviews : reviews.slice(0, 3)
 
@@ -264,7 +266,13 @@ export default function ListingDetail() {
                         <Button
                           variant="contained"
                           className="btn-book"
-                          onClick={() => router.visit(bookingUrl())}
+                          onClick={() => {
+                            if (!authUser) {
+                              setToast({ open: true, message: t('listing_detail.login_to_book'), severity: 'warning' })
+                              return
+                            }
+                            router.visit(bookingUrl())
+                          }}
                         >
                          {t('listing_detail.book')}
                         </Button>
@@ -772,6 +780,12 @@ export default function ListingDetail() {
         </section>
       </main>
       <Footer />
+      <Toast
+        open={toast.open}
+        onClose={() => setToast((prev) => ({ ...prev, open: false }))}
+        message={toast.message}
+        severity={toast.severity}
+      />
     </Box>
   )
 }
