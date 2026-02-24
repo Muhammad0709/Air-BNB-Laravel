@@ -71,20 +71,24 @@ class PageController extends Controller
     public function customerBookings(Request $request)
     {
         $userId = Auth::id();
+
         $upcoming = Booking::with('property')
             ->where('user_id', $userId)
             ->whereIn('status', BookingStatus::upcoming())
-            ->get();
+            ->latest()
+            ->paginate(5, ['*'], 'upcoming_page');
+        $upcoming->through(fn ($b) => (new BookingHistoryResource($b))->toArray($request));
+
         $past = Booking::with('property')
             ->where('user_id', $userId)
             ->whereIn('status', BookingStatus::past())
-            ->get();
+            ->latest()
+            ->paginate(5, ['*'], 'past_page');
+        $past->through(fn ($b) => (new BookingHistoryResource($b))->toArray($request));
 
         return Inertia::render('CustomerBookings', [
-            'upcoming' => BookingHistoryResource::collection($upcoming)->resolve(),
-            'past' => BookingHistoryResource::collection($past)->resolve(),
-            'upcoming_count' => $upcoming->count(),
-            'past_count' => $past->count(),
+            'upcoming' => $upcoming,
+            'past' => $past,
         ]);
     }
 
