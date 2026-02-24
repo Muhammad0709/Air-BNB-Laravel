@@ -7,4 +7,6 @@ return [
     'your_booking' => 'Rezervasyonunuz',
     'total' => 'Toplam',
     'return_to_home' => 'Ana Sayfaya Dön',
+    'no_booking_data' => 'Rezervasyon verisi yok. Lütfen önce bir rezervasyon yapın.',
+    'property_not_found' => 'Mülk bulunamadı.',
 ];

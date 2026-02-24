@@ -7,4 +7,6 @@ return [
     'your_booking' => 'Your booking',
     'total' => 'Total',
     'return_to_home' => 'Return to Home',
+    'no_booking_data' => 'No booking data. Please complete a booking first.',
+    'property_not_found' => 'Property not found.',
 ];
