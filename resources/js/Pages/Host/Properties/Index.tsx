@@ -4,6 +4,7 @@ import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import DeleteConfirmationDialog from '../../../Components/Admin/DeleteConfirmationDialog'
 import ActionsMenu from '../../../Components/Admin/ActionsMenu'
+import Pagination from '../../../components/Pagination'
 import Toast from '../../../Components/Admin/Toast'
 import SearchIcon from '@mui/icons-material/Search'
 import { router, usePage } from '@inertiajs/react'
@@ -59,10 +60,26 @@ export default function HostProperties() {
   }, [flash?.success, flash?.error])
 
   const handleSearch = () => {
-    router.get('/host/properties', { search }, { preserveState: true })
+    router.get('/host/properties', {
+      search,
+      status: filters.status,
+      approval_status: filters.approval_status,
+      page: 1
+    }, { preserveState: true, replace: true })
+  }
+
+  const handlePageChange = (page: number) => {
+    router.get('/host/properties', {
+      search,
+      status: filters.status,
+      approval_status: filters.approval_status,
+      page
+    }, { preserveState: true })
   }
 
   const filteredProperties = properties.data
+  const currentPage = properties.current_page ?? 1
+  const lastPage = properties.last_page ?? 1
 
   const getApprovalStatusColor = (status: string) => {
     switch (status) {
@@ -219,6 +236,13 @@ export default function HostProperties() {
                   </TableBody>
                 </Table>
               </TableContainer>
+              {lastPage > 1 && (
+                <Pagination
+                  currentPage={currentPage}
+                  lastPage={lastPage}
+                  onPageChange={handlePageChange}
+                />
+              )}
             </CardContent>
           </Card>
         </Col>
