@@ -34,6 +34,7 @@ type Property = {
   is_guest_favorite?: boolean
 }
 
+
 type ListingProps = {
   properties: {
     data: Property[]
