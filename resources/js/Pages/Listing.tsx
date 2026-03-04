@@ -35,6 +35,7 @@ type Property = {
 }
 
 console.log('hello');
+console.log('hellos');
 
 type ListingProps = {
   properties: {
