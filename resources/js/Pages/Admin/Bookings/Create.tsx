@@ -22,10 +22,7 @@ export default function CreateBooking() {
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  console.log(formData);
-  console.log(formData.guest);
-  console.log(formData.guestEmail);
-  console.log(formData.guestPhone);
+  
  
 
   
