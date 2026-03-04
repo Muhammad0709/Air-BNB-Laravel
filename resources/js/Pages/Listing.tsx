@@ -34,6 +34,7 @@ type Property = {
   is_guest_favorite?: boolean
 }
 
+console.log('hello');
 
 type ListingProps = {
   properties: {
