@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, Chip, Divider, Stack, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Chip, Divider, FormControl, MenuItem, Select, Stack, Typography } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import { Head, router, usePage } from '@inertiajs/react'
@@ -9,6 +9,8 @@ import HotelIcon from '@mui/icons-material/Hotel'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import EmailIcon from '@mui/icons-material/Email'
 import PhoneIcon from '@mui/icons-material/Phone'
+import { useState } from 'react'
+import Toast from '../../../components/shared/Toast'
 
 export default function ShowBooking() {
   const { booking } = usePage().props as { booking: {
@@ -27,13 +29,26 @@ export default function ShowBooking() {
   } }
   const id = booking?.id ?? ''
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Confirmed': return '#10B981'
-      case 'Pending': return '#F59E0B'
-      case 'Cancelled': return '#EF4444'
-      default: return '#717171'
-    }
+  const [currentStatus, setCurrentStatus] = useState(booking.status)
+  const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
+
+  const statusColors = {
+    Confirmed: '#10B981',
+    Pending: '#F59E0B',
+    Cancelled: '#EF4444',
+    Completed: '#3B82F6'
+  }
+
+  const statusColor = statusColors[currentStatus] || '#717171'
+
+  const handleStatusChange = (newStatus: string) => {
+    router.patch(`/host/bookings/${id}/status`, { status: newStatus.toLowerCase() }, {
+      onSuccess: () => {
+        setCurrentStatus(newStatus)
+        setToast({ open: true, message: 'Status updated!', severity: 'success' })
+      },
+      onError: () => setToast({ open: true, message: 'Update failed', severity: 'error' })
+    })
   }
 
   return (
@@ -76,27 +91,36 @@ export default function ShowBooking() {
               <Typography variant="h4" sx={{ fontWeight: 700, color: '#222222', mb: 2 }}>
                 Booking #{booking.id}
               </Typography>
-              <Stack direction="row" spacing={2} useFlexGap alignItems="center">
-                <Chip
-                  label={booking.status}
-                  size="small"
-                  sx={{
-                    bgcolor: `${getStatusColor(booking.status)}15`,
-                    color: getStatusColor(booking.status),
-                    fontWeight: 600,
-                    fontSize: 12
-                  }}
-                />
-                <Typography sx={{ color: '#717171', fontSize: 14 }}>
-                  Created {new Date(booking.createdAt).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </Typography>
-              </Stack>
+              <Typography sx={{ color: '#717171', fontSize: 14 }}>
+                Created {new Date(booking.createdAt).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </Typography>
             </Box>
-            <Box sx={{ textAlign: 'right' }}>
+            <Box sx={{ textAlign: { xs: 'left', sm: 'right' } }}>
+              <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2, justifyContent: { xs: 'flex-start', sm: 'flex-end' } }}>
+                <Typography sx={{ color: '#717171', fontSize: 14 }}>Status:</Typography>
+                <FormControl size="small">
+                  <Select
+                    value={currentStatus}
+                    onChange={(e) => handleStatusChange(e.target.value)}
+                    sx={{
+                      minWidth: 150,
+                      bgcolor: `${statusColor}15`,
+                      color: statusColor,
+                      fontWeight: 600,
+                      '& .MuiOutlinedInput-notchedOutline': { borderColor: statusColor }
+                    }}
+                  >
+                    <MenuItem value="Pending">Pending</MenuItem>
+                    <MenuItem value="Confirmed">Confirmed</MenuItem>
+                    <MenuItem value="Completed">Completed</MenuItem>
+                    <MenuItem value="Cancelled">Cancelled</MenuItem>
+                  </Select>
+                </FormControl>
+              </Stack>
               <Typography variant="h5" sx={{ fontWeight: 700, color: '#222222' }}>
                 {booking.amount}
               </Typography>
@@ -272,6 +296,13 @@ export default function ShowBooking() {
         </Col>
       </Row>
       </HostLayout>
+
+      <Toast
+        open={toast.open}
+        onClose={() => setToast({ ...toast, open: false })}
+        message={toast.message}
+        severity={toast.severity}
+      />
     </>
   )
 }

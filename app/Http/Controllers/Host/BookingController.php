@@ -111,10 +111,29 @@ class BookingController extends Controller
                 'property' => $booking->property?->title ?? '',
                 'checkin' => $booking->check_in_date->format('Y-m-d'),
                 'checkout' => $booking->check_out_date->format('Y-m-d'),
-                'status' => $booking->status->value,
+                'status' => $booking->status->label(),
                 'amount' => (string) $booking->total_amount,
             ],
             'properties' => $properties,
         ]);
+    }
+
+    public function updateStatus(Request $request, string $id)
+    {
+        $propertyIds = Property::where('user_id', Auth::id())->pluck('id');
+
+        $booking = Booking::where('id', $id)
+            ->whereIn('property_id', $propertyIds)
+            ->firstOrFail();
+
+        $request->validate([
+            'status' => ['required', 'string', 'in:pending,confirmed,cancelled,completed'],
+        ]);
+
+        $booking->update([
+            'status' => $request->status,
+        ]);
+
+        return redirect()->back()->with('success', 'Booking status updated successfully!');
     }
 }

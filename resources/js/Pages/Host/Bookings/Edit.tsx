@@ -54,7 +54,7 @@ export default function EditBooking() {
     property: String(booking?.propertyId ?? ''),
     checkin: booking?.checkin ?? '',
     checkout: booking?.checkout ?? '',
-    status: booking?.status ?? 'Pending',
+    status: booking?.status ? booking.status.charAt(0).toUpperCase() + booking.status.slice(1).toLowerCase() : 'Pending',
     amount: booking?.amount ?? ''
   })
 
@@ -198,8 +198,12 @@ export default function EditBooking() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission here
-    console.log('Updated booking data:', formData)
+    // Convert status to lowercase for backend
+    const submitData = {
+      ...formData,
+      status: formData.status.toLowerCase()
+    }
+    console.log('Updated booking data:', submitData)
     setToastOpen(true)
     // Navigate back to bookings list after successful submission
     setTimeout(() => {
@@ -302,6 +306,7 @@ export default function EditBooking() {
                     >
                       <MenuItem value="Pending">Pending</MenuItem>
                       <MenuItem value="Confirmed">Confirmed</MenuItem>
+                      <MenuItem value="Completed">Completed</MenuItem>
                       <MenuItem value="Cancelled">Cancelled</MenuItem>
                     </Select>
                   </FormControl>

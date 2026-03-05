@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Button, FormControl, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, MenuItem, Paper, Radio, RadioGroup, FormControlLabel, Select, Stack, TextField, Typography } from '@mui/material'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import Toast from '../components/shared/Toast'
@@ -80,6 +80,8 @@ export default function Booking() {
 
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false)
+  const [paymentMethod, setPaymentMethod] = useState('cash')
 
   const validate = () => {
     const newErrors: Record<string, string> = {}
@@ -104,7 +106,7 @@ export default function Booking() {
 
   const [submitting, setSubmitting] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleBookClick = (e: React.FormEvent) => {
     e.preventDefault()
     if (!validate()) {
       setToast({ open: true, message: t('booking.toast_fix_errors'), severity: 'error' })
@@ -114,6 +116,12 @@ export default function Booking() {
       setToast({ open: true, message: t('booking.select_property'), severity: 'error' })
       return
     }
+    // Open payment modal
+    setPaymentModalOpen(true)
+  }
+
+  const handleConfirmBooking = () => {
+    setPaymentModalOpen(false)
     setSubmitting(true)
     router.post('/booking', {
       property_id: property.id,
@@ -126,10 +134,16 @@ export default function Booking() {
       rooms: formData.rooms ?? 1,
       adults: formData.adults ?? 1,
       children: formData.children ?? 0,
+      payment_method: paymentMethod,
     }, {
       onFinish: () => setSubmitting(false),
       onError: (errors) => setErrors(errors as Record<string, string>),
     })
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    handleBookClick(e)
   }
 
   return (
@@ -335,6 +349,113 @@ export default function Booking() {
           message={toast.message}
           severity={toast.severity}
         />
+
+        {/* Payment Method Modal */}
+        <Dialog 
+          open={paymentModalOpen} 
+          onClose={() => setPaymentModalOpen(false)}
+          maxWidth="sm"
+          fullWidth
+          PaperProps={{
+            sx: {
+              borderRadius: 3
+            }
+          }}
+        >
+          <DialogTitle sx={{ fontWeight: 700, fontSize: '1.5rem' }}>
+            {t('booking.payment_method_title')}
+          </DialogTitle>
+          <DialogContent>
+            <Typography variant="body2" sx={{ mb: 3, color: '#6B7280' }}>
+              {t('booking.payment_method_subtitle')}
+            </Typography>
+            
+            <RadioGroup 
+              value={paymentMethod} 
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            >
+              <Paper 
+                elevation={0} 
+                sx={{ 
+                  p: 2, 
+                  mb: 2, 
+                  border: '2px solid', 
+                  borderColor: paymentMethod === 'cash' ? '#AD542D' : '#E5E7EB',
+                  borderRadius: 2,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+                onClick={() => setPaymentMethod('cash')}
+              >
+                <FormControlLabel 
+                  value="cash" 
+                  control={<Radio sx={{ color: '#AD542D', '&.Mui-checked': { color: '#AD542D' } }} />} 
+                  label={
+                    <Box>
+                      <Typography sx={{ fontWeight: 600, fontSize: '1rem' }}>
+                        {t('booking.payment_cash')}
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: '#6B7280', mt: 0.5 }}>
+                        {t('booking.payment_cash_desc')}
+                      </Typography>
+                    </Box>
+                  }
+                  sx={{ width: '100%', m: 0 }}
+                />
+              </Paper>
+
+              <Paper 
+                elevation={0} 
+                sx={{ 
+                  p: 2, 
+                  border: '2px solid', 
+                  borderColor: paymentMethod === 'online' ? '#AD542D' : '#E5E7EB',
+                  borderRadius: 2,
+                  cursor: 'not-allowed',
+                  opacity: 0.6,
+                  transition: 'all 0.2s'
+                }}
+              >
+                <FormControlLabel 
+                  value="online" 
+                  control={<Radio disabled />} 
+                  label={
+                    <Box>
+                      <Typography sx={{ fontWeight: 600, fontSize: '1rem' }}>
+                        {t('booking.payment_online')}
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: '#9CA3AF', mt: 0.5, fontStyle: 'italic' }}>
+                        {t('booking.coming_soon')}
+                      </Typography>
+                    </Box>
+                  }
+                  sx={{ width: '100%', m: 0 }}
+                  disabled
+                />
+              </Paper>
+            </RadioGroup>
+          </DialogContent>
+          <DialogActions sx={{ p: 3, pt: 0 }}>
+            <Button 
+              onClick={() => setPaymentModalOpen(false)}
+              sx={{ color: '#6B7280' }}
+            >
+              {t('common.cancel')}
+            </Button>
+            <Button 
+              onClick={handleConfirmBooking}
+              variant="contained"
+              disabled={submitting}
+              sx={{ 
+                bgcolor: '#AD542D', 
+                '&:hover': { bgcolor: '#78381C' },
+                minWidth: 120
+              }}
+            >
+              {submitting ? '...' : t('booking.confirm_booking')}
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </>
   )
