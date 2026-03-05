@@ -17,6 +17,8 @@ type HostRow = {
   total_host_earning_formatted: string
 }
 
+console.log("hello");
+
 type PageProps = {
   hosts: HostRow[]
   current_page?: number
