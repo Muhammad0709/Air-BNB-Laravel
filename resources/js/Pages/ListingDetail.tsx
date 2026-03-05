@@ -137,14 +137,6 @@ export default function ListingDetail() {
     return list
   }, [property.images, property.image])
 
-  // Grid needs 8 slots: 1 large + 2 medium + 5 small. Pad with first image if fewer.
-  const displayedImages = useMemo(() => {
-    const need = 8
-    const base = galleryImages.slice(0, need)
-    const first = base[0] || PLACEHOLDER_IMAGE
-    while (base.length < need) base.push(first)
-    return base
-  }, [galleryImages])
   const remainingCount = Math.max(0, galleryImages.length - 8)
 
   const handlePrevMonth = (calendar: number) => {
@@ -288,58 +280,89 @@ export default function ListingDetail() {
         {/* Image Gallery Section */}
         <section className="gallery-section">
           <RBContainer>
-            <Box className="gallery-grid-container">
-                <Box className="gallery-top-section">
-                <Box className="gallery-large-item">
-                  <button type="button" className="gallery-image-button">
-                    <img
-                      src={displayedImages[0]}
-                      alt={`${property.title} - 1`}
-                      className="gallery-image"
-                    />
-                  </button>
-                </Box>
-                <Box className="gallery-right-section">
-                  <Box className="gallery-medium-item">
-                    <button type="button" className="gallery-image-button">
-                      <img
-                        src={displayedImages[1]}
-                        alt={`${property.title} - 2`}
-                        className="gallery-image"
-                      />
-                    </button>
-                  </Box>
-                  <Box className="gallery-medium-item">
-                    <button type="button" className="gallery-image-button">
-                      <img
-                        src={displayedImages[2]}
-                        alt={`${property.title} - 3`}
-                        className="gallery-image"
-                      />
-                    </button>
-                  </Box>
-                </Box>
+            {galleryImages.length === 1 ? (
+              <Box sx={{ width: '100%', height: '470px', borderRadius: '12px', overflow: 'hidden', bgcolor: '#000000' }}>
+                <img
+                  src={galleryImages[0]}
+                  alt={property.title}
+                  style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+                />
               </Box>
-
-              <Box className="gallery-bottom-section">
-                {displayedImages.slice(3, 8).map((image, idx) => (
-                  <Box key={idx + 3} className="gallery-small-item">
+            ) : galleryImages.length <= 3 ? (
+              <Box sx={{ display: 'flex', gap: '8px', height: '470px' }}>
+                {galleryImages.map((image, idx) => (
+                  <Box
+                    key={idx}
+                    sx={{
+                      flex: 1,
+                      height: '100%',
+                      overflow: 'hidden',
+                      borderRadius: idx === 0 ? '12px 0 0 12px' : idx === galleryImages.length - 1 ? '0 12px 12px 0' : '0',
+                      position: 'relative',
+                      bgcolor: '#000000'
+                    }}
+                  >
                     <button type="button" className="gallery-image-button">
                       <img
                         src={image}
-                        alt={`${property.title} - ${idx + 4}`}
-                        className="gallery-image"
+                        alt={`${property.title} - ${idx + 1}`}
+                        style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
                       />
-                      {idx === 4 && remainingCount > 0 && (
-                        <Box className="gallery-more-overlay">
-                          <Typography component="span">+{remainingCount} {t('listing_detail.more_photos')}</Typography>
-                        </Box>
-                      )}
                     </button>
                   </Box>
                 ))}
               </Box>
-            </Box>
+            ) : (
+              <Box className="gallery-grid-container">
+                <Box className="gallery-top-section">
+                  <Box className="gallery-large-item">
+                    <button type="button" className="gallery-image-button">
+                      <img
+                        src={galleryImages[0]}
+                        alt={`${property.title} - 1`}
+                        className="gallery-image"
+                      />
+                    </button>
+                  </Box>
+                  {galleryImages.length >= 2 && (
+                    <Box className="gallery-right-section">
+                      {galleryImages.slice(1, 3).map((image, idx) => (
+                        <Box key={idx + 1} className="gallery-medium-item">
+                          <button type="button" className="gallery-image-button">
+                            <img
+                              src={image}
+                              alt={`${property.title} - ${idx + 2}`}
+                              className="gallery-image"
+                            />
+                          </button>
+                        </Box>
+                      ))}
+                    </Box>
+                  )}
+                </Box>
+
+                {galleryImages.length > 3 && (
+                  <Box className="gallery-bottom-section">
+                    {galleryImages.slice(3, 8).map((image, idx) => (
+                      <Box key={idx + 3} className="gallery-small-item">
+                        <button type="button" className="gallery-image-button">
+                          <img
+                            src={image}
+                            alt={`${property.title} - ${idx + 4}`}
+                            className="gallery-image"
+                          />
+                          {idx === galleryImages.slice(3, 8).length - 1 && remainingCount > 0 && (
+                            <Box className="gallery-more-overlay">
+                              <Typography component="span">+{remainingCount} {t('listing_detail.more_photos')}</Typography>
+                            </Box>
+                          )}
+                        </button>
+                      </Box>
+                    ))}
+                  </Box>
+                )}
+              </Box>
+            )}
           </RBContainer>
         </section>
 
