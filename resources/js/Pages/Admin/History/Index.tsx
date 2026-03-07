@@ -18,6 +18,7 @@ type HostRow = {
 }
 
 console.log("hello");
+console.log("hellos");
 
 type PageProps = {
   hosts: HostRow[]
