@@ -35,4 +35,12 @@ return [
     'err_phone_invalid' => 'براہ کرم درست فون نمبر درج کریں',
     'toast_success' => 'بکنگ کی درخواست کامیابی سے جمع ہو گئی!',
     'toast_fix_errors' => 'براہ کرم فارم میں غلطیاں درست کریں',
+    'payment_method_title' => 'ادائیگی کا طریقہ منتخب کریں',
+    'payment_method_subtitle' => 'آپ کس طرح ادائیگی کرنا چاہتے ہیں',
+    'payment_cash' => 'نقد ادائیگی',
+    'payment_cash_desc' => 'پہنچنے پر میزبان کو براہ راست ادائیگی کریں',
+    'payment_online' => 'آن لائن ادائیگی',
+    'coming_soon' => 'جلد آ رہا ہے',
+    'cancel' => 'منسوخ کریں',
+    'confirm_booking' => 'بکنگ کی تصدیق کریں',
 ];

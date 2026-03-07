@@ -35,4 +35,12 @@ return [
     'err_phone_invalid' => 'يرجى إدخال رقم هاتف صحيح',
     'toast_success' => 'تم إرسال طلب الحجز بنجاح!',
     'toast_fix_errors' => 'يرجى تصحيح الأخطاء في النموذج',
+    'payment_method_title' => 'اختر طريقة الدفع',
+    'payment_method_subtitle' => 'اختر كيف تريد الدفع',
+    'payment_cash' => 'الدفع نقداً',
+    'payment_cash_desc' => 'ادفع مباشرة للمضيف عند الوصول',
+    'payment_online' => 'الدفع عبر الإنترنت',
+    'coming_soon' => 'قريباً',
+    'cancel' => 'إلغاء',
+    'confirm_booking' => 'تأكيد الحجز',
 ];

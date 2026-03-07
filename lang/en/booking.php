@@ -35,4 +35,12 @@ return [
     'err_phone_invalid' => 'Please enter a valid phone number',
     'toast_success' => 'Booking request submitted successfully!',
     'toast_fix_errors' => 'Please fix the errors in the form',
+    'payment_method_title' => 'Select Payment Method',
+    'payment_method_subtitle' => 'Choose how you would like to pay',
+    'payment_cash' => 'Pay with Cash',
+    'payment_cash_desc' => 'Pay directly to the host upon arrival',
+    'payment_online' => 'Pay Online',
+    'coming_soon' => 'Coming Soon',
+    'cancel' => 'Cancel',
+    'confirm_booking' => 'Confirm Booking',
 ];

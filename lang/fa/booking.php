@@ -35,4 +35,12 @@ return [
     'err_phone_invalid' => 'لطفاً شماره تلفن معتبر وارد کنید',
     'toast_success' => 'درخواست رزرو با موفقیت ثبت شد!',
     'toast_fix_errors' => 'لطفاً خطاهای فرم را برطرف کنید',
+    'payment_method_title' => 'روش پرداخت را انتخاب کنید',
+    'payment_method_subtitle' => 'نحوه پرداخت خود را انتخاب کنید',
+    'payment_cash' => 'پرداخت نقدی',
+    'payment_cash_desc' => 'هنگام ورود مستقیماً به میزبان پرداخت کنید',
+    'payment_online' => 'پرداخت آنلاین',
+    'coming_soon' => 'به زودی',
+    'cancel' => 'لغو',
+    'confirm_booking' => 'تأیید رزرو',
 ];

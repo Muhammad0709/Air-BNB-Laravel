@@ -35,4 +35,12 @@ return [
     'err_phone_invalid' => 'Ji kerema xwe jimareya telefonê nederbas binivîse',
     'toast_success' => 'Daxwaza rezervasyonê bi serketî hate şandin!',
     'toast_fix_errors' => 'Ji kerema xwe xeletiyên di formê de rast bikin',
+    'payment_method_title' => 'Rêbaza Dravdanê Hilbijêrin',
+    'payment_method_subtitle' => 'Hilbijêrin ka hûn çawa dixwazin bidin',
+    'payment_cash' => 'Bi Pere Bidin',
+    'payment_cash_desc' => 'Dema ku hûn digihîjin rasterast bi xwediyê malê re bidin',
+    'payment_online' => 'Bi Înternetê Bidin',
+    'coming_soon' => 'Zû tê',
+    'cancel' => 'Betal bike',
+    'confirm_booking' => 'Rezervasyonê Bipejirîne',
 ];

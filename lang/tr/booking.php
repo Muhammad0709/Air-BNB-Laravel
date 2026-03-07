@@ -35,4 +35,12 @@ return [
     'err_phone_invalid' => 'Lütfen geçerli bir telefon numarası girin',
     'toast_success' => 'Rezervasyon talebiniz başarıyla gönderildi!',
     'toast_fix_errors' => 'Lütfen formdaki hataları düzeltin',
+    'payment_method_title' => 'Ödeme Yöntemini Seçin',
+    'payment_method_subtitle' => 'Nasıl ödeme yapmak istediğinizi seçin',
+    'payment_cash' => 'Nakit Ödeme',
+    'payment_cash_desc' => 'Varışta ev sahibine doğrudan ödeme yapın',
+    'payment_online' => 'Online Ödeme',
+    'coming_soon' => 'Yakında',
+    'cancel' => 'İptal',
+    'confirm_booking' => 'Rezervasyonu Onayla',
 ];
