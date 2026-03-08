@@ -71,9 +71,23 @@ class MessagesController extends Controller
     public function conversations(): JsonResponse
     {
         $user = Auth::user();
+        $search = request('search');
         
         $conversations = Conversation::where('user_id', $user->id)
             ->with(['property.user', 'lastMessage.files'])
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($query) use ($search) {
+                    $query->whereHas('property', function ($pq) use ($search) {
+                        $pq->where('title', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('property.user', function ($uq) use ($search) {
+                        $uq->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('lastMessage', function ($mq) use ($search) {
+                        $mq->where('message', 'like', "%{$search}%");
+                    });
+                });
+            })
             ->orderBy('updated_at', 'desc')
             ->get();
 

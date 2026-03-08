@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { usePage, router, Head } from '@inertiajs/react'
-import { Box, Button, Card, CardContent, Stack, TextField, Typography, Avatar, Paper, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, useTheme, useMediaQuery } from '@mui/material'
+import { Box, Button, Card, CardContent, Stack, TextField, Typography, Avatar, Paper, IconButton, Menu, MenuItem, useTheme, useMediaQuery } from '@mui/material'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { useLanguage } from '../hooks/use-language'
@@ -9,8 +9,6 @@ import SendIcon from '@mui/icons-material/Send'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
 import VideoFileIcon from '@mui/icons-material/VideoFile'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import AddIcon from '@mui/icons-material/Add'
-import CloseIcon from '@mui/icons-material/Close'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { apiGet, apiPostForm, apiPostJson } from '../chatApi'
 
@@ -44,13 +42,6 @@ interface ConversationListItem {
 
 interface Conversation extends ConversationListItem {
   messages: Message[]
-}
-
-interface PropertyToMessage {
-  propertyId: number
-  property: string
-  hostName: string
-  hostAvatar: string | null
 }
 
 // Backend returns messages as plain array with sender 'customer'|'host'
@@ -97,12 +88,7 @@ export default function Chat() {
   const [messageText, setMessageText] = useState('')
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [menuAnchor, setMenuAnchor] = useState<{ [key: number]: HTMLElement | null }>({})
-  const [openModal, setOpenModal] = useState(false)
-  const [selectedPropertyId, setSelectedPropertyId] = useState<number | null>(null)
-  const initialPropertiesToMessage = useMemo(() => Array.isArray(props.propertiesToMessage) ? props.propertiesToMessage : [], [props.propertiesToMessage])
-  const [startableProperties, setStartableProperties] = useState<PropertyToMessage[]>(initialPropertiesToMessage)
-  const [loadingStartable, setLoadingStartable] = useState(false)
-  const [startingConversation, setStartingConversation] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
   const [loadingMessages, setLoadingMessages] = useState(false)
   const [sending, setSending] = useState(false)
   const conversationsRef = useRef<Conversation[]>([])
@@ -117,40 +103,26 @@ export default function Chat() {
   const [conversations, setConversations] = useState<Conversation[]>(conversationsList)
   conversationsRef.current = conversations
 
+  const handleSearch = useCallback((value: string) => {
+    setSearchQuery(value)
+  }, [])
+
   useEffect(() => {
-    setConversations((prev) => {
-      const byId = new Map(prev.map((c) => [c.id, c]))
-      for (const c of conversationsList) {
-        if (!byId.has(c.id)) byId.set(c.id, { ...c, messages: [] })
-        else {
-          const existing = byId.get(c.id)!
-          byId.set(c.id, { ...c, messages: existing.messages })
-        }
+    const timer = setTimeout(() => {
+      if (searchQuery.trim()) {
+        router.get('/chat', { search: searchQuery }, { preserveState: true, preserveScroll: true, only: ['conversations'] })
+      } else {
+        router.get('/chat', {}, { preserveState: true, preserveScroll: true, only: ['conversations'] })
       }
-      return Array.from(byId.values()).sort((a, b) => new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime())
-    })
+    }, 200)
+    return () => clearTimeout(timer)
+  }, [searchQuery])
+
+  useEffect(() => {
+    setConversations(conversationsList)
   }, [conversationsList])
 
-  useEffect(() => {
-    if (!openModal) return
-    if (initialPropertiesToMessage.length > 0) {
-      setStartableProperties(initialPropertiesToMessage)
-      setLoadingStartable(false)
-      return
-    }
-    setLoadingStartable(true)
-    apiGet<{ data: { properties: PropertyToMessage[] } }>('/api/messages/properties-to-message')
-      .then((res) => setStartableProperties(res.data?.properties ?? []))
-      .catch(() => setStartableProperties([]))
-      .finally(() => setLoadingStartable(false))
-  }, [openModal, initialPropertiesToMessage])
-
   const currentConversation = conversations.find(c => c.id === selectedConversation)
-
-  const hostsToMessage = useMemo(
-    () => initialPropertiesToMessage.filter((p) => !conversations.some((c) => c.propertyId === p.propertyId)),
-    [initialPropertiesToMessage, conversations]
-  )
 
   const startConversationWithProperty = useCallback(async (propertyId: number) => {
     const res = await apiPostJson<{ data?: { conversation?: ConversationListItem } }>('/api/messages/conversations', {
@@ -163,20 +135,6 @@ export default function Chat() {
     setTimeout(() => setSelectedConversation(newConv.id), 0)
     return newConv.id
   }, [])
-
-  const handleStartFromHost = useCallback(
-    async (propertyId: number) => {
-      setStartingConversation(true)
-      try {
-        await startConversationWithProperty(propertyId)
-      } catch {
-        setSelectedConversation(null)
-      } finally {
-        setStartingConversation(false)
-      }
-    },
-    [startConversationWithProperty]
-  )
 
   const scrollToBottom = useCallback(() => {
     const el = messageContainerRef.current
@@ -324,18 +282,6 @@ export default function Chat() {
     setMenuAnchor(prev => ({ ...prev, [conversationId]: null }))
   }
 
-  const handleStartConversation = async () => {
-    if (!selectedPropertyId) return
-    setStartingConversation(true)
-    try {
-      await startConversationWithProperty(selectedPropertyId)
-      setOpenModal(false)
-      setSelectedPropertyId(null)
-    } finally {
-      setStartingConversation(false)
-    }
-  }
-
   const getLastMessagePreview = (conversation: Conversation) => {
     // Filter out "image" or "video" text from last message
     if (conversation.lastMessage.includes('image') || conversation.lastMessage.includes('video')) {
@@ -366,65 +312,35 @@ export default function Chat() {
               <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, height: 'calc(100vh - 250px)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                 <CardContent sx={{ p: 0, flex: 1, minHeight: 0, overflowY: 'scroll', display: 'flex', flexDirection: 'column' }}>
                   <Box sx={{ p: 2, flex: '0 0 auto' }}>
-                    <Button
-                      variant="contained"
-                      startIcon={<AddIcon />}
+                    {/* Search Conversations */}
+                    <TextField
                       fullWidth
-                      onClick={() => setOpenModal(true)}
+                      placeholder={t('chat.search_conversations')}
+                      variant="outlined"
+                      size="small"
+                      value={searchQuery}
+                      onChange={(e) => handleSearch(e.target.value)}
                       sx={{
-                        bgcolor: '#AD542D',
-                        textTransform: 'none',
-                        fontWeight: 700,
-                        borderRadius: 2,
                         mb: 2,
-                        py: 1.5,
-                        '&:hover': { bgcolor: '#78381C' }
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: 2,
+                          bgcolor: '#F9FAFB',
+                          '& fieldset': { borderColor: '#E5E7EB' },
+                          '&:hover fieldset': { borderColor: '#AD542D' },
+                          '&.Mui-focused fieldset': { borderColor: '#AD542D' }
+                        }
                       }}
-                    >
-                      {t('chat.start_conversation')}
-                    </Button>
-                    {hostsToMessage.length > 0 && (
-                      <>
-                        <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#717171', mb: 1, px: 0.5 }}>
-                          {t('chat.select_property')}
-                        </Typography>
-                        <Box sx={{ overflowX: 'hidden', pr: 0.5 }}>
-                          {hostsToMessage.map((item) => (
-                            <Box
-                              key={item.propertyId}
-                              onClick={() => handleStartFromHost(item.propertyId)}
-                              sx={{
-                                p: 1.5,
-                                mb: 0.5,
-                                borderRadius: 1.5,
-                                cursor: 'pointer',
-                                border: '1px solid #E5E7EB',
-                                '&:hover': { bgcolor: '#F9FAFB', borderColor: '#AD542D' },
-                                opacity: startingConversation ? 0.7 : 1,
-                                pointerEvents: startingConversation ? 'none' : 'auto',
-                              }}
-                            >
-                              <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
-                                <Avatar src={item.hostAvatar ?? undefined} sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}>
-                                  {item.hostName.charAt(0)}
-                                </Avatar>
-                                <Box sx={{ minWidth: 0, flex: 1 }}>
-                                  <Typography variant="body2" sx={{ fontWeight: 600, color: '#222222' }}>
-                                    {item.hostName}
-                                  </Typography>
-                                  <Typography variant="caption" sx={{ color: '#717171', display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                    {item.property}
-                                  </Typography>
-                                </Box>
-                              </Stack>
-                            </Box>
-                          ))}
-                        </Box>
-                      </>
-                    )}
+                    />
                   </Box>
                   <Box sx={{ flex: '0 0 auto' }}>
-                  {conversations.map((conversation) => (
+                  {conversations.length === 0 ? (
+                    <Box sx={{ py: 4, textAlign: 'center' }}>
+                      <Typography variant="body2" sx={{ color: '#717171' }}>
+                        {searchQuery ? t('chat.no_results') : t('chat.no_conversations')}
+                      </Typography>
+                    </Box>
+                  ) : (
+                    conversations.map((conversation) => (
                     <Box
                       key={conversation.id}
                       onClick={() => {
@@ -519,7 +435,7 @@ export default function Chat() {
                         </Box>
                       </Stack>
                     </Box>
-                  ))}
+                  )))}
                   </Box>
                 </CardContent>
               </Card>
@@ -881,119 +797,6 @@ export default function Chat() {
         </Container>
       </Box>
       <Footer />
-
-      {/* Start Conversation Modal */}
-      <Dialog
-        open={openModal}
-        onClose={() => {
-          setOpenModal(false)
-          setSelectedPropertyId(null)
-        }}
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{
-          sx: {
-            borderRadius: 2,
-            maxHeight: '80vh'
-          }
-        }}
-      >
-        <DialogTitle sx={{ pb: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>
-            {t('chat.start_conversation')}
-          </Typography>
-          <IconButton
-            onClick={() => {
-              setOpenModal(false)
-              setSelectedPropertyId(null)
-            }}
-            sx={{ color: '#717171' }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent sx={{ p: 0 }}>
-          <Typography variant="body2" sx={{ px: 3, pb: 2, color: '#717171' }}>
-            {t('chat.select_property')}
-          </Typography>
-          <Box sx={{ maxHeight: '50vh', overflowY: 'auto' }}>
-            {loadingStartable ? (
-              <Box sx={{ py: 4, textAlign: 'center' }}>
-                <Typography variant="body2" sx={{ color: '#717171' }}>{t('chat.loading')}</Typography>
-              </Box>
-            ) : startableProperties.length === 0 ? (
-              <Box sx={{ py: 4, textAlign: 'center' }}>
-                <Typography variant="body2" sx={{ color: '#717171' }}>{t('chat.no_properties')}</Typography>
-              </Box>
-            ) : (
-              startableProperties.map((item) => (
-                <Box
-                  key={item.propertyId}
-                  onClick={() => setSelectedPropertyId(item.propertyId)}
-                  sx={{
-                    px: 3,
-                    py: 2,
-                    cursor: 'pointer',
-                    bgcolor: selectedPropertyId === item.propertyId ? '#FFF5F7' : 'transparent',
-                    borderBottom: '1px solid #E5E7EB',
-                    '&:hover': {
-                      bgcolor: selectedPropertyId === item.propertyId ? '#FFF5F7' : '#F9FAFB'
-                    }
-                  }}
-                >
-                  <Stack direction="row" spacing={2} useFlexGap alignItems="center">
-                    <Avatar
-                      src={item.hostAvatar ?? undefined}
-                      sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}
-                    >
-                      {item.hostName.charAt(0)}
-                    </Avatar>
-                    <Box sx={{ flex: 1, minWidth: 0 }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222', mb: 0.5 }}>
-                        {item.hostName}
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: '#717171', fontSize: '0.875rem' }} noWrap>
-                        {item.property}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </Box>
-              ))
-            )}
-          </Box>
-        </DialogContent>
-        <DialogActions sx={{ p: 2, borderTop: '1px solid #E5E7EB' }}>
-          <Button
-            onClick={() => {
-              setOpenModal(false)
-              setSelectedPropertyId(null)
-            }}
-            sx={{
-              color: '#717171',
-              textTransform: 'none',
-              fontWeight: 600
-            }}
-          >
-            {t('chat.cancel')}
-          </Button>
-          <Button
-            onClick={() => void handleStartConversation()}
-            disabled={!selectedPropertyId || startingConversation}
-            variant="contained"
-            sx={{
-              bgcolor: '#AD542D',
-              textTransform: 'none',
-              fontWeight: 700,
-              borderRadius: 2,
-              px: 3,
-              '&:hover': { bgcolor: '#78381C' },
-              '&:disabled': { bgcolor: '#E5E7EB', color: '#9CA3AF' }
-            }}
-          >
-            {startingConversation ? t('chat.loading') : t('chat.start')}
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   )
 }

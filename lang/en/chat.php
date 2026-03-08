@@ -13,4 +13,7 @@ return [
     'start' => 'Start',
     'no_properties' => 'No properties available to message.',
     'back' => 'Back',
+    'search_conversations' => 'Search conversations...',
+    'no_results' => 'No conversations found.',
+    'no_conversations' => 'No conversations yet.',
 ];

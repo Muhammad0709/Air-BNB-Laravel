@@ -23,41 +23,28 @@ class PageController extends Controller
 
     public function chat(Request $request)
     {
+        $search = $request->search;
+        
         $conversations = Conversation::where('user_id', Auth::id())
             ->with(['property.user', 'lastMessage.files'])
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($query) use ($search) {
+                    $query->whereHas('property', function ($pq) use ($search) {
+                        $pq->where('title', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('property.user', function ($uq) use ($search) {
+                        $uq->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('lastMessage', function ($mq) use ($search) {
+                        $mq->where('message', 'like', "%{$search}%");
+                    });
+                });
+            })
             ->orderBy('updated_at', 'desc')
             ->get();
 
-        $conversationsData = ConversationResource::collection($conversations)->toArray($request);
-
-        // Hosts/properties user can message (jis host ki property hai wo show ho)
-        $propertiesToMessage = Property::where('status', 'Active')
-            ->where('approval_status', PropertyStatus::APPROVED)
-            ->with('user')
-            ->orderBy('title')
-            ->limit(100)
-            ->get()
-            ->map(function ($property) {
-                $host = $property->user;
-                $hostAvatar = null;
-                if ($host && $host->profile_picture) {
-                    $hostAvatar = filter_var($host->profile_picture, FILTER_VALIDATE_URL)
-                        ? $host->profile_picture
-                        : asset(Storage::url($host->profile_picture));
-                }
-                return [
-                    'propertyId' => $property->id,
-                    'property' => $property->title,
-                    'hostName' => $host->name ?? 'Unknown',
-                    'hostAvatar' => $hostAvatar,
-                ];
-            })
-            ->values()
-            ->all();
-
         return Inertia::render('Chat', [
-            'conversations' => $conversationsData['data'] ?? $conversationsData,
-            'propertiesToMessage' => $propertiesToMessage,
+            'conversations' => ConversationResource::collection($conversations)->toArray($request),
             'auth' => [
                 'user' => $request->user() ? [
                     'id' => $request->user()->id,
