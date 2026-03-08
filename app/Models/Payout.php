@@ -9,6 +9,7 @@ class Payout extends Model
 {
     protected $fillable = [
         'user_id',
+        'booking_id',
         'payout_id',
         'amount',
         'method',
@@ -31,5 +32,10 @@ class Payout extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function booking(): BelongsTo
+    {
+        return $this->belongsTo(Booking::class);
     }
 }

@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { Box, Button, Card, CardContent, Chip, Divider, Stack, Typography } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
@@ -10,39 +9,26 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 
-export default function ShowEarning() {
-  const { id } = (usePage().props as { id?: string }) || {}
-  const [earning, setEarning] = useState({
-    id: '',
-    bookingId: '',
-    guest: '',
-    property: '',
-    date: '',
-    amount: '',
-    status: '',
-    payoutDate: '',
-    nights: 0,
-    commission: '',
-    netAmount: ''
-  })
+interface Earning {
+  id: number
+  bookingId: string
+  guest: string
+  property: string
+  date: string
+  amount: string
+  status: string
+  payoutDate: string
+  nights: number
+  commission: string
+  netAmount: string
+}
 
-  // Mock data - in real app, fetch from API
-  useEffect(() => {
-    const mockEarning = {
-      id: id || '1',
-      bookingId: 'BK-001',
-      guest: 'John Doe',
-      property: 'Luxury Beachfront Villa',
-      date: '2025-01-15',
-      amount: '$1,495',
-      status: 'Paid',
-      payoutDate: '2025-01-20',
-      nights: 5,
-      commission: '$149.50',
-      netAmount: '$1,345.50'
-    }
-    setEarning(mockEarning)
-  }, [id])
+interface Props {
+  earning: Earning
+}
+
+export default function ShowEarning() {
+  const { earning } = usePage<Props>().props
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -70,7 +56,6 @@ export default function ShowEarning() {
         Back to Earnings
       </Button>
 
-      {/* Earning Header */}
       <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, mb: 3 }}>
         <CardContent sx={{ p: { xs: 2, md: 4 } }}>
           <Stack direction="row" alignItems="flex-start" justifyContent="space-between" sx={{ mb: 3 }}>
@@ -101,7 +86,6 @@ export default function ShowEarning() {
         </CardContent>
       </Card>
 
-      {/* Earning Details */}
       <Row>
         <Col xs={12} md={6}>
           <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, mb: 3 }}>
@@ -171,13 +155,7 @@ export default function ShowEarning() {
                   </Box>
                   <Box>
                     <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Booking Date</Typography>
-                    <Typography sx={{ fontWeight: 600, color: '#222222' }}>
-                      {new Date(earning.date).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </Typography>
+                    <Typography sx={{ fontWeight: 600, color: '#222222' }}>{earning.date}</Typography>
                   </Box>
                 </Stack>
               </Stack>
@@ -266,13 +244,7 @@ export default function ShowEarning() {
                 <Box>
                   <Typography sx={{ fontSize: 12, color: '#717171', mb: 1 }}>Payout Date</Typography>
                   <Typography sx={{ fontWeight: 600, color: '#222222' }}>
-                    {earning.payoutDate !== '-' 
-                      ? new Date(earning.payoutDate).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })
-                      : 'Pending'}
+                    {earning.payoutDate !== '-' ? earning.payoutDate : 'Pending'}
                   </Typography>
                 </Box>
               </Stack>
@@ -284,4 +256,3 @@ export default function ShowEarning() {
     </>
   )
 }
-
