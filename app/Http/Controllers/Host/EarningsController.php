@@ -59,7 +59,8 @@ class EarningsController extends Controller
         }
         
         $payout = Payout::where('booking_id', $id)->first();
-        $commission = $booking->total_amount * 0.15; // 15% commission
+        $commissionRate = Setting::get('commission_rate', 10) / 100; // Get from settings, default 10%
+        $commission = $booking->total_amount * $commissionRate;
         $netAmount = $booking->total_amount - $commission;
         
         $nights = $booking->check_in_date->diffInDays($booking->check_out_date);
@@ -76,6 +77,7 @@ class EarningsController extends Controller
                 'payoutDate' => $payout && $payout->processed_at ? $payout->processed_at->format('F d, Y') : '-',
                 'nights' => $nights,
                 'commission' => '$' . number_format($commission, 2),
+                'commissionRate' => Setting::get('commission_rate', 10),
                 'netAmount' => '$' . number_format($netAmount, 2),
             ]
         ]);

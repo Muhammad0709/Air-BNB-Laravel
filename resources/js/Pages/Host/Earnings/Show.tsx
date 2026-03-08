@@ -20,6 +20,7 @@ interface Earning {
   payoutDate: string
   nights: number
   commission: string
+  commissionRate: number
   netAmount: string
 }
 
@@ -210,7 +211,7 @@ export default function ShowEarning() {
                     <AttachMoneyIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Commission (10%)</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Commission ({earning.commissionRate}%)</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#222222' }}>{earning.commission}</Typography>
                   </Box>
                 </Stack>
