@@ -8,7 +8,7 @@ return [
         'properties' => 'خانووبەرەکان',
         'bookings' => 'حجزەکان',
         'support_tickets' => 'تکێتی پشتگیری',
-        'system_settings' => 'ڕێکخستنەکانی سیستەم',
+        'system_settings' => 'ڕێکخستنەکان',
         'settings' => 'ڕێکخستنەکان',
         'log_out' => 'چوونەدەرەوە',
     ],

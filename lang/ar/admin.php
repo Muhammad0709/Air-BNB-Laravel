@@ -8,7 +8,7 @@ return [
         'properties' => 'العقارات',
         'bookings' => 'الحجوزات',
         'support_tickets' => 'تذاكر الدعم',
-        'system_settings' => 'إعدادات النظام',
+        'system_settings' => 'الإعدادات',
         'settings' => 'الإعدادات',
         'log_out' => 'تسجيل الخروج',
     ],

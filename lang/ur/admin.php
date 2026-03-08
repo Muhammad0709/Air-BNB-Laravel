@@ -8,7 +8,7 @@ return [
         'properties' => 'پراپرٹیز',
         'bookings' => 'بکنگز',
         'support_tickets' => 'سپورٹ ٹکٹس',
-        'system_settings' => 'سسٹم سیٹنگز',
+        'system_settings' => 'سیٹنگز',
         'settings' => 'سیٹنگز',
         'log_out' => 'لاگ آؤٹ',
     ],

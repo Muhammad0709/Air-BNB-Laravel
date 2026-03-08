@@ -13,4 +13,7 @@ return [
     'start' => 'شروع',
     'no_properties' => 'اقامتگاهی برای پیام موجود نیست.',
     'back' => 'بازگشت',
+    'search_conversations' => 'جستجوی گفتگوها...',
+    'no_results' => 'گفتگویی یافت نشد.',
+    'no_conversations' => 'هنوز گفتگویی وجود ندارد.',
 ];

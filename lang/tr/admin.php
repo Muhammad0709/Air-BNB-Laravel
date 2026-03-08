@@ -8,7 +8,7 @@ return [
         'properties' => 'Mülkler',
         'bookings' => 'Rezervasyonlar',
         'support_tickets' => 'Destek Talepleri',
-        'system_settings' => 'Sistem Ayarları',
+        'system_settings' => 'Ayarlar',
         'settings' => 'Ayarlar',
         'log_out' => 'Çıkış',
     ],

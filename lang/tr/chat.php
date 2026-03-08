@@ -13,4 +13,7 @@ return [
     'start' => 'Başlat',
     'no_properties' => 'Mesaj göndermek için ilan bulunamadı.',
     'back' => 'Geri',
+    'search_conversations' => 'Sohbetlerde ara...',
+    'no_results' => 'Sohbet bulunamadı.',
+    'no_conversations' => 'Henüz sohbet yok.',
 ];

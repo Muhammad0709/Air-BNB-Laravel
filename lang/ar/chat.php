@@ -13,4 +13,7 @@ return [
     'start' => 'بدء',
     'no_properties' => 'لا عقارات متاحة للمراسلة.',
     'back' => 'رجوع',
+    'search_conversations' => 'البحث في المحادثات...',
+    'no_results' => 'لم يتم العثور على محادثات.',
+    'no_conversations' => 'لا توجد محادثات بعد.',
 ];

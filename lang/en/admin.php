@@ -9,7 +9,7 @@ return [
         'bookings' => 'Bookings',
         'history' => 'History',
         'support_tickets' => 'Support Tickets',
-        'system_settings' => 'System Settings',
+        'system_settings' => 'Settings',
         'settings' => 'Settings',
         'log_out' => 'Log out',
     ],
