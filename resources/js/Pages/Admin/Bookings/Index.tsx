@@ -107,18 +107,6 @@ export default function AdminBookings() {
                         )
                       }}
                     />
-                    <Button
-                      variant="contained"
-                      onClick={() => router.visit('/admin/bookings/create')}
-                      sx={{
-                        bgcolor: '#AD542D',
-                        textTransform: 'none',
-                        fontWeight: 700,
-                        '&:hover': { bgcolor: '#78381C' }
-                      }}
-                    >
-                      {t('admin.bookings.add_booking')}
-                    </Button>
                   </Stack>
                 </Stack>
 

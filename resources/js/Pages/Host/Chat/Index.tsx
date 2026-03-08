@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
-import { Box, Button, Card, CardContent, Stack, TextField, Typography, Avatar, Paper, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
+import { Box, Card, CardContent, Stack, TextField, Typography, Avatar, Paper, IconButton, Menu, MenuItem } from '@mui/material'
 import HostLayout from '../../../Components/Host/HostLayout'
 import { Head, usePage } from '@inertiajs/react'
 import { Row, Col } from 'react-bootstrap'
@@ -7,8 +7,6 @@ import SendIcon from '@mui/icons-material/Send'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
 import VideoFileIcon from '@mui/icons-material/VideoFile'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import AddIcon from '@mui/icons-material/Add'
-import CloseIcon from '@mui/icons-material/Close'
 import { apiGet, apiPostForm } from '../../../chatApi'
 
 interface MessageFile {
@@ -66,8 +64,6 @@ export default function HostChat() {
   const [messageText, setMessageText] = useState('')
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [menuAnchor, setMenuAnchor] = useState<{ [key: number]: HTMLElement | null }>({})
-  const [openModal, setOpenModal] = useState(false)
-  const [selectedUser, setSelectedUser] = useState<number | null>(null)
   const [loadingMessages, setLoadingMessages] = useState(false)
   const [sending, setSending] = useState(false)
 
@@ -88,21 +84,6 @@ export default function HostChat() {
       return Array.from(byId.values()).sort((a, b) => new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime())
     })
   }, [conversationsList])
-
-  const [users, setUsers] = useState<User[]>([])
-  const [loadingUsers, setLoadingUsers] = useState(false)
-
-  useEffect(() => {
-    if (!openModal) return
-    setLoadingUsers(true)
-    apiGet<{ data: { users: { id: number; name: string; email: string; avatar: string | null }[] } }>('/api/host/chat/users')
-      .then((res) => {
-        const list = res.data?.users ?? []
-        setUsers(list.map((u) => ({ id: u.id, name: u.name, email: u.email, avatar: u.avatar ?? '' })))
-      })
-      .catch(() => setUsers([]))
-      .finally(() => setLoadingUsers(false))
-  }, [openModal])
 
   const currentConversation = conversations.find((c) => c.id === selectedConversation)
 
@@ -248,33 +229,6 @@ export default function HostChat() {
     setMenuAnchor(prev => ({ ...prev, [conversationId]: null }))
   }
 
-  const handleStartConversation = (userId: number) => {
-    // Find or create conversation with selected user
-    const user = users.find(u => u.id === userId)
-    if (user) {
-      const existingConv = conversations.find(c => c.customerName === user.name)
-      if (existingConv) {
-        setSelectedConversation(existingConv.id)
-      } else {
-        // Create new conversation
-        const newConversation: Conversation = {
-          id: Date.now(),
-          customerName: user.name,
-          customerAvatar: user.avatar,
-          property: 'New Property',
-          lastMessage: '',
-          lastMessageTime: new Date().toISOString(),
-          unreadCount: 0,
-          messages: []
-        }
-        setConversations(prev => [newConversation, ...prev])
-        setSelectedConversation(newConversation.id)
-      }
-    }
-    setOpenModal(false)
-    setSelectedUser(null)
-  }
-
   const getLastMessagePreview = (conversation: Conversation) => {
     // Filter out "image" or "video" text from last message
     if (conversation.lastMessage.includes('image') || conversation.lastMessage.includes('video')) {
@@ -292,23 +246,21 @@ export default function HostChat() {
         <Col xs={12} md={4} lg={3}>
           <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, height: 'calc(100vh - 200px)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
             <CardContent sx={{ p: 2 }}>
-              <Button
-                variant="contained"
-                startIcon={<AddIcon />}
+              <TextField
                 fullWidth
-                onClick={() => setOpenModal(true)}
+                size="small"
                 sx={{
-                  bgcolor: '#AD542D',
-                  textTransform: 'none',
-                  fontWeight: 700,
-                  borderRadius: 2,
                   mb: 2,
-                  py: 1.5,
-                  '&:hover': { bgcolor: '#78381C' }
+                  '& .MuiOutlinedInput-root': {
+                    borderRadius: 2,
+                    bgcolor: '#F9FAFB',
+                    '& fieldset': { borderColor: '#E5E7EB' },
+                    '&:hover fieldset': { borderColor: '#AD542D' },
+                    '&.Mui-focused fieldset': { borderColor: '#AD542D' }
+                  }
                 }}
-              >
-                Start Conversation
-              </Button>
+                placeholder="Search conversations..."
+              />
             </CardContent>
             <CardContent sx={{ p: 0, flex: 1, overflowY: 'auto' }}>
               {conversations.map((conversation) => (
@@ -752,119 +704,6 @@ export default function HostChat() {
           )}
         </Col>
       </Row>
-
-      {/* Start Conversation Modal */}
-      <Dialog
-        open={openModal}
-        onClose={() => {
-          setOpenModal(false)
-          setSelectedUser(null)
-        }}
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{
-          sx: {
-            borderRadius: 2,
-            maxHeight: '80vh'
-          }
-        }}
-      >
-        <DialogTitle sx={{ pb: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>
-            Start Conversation
-          </Typography>
-          <IconButton
-            onClick={() => {
-              setOpenModal(false)
-              setSelectedUser(null)
-            }}
-            sx={{ color: '#717171' }}
-          >
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent sx={{ p: 0 }}>
-          <Typography variant="body2" sx={{ px: 3, pb: 2, color: '#717171' }}>
-            Select Participants
-          </Typography>
-          <Box sx={{ maxHeight: '50vh', overflowY: 'auto' }}>
-            {loadingUsers ? (
-              <Box sx={{ py: 4, textAlign: 'center' }}>
-                <Typography variant="body2" sx={{ color: '#717171' }}>Loading users...</Typography>
-              </Box>
-            ) : users.length === 0 ? (
-              <Box sx={{ py: 4, textAlign: 'center' }}>
-                <Typography variant="body2" sx={{ color: '#717171' }}>No users found.</Typography>
-              </Box>
-            ) : (
-              users.map((user) => (
-                <Box
-                  key={user.id}
-                  onClick={() => setSelectedUser(user.id)}
-                  sx={{
-                    px: 3,
-                    py: 2,
-                    cursor: 'pointer',
-                    bgcolor: selectedUser === user.id ? '#FFF5F7' : 'transparent',
-                    borderBottom: '1px solid #E5E7EB',
-                    '&:hover': {
-                      bgcolor: selectedUser === user.id ? '#FFF5F7' : '#F9FAFB'
-                    }
-                  }}
-                >
-                  <Stack direction="row" spacing={2} useFlexGap alignItems="center">
-                    <Avatar
-                      src={user.avatar || undefined}
-                      sx={{ bgcolor: '#AD542D', width: 40, height: 40 }}
-                    >
-                      {user.name.charAt(0)}
-                    </Avatar>
-                    <Box sx={{ flex: 1 }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222', mb: 0.5 }}>
-                        {user.name}
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: '#717171', fontSize: '0.875rem' }}>
-                        {user.email}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </Box>
-              ))
-            )}
-          </Box>
-        </DialogContent>
-        <DialogActions sx={{ p: 2, borderTop: '1px solid #E5E7EB' }}>
-          <Button
-            onClick={() => {
-              setOpenModal(false)
-              setSelectedUser(null)
-            }}
-            sx={{
-              color: '#717171',
-              textTransform: 'none',
-              fontWeight: 600
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={() => selectedUser && handleStartConversation(selectedUser)}
-            disabled={!selectedUser}
-            variant="contained"
-            sx={{
-              bgcolor: '#AD542D',
-              textTransform: 'none',
-              fontWeight: 700,
-              borderRadius: 2,
-              px: 3,
-              '&:hover': { bgcolor: '#78381C' },
-              '&:disabled': { bgcolor: '#E5E7EB', color: '#9CA3AF' }
-            }}
-          >
-            Start
-          </Button>
-        </DialogActions>
-      </Dialog>
       </HostLayout>
     </>
   )
