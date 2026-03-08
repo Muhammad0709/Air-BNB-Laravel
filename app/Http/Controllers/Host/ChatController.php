@@ -13,8 +13,23 @@ class ChatController extends Controller
 {
     public function index(Request $request)
     {
+        $search = $request->search;
+        
         $conversations = Conversation::whereHas('property', fn ($q) => $q->where('user_id', Auth::id()))
             ->with(['user', 'property', 'lastMessage.files'])
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($query) use ($search) {
+                    $query->whereHas('property', function ($pq) use ($search) {
+                        $pq->where('title', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('user', function ($uq) use ($search) {
+                        $uq->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('lastMessage', function ($mq) use ($search) {
+                        $mq->where('message', 'like', "%{$search}%");
+                    });
+                });
+            })
             ->orderBy('updated_at', 'desc')
             ->get();
 

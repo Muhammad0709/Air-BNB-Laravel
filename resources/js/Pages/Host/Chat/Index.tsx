@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
-import { Box, Card, CardContent, Stack, TextField, Typography, Avatar, Paper, IconButton, Menu, MenuItem } from '@mui/material'
+import { Box, Button, Card, CardContent, Stack, TextField, Typography, Avatar, Paper, IconButton, Menu, MenuItem } from '@mui/material'
 import HostLayout from '../../../Components/Host/HostLayout'
-import { Head, usePage } from '@inertiajs/react'
+import { Head, usePage, router } from '@inertiajs/react'
 import { Row, Col } from 'react-bootstrap'
 import SendIcon from '@mui/icons-material/Send'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
@@ -64,6 +64,7 @@ export default function HostChat() {
   const [messageText, setMessageText] = useState('')
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [menuAnchor, setMenuAnchor] = useState<{ [key: number]: HTMLElement | null }>({})
+  const [searchQuery, setSearchQuery] = useState('')
   const [loadingMessages, setLoadingMessages] = useState(false)
   const [sending, setSending] = useState(false)
 
@@ -75,15 +76,19 @@ export default function HostChat() {
   const [conversations, setConversations] = useState<Conversation[]>(conversationsList)
 
   useEffect(() => {
-    setConversations((prev) => {
-      const byId = new Map(prev.map((c) => [c.id, c]))
-      for (const c of conversationsList) {
-        if (!byId.has(c.id)) byId.set(c.id, { ...c, messages: [] })
-        else byId.set(c.id, { ...c, messages: byId.get(c.id)!.messages })
-      }
-      return Array.from(byId.values()).sort((a, b) => new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime())
-    })
+    setConversations(conversationsList)
   }, [conversationsList])
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.get('/host/chat', searchQuery.trim() ? { search: searchQuery } : {}, { 
+        preserveState: true, 
+        preserveScroll: true, 
+        only: ['conversations'] 
+      })
+    }, 200)
+    return () => clearTimeout(timer)
+  }, [searchQuery])
 
   const currentConversation = conversations.find((c) => c.id === selectedConversation)
 
@@ -249,6 +254,8 @@ export default function HostChat() {
               <TextField
                 fullWidth
                 size="small"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 sx={{
                   mb: 2,
                   '& .MuiOutlinedInput-root': {
