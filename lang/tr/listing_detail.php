@@ -19,6 +19,7 @@ return [
     'guided_tours_question' => 'Rehberli tur rezervasyonu yapıyor musunuz?',
     'popular_near' => 'Yakınınızdaki popüler konaklamalar',
     'more_photos' => 'fotoğraf',
+    'show_all_photos' => 'Tüm fotoğrafları göster',
     'average_rating' => 'Ortalama puan',
     'reviews' => 'değerlendirme',
     'login_to_book' => 'Giriş yapmadınız. Rezervasyon yapmak için giriş yapın.',

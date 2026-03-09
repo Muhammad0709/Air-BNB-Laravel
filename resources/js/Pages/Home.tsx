@@ -50,6 +50,18 @@ export default function Home() {
   const [children, setChildren] = useState(0)
   const [rooms, setRooms] = useState(0)
 
+  // Calculate number of nights between check-in and check-out
+  const calculateNights = () => {
+    if (!checkin || !checkout) return undefined
+    const checkInDate = new Date(checkin)
+    const checkOutDate = new Date(checkout)
+    const diffTime = Math.abs(checkOutDate.getTime() - checkInDate.getTime())
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    return diffDays > 0 ? diffDays : undefined
+  }
+
+  const nights = calculateNights()
+
   // Use dynamic popular destinations from backend, fallback to default if empty
   const defaultDestinations: Destination[] = [
     { name: 'Madinah', location: 'Al Madinah Province, Saudi Arabia' },
@@ -125,6 +137,7 @@ export default function Home() {
     rating: property.rating || 0,
     reviews: property.reviews || 0,
     isGuestFavorite: property.isGuestFavorite || false,
+    nights: nights,
   }))
 
   const popularItems = popularProperties.map(property => ({
@@ -136,6 +149,7 @@ export default function Home() {
     rating: property.rating || 0,
     reviews: property.reviews || 0,
     isGuestFavorite: property.isGuestFavorite || false,
+    nights: nights,
   }))
 
   return (

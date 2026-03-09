@@ -27,4 +27,5 @@ return [
     'no_favorites_sub' => 'احفظ العقارات التي تعجبك بالنقر على أيقونة القلب في أي قائمة.',
     'search_destinations_placeholder' => 'البحث عن الوجهات',
     'add_guests_placeholder' => 'إضافة ضيوف',
+    'guest_favorite' => 'مفضل الضيوف',
 ];

@@ -27,4 +27,5 @@ return [
     'no_favorites_sub' => 'کسی لسٹنگ پر دل کے آئیکون پر کلک کر کے پراپرٹیز محفوظ کریں۔',
     'search_destinations_placeholder' => 'مقامات تلاش کریں',
     'add_guests_placeholder' => 'مہمان شامل کریں',
+    'guest_favorite' => 'مہمان کی پسند',
 ];

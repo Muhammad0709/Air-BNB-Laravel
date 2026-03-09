@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import { Box, Button, Checkbox, FormControlLabel, Paper, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, Checkbox, FormControlLabel, Paper, Stack, TextField, Typography, Modal, IconButton } from '@mui/material'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import Toast from '../components/shared/Toast'
@@ -24,6 +24,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import TourIcon from '@mui/icons-material/Tour'
 import ScheduleIcon from '@mui/icons-material/Schedule'
+import CloseIcon from '@mui/icons-material/Close'
 
 const PLACEHOLDER_IMAGE = '/images/popular-stay-1.svg'
 
@@ -117,6 +118,7 @@ export default function ListingDetail() {
   const [reviewSubmitting, setReviewSubmitting] = useState(false)
   const [showAllReviews, setShowAllReviews] = useState(false)
   const [toast, setToast] = useState({ open: false, message: '', severity: 'warning' as 'success' | 'error' | 'warning' | 'info' })
+  const [galleryModalOpen, setGalleryModalOpen] = useState(false)
 
   const displayedReviews = showAllReviews ? reviews : reviews.slice(0, 3)
 
@@ -286,60 +288,59 @@ export default function ListingDetail() {
         </section>
 
         {/* Image Gallery Section */}
-        <section className="gallery-section">
+        <section className="property-gallery-section">
           <RBContainer>
-            <Box className="gallery-grid-container">
-                <Box className="gallery-top-section">
-                <Box className="gallery-large-item">
-                  <button type="button" className="gallery-image-button">
+            {galleryImages.length === 1 ? (
+              // Single image - full width
+              <Box sx={{ borderRadius: '12px', overflow: 'hidden', height: '320px', maxHeight: '320px', width: '100%' }}>
+                <img
+                  src={galleryImages[0]}
+                  alt={`${property.title} - 1`}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
+              </Box>
+            ) : (
+              <Box className="property-gallery-container">
+                <Box className="property-gallery-main">
+                  <button type="button" className="property-gallery-img-btn">
                     <img
-                      src={displayedImages[0]}
+                      src={galleryImages[0] || PLACEHOLDER_IMAGE}
                       alt={`${property.title} - 1`}
-                      className="gallery-image"
+                      className="property-gallery-img"
                     />
                   </button>
                 </Box>
-                <Box className="gallery-right-section">
-                  <Box className="gallery-medium-item">
-                    <button type="button" className="gallery-image-button">
-                      <img
-                        src={displayedImages[1]}
-                        alt={`${property.title} - 2`}
-                        className="gallery-image"
-                      />
-                    </button>
-                  </Box>
-                  <Box className="gallery-medium-item">
-                    <button type="button" className="gallery-image-button">
-                      <img
-                        src={displayedImages[2]}
-                        alt={`${property.title} - 3`}
-                        className="gallery-image"
-                      />
-                    </button>
-                  </Box>
+
+                <Box className="property-gallery-grid">
+                  {galleryImages.slice(1, 5).map((image, idx) => (
+                    <Box key={idx + 1} className="property-gallery-item">
+                      <button type="button" className="property-gallery-img-btn">
+                        <img
+                          src={image}
+                          alt={`${property.title} - ${idx + 2}`}
+                          className="property-gallery-img"
+                        />
+                        {idx === 3 && galleryImages.length > 5 && (
+                          <button 
+                            type="button" 
+                            className="property-gallery-show-all-btn"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setGalleryModalOpen(true)
+                            }}
+                          >
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                              <path d="M3 11.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm5 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm5 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm-10-5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm5 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm5 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm-10-5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm5 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm5 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z"/>
+                            </svg>
+                            {t('listing_detail.show_all_photos')}
+                          </button>
+                        )}
+                      </button>
+                    </Box>
+                  ))}
                 </Box>
               </Box>
-
-              <Box className="gallery-bottom-section">
-                {displayedImages.slice(3, 8).map((image, idx) => (
-                  <Box key={idx + 3} className="gallery-small-item">
-                    <button type="button" className="gallery-image-button">
-                      <img
-                        src={image}
-                        alt={`${property.title} - ${idx + 4}`}
-                        className="gallery-image"
-                      />
-                      {idx === 4 && remainingCount > 0 && (
-                        <Box className="gallery-more-overlay">
-                          <Typography component="span">+{remainingCount} {t('listing_detail.more_photos')}</Typography>
-                        </Box>
-                      )}
-                    </button>
-                  </Box>
-                ))}
-              </Box>
-            </Box>
+            )}
           </RBContainer>
         </section>
 
@@ -780,6 +781,270 @@ export default function ListingDetail() {
         </section>
       </main>
       <Footer />
+      
+      {/* Gallery Modal */}
+      <Modal
+        open={galleryModalOpen}
+        onClose={() => setGalleryModalOpen(false)}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backdropFilter: 'blur(4px)',
+        }}
+        BackdropProps={{
+          sx: {
+            backgroundColor: 'rgba(0, 0, 0, 0.75)',
+          },
+        }}
+      >
+        <Box
+          sx={{
+            position: 'relative',
+            width: '95%',
+            maxWidth: 1400,
+            maxHeight: '95vh',
+            bgcolor: 'background.paper',
+            borderRadius: 3,
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          {/* Modal Header */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              p: 2.5,
+              borderBottom: '1px solid #E5E7EB',
+              bgcolor: '#FFFFFF',
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', fontSize: '1.125rem' }}>
+              {property.title}
+            </Typography>
+            <IconButton
+              onClick={() => setGalleryModalOpen(false)}
+              sx={{
+                color: '#717171',
+                transition: 'all 0.2s',
+                '&:hover': { 
+                  bgcolor: '#F7F7F7',
+                  color: '#222222',
+                  transform: 'scale(1.05)',
+                },
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Box>
+
+          {/* Scrollable Images Grid */}
+          <Box
+            sx={{
+              flex: 1,
+              overflowY: 'auto',
+              p: 3,
+              bgcolor: '#F9FAFB',
+              '&::-webkit-scrollbar': {
+                width: '8px',
+              },
+              '&::-webkit-scrollbar-track': {
+                background: '#F3F4F6',
+                borderRadius: '4px',
+              },
+              '&::-webkit-scrollbar-thumb': {
+                background: '#D1D5DB',
+                borderRadius: '4px',
+                '&:hover': {
+                  background: '#9CA3AF',
+                },
+              },
+            }}
+          >
+            {/* First 5 images: 1 large + 4 small grid */}
+            {galleryImages.length > 0 && (
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: 1.5,
+                  mb: 2,
+                  height: 'calc(95vh - 120px)',
+                  bgcolor: '#FFFFFF',
+                  borderRadius: 2,
+                  overflow: 'hidden',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+                }}
+              >
+                {/* Large image on left */}
+                <Box
+                  sx={{
+                    gridRow: 'span 2',
+                    borderRadius: '12px 0 0 12px',
+                    overflow: 'hidden',
+                    height: '100%',
+                    position: 'relative',
+                  }}
+                >
+                  <img
+                    src={galleryImages[0]}
+                    alt={`${property.title} - 1`}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block',
+                    }}
+                  />
+                </Box>
+
+                {/* Grid of 4 smaller images on right */}
+                <Box
+                  sx={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gridTemplateRows: '1fr 1fr',
+                    gap: 1.5,
+                    height: '100%',
+                  }}
+                >
+                  {galleryImages.slice(1, 5).map((image, idx) => (
+                    <Box
+                      key={idx}
+                      sx={{
+                        borderRadius: 
+                          idx === 1 ? '0 12px 0 0' :
+                          idx === 3 ? '0 0 12px 0' :
+                          '0',
+                        overflow: 'hidden',
+                        position: 'relative',
+                      }}
+                    >
+                      <img
+                        src={image}
+                        alt={`${property.title} - ${idx + 2}`}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          display: 'block',
+                        }}
+                      />
+                    </Box>
+                  ))}
+                </Box>
+              </Box>
+            )}
+
+            {/* 6th image - Full width */}
+            {galleryImages[5] && (
+              <Box
+                sx={{
+                  mb: 2,
+                  bgcolor: '#FFFFFF',
+                  borderRadius: 2,
+                  overflow: 'hidden',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+                }}
+              >
+                <Box
+                  sx={{
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                    height: 400,
+                  }}
+                >
+                  <img
+                    src={galleryImages[5]}
+                    alt={`${property.title} - 6`}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      display: 'block',
+                    }}
+                  />
+                </Box>
+              </Box>
+            )}
+
+            {/* Remaining images after 6th - 2 per row */}
+            {galleryImages.slice(6).map((image, idx) => {
+              const imageIndex = idx + 6
+              const isEven = idx % 2 === 0
+              
+              // Every 2 images, create a new row
+              if (isEven) {
+                const nextImage = galleryImages[imageIndex + 1]
+                
+                return (
+                  <Box
+                    key={imageIndex}
+                    sx={{
+                      display: 'grid',
+                      gridTemplateColumns: nextImage ? '1fr 1fr' : '1fr',
+                      gap: 1.5,
+                      mb: 2,
+                      bgcolor: '#FFFFFF',
+                      borderRadius: 2,
+                      overflow: 'hidden',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
+                    }}
+                  >
+                    {/* Current image */}
+                    <Box
+                      sx={{
+                        borderRadius: nextImage ? '12px 0 0 12px' : '12px',
+                        overflow: 'hidden',
+                        height: 400,
+                      }}
+                    >
+                      <img
+                        src={image}
+                        alt={`${property.title} - ${imageIndex + 1}`}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                          display: 'block',
+                        }}
+                      />
+                    </Box>
+                    
+                    {/* Next image if exists */}
+                    {nextImage && (
+                      <Box
+                        sx={{
+                          borderRadius: '0 12px 12px 0',
+                          overflow: 'hidden',
+                          height: 400,
+                        }}
+                      >
+                        <img
+                          src={nextImage}
+                          alt={`${property.title} - ${imageIndex + 2}`}
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            display: 'block',
+                          }}
+                        />
+                      </Box>
+                    )}
+                  </Box>
+                )
+              }
+              return null
+            })}
+          </Box>
+        </Box>
+      </Modal>
+
       <Toast
         open={toast.open}
         onClose={() => setToast((prev) => ({ ...prev, open: false }))}

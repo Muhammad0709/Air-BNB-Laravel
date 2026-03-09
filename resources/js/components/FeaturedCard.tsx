@@ -94,6 +94,7 @@ export default function FeaturedCard({
           className="airbnb-card-image"
           onError={handleImageError}
         />
+        
         <IconButton
           className="airbnb-favorite-button"
           onClick={handleFavoriteClick}
@@ -101,8 +102,8 @@ export default function FeaturedCard({
           aria-label={isFavorited ? t('wishlist.remove_from_wishlist') : t('wishlist.add_to_wishlist')}
           sx={{
             position: 'absolute',
-            top: 12,
-            right: 12,
+            top: 8,
+            right: 8,
             padding: '6px',
             bgcolor: 'transparent',
             color: '#222222',
@@ -123,12 +124,14 @@ export default function FeaturedCard({
           <Typography component="span" className="airbnb-card-night-text">
             {' / '}{t('listing.night')}
           </Typography>
-          <Box className="airbnb-card-rating-inline">
-            <StarIcon sx={{ fontSize: 12, color: '#222222', marginInlineStart: 1 }} />
-            <Typography component="span" sx={{ fontSize: 14, fontWeight: 600, color: '#222222', marginInlineStart: 0.5 }}>
-              {rating.toFixed(2)}
-            </Typography>
-          </Box>
+          {rating > 0 && (
+            <Box className="airbnb-card-rating-inline">
+              <StarIcon sx={{ fontSize: 11, color: '#717171', marginInlineStart: 1 }} />
+              <Typography component="span" sx={{ fontSize: 13, fontWeight: 600, color: '#717171', marginInlineStart: 0.5 }}>
+                {rating.toFixed(2)}
+              </Typography>
+            </Box>
+          )}
         </Box>
       </Box>
     </Paper>

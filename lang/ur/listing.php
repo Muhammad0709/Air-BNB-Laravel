@@ -19,4 +19,6 @@ return [
     'search_placeholder' => 'تلاش',
     'showing_results' => ':from-:to از :total نتائج',
     'night' => 'رات',
+    'nights' => 'راتیں',
+    'for' => 'کے لیے',
 ];

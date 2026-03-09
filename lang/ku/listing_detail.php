@@ -19,6 +19,7 @@ return [
     'guided_tours_question' => 'ئایا گەشتی ڕێنوێنکراو حجز دەکەیت؟',
     'popular_near' => 'مانەوە بەناوبانگەکانی نزیکت',
     'more_photos' => 'وێنە',
+    'show_all_photos' => 'هەموو وێنەکان پیشان بدە',
     'average_rating' => 'Navîn nêrîn',
     'reviews' => 'nêrîn',
     'login_to_book' => 'تۆ چوونەژوورەوە نیت. بۆ حجز چوونەژوورەوە بکە.',

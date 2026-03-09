@@ -27,4 +27,5 @@ return [
     'no_favorites_sub' => 'با کلیک روی آیکون قلب در هر لیست، اقامت را ذخیره کنید.',
     'search_destinations_placeholder' => 'جستجوی مقاصد',
     'add_guests_placeholder' => 'افزودن مهمان',
+    'guest_favorite' => 'محبوب مهمان',
 ];

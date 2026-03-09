@@ -19,6 +19,7 @@ return [
     'guided_tours_question' => 'کیا آپ گائیڈڈ ٹور بک کر رہے ہیں؟',
     'popular_near' => 'آپ کے قریب مقبول قیام',
     'more_photos' => 'تصاویر',
+    'show_all_photos' => 'تمام تصاویر دیکھیں',
     'average_rating' => 'اوسط درجہ بندی',
     'reviews' => 'جائزے',
     'write_review' => 'جائزہ لکھیں',

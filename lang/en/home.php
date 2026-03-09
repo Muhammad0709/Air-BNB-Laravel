@@ -27,4 +27,5 @@ return [
     'no_favorites_sub' => 'Save properties you like by clicking the heart icon on any listing.',
     'search_destinations_placeholder' => 'Search destinations',
     'add_guests_placeholder' => 'Add guests',
+    'guest_favorite' => 'Guest favorite',
 ];

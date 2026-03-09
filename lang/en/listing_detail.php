@@ -30,4 +30,5 @@ return [
     'login_to_book' => 'You are not logged in. Please login to book.',
     'explore_more' => 'Explore More',
     'show_less' => 'Show less',
+    'show_all_photos' => 'Show all photos',
 ];

@@ -236,13 +236,14 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 0.5,
+                  gap: 0.75,
                   px: 1.5,
                   py: 0.75,
                   borderRadius: 2,
+                  border: '1px solid #DDDDDD',
                   cursor: 'pointer',
-                  transition: 'background-color 0.2s',
-                  '&:hover': { bgcolor: '#F7F7F7' }
+                  transition: 'all 0.2s',
+                  '&:hover': { borderColor: '#AD542D', bgcolor: '#F7F7F7' }
                 }}
               >
                 <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem' }}>

@@ -22,4 +22,5 @@ return [
     'average_rating' => 'امتیاز میانگین',
     'reviews' => 'نظر',
     'login_to_book' => 'شما وارد نشده‌اید. برای رزرو وارد شوید.',
+    'show_all_photos' => 'نمایش همه عکس‌ها',
 ];
