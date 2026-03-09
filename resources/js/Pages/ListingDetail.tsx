@@ -903,7 +903,6 @@ export default function ListingDetail() {
                   gridTemplateColumns: '1fr 1fr',
                   gap: 1.5,
                   mb: 2,
-                  height: 'calc(95vh - 120px)',
                   bgcolor: '#FFFFFF',
                   borderRadius: 2,
                   overflow: 'hidden',
@@ -913,10 +912,8 @@ export default function ListingDetail() {
                 {/* Large image on left */}
                 <Box
                   sx={{
-                    gridRow: 'span 2',
                     borderRadius: '12px 0 0 12px',
                     overflow: 'hidden',
-                    height: '100%',
                     position: 'relative',
                   }}
                 >
@@ -939,7 +936,6 @@ export default function ListingDetail() {
                     gridTemplateColumns: '1fr 1fr',
                     gridTemplateRows: '1fr 1fr',
                     gap: 1.5,
-                    height: '100%',
                   }}
                 >
                   {galleryImages.slice(1, 5).map((image, idx) => (
@@ -952,6 +948,7 @@ export default function ListingDetail() {
                           '0',
                         overflow: 'hidden',
                         position: 'relative',
+                        height: '250px',
                       }}
                     >
                       <img
