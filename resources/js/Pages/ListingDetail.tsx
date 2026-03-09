@@ -299,6 +299,36 @@ export default function ListingDetail() {
                   style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                 />
               </Box>
+            ) : galleryImages.length === 2 ? (
+              // Two images - 50% each
+              <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1, height: '320px', maxHeight: '320px' }}>
+                <Box sx={{ borderRadius: '12px 0 0 12px', overflow: 'hidden', height: '100%' }}>
+                  <img
+                    src={galleryImages[0]}
+                    alt={`${property.title} - 1`}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </Box>
+                <Box sx={{ borderRadius: '0 12px 12px 0', overflow: 'hidden', position: 'relative', height: '100%' }}>
+                  <img
+                    src={galleryImages[1]}
+                    alt={`${property.title} - 2`}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                  {galleryImages.length > 2 && (
+                    <button 
+                      type="button" 
+                      className="property-gallery-show-all-btn"
+                      onClick={() => setGalleryModalOpen(true)}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M3 11.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm5 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm5 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm-10-5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm5 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm5 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm-10-5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm5 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm5 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z"/>
+                      </svg>
+                      {t('listing_detail.show_all_photos')}
+                    </button>
+                  )}
+                </Box>
+              </Box>
             ) : (
               <Box className="property-gallery-container">
                 <Box className="property-gallery-main">
