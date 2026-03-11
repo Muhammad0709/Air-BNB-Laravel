@@ -510,6 +510,13 @@ p.hero-subtitle {
   border-radius: 16px;
 }
 
+/* Stays (Listing) & Wishlist: cards pehle jaisa – fixed image height 207px, square nahi */
+.listing-page .airbnb-card-image-wrapper,
+.wishlist-page .airbnb-card-image-wrapper {
+  height: 207px;
+  padding-bottom: 0;
+}
+
 /* Favorite icon: two-layer so outline always shows; fill color is set by component (default vs favorited) */
 .airbnb-favorite-button .card-favorite-icon-outline,
 .card-favorite-icon-outline {
@@ -588,6 +595,11 @@ p.hero-subtitle {
   .airbnb-card-image-wrapper {
     height: 0;
     padding-bottom: 100%;
+  }
+  .listing-page .airbnb-card-image-wrapper,
+  .wishlist-page .airbnb-card-image-wrapper {
+    height: 207px;
+    padding-bottom: 0;
   }
   
   /* Mobile: Rating on left side (start) */
