@@ -86,7 +86,7 @@ export default function CustomerBookings() {
     <Box>
       <Head title={t('customer_bookings.title')} />
       <Navbar />
-      <Box className="customer-bookings-page" sx={{ minHeight: 'calc(100vh - 200px)', py: 4 }}>
+      <Box className="customer-bookings-page" sx={{ py: 4, flex: 1 }}>
         <Container>
           <Box sx={{ textAlign: 'center', mb: 4 }}>
             <Typography variant="h2" sx={{ fontSize: '2.5rem', fontWeight: 800, color: '#222222', mb: 2 }}>{t('customer_bookings.title')}</Typography>

@@ -9,7 +9,7 @@ return [
     'become_host' => 'میزبان بنیں',
     'host_resources' => 'میزبان وسائل',
     'host_dashboard' => 'میزبان ڈیش بورڈ',
-    'lipabnb' => 'LipaBnb',
+    'lipabnb' => 'Bondoqi',
     'home' => 'ہوم',
     'about_us' => 'ہمارے بارے',
     'stays' => 'قیمے',

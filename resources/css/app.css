@@ -5,8 +5,16 @@
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
 }
 
-html, body, #root { height: 100%; }
+html, body, #root { height: 100%; min-height: 100vh; }
 #root { margin: 0; display: flex; flex-direction: column; }
+
+/* Footer always fix bottom: jis page par footer ho, us ka parent flex ho jata hai, footer neeche chipk jata hai */
+.footer-fix-bottom { margin-top: auto; }
+*:has(> .footer-fix-bottom) {
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 100vh !important;
+}
 
 /* Smaller base font on mobile – applies to user, host and admin */
 @media (max-width: 768px) {

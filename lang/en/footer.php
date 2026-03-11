@@ -9,7 +9,7 @@ return [
     'become_host' => 'Become a Host',
     'host_resources' => 'Host Resources',
     'host_dashboard' => 'Host Dashboard',
-    'lipabnb' => 'LipaBnb',
+    'lipabnb' => 'Bondoqi',
     'home' => 'Home',
     'about_us' => 'About us',
     'stays' => 'Stays',

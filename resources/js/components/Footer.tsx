@@ -9,8 +9,9 @@ export default function Footer() {
   }
 
   return (
-    <Box component="footer" sx={{ bgcolor: '#F7F7F7', color: '#222222', mt: 8, borderTop: '1px solid #DDDDDD' }}>
-      <MUIContainer maxWidth={false} sx={{ maxWidth: { xs: '100%', md: 1160, xl: 1440 }, px: { xs: 2, md: 3 }, py: { xs: 5, md: 6 }, mx: 'auto' }}>
+    <div className="footer-fix-bottom">
+      <Box component="footer" sx={{ bgcolor: '#F7F7F7', color: '#222222', mt: 8, borderTop: '1px solid #DDDDDD' }}>
+        <MUIContainer maxWidth={false} sx={{ maxWidth: { xs: '100%', md: 1160, xl: 1440 }, px: { xs: 2, md: 3 }, py: { xs: 5, md: 6 }, mx: 'auto' }}>
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: { xs: 4, md: 6 }, mb: 4 }}>
           <Box>
             <Typography sx={{ color: '#222222', fontWeight: 600, mb: 2.5, fontSize: '0.875rem' }}>{t('footer.support')}</Typography>
@@ -52,15 +53,14 @@ export default function Footer() {
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'center', alignItems: 'center', gap: 2 }}>
           <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: 1, sm: 3 }, alignItems: 'center', justifyContent: 'center', textAlign: { xs: 'center', sm: 'left' } }}>
             <Typography sx={{ color: '#222222', fontSize: '0.875rem' }}>
-              © {new Date().getFullYear()} {t('footer.lipabnb')}, Inc.
+              © {new Date().getFullYear()} {'\u00A0'} {'\u00A0'}{t('footer.lipabnb')}
             </Typography>
-            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' }, color: '#717171' }}>·</Box>
             <Box component={Link} href="/privacy-policy" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.privacy')}</Box>
-            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' }, color: '#717171' }}>·</Box>
             <Box component={Link} href="/terms" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.terms')}</Box>
           </Box>
         </Box>
       </MUIContainer>
-    </Box>
+      </Box>
+    </div>
   )
 }

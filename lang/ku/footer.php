@@ -9,7 +9,7 @@ return [
     'become_host' => 'ببە بە خاوەن ماڵ',
     'host_resources' => 'سەرچاوەکانی خاوەن ماڵ',
     'host_dashboard' => 'داشبۆردی خاوەن ماڵ',
-    'lipabnb' => 'LipaBnb',
+    'lipabnb' => 'Bondoqi',
     'home' => 'سەرەتا',
     'about_us' => 'دەربارەی ئێمە',
     'stays' => 'مانەوەکان',

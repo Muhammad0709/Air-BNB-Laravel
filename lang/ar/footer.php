@@ -9,7 +9,7 @@ return [
     'become_host' => 'كن مضيفاً',
     'host_resources' => 'موارد المضيف',
     'host_dashboard' => 'لوحة المضيف',
-    'lipabnb' => 'LipaBnb',
+    'lipabnb' => 'Bondoqi',
     'home' => 'الرئيسية',
     'about_us' => 'من نحن',
     'stays' => 'الإقامات',

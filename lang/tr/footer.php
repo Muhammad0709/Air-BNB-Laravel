@@ -9,7 +9,7 @@ return [
     'become_host' => 'Ev sahibi ol',
     'host_resources' => 'Ev sahibi kaynakları',
     'host_dashboard' => 'Ev sahibi paneli',
-    'lipabnb' => 'LipaBnb',
+    'lipabnb' => 'Bondoqi',
     'home' => 'Ana Sayfa',
     'about_us' => 'Hakkımızda',
     'stays' => 'Konaklamalar',
