@@ -291,8 +291,8 @@ export default function ListingDetail() {
         <section className="property-gallery-section">
           <RBContainer>
             {galleryImages.length === 1 ? (
-              // Single image - full width
-              <Box sx={{ borderRadius: '12px', overflow: 'hidden', height: '320px', maxHeight: '320px', width: '100%' }}>
+              // Single image - full width, visible on all screens
+              <Box sx={{ borderRadius: '12px', overflow: 'hidden', height: { xs: 280, sm: 320 }, width: '100%' }}>
                 <img
                   src={galleryImages[0]}
                   alt={`${property.title} - 1`}
@@ -300,16 +300,16 @@ export default function ListingDetail() {
                 />
               </Box>
             ) : galleryImages.length === 2 ? (
-              // Two images - 50% each
-              <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1, height: '320px', maxHeight: '320px' }}>
-                <Box sx={{ borderRadius: '12px 0 0 12px', overflow: 'hidden', height: '100%' }}>
+              // Two images - 1 col on mobile, 2 on desktop
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 1, height: { xs: 'auto', sm: 320 }, minHeight: { xs: 280, sm: 0 } }}>
+                <Box sx={{ borderRadius: { xs: '12px 12px 0 0', sm: '12px 0 0 12px' }, overflow: 'hidden', height: { xs: 280, sm: '100%' } }}>
                   <img
                     src={galleryImages[0]}
                     alt={`${property.title} - 1`}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
                 </Box>
-                <Box sx={{ borderRadius: '0 12px 12px 0', overflow: 'hidden', position: 'relative', height: '100%' }}>
+                <Box sx={{ borderRadius: { xs: '0 0 12px 12px', sm: '0 12px 12px 0' }, overflow: 'hidden', position: 'relative', height: { xs: 280, sm: '100%' } }}>
                   <img
                     src={galleryImages[1]}
                     alt={`${property.title} - 2`}
@@ -330,8 +330,15 @@ export default function ListingDetail() {
                 </Box>
               </Box>
             ) : (
-              <Box className="property-gallery-container">
-                <Box className="property-gallery-main">
+              <Box className="property-gallery-container" sx={{ maxWidth: '100%', minWidth: 0, overflow: 'hidden' }}>
+                <Box
+                  className="property-gallery-main"
+                  sx={{
+                    height: { xs: 280, sm: '100%' },
+                    minHeight: { xs: 280, sm: 0 },
+                    maxHeight: { xs: 280, sm: 400 },
+                  }}
+                >
                   <button type="button" className="property-gallery-img-btn">
                     <img
                       src={galleryImages[0] || PLACEHOLDER_IMAGE}

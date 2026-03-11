@@ -6,8 +6,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite'
  * Favorite icon: two layers so outline always shows.
  * isFavorited = false → dark fill + white outline
  * isFavorited = true  → red fill + white outline
+ * Smaller on mobile (xs), default size on sm+.
  */
-const size = 26
+const sizeDesktop = 26
+const sizeMobile = 20
 const fillFavorited = '#E31C5F'
 const fillDefault = '#222222'
 
@@ -21,7 +23,12 @@ export default function CardFavoriteIcon({ isFavorited = false }: CardFavoriteIc
   return (
     <Box
       className="card-favorite-icon-wrapper"
-      sx={{ position: 'relative', width: size, height: size, display: 'inline-flex' }}
+      sx={{
+        position: 'relative',
+        width: { xs: sizeMobile, sm: sizeDesktop },
+        height: { xs: sizeMobile, sm: sizeDesktop },
+        display: 'inline-flex',
+      }}
     >
       {/* Layer 1: white outline only */}
       <FavoriteIcon
@@ -30,7 +37,7 @@ export default function CardFavoriteIcon({ isFavorited = false }: CardFavoriteIc
           position: 'absolute',
           left: 0,
           top: 0,
-          fontSize: size,
+          fontSize: { xs: sizeMobile, sm: sizeDesktop },
           fill: 'transparent',
           stroke: '#ffffff',
           strokeWidth: 2.5,
@@ -43,7 +50,7 @@ export default function CardFavoriteIcon({ isFavorited = false }: CardFavoriteIc
           position: 'absolute',
           left: 0,
           top: 0,
-          fontSize: size,
+          fontSize: { xs: sizeMobile, sm: sizeDesktop },
           fill,
           stroke: 'none',
         }}

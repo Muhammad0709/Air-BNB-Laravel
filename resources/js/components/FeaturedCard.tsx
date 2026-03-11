@@ -102,8 +102,8 @@ export default function FeaturedCard({
           aria-label={isFavorited ? t('wishlist.remove_from_wishlist') : t('wishlist.add_to_wishlist')}
           sx={{
             position: 'absolute',
-            top: 8,
-            right: 8,
+            top: { xs: 4, sm: 8 },
+            right: { xs: 6, sm: 8 },
             padding: '6px',
             bgcolor: 'transparent',
             color: '#222222',

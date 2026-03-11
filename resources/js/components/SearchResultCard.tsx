@@ -111,8 +111,8 @@ export default function SearchResultCard({
           aria-label={isFavorited ? t('wishlist.remove_from_wishlist') : t('wishlist.add_to_wishlist')}
           sx={{
             position: 'absolute',
-            top: 12,
-            right: 12,
+            top: { xs: 6, sm: 12 },
+            right: { xs: 8, sm: 12 },
             padding: '6px',
             bgcolor: 'transparent',
             color: '#222222',
