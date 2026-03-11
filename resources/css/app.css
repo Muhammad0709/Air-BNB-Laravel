@@ -800,7 +800,14 @@ p.hero-subtitle {
 .filter-title { font-weight: 800; color: #111827; }
 .filter-group { font-weight: 800; color: #111827; margin: 14px 0 8px; }
 .check-row { color: #6B7280; }
-.check-label { color: #111827; }
+.check-label {
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.location-filter-scroll .check-row > div:first-of-type { min-width: 0; }
 /* Location filter scroll: thin scrollbar, content never cut off */
 .location-filter-scroll {
   padding-right: 12px;

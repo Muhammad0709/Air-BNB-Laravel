@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Stack, Typography } from '@mui/material'
+import { Button, Stack, Typography, useTheme, useMediaQuery } from '@mui/material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 
@@ -18,12 +18,23 @@ function getPageNumbers(current: number, last: number): (number | 'ellipsis')[] 
   return [1, 'ellipsis', current - 1, current, current + 1, 'ellipsis', last]
 }
 
+/** Mobile: 1 2 ... last; on click 2 → 2 3 ... last (sliding window of 2 + ... + last) */
+function getPageNumbersNarrow(current: number, last: number): (number | 'ellipsis')[] {
+  if (last <= 2) return Array.from({ length: last }, (_, i) => i + 1)
+  if (current <= 1) return [1, 2, 'ellipsis', last]
+  if (current >= last) return [last - 1, last]
+  if (current + 1 === last) return [current, last] // no duplicate "last"
+  return [current, current + 1, 'ellipsis', last]
+}
+
 export default function Pagination({ currentPage, lastPage, onPageChange, sx }: PaginationProps) {
+  const theme = useTheme()
+  const isNarrow = useMediaQuery(theme.breakpoints.down('sm'))
   if (lastPage <= 1) return null
 
   const current = currentPage
   const last = lastPage
-  const pages = getPageNumbers(current, last)
+  const pages = isNarrow ? getPageNumbersNarrow(current, last) : getPageNumbers(current, last)
 
   return (
     <Stack direction="row" justifyContent="center" alignItems="center" spacing={1} useFlexGap sx={{ mt: 4, mb: 2, ...sx }}>

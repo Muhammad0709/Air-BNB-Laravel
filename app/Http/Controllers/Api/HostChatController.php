@@ -387,10 +387,10 @@ class HostChatController extends Controller
      */
     public function sendMessage(Request $request, $id): JsonResponse
     {
-        $validated = $request->validate([
-            'message' => 'sometimes|string|max:5000',
+        $request->validate([
+            'message' => 'nullable|string|max:5000',
             'files' => 'sometimes|array|max:5',
-            'files.*' => 'file|mimes:jpeg,jpg,png,gif,mp4,mov,avi|max:10240',
+            'files.*' => 'file|mimes:jpeg,jpg,png,gif,webp,mp4,mov,avi,webm|max:10240',
         ]);
 
         $host = Auth::user();
@@ -413,7 +413,7 @@ class HostChatController extends Controller
             'conversation_id' => $id,
             'sender_id' => $host->id,
             'sender_type' => 'host',
-            'message' => $request->input('message'),
+            'message' => $request->input('message') ?? '',
             'read' => false,
         ]);
 

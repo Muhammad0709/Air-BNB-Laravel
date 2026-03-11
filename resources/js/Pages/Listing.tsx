@@ -190,7 +190,7 @@ export default function Listing() {
         <Box className="listing-page">
           <RBContainer>
             <Row>
-              <Col xs={12} md={3}>
+              <Col xs={12} md={4} lg={3}>
                 <Paper className="filter-card" elevation={0}>
                   <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
                     <Typography className="filter-title">{t('listing.filters')}</Typography>
@@ -288,15 +288,39 @@ export default function Listing() {
                 </Paper>
               </Col>
 
-              <Col xs={12} md={9}>
-                <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'stretch', sm: 'center' }} spacing={2} useFlexGap sx={{ mb: 2 }}>
+              <Col xs={12} md={8} lg={9}>
+                <Stack
+                  direction="column"
+                  justifyContent="space-between"
+                  alignItems="stretch"
+                  spacing={2}
+                  useFlexGap
+                  sx={{
+                    mb: 2,
+                    '@media (min-width:1000px)': { flexDirection: 'row', alignItems: 'center' },
+                  }}
+                >
                   <Typography className="results-text">
                     {t('listing.showing_results')
                       .replace(':from', String(properties.from ?? 0))
                       .replace(':to', String(properties.to ?? 0))
                       .replace(':total', String(properties.total ?? 0))}
                   </Typography>
-                  <Stack direction="row" spacing={1.5} useFlexGap flex={1} sx={{ maxWidth: 560, ...(isRtl ? { mr: { sm: 'auto' } } : { ml: { sm: 'auto' } }) }}>
+                  <Stack
+                    direction="column"
+                    spacing={1.5}
+                    useFlexGap
+                    flex={1}
+                    sx={{
+                      width: '100%',
+                      maxWidth: '100%',
+                      '@media (min-width:1000px)': {
+                        flexDirection: 'row',
+                        maxWidth: 560,
+                        ...(isRtl ? { mr: 'auto' } : { ml: 'auto' }),
+                      },
+                    }}
+                  >
                     <TextField
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
@@ -305,14 +329,22 @@ export default function Listing() {
                       fullWidth
                       className="listing-search"
                       InputProps={{ startAdornment: <InputAdornment position="start"><SearchIcon fontSize="small" /></InputAdornment> }}
+                      sx={{ minWidth: 0 }}
                     />
-                    <Select size="small" value={sortBy} onChange={(e) => setSortBy(e.target.value)} sx={{ minWidth: 170 }} className="listing-sort">
+                    <Select
+                      size="small"
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      sx={{ minWidth: '100%', '@media (min-width:1000px)': { minWidth: 170 } }}
+                      className="listing-sort"
+                      fullWidth
+                    >
                       <MenuItem value="featured">{t('listing.sort_by')}: {t('listing.featured')}</MenuItem>
                       <MenuItem value="price_low">{t('listing.price_low')}</MenuItem>
                       <MenuItem value="price_high">{t('listing.price_high')}</MenuItem>
                       <MenuItem value="newest">{t('listing.newest')}</MenuItem>
                     </Select>
-                    <Stack direction="row" spacing={0.5} useFlexGap>
+                    <Stack direction="row" spacing={0.5} useFlexGap sx={{ alignSelf: 'stretch', justifyContent: 'flex-start', '@media (min-width:1000px)': { alignSelf: 'auto', justifyContent: 'center' } }}>
                       <Button
                         variant={viewMode === 'list' ? 'contained' : 'outlined'}
                         onClick={() => setViewMode('list')}
@@ -350,7 +382,7 @@ export default function Listing() {
                   <>
                     <Row className="g-3">
                       {items.map((p) => (
-                        <Col key={p.id} xs={12} md={6} lg={6}>
+                        <Col key={p.id} xs={12} md={12} lg={6}>
                           <FeaturedCard
                             image={p.image || DEFAULT_IMAGE}
                             title={p.title}

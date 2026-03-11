@@ -89,8 +89,8 @@ export default function CustomerBookings() {
       <Box className="customer-bookings-page" sx={{ py: 4, flex: 1 }}>
         <Container>
           <Box sx={{ textAlign: 'center', mb: 4 }}>
-            <Typography variant="h2" sx={{ fontSize: '2.5rem', fontWeight: 800, color: '#222222', mb: 2 }}>{t('customer_bookings.title')}</Typography>
-            <Typography variant="body1" sx={{ color: '#717171', fontSize: '1.125rem', maxWidth: 600, mx: 'auto' }}>
+            <Typography variant="h2" sx={{ fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2.25rem', lg: '2.5rem' }, fontWeight: 800, color: '#222222', mb: 2 }}>{t('customer_bookings.title')}</Typography>
+            <Typography variant="body1" sx={{ color: '#717171', fontSize: { xs: '0.875rem', sm: '1rem', md: '1.0625rem', lg: '1.125rem' }, maxWidth: 600, mx: 'auto' }}>
               {t('customer_bookings.subtitle')}
             </Typography>
           </Box>

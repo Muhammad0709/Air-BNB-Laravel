@@ -120,10 +120,10 @@ export default function ProfileSettings() {
           <Container>
             {/* Header Section */}
             <Box sx={{ textAlign: 'center', mb: 6, mt: 4 }}>
-              <Typography variant="h2" sx={{fontSize: '2rem', fontWeight: 800, color: '#111827', mb: 2 }}>
+              <Typography variant="h2" sx={{ fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' }, fontWeight: 800, color: '#111827', mb: 2 }}>
                 {t('profile_settings.title')}
               </Typography>
-              <Typography variant="body1" sx={{ color: '#6B7280', fontSize: '1rem', maxWidth: 600, mx: 'auto' }}>
+              <Typography variant="body1" sx={{ color: '#6B7280', fontSize: { xs: '0.875rem', sm: '0.9375rem', md: '1rem' }, maxWidth: 600, mx: 'auto' }}>
                 {t('profile_settings.subtitle')}
               </Typography>
             </Box>
@@ -192,15 +192,15 @@ export default function ProfileSettings() {
                 </Paper>
 
                 {/* Profile Information */}
-                <Paper elevation={0} sx={{ p: 4, border: '1px solid #E5E7EB', borderRadius: '16px', mb: 3 }}>
-                  <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 3 }}>
+                <Paper elevation={0} sx={{ p: { xs: 2, sm: 3, md: 4 }, border: '1px solid #E5E7EB', borderRadius: '16px', mb: 3 }}>
+                  <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 3, fontSize: { xs: '1.15rem', sm: '1.5rem' } }}>
                     {t('profile_settings.personal_info')}
                   </Typography>
                   
                   <form onSubmit={handleProfileSubmit}>
                     <Stack spacing={3}>
                       <Box>
-                        <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
+                        <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: { xs: '0.8125rem', sm: '0.875rem' } }}>
                           {t('profile_settings.name')}
                         </Typography>
                         <TextField
@@ -231,7 +231,7 @@ export default function ProfileSettings() {
                       </Box>
 
                       <Box>
-                        <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
+                        <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: { xs: '0.8125rem', sm: '0.875rem' } }}>
                           {t('profile_settings.email_address')}
                         </Typography>
                         <TextField
@@ -263,7 +263,7 @@ export default function ProfileSettings() {
                       </Box>
 
                       <Box>
-                        <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
+                        <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: { xs: '0.8125rem', sm: '0.875rem' } }}>
                           {t('profile_settings.phone_number')}
                         </Typography>
                         <TextField
@@ -293,7 +293,7 @@ export default function ProfileSettings() {
                       </Box>
 
                       <Box>
-                        <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
+                        <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: { xs: '0.8125rem', sm: '0.875rem' } }}>
                           {t('profile_settings.bio')}
                         </Typography>
                         <TextField
@@ -360,7 +360,7 @@ export default function ProfileSettings() {
                   <form onSubmit={handlePasswordSubmit}>
                     <Stack spacing={3}>
                       <Box>
-                        <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
+                        <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: { xs: '0.8125rem', sm: '0.875rem' } }}>
                           {t('profile_settings.current_password')}
                         </Typography>
                         <TextField
@@ -392,7 +392,7 @@ export default function ProfileSettings() {
                       </Box>
 
                       <Box>
-                        <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
+                        <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: { xs: '0.8125rem', sm: '0.875rem' } }}>
                           {t('profile_settings.new_password')}
                         </Typography>
                         <TextField
@@ -424,7 +424,7 @@ export default function ProfileSettings() {
                       </Box>
 
                       <Box>
-                        <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
+                        <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: { xs: '0.8125rem', sm: '0.875rem' } }}>
                           {t('profile_settings.confirm_password')}
                         </Typography>
                         <TextField

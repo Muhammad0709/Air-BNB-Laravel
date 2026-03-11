@@ -70,6 +70,9 @@ function addConversationAndSort(prev: Conversation[], newConv: Conversation): Co
   return prev.some((c) => c.id === newConv.id) ? prev : [newConv, ...prev].sort((a, b) => new Date(b.lastMessageTime).getTime() - new Date(a.lastMessageTime).getTime())
 }
 
+const MAX_FILE_SIZE_MB = 10
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
+
 export default function Chat() {
   const { t } = useLanguage()
   const { url, props } = usePage<{
@@ -91,6 +94,7 @@ export default function Chat() {
   const [searchQuery, setSearchQuery] = useState('')
   const [loadingMessages, setLoadingMessages] = useState(false)
   const [sending, setSending] = useState(false)
+  const [fileError, setFileError] = useState('')
   const conversationsRef = useRef<Conversation[]>([])
 
   const theme = useTheme()
@@ -210,13 +214,17 @@ export default function Chat() {
   }, [currentConversation?.messages, scrollToBottom, currentConversation])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files)
-      setSelectedFiles(prev => [...prev, ...files])
-    }
+    setFileError('')
+    if (!e.target.files) return
+    const files = Array.from(e.target.files)
+    const valid = files.filter((f) => f.size <= MAX_FILE_SIZE_BYTES)
+    if (valid.length < files.length) setFileError(`Max ${MAX_FILE_SIZE_MB} MB per file.`)
+    if (valid.length) setSelectedFiles((prev) => [...prev, ...valid])
+    e.target.value = ''
   }
 
   const handleRemoveFile = (index: number) => {
+    setFileError('')
     setSelectedFiles(prev => prev.filter((_, i) => i !== index))
   }
 
@@ -224,8 +232,9 @@ export default function Chat() {
     if ((!messageText.trim() && selectedFiles.length === 0) || !selectedConversation) return
     setSending(true)
     const form = new FormData()
-    form.append('message', messageText.trim())
+    if (messageText.trim()) form.append('message', messageText.trim())
     selectedFiles.forEach((f) => form.append('files[]', f))
+    setFileError('')
     try {
       const res = await apiPostForm<{ data: { message: Record<string, unknown> } }>(
         `/api/messages/conversations/${selectedConversation}/messages`,
@@ -247,6 +256,15 @@ export default function Chat() {
       setMessageText('')
       setSelectedFiles([])
       if (fileInputRef.current) fileInputRef.current.value = ''
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err)
+      try {
+        const parsed = JSON.parse(msg) as { errors?: Record<string, string[]>; message?: string }
+        const firstError = parsed.errors && Object.values(parsed.errors).flat()[0]
+        setFileError(firstError || parsed.message || msg)
+      } catch {
+        setFileError(msg)
+      }
     } finally {
       setSending(false)
     }
@@ -637,9 +655,18 @@ export default function Chat() {
                     <div ref={messagesEndRef} />
                   </Box>
 
+                  {/* File size error */}
+                  {fileError && (
+                    <Box sx={{ px: 2, py: 1, bgcolor: '#FEF2F2', borderTop: '1px solid #FECACA' }}>
+                      <Typography variant="body2" sx={{ color: '#B91C1C' }}>{fileError}</Typography>
+                    </Box>
+                  )}
                   {/* Selected Files Preview */}
                   {selectedFiles.length > 0 && (
                     <Box sx={{ p: 2, borderTop: '1px solid #E5E7EB', bgcolor: '#FFFFFF' }}>
+                      <Typography variant="caption" sx={{ color: '#6B7280', display: 'block', mb: 1 }}>
+                        Max {MAX_FILE_SIZE_MB} MB per file (image or video)
+                      </Typography>
                       <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap', gap: 1 }}>
                         {selectedFiles.map((file, index) => (
                           <Box

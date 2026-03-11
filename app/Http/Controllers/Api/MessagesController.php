@@ -415,7 +415,7 @@ class MessagesController extends Controller
             'conversation_id' => $conversationId,
             'sender_id' => $user->id,
             'sender_type' => $senderType,
-            'message' => $request->input('message'),
+            'message' => $request->input('message') ?? '',
             'read' => false,
         ]);
 
