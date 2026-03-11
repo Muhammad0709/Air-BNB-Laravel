@@ -812,7 +812,7 @@ export default function ListingDetail() {
       </main>
       <Footer />
       
-      {/* Gallery Modal */}
+      {/* Gallery Modal - responsive for all devices */}
       <Modal
         open={galleryModalOpen}
         onClose={() => setGalleryModalOpen(false)}
@@ -820,6 +820,7 @@ export default function ListingDetail() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          p: { xs: 0, sm: 2 },
           backdropFilter: 'blur(4px)',
         }}
         BackdropProps={{
@@ -831,11 +832,12 @@ export default function ListingDetail() {
         <Box
           sx={{
             position: 'relative',
-            width: '95%',
+            width: { xs: '100%', sm: '95%' },
             maxWidth: 1400,
-            maxHeight: '95vh',
+            height: { xs: '100vh', sm: 'auto' },
+            maxHeight: { xs: '100vh', sm: '95vh' },
             bgcolor: 'background.paper',
-            borderRadius: 3,
+            borderRadius: { xs: 0, sm: 3 },
             boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
             overflow: 'hidden',
             display: 'flex',
@@ -848,20 +850,34 @@ export default function ListingDetail() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              p: 2.5,
+              gap: 1,
+              p: { xs: 1.5, sm: 2.5 },
               borderBottom: '1px solid #E5E7EB',
               bgcolor: '#FFFFFF',
+              flexShrink: 0,
             }}
           >
-            <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', fontSize: '1.125rem' }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 700,
+                color: '#222222',
+                fontSize: { xs: '0.9375rem', sm: '1.125rem' },
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                minWidth: 0,
+              }}
+            >
               {property.title}
             </Typography>
             <IconButton
               onClick={() => setGalleryModalOpen(false)}
               sx={{
                 color: '#717171',
+                flexShrink: 0,
                 transition: 'all 0.2s',
-                '&:hover': { 
+                '&:hover': {
                   bgcolor: '#F7F7F7',
                   color: '#222222',
                   transform: 'scale(1.05)',
@@ -876,11 +892,14 @@ export default function ListingDetail() {
           <Box
             sx={{
               flex: 1,
+              minHeight: 0,
               overflowY: 'auto',
-              p: 3,
+              overflowX: 'hidden',
+              p: { xs: 1.5, sm: 3 },
               bgcolor: '#F9FAFB',
+              WebkitOverflowScrolling: 'touch',
               '&::-webkit-scrollbar': {
-                width: '8px',
+                width: '6px',
               },
               '&::-webkit-scrollbar-track': {
                 background: '#F3F4F6',
@@ -895,12 +914,13 @@ export default function ListingDetail() {
               },
             }}
           >
-            {/* First 5 images: 1 large + 4 small grid */}
+            {/* First 5 images: 1 large + 4 small grid — stack on mobile */}
             {galleryImages.length > 0 && (
               <Box
                 sx={{
                   display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
+                  gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+                  gridTemplateRows: { xs: 'auto auto', sm: '1fr' },
                   gap: 1.5,
                   mb: 2,
                   bgcolor: '#FFFFFF',
@@ -909,12 +929,13 @@ export default function ListingDetail() {
                   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
                 }}
               >
-                {/* Large image on left */}
+                {/* Large image on left (top on mobile) */}
                 <Box
                   sx={{
-                    borderRadius: '12px 0 0 12px',
+                    borderRadius: { xs: '12px 12px 0 0', sm: '12px 0 0 12px' },
                     overflow: 'hidden',
                     position: 'relative',
+                    minHeight: { xs: 220, sm: 'auto' },
                   }}
                 >
                   <img
@@ -929,7 +950,7 @@ export default function ListingDetail() {
                   />
                 </Box>
 
-                {/* Grid of 4 smaller images on right */}
+                {/* Grid of 4 smaller images — 2x2 on all screens, full width row on mobile */}
                 <Box
                   sx={{
                     display: 'grid',
@@ -942,13 +963,13 @@ export default function ListingDetail() {
                     <Box
                       key={idx}
                       sx={{
-                        borderRadius: 
-                          idx === 1 ? '0 12px 0 0' :
-                          idx === 3 ? '0 0 12px 0' :
+                        borderRadius:
+                          idx === 1 ? { xs: '0', sm: '0 12px 0 0' } :
+                          idx === 3 ? { xs: '0 0 12px 0', sm: '0 0 12px 0' } :
                           '0',
                         overflow: 'hidden',
                         position: 'relative',
-                        height: '250px',
+                        height: { xs: 120, sm: 250 },
                       }}
                     >
                       <img
@@ -982,7 +1003,7 @@ export default function ListingDetail() {
                   sx={{
                     borderRadius: '12px',
                     overflow: 'hidden',
-                    height: 400,
+                    height: { xs: 240, sm: 400 },
                   }}
                 >
                   <img
@@ -999,21 +1020,20 @@ export default function ListingDetail() {
               </Box>
             )}
 
-            {/* Remaining images after 6th - 2 per row */}
+            {/* Remaining images — 1 col on mobile, 2 on tablet+ */}
             {galleryImages.slice(6).map((image, idx) => {
               const imageIndex = idx + 6
               const isEven = idx % 2 === 0
-              
-              // Every 2 images, create a new row
+
               if (isEven) {
                 const nextImage = galleryImages[imageIndex + 1]
-                
+
                 return (
                   <Box
                     key={imageIndex}
                     sx={{
                       display: 'grid',
-                      gridTemplateColumns: nextImage ? '1fr 1fr' : '1fr',
+                      gridTemplateColumns: { xs: '1fr', sm: nextImage ? '1fr 1fr' : '1fr' },
                       gap: 1.5,
                       mb: 2,
                       bgcolor: '#FFFFFF',
@@ -1022,12 +1042,11 @@ export default function ListingDetail() {
                       boxShadow: '0 2px 8px rgba(0, 0, 0, 0.08)',
                     }}
                   >
-                    {/* Current image */}
                     <Box
                       sx={{
-                        borderRadius: nextImage ? '12px 0 0 12px' : '12px',
+                        borderRadius: { xs: '12px', sm: nextImage ? '12px 0 0 12px' : '12px' },
                         overflow: 'hidden',
-                        height: 400,
+                        height: { xs: 240, sm: 400 },
                       }}
                     >
                       <img
@@ -1041,14 +1060,13 @@ export default function ListingDetail() {
                         }}
                       />
                     </Box>
-                    
-                    {/* Next image if exists */}
+
                     {nextImage && (
                       <Box
                         sx={{
-                          borderRadius: '0 12px 12px 0',
+                          borderRadius: { xs: '12px', sm: '0 12px 12px 0' },
                           overflow: 'hidden',
-                          height: 400,
+                          height: { xs: 240, sm: 400 },
                         }}
                       >
                         <img
