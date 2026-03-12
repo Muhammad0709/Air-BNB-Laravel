@@ -19,7 +19,7 @@ const languages = [
 ]
 
 const inputSx = {
-  '& .MuiOutlinedInput-root': { borderRadius: '24px', boxSizing: 'border-box' },
+  '& .MuiOutlinedInput-root': { borderRadius: '24px' },
   '& .MuiOutlinedInput-root fieldset': { borderRadius: '24px' },
 }
 
@@ -53,20 +53,19 @@ export default function HostSignup() {
   return (
     <>
       <Head title={t('auth.admin_signup.title')} />
-      <Box className="auth-signup-page" sx={{ minHeight: '100vh', overflowX: 'hidden', display: 'flex', alignItems: { xs: 'flex-start', sm: 'center' }, justifyContent: { xs: 'flex-start', sm: 'center' }, bgcolor: '#F9FAFB', py: { xs: 3, sm: 0 }, px: { xs: 1.5, sm: 0 }, pt: { xs: 8, sm: 0 } }}>
-        <Box sx={{ position: 'fixed', top: 16, ...(isRtl ? { left: 16 } : { right: 16 }), zIndex: 1300, '@media (max-width: 599.95px)': { top: 12, ...(isRtl ? { left: 12 } : { right: 12 }) } }}>
+      <Box className="auth-signup-page" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: '#F9FAFB' }}>
+        <Box sx={{ position: 'fixed', top: 16, ...(isRtl ? { left: 16 } : { right: 16 }), zIndex: 1300 }}>
           <Box
             onClick={(e: React.MouseEvent<HTMLElement>) => setLanguageAnchor(e.currentTarget)}
             sx={{
               display: 'flex', alignItems: 'center', gap: 0.75, px: 1.5, py: 0.75, borderRadius: 2,
               border: '1px solid #DDDDDD', cursor: 'pointer', bgcolor: '#fff', boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
               '&:hover': { borderColor: '#AD542D', bgcolor: '#F7F7F7' },
-              '@media (max-width: 599.95px)': { gap: 0.5, px: 1, py: 0.5 },
             }}
           >
-            <Typography sx={{ fontSize: '1.25rem', lineHeight: 1, '@media (max-width: 599.95px)': { fontSize: '1rem' } }}>{currentLanguage.flag}</Typography>
-            <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem', marginInlineStart: 0.75, '@media (max-width: 599.95px)': { fontSize: '0.75rem', marginInlineStart: 0.5 } }}>{currentLanguage.code.toUpperCase()}</Typography>
-            <ArrowDropDownIcon sx={{ fontSize: 22, color: '#222222', '@media (max-width: 599.95px)': { fontSize: 18 } }} />
+            <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{currentLanguage.flag}</Typography>
+            <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem', marginInlineStart: 0.75 }}>{currentLanguage.code.toUpperCase()}</Typography>
+            <ArrowDropDownIcon sx={{ fontSize: 22, color: '#222222' }} />
           </Box>
           <Menu
             anchorEl={languageAnchor}
@@ -89,20 +88,20 @@ export default function HostSignup() {
         <Container>
           <Row className="justify-content-center">
             <Col xs={12} sm={10} md={8} lg={6} xl={5}>
-              <Paper elevation={0} sx={{ p: 4, borderRadius: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', overflow: 'hidden', '@media (max-width: 599.95px)': { p: 2.5, borderRadius: '16px', width: '100%', maxWidth: '100%', boxSizing: 'border-box' } }}>
-                <Box sx={{ textAlign: 'center', mb: 4, '@media (max-width: 599.95px)': { mb: 3 } }}>
-                  <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: 70, width: 'auto', maxWidth: 380, objectFit: 'contain', display: 'block', margin: '0 auto', mb: 2, '@media (max-width: 599.95px)': { height: 48, maxWidth: '100%' } }} />
-                  <Typography variant="h4" sx={{ fontWeight: 800, color: '#222222', mb: 1, '@media (max-width: 599.95px)': { fontSize: '1.5rem' } }}>
+              <Paper elevation={0} sx={{ p: 4, borderRadius: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
+                <Box sx={{ textAlign: 'center', mb: 4 }}>
+                  <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: 100, width: 'auto', maxWidth: 380, objectFit: 'contain', display: 'block', margin: '0 auto', mb: 2 }} />
+                  <Typography variant="h4" sx={{ fontWeight: 800, color: '#222222', mb: 1 }}>
                     {t('auth.admin_signup.heading')}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: '#717171', '@media (max-width: 599.95px)': { fontSize: '0.8125rem' } }}>
+                  <Typography variant="body2" sx={{ color: '#717171' }}>
                     {t('auth.admin_signup.subtitle')}
                   </Typography>
                 </Box>
 
                 <form onSubmit={handleSubmit}>
                   <Stack spacing={3}>
-                    <Stack direction="row" spacing={2} useFlexGap sx={{ '@media (max-width: 599.95px)': { flexDirection: 'column' } }}>
+                    <Stack direction="row" spacing={2} useFlexGap>
                       <TextField
                         fullWidth
                         label={t('auth.admin_signup.first_name')}
@@ -235,7 +234,7 @@ export default function HostSignup() {
                       {processing ? t('auth.admin_signup.creating') : t('auth.admin_signup.submit')}
                     </Button>
 
-                   {/* <Button
+                    <Button
                       component="a"
                       href="/auth/google"
                       fullWidth
@@ -256,7 +255,7 @@ export default function HostSignup() {
                       }}
                     >
                       {t('auth.admin_signup.sign_up_google')}
-                    </Button> */}
+                    </Button>
 
                     <Box sx={{ textAlign: 'center', mt: 2 }}>
                       <Typography variant="body2" sx={{ color: '#717171' }}>
