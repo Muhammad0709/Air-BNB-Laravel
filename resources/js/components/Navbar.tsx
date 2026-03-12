@@ -115,7 +115,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
             alignItems: 'center',
           }}
         >
-          {/* <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', minWidth: 0 }}>
+          <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-start', minWidth: 0 }}>
             <Box component={Link} href={brandTo} sx={{ display: 'flex', alignItems: 'center', minWidth: 0 }}>
               <Box
                 component="img"
@@ -130,7 +130,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                 }}
               />
             </Box>
-          </Box> */}
+          </Box>
 
           <Stack
             direction="row"
