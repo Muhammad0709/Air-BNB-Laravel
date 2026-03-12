@@ -35,6 +35,8 @@ export default function AdminLogin() {
     post('/login', { onSuccess: () => {} })
   }
 
+  console.log(data);
+
   const googleIconEl = <Box component="img" src={socialIcon} alt="Google" sx={{ width: 24, height: 24 }} />
 
   return (
@@ -85,6 +87,8 @@ export default function AdminLogin() {
                   overflow: 'hidden',
                 }}
               >
+
+
                 <Box sx={{ textAlign: 'center', mb: 4 }}>
                   <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: 70, width: 'auto', maxWidth: 380, objectFit: 'contain', display: 'block', margin: '0 auto', mb: 2 }} />
                   <Typography variant="h4" sx={{ fontWeight: 800, color: '#222222', mb: 1 }}>
