@@ -70,11 +70,11 @@ export default function SignIn() {
                 <Box>
                   <Stack alignItems="center" sx={{ mb: { xs: 3, md: 4 } }}>
                     <Link href="/" style={{ textDecoration: 'none', display: 'block' }}>
-                      <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: { xs: 120, md: 150 }, width: 'auto', maxWidth: { xs: 450, md: 600 }, objectFit: 'contain', display: 'block', cursor: 'pointer', margin: '0 auto' }} />
+                      <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: 70, width: 'auto', maxWidth: 380, objectFit: 'contain', display: 'block', cursor: 'pointer', margin: '0 auto' }} />
                     </Link>
                   </Stack>
-                  <Typography variant="h4" fontWeight={700} sx={{ mb: { xs: 1.5, md: 2 }, fontSize: { xs: 28, sm: 32, md: 44 }, lineHeight: 1.15 }}>{t('auth.signin.welcome')}</Typography>
-                  <Typography variant="body1" color="text.secondary" sx={{ mb: { xs: 4, md: 5 } }}>{t('auth.signin.subtitle')}</Typography>
+                  <Typography variant="h4" fontWeight={700} sx={{ mb: { xs: 1.5, md: 2 }, fontSize: { xs: '1.35rem', sm: '1.75rem', md: '2.75rem' }, lineHeight: 1.15, wordBreak: 'break-word' }}>{t('auth.signin.welcome')}</Typography>
+                  <Typography variant="body1" color="text.secondary" sx={{ mb: { xs: 4, md: 5 }, fontSize: { xs: '0.875rem', sm: '1rem' } }}>{t('auth.signin.subtitle')}</Typography>
                   <Paper elevation={0} sx={{ bgcolor: 'transparent' }}>
                     <form onSubmit={(e) => { e.preventDefault(); post('/auth/login'); }}>
                       <Stack spacing={2.5}>
@@ -113,9 +113,9 @@ export default function SignIn() {
                       </Stack>
                     </form>
                   </Paper>
-                  <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 4 }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 4, fontSize: { xs: '0.8125rem', sm: '0.875rem' } }}>
                     {t('auth.signin.no_account')}{' '}
-                    <MUILink component={Link} href="/auth/register" underline="none" sx={{ color: '#AD542D', fontWeight: 600 }}>{t('auth.signin.sign_up_link')}</MUILink>
+                    <MUILink component={Link} href="/auth/register" underline="none" sx={{ color: '#AD542D', fontWeight: 600, fontSize: 'inherit' }}>{t('auth.signin.sign_up_link')}</MUILink>
                   </Typography>
                 </Box>
               </Box>
