@@ -449,5 +449,26 @@ class MessagesController extends Controller
             ],
         ], 200);
     }
+
+    /**
+     * Delete a single message. Only the message is removed; the conversation stays.
+     * User must be a participant (guest or host) of the conversation.
+     */
+    public function deleteMessage(Request $request, $conversationId, $messageId): JsonResponse|\Illuminate\Http\Response
+    {
+        $user = Auth::user();
+
+        $conversation = Conversation::findOrFail($conversationId);
+        if ($conversation->user_id !== $user->id && $conversation->property->user_id !== $user->id) {
+            return response()->json(['status' => 'error', 'message' => 'Access denied'], 403);
+        }
+
+        $message = Message::where('id', $messageId)
+            ->where('conversation_id', $conversationId)
+            ->firstOrFail();
+
+        $message->delete();
+        return response()->noContent();
+    }
 }
 

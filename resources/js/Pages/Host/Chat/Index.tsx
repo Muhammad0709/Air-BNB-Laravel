@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
-import { Box, Button, Card, CardContent, Stack, TextField, Typography, Avatar, Paper, IconButton, Menu, MenuItem } from '@mui/material'
+import { Box, Button, Card, CardContent, Checkbox, Dialog, FormControlLabel, Stack, TextField, Typography, Avatar, Paper, IconButton, Menu, MenuItem } from '@mui/material'
 import HostLayout from '../../../Components/Host/HostLayout'
 import { Head, usePage, router } from '@inertiajs/react'
 import { Row, Col } from 'react-bootstrap'
@@ -7,7 +7,7 @@ import SendIcon from '@mui/icons-material/Send'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
 import VideoFileIcon from '@mui/icons-material/VideoFile'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import { apiGet, apiPostForm } from '../../../chatApi'
+import { apiDelete, apiGet, apiPostForm } from '../../../chatApi'
 
 interface MessageFile {
   id: number | string
@@ -64,9 +64,15 @@ export default function HostChat() {
   const [messageText, setMessageText] = useState('')
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [menuAnchor, setMenuAnchor] = useState<{ [key: number]: HTMLElement | null }>({})
+  const [deleteChatDialogOpen, setDeleteChatDialogOpen] = useState(false)
+  const [messageToDelete, setMessageToDelete] = useState<number | null>(null)
+  const [deleteFileFromDevice, setDeleteFileFromDevice] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [loadingMessages, setLoadingMessages] = useState(false)
+  const [showLoadingDelayed, setShowLoadingDelayed] = useState(false)
   const [sending, setSending] = useState(false)
+  const loadingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const showLoadingDelayRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const conversationsList = useMemo(() => {
     const arr = Array.isArray(props.conversations) ? props.conversations : []
@@ -110,9 +116,24 @@ export default function HostChat() {
     if (!selectedConversation) return
     const conv = conversations.find((c) => c.id === selectedConversation)
     if (conv && conv.messages.length > 0) return
+    const ac = new AbortController()
+    const minLoadingStartedAt = Date.now()
+    const MIN_LOADING_MS = 400
+    const SHOW_LOADING_AFTER_MS = 800
     setLoadingMessages(true)
-    apiGet<{ data: { messages: unknown[] } }>(`/api/host/chat/conversations/${selectedConversation}`)
+    setShowLoadingDelayed(false)
+    if (showLoadingDelayRef.current) {
+      clearTimeout(showLoadingDelayRef.current)
+      showLoadingDelayRef.current = null
+    }
+    showLoadingDelayRef.current = setTimeout(() => {
+      showLoadingDelayRef.current = null
+      setShowLoadingDelayed(true)
+    }, SHOW_LOADING_AFTER_MS)
+    const startFetch = () => {
+      apiGet<{ data: { messages: unknown[] } }>(`/api/host/chat/conversations/${selectedConversation}`, { signal: ac.signal })
       .then((res) => {
+        if (ac.signal.aborted) return
         const messages = (res.data.messages ?? []).map((m: unknown) =>
           apiMessageToMessage({
             id: (m as Record<string, unknown>).id as number,
@@ -126,7 +147,34 @@ export default function HostChat() {
         setConversations((prev) => prev.map((c) => (c.id === selectedConversation ? { ...c, messages } : c)))
       })
       .catch(() => {})
-      .finally(() => setLoadingMessages(false))
+      .finally(() => {
+        if (ac.signal.aborted) return
+        setShowLoadingDelayed(false)
+        const elapsed = Date.now() - minLoadingStartedAt
+        const delay = Math.max(0, MIN_LOADING_MS - elapsed)
+        if (delay > 0) {
+          loadingTimeoutRef.current = setTimeout(() => {
+            loadingTimeoutRef.current = null
+            setLoadingMessages(false)
+          }, delay)
+        } else {
+          setLoadingMessages(false)
+        }
+      })
+    }
+    const t = setTimeout(startFetch, 0)
+    return () => {
+      clearTimeout(t)
+      ac.abort()
+      if (showLoadingDelayRef.current) {
+        clearTimeout(showLoadingDelayRef.current)
+        showLoadingDelayRef.current = null
+      }
+      if (loadingTimeoutRef.current != null) {
+        clearTimeout(loadingTimeoutRef.current)
+        loadingTimeoutRef.current = null
+      }
+    }
   }, [selectedConversation, conversations])
 
   useEffect(() => {
@@ -234,6 +282,46 @@ export default function HostChat() {
     setMenuAnchor(prev => ({ ...prev, [conversationId]: null }))
   }
 
+  const handleDeleteConversation = async (conversationId: number) => {
+    handleMenuClose(conversationId)
+    try {
+      await apiDelete(`/host/chat/conversations/${conversationId}`)
+      setConversations((prev) => prev.filter((c) => c.id !== conversationId))
+      if (selectedConversation === conversationId) {
+        setSelectedConversation(null)
+      }
+    } catch {
+      // Optionally show error toast
+    }
+  }
+
+  const handleDeleteMessage = async (messageId: number) => {
+    if (!selectedConversation) return
+    try {
+      await apiDelete(`/api/host/chat/conversations/${selectedConversation}/messages/${messageId}`)
+      setConversations((prev) =>
+        prev.map((c) =>
+          c.id === selectedConversation ? { ...c, messages: c.messages.filter((m) => m.id !== messageId) } : c
+        )
+      )
+      setMessageToDelete(null)
+      setDeleteChatDialogOpen(false)
+    } catch {
+      // Optionally show error toast
+    }
+  }
+
+  const openDeleteMessageDialog = (messageId: number) => {
+    setMessageToDelete(messageId)
+    setDeleteChatDialogOpen(true)
+  }
+
+  const closeDeleteMessageDialog = () => {
+    setMessageToDelete(null)
+    setDeleteChatDialogOpen(false)
+    setDeleteFileFromDevice(true)
+  }
+
   const getLastMessagePreview = (conversation: Conversation) => {
     // Filter out "image" or "video" text from last message
     if (conversation.lastMessage.includes('image') || conversation.lastMessage.includes('video')) {
@@ -274,6 +362,7 @@ export default function HostChat() {
                 <Box
                   key={conversation.id}
                   onClick={() => {
+                    setShowLoadingDelayed(false)
                     setSelectedConversation(conversation.id)
                     setConversations((prev) => prev.map((conv) => (conv.id === conversation.id ? { ...conv, unreadCount: 0 } : conv)))
                   }}
@@ -316,7 +405,7 @@ export default function HostChat() {
                             open={Boolean(menuAnchor[conversation.id])}
                             onClose={() => handleMenuClose(conversation.id)}
                           >
-                            <MenuItem onClick={() => handleMenuClose(conversation.id)}>Delete</MenuItem>
+                            <MenuItem onClick={() => handleDeleteConversation(conversation.id)}>Delete</MenuItem>
                           </Menu>
                         </Stack>
                       </Stack>
@@ -387,11 +476,31 @@ export default function HostChat() {
                 </Stack>
               </Box>
 
-              {/* Messages */}
-              <Box sx={{ flex: 1, overflowY: 'auto', p: 2, bgcolor: '#F9FAFB' }}>
-                {loadingMessages ? (
-                  <Box sx={{ textAlign: 'center', py: 4 }}>
-                    <Typography variant="body2" sx={{ color: '#717171' }}>Loading messages…</Typography>
+              {/* Messages - show loading only when we're loading AND have no messages; if messages exist, never show loading */}
+              <Box sx={{ flex: 1, overflowY: 'auto', p: 2, bgcolor: '#F9FAFB', position: 'relative', minHeight: 0 }}>
+                {currentConversation && currentConversation.messages.length === 0 && showLoadingDelayed ? (
+                  <Box sx={{ flex: 1, minHeight: 200, position: 'relative' }}>
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        bgcolor: '#F9FAFB',
+                      }}
+                    >
+                      <Typography
+                        variant="body2"
+                        component="span"
+                        sx={{ color: '#717171', opacity: 1 }}
+                      >
+                        Loading messages…
+                      </Typography>
+                    </Box>
                   </Box>
                 ) : (
                 <>
@@ -544,6 +653,14 @@ export default function HostChat() {
                                 </Typography>
                               </Paper>
                             )}
+                            <IconButton
+                              size="small"
+                              onClick={(e) => { e.stopPropagation(); openDeleteMessageDialog(message.id) }}
+                              aria-label="Options"
+                              sx={{ alignSelf: 'center', color: '#9CA3AF', '&:hover': { color: '#AD542D', bgcolor: 'rgba(173,84,45,0.08)' } }}
+                            >
+                              <MoreVertIcon sx={{ fontSize: 18 }} />
+                            </IconButton>
                       </Stack>
                     </Box>
                     )
@@ -552,6 +669,163 @@ export default function HostChat() {
                 )}
                 <div ref={messagesEndRef} />
               </Box>
+
+              {/* Delete message dialog: own message = 3 options; other user's message = dark modal with "Delete file from device" + Delete for me / Cancel */}
+              {(() => {
+                const messageBeingDeleted = currentConversation?.messages.find((m) => m.id === messageToDelete)
+                const isOwnMessage = messageBeingDeleted?.sender === 'host'
+                const isOtherUserMessage = messageToDelete != null && messageBeingDeleted && !isOwnMessage
+                return (
+              <Dialog
+                open={deleteChatDialogOpen}
+                onClose={closeDeleteMessageDialog}
+                PaperProps={{
+                  sx: {
+                    borderRadius: '16px',
+                    bgcolor: '#FFFFFF',
+                    boxShadow: '0 25px 50px -12px rgba(0,0,0,0.15)',
+                    width: 520,
+                    minWidth: 320,
+                    maxWidth: '92vw',
+                    overflow: 'hidden',
+                  },
+                }}
+              >
+                <Box sx={{ p: 3.5, display: 'flex', flexDirection: 'column', alignItems: 'stretch', gap: 3 }}>
+                  <Typography sx={{ fontWeight: 700, color: '#AD542D', fontSize: '1.25rem', textAlign: 'left' }}>
+                    Delete message?
+                  </Typography>
+                  {isOtherUserMessage && (
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={deleteFileFromDevice}
+                          onChange={(_, checked) => setDeleteFileFromDevice(checked)}
+                          sx={{ color: '#9CA3AF', '&.Mui-checked': { color: '#AD542D' } }}
+                        />
+                      }
+                      label="Delete file from your phone"
+                      sx={{ color: '#AD542D', '& .MuiFormControlLabel-label': { color: '#AD542D' } }}
+                    />
+                  )}
+                  <Stack
+                    direction="column"
+                    spacing={1.5}
+                    sx={{ alignSelf: 'flex-end', alignItems: 'flex-end' }}
+                  >
+                    {!isOtherUserMessage && (
+                      <>
+                        <Button
+                          onClick={() => {
+                            if (messageToDelete != null) {
+                              handleDeleteMessage(messageToDelete)
+                            }
+                          }}
+                          disabled={messageToDelete == null}
+                          sx={{
+                            borderRadius: 999,
+                            py: 0.75,
+                            px: 2,
+                            width: 'auto',
+                            minWidth: 0,
+                            bgcolor: '#FFFFFF',
+                            border: '1px solid #AD542D',
+                            color: '#AD542D',
+                            textTransform: 'none',
+                            fontWeight: 600,
+                            fontSize: '0.9375rem',
+                            '&:hover': {
+                              bgcolor: 'rgba(173,84,45,0.08)',
+                              borderColor: '#AD542D',
+                              color: '#78381C',
+                            },
+                          }}
+                        >
+                          Delete for everyone
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            if (messageToDelete != null) {
+                              handleDeleteMessage(messageToDelete)
+                            }
+                          }}
+                          disabled={messageToDelete == null}
+                          sx={{
+                            borderRadius: 999,
+                            py: 0.75,
+                            px: 2,
+                            width: 'auto',
+                            minWidth: 0,
+                            bgcolor: '#FFFFFF',
+                            border: '1px solid #AD542D',
+                            color: '#AD542D',
+                            textTransform: 'none',
+                            fontWeight: 600,
+                            fontSize: '0.9375rem',
+                            '&:hover': {
+                              bgcolor: 'rgba(173,84,45,0.08)',
+                              borderColor: '#AD542D',
+                              color: '#78381C',
+                            },
+                          }}
+                        >
+                          Delete for me
+                        </Button>
+                      </>
+                    )}
+                    {isOtherUserMessage && (
+                      <Button
+                        onClick={() => {
+                          if (messageToDelete != null) {
+                            handleDeleteMessage(messageToDelete)
+                          }
+                        }}
+                        disabled={messageToDelete == null}
+                        sx={{
+                          borderRadius: 999,
+                          py: 0.75,
+                          px: 2,
+                          width: 'auto',
+                          minWidth: 0,
+                          bgcolor: '#AD542D',
+                          color: '#FFFFFF',
+                          textTransform: 'none',
+                          fontWeight: 600,
+                          fontSize: '0.9375rem',
+                          '&:hover': { bgcolor: '#78381C' },
+                        }}
+                      >
+                        Delete for me
+                      </Button>
+                    )}
+                    <Button
+                      onClick={closeDeleteMessageDialog}
+                      sx={{
+                        borderRadius: 999,
+                        py: 0.75,
+                        px: 2,
+                        width: 'auto',
+                        minWidth: 0,
+                        bgcolor: isOtherUserMessage ? 'transparent' : '#FFFFFF',
+                        border: isOtherUserMessage ? 'none' : '1px solid #AD542D',
+                        color: isOtherUserMessage ? '#AD542D' : '#AD542D',
+                        textTransform: 'none',
+                        fontWeight: 600,
+                        fontSize: '0.9375rem',
+                        '&:hover': {
+                          bgcolor: isOtherUserMessage ? 'rgba(173,84,45,0.12)' : 'rgba(173,84,45,0.08)',
+                          borderColor: '#AD542D',
+                          color: isOtherUserMessage ? '#D4A574' : '#78381C',
+                        },
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </Stack>
+                </Box>
+              </Dialog>
+                )
+              })()}
 
               {/* Selected Files Preview */}
               {selectedFiles.length > 0 && (

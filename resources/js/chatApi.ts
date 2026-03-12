@@ -12,8 +12,8 @@ const defaults: RequestInit = {
   },
 }
 
-export async function apiGet<T = unknown>(url: string): Promise<T> {
-  const res = await fetch(url, { ...defaults, method: 'GET' })
+export async function apiGet<T = unknown>(url: string, options?: { signal?: AbortSignal }): Promise<T> {
+  const res = await fetch(url, { ...defaults, method: 'GET', signal: options?.signal })
   if (!res.ok) throw new Error(await res.text())
   return res.json() as Promise<T>
 }
@@ -49,4 +49,18 @@ export async function apiPostJson<T = unknown>(url: string, data: object): Promi
   })
   if (!res.ok) throw new Error(await res.text())
   return res.json() as Promise<T>
+}
+
+export async function apiDelete(url: string): Promise<void> {
+  const token = getCsrfToken()
+  const res = await fetch(url, {
+    credentials: 'include',
+    method: 'DELETE',
+    headers: {
+      Accept: 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
+      ...(token ? { 'X-XSRF-TOKEN': token } : {}),
+    },
+  })
+  if (!res.ok) throw new Error(await res.text())
 }

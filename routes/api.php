@@ -81,6 +81,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/chat/conversations', [HostChatController::class, 'createOrGet']);
         Route::get('/chat/conversations/{id}', [HostChatController::class, 'messages']);
         Route::post('/chat/conversations/{id}/messages', [HostChatController::class, 'sendMessage']);
+        Route::delete('/chat/conversations/{id}/messages/{message_id}', [HostChatController::class, 'deleteMessage']);
         
         // Host Earnings API
         Route::get('/earnings', [HostEarningsController::class, 'index']);
@@ -106,6 +107,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/messages/conversations', [MessagesController::class, 'createOrGet']);
         Route::get('/messages/conversations/{conversation_id}', [MessagesController::class, 'messages']);
         Route::post('/messages/conversations/{conversation_id}/messages', [MessagesController::class, 'sendMessage']);
+        Route::delete('/messages/conversations/{conversation_id}/messages/{message_id}', [MessagesController::class, 'deleteMessage']);
         
         // Booking API
         Route::get('/booking/{property_id}', [BookingController::class, 'show']);

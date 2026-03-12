@@ -87,6 +87,7 @@ Route::middleware(['auth', 'redirect.admin.host'])->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
     
     Route::get('/chat', [PageController::class, 'chat'])->name('chat');
+    Route::delete('/chat/conversations/{conversation}', [PageController::class, 'deleteConversation'])->name('chat.conversations.destroy');
     Route::get('/bookings', [PageController::class, 'customerBookings'])->name('bookings');
     
     // User-specific routes
@@ -150,4 +151,5 @@ Route::prefix('host')->name('host.')->middleware('host')->group(function () {
     Route::put('/settings/password', [HostSettingsController::class, 'updatePassword'])->name('settings.password.update');
     Route::post('/settings/picture', [HostSettingsController::class, 'uploadProfilePicture'])->name('settings.picture');
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::delete('/chat/conversations/{conversation}', [ChatController::class, 'destroyConversation'])->name('chat.conversations.destroy');
 });

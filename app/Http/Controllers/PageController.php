@@ -55,6 +55,15 @@ class PageController extends Controller
         ]);
     }
 
+    public function deleteConversation(Conversation $conversation)
+    {
+        if ($conversation->user_id !== Auth::id()) {
+            abort(403);
+        }
+        $conversation->delete();
+        return response()->noContent();
+    }
+
     public function customerBookings(Request $request)
     {
         $userId = Auth::id();

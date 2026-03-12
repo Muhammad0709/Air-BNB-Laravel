@@ -554,4 +554,23 @@ class HostChatController extends Controller
             ],
         ], 200);
     }
+
+    /**
+     * Delete a single message. Only the message is removed; the conversation stays.
+     * Host must own the conversation's property.
+     */
+    public function deleteMessage($id, $messageId): JsonResponse|\Illuminate\Http\Response
+    {
+        $host = Auth::user();
+        $propertyIds = Property::where('user_id', $host->id)->pluck('id');
+
+        $conversation = Conversation::where('id', $id)->whereIn('property_id', $propertyIds)->first();
+        if (!$conversation) {
+            return response()->json(['status' => 'error', 'message' => 'Conversation not found'], 404);
+        }
+
+        $message = Message::where('id', $messageId)->where('conversation_id', $id)->firstOrFail();
+        $message->delete();
+        return response()->noContent();
+    }
 }
