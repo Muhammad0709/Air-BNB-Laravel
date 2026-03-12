@@ -7,6 +7,7 @@ return [
     'your_booking' => 'آپ کی بکنگ',
     'total' => 'کل',
     'return_to_home' => 'ہوم پر واپس جائیں',
+    'booking_confirmed_toast' => 'بکنگ تصدیق ہو گئی!',
     'no_booking_data' => 'بکنگ کا کوئی ڈیٹا نہیں۔ پہلے بکنگ مکمل کریں۔',
     'property_not_found' => 'پراپرٹی نہیں ملی۔',
 ];

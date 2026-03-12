@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Button, Typography } from '@mui/material'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import Toast from '../components/shared/Toast'
 import { Container, Row, Col } from 'react-bootstrap'
 import ListingPreviewCard from '../components/ListingPreviewCard'
 import BookingSummaryCard from '../components/BookingSummaryCard'
@@ -40,9 +41,15 @@ export default function Confirmation() {
   const { t } = useLanguage()
   const { currency } = useCurrency()
   const { property, costs, totalAmount, rules } = usePage<ConfirmationPageProps>().props
+  const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
 
   const formattedCosts = costs.map((c) => ({ label: c.label, amount: formatPrice(c.amount, currency) }))
   const formattedTotal = formatPrice(totalAmount, currency)
+
+  const handleReturnHome = () => {
+    setToast({ open: true, message: t('confirmation.booking_confirmed_toast'), severity: 'success' })
+    setTimeout(() => router.visit('/'), 1200)
+  }
 
   return (
     <>
@@ -86,7 +93,7 @@ export default function Confirmation() {
               <Button
                 variant="contained"
                 className="return-home-btn"
-                onClick={() => router.visit('/')}
+                onClick={handleReturnHome}
               >
                 {t('confirmation.return_to_home')}
               </Button>
@@ -95,6 +102,12 @@ export default function Confirmation() {
         </Box>
         <Footer />
       </Box>
+      <Toast
+        open={toast.open}
+        onClose={() => setToast((p) => ({ ...p, open: false }))}
+        message={toast.message}
+        severity={toast.severity}
+      />
     </>
   )
 }

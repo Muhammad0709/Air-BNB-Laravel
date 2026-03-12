@@ -1327,6 +1327,24 @@ p.hero-subtitle {
   }
 }
 
+/* Footer: always keep left/right spacing on all devices (override global container padding reset) */
+.footer-fix-bottom .MuiContainer-root {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+@media (min-width: 600px) {
+  .footer-fix-bottom .MuiContainer-root {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
+@media (min-width: 900px) {
+  .footer-fix-bottom .MuiContainer-root {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+}
+
 @media (min-width: 1400px) {
   .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
     max-width: 1440px;

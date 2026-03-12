@@ -10,6 +10,7 @@ import BookingSummaryCard from '../components/BookingSummaryCard'
 import { useLanguage } from '../hooks/use-language'
 import { useCurrency } from '../contexts/CurrencyContext'
 import { formatPrice } from '../utils/currency'
+import PhoneCountrySelect from '../components/PhoneCountrySelect'
 
 const PLACEHOLDER_IMAGE = '/images/popular-stay-1.svg'
 
@@ -55,28 +56,39 @@ export default function Booking() {
     })
   }
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string
+    email: string
+    phone: string
+    phoneCode: string
+    guests: number
+    rooms: number | ''
+    adults: number | ''
+    children: number
+  }>({
     name: '',
     email: '',
     phone: '',
     phoneCode: '+31',
     guests: 1,
-    rooms: 1,
-    adults: 1,
+    rooms: '',
+    adults: '',
     children: 0,
   })
+
+  const maxRooms = property ? Math.max(10, Math.min(20, property.bedrooms || 1)) : 10
+  const roomOptions = Array.from({ length: maxRooms }, (_, i) => i + 1)
 
   useEffect(() => {
     if (property) {
       setFormData(prev => ({
         ...prev,
-        rooms: Math.max(1, property.bedrooms || 1),
         guests: Math.max(1, property.guests || 1),
-        adults: Math.max(1, property.guests ? Math.min(property.guests, 10) : 1),
-        children: 0
+        adults: prev.adults === '' ? '' : Math.max(1, property.guests ? Math.min(property.guests, 10) : 1),
+        children: 0,
       }))
     }
-  }, [property])
+  }, [property?.id, property?.bedrooms, property?.guests])
 
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
@@ -131,8 +143,8 @@ export default function Booking() {
       email: formData.email.trim(),
       phone_code: formData.phoneCode || '+31',
       phone: formData.phone.trim(),
-      rooms: formData.rooms ?? 1,
-      adults: formData.adults ?? 1,
+      rooms: (formData.rooms === '' ? (property?.bedrooms || 1) : formData.rooms) ?? 1,
+      adults: (formData.adults === '' ? 1 : formData.adults) ?? 1,
       children: formData.children ?? 0,
       payment_method: paymentMethod,
     }, {
@@ -229,12 +241,14 @@ export default function Booking() {
                     <Box className="field">
                       <Typography className="label">{t('booking.number_of_rooms')}</Typography>
                       <FormControl fullWidth size="small">
-                        <Select 
-                          value={formData.rooms} 
+                        <Select
+                          value={formData.rooms === '' ? '' : formData.rooms}
                           displayEmpty
-                          onChange={(e) => handleChange('rooms', Number(e.target.value))}
+                          renderValue={(v) => (v === '' || v === undefined ? t('booking.number_of_rooms') : `${v} ${v > 1 ? t('booking.rooms') : t('booking.room')}`)}
+                          onChange={(e) => handleChange('rooms', e.target.value === '' ? '' : Number(e.target.value))}
                         >
-                          {[1,2,3,4,5,6,7,8,9,10].map((r) => (
+                          <MenuItem value="" disabled>{t('booking.number_of_rooms')}</MenuItem>
+                          {roomOptions.map((r) => (
                             <MenuItem key={r} value={r}>{r} {r > 1 ? t('booking.rooms') : t('booking.room')}</MenuItem>
                           ))}
                         </Select>
@@ -245,11 +259,13 @@ export default function Booking() {
                       <Box sx={{ flex: 1 }}>
                         <Typography className="label">{t('booking.adults')}</Typography>
                         <FormControl fullWidth size="small">
-                          <Select 
-                            value={formData.adults} 
+                          <Select
+                            value={formData.adults === '' ? '' : formData.adults}
                             displayEmpty
-                            onChange={(e) => handleChange('adults', Number(e.target.value))}
+                            renderValue={(v) => (v === '' || v === undefined ? t('booking.adults') : `${v} ${v === 1 ? t('booking.adult') : t('booking.adults')}`)}
+                            onChange={(e) => handleChange('adults', e.target.value === '' ? '' : Number(e.target.value))}
                           >
+                            <MenuItem value="" disabled>{t('booking.adults')}</MenuItem>
                             {[1,2,3,4,5,6,7,8,9,10].map((a) => (
                               <MenuItem key={a} value={a}>{a} {a > 1 ? t('booking.adults') : t('booking.adult')}</MenuItem>
                             ))}
@@ -259,12 +275,14 @@ export default function Booking() {
                       <Box sx={{ flex: 1 }}>
                         <Typography className="label">{t('booking.children')}</Typography>
                         <FormControl fullWidth size="small">
-                          <Select 
-                            value={formData.children} 
+                          <Select
+                            value={formData.children}
                             displayEmpty
+                            renderValue={(v) => (v === 0 ? t('booking.children') : `${v} ${v === 1 ? t('booking.child') : t('booking.children')}`)}
                             onChange={(e) => handleChange('children', Number(e.target.value))}
                           >
-                            {[0,1,2,3,4,5,6,7,8,9,10].map((c) => (
+                            <MenuItem value={0}>{t('booking.children')}</MenuItem>
+                            {[1,2,3,4,5,6,7,8,9,10].map((c) => (
                               <MenuItem key={c} value={c}>{c} {c === 1 ? t('booking.child') : t('booking.children')}</MenuItem>
                             ))}
                           </Select>
@@ -290,16 +308,10 @@ export default function Booking() {
                     <Box className="field">
                       <Typography className="label">{t('booking.phone_number')}</Typography>
                       <Stack direction="row" spacing={1.5} useFlexGap>
-                        <FormControl size="small" sx={{ minWidth: 120 }}>
-                          <Select 
-                            value={formData.phoneCode}
-                            onChange={(e) => handleChange('phoneCode', e.target.value)}
-                          >
-                            {['+31','+44','+1','+92'].map((c) => (
-                              <MenuItem key={c} value={c}>{c}</MenuItem>
-                            ))}
-                          </Select>
-                        </FormControl>
+                        <PhoneCountrySelect
+                          value={formData.phoneCode}
+                          onChange={(code) => handleChange('phoneCode', code)}
+                        />
                         <TextField 
                           size="small" 
                           fullWidth 

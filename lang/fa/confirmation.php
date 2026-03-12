@@ -7,6 +7,7 @@ return [
     'your_booking' => 'رزرو شما',
     'total' => 'مجموع',
     'return_to_home' => 'بازگشت به صفحه اصلی',
+    'booking_confirmed_toast' => 'رزرو تأیید شد!',
     'no_booking_data' => 'داده‌ای برای رزرو وجود ندارد. لطفاً ابتدا رزرو را تکمیل کنید.',
     'property_not_found' => 'ملک یافت نشد.',
 ];
