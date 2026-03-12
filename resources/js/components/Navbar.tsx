@@ -122,9 +122,9 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                 src={logoUrl}
                 alt="Bondoqi"
                 sx={{
-                  height: { xs: 48, sm: 56, md: 100 },
+                  height: { xs: 48, sm: 56 },
                   width: 'auto',
-                  maxWidth: { xs: 160, sm: 220, md: 500 },
+                  maxWidth: { xs: 160, sm: 220},
                   objectFit: 'contain',
                   display: 'block'
                 }}
