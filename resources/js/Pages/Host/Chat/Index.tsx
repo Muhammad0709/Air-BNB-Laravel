@@ -316,9 +316,7 @@ export default function HostChat() {
                             open={Boolean(menuAnchor[conversation.id])}
                             onClose={() => handleMenuClose(conversation.id)}
                           >
-                            <MenuItem onClick={() => handleMenuClose(conversation.id)}>Archive</MenuItem>
                             <MenuItem onClick={() => handleMenuClose(conversation.id)}>Delete</MenuItem>
-                            <MenuItem onClick={() => handleMenuClose(conversation.id)}>Mute</MenuItem>
                           </Menu>
                         </Stack>
                       </Stack>
