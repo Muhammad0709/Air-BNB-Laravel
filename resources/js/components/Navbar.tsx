@@ -8,7 +8,7 @@ import MessageIcon from '@mui/icons-material/Message'
 import { useLanguage } from '../hooks/use-language'
 import { useCurrency } from '../contexts/CurrencyContext'
 
-const logoUrl = '/images/logo-main.png'
+const logoUrl = '/images/Logo.png'
 
 export type NavbarLink = { label: string; href: string }
 
