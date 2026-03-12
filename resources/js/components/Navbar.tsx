@@ -400,6 +400,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                   </Typography>
                 </>
               )}
+              {/* Become a host - commented out
               <Box
                 component={Link}
                 href="/register"
@@ -427,6 +428,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                   </Box>
                 </Stack>
               </Box>
+              */}
             </Stack>
             {showAuth && (
 <Stack spacing={2} useFlexGap>

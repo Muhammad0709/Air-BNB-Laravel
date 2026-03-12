@@ -235,7 +235,7 @@ export default function HostSignup() {
                       {processing ? t('auth.admin_signup.creating') : t('auth.admin_signup.submit')}
                     </Button>
 
-                    <Button
+                    {/* <Button
                       component="a"
                       href="/auth/google"
                       fullWidth
@@ -256,7 +256,7 @@ export default function HostSignup() {
                       }}
                     >
                       {t('auth.admin_signup.sign_up_google')}
-                    </Button>
+                    </Button> */}
 
                     <Box sx={{ textAlign: 'center', mt: 2 }}>
                       <Typography variant="body2" sx={{ color: '#717171' }}>
