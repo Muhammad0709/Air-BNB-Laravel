@@ -7,7 +7,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import { Head, Link as InertiaLink, useForm } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 
-const logoUrl = '/images/logo-main.png'
+const logoUrl = '/images/Logo.png'
 const socialIcon = '/images/Social-icon.svg'
 const languages = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -19,7 +19,7 @@ const languages = [
 ]
 
 const inputSx = {
-  '& .MuiOutlinedInput-root': { borderRadius: '24px' },
+  '& .MuiOutlinedInput-root': { borderRadius: '24px', boxSizing: 'border-box' },
   '& .MuiOutlinedInput-root fieldset': { borderRadius: '24px' },
 }
 
@@ -53,19 +53,19 @@ export default function HostSignup() {
   return (
     <>
       <Head title={t('auth.admin_signup.title')} />
-      <Box className="auth-signup-page" sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: '#F9FAFB' }}>
-        <Box sx={{ position: 'fixed', top: 16, ...(isRtl ? { left: 16 } : { right: 16 }), zIndex: 1300 }}>
+      <Box className="auth-signup-page" sx={{ minHeight: '100vh', overflowX: 'hidden', display: 'flex', alignItems: { xs: 'flex-start', sm: 'center' }, justifyContent: { xs: 'flex-start', sm: 'center' }, bgcolor: '#F9FAFB', py: { xs: 3, sm: 0 }, pt: { xs: 8, sm: 0 } }}>
+        <Box sx={{ position: 'fixed', top: { xs: 12, sm: 16 }, ...(isRtl ? { left: { xs: 12, sm: 16 } } : { right: { xs: 12, sm: 16 } }), zIndex: 1300 }}>
           <Box
             onClick={(e: React.MouseEvent<HTMLElement>) => setLanguageAnchor(e.currentTarget)}
             sx={{
-              display: 'flex', alignItems: 'center', gap: 0.75, px: 1.5, py: 0.75, borderRadius: 2,
+              display: 'flex', alignItems: 'center', gap: { xs: 0.5, sm: 0.75 }, px: { xs: 1, sm: 1.5 }, py: { xs: 0.5, sm: 0.75 }, borderRadius: 2,
               border: '1px solid #DDDDDD', cursor: 'pointer', bgcolor: '#fff', boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
               '&:hover': { borderColor: '#AD542D', bgcolor: '#F7F7F7' },
             }}
           >
-            <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{currentLanguage.flag}</Typography>
-            <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem', marginInlineStart: 0.75 }}>{currentLanguage.code.toUpperCase()}</Typography>
-            <ArrowDropDownIcon sx={{ fontSize: 22, color: '#222222' }} />
+            <Typography sx={{ fontSize: { xs: '1rem', sm: '1.25rem' }, lineHeight: 1 }}>{currentLanguage.flag}</Typography>
+            <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: { xs: '0.75rem', sm: '0.875rem' }, marginInlineStart: { xs: 0.5, sm: 0.75 } }}>{currentLanguage.code.toUpperCase()}</Typography>
+            <ArrowDropDownIcon sx={{ fontSize: { xs: 18, sm: 22 }, color: '#222222' }} />
           </Box>
           <Menu
             anchorEl={languageAnchor}
@@ -85,23 +85,24 @@ export default function HostSignup() {
             ))}
           </Menu>
         </Box>
+        <Box sx={{ width: '100%', maxWidth: '100%', px: { sm: 2 } }}>
         <Container>
           <Row className="justify-content-center">
             <Col xs={12} sm={10} md={8} lg={6} xl={5}>
-              <Paper elevation={0} sx={{ p: 4, borderRadius: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
-                <Box sx={{ textAlign: 'center', mb: 4 }}>
-                  <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: 100, width: 'auto', maxWidth: 380, objectFit: 'contain', display: 'block', margin: '0 auto', mb: 2 }} />
-                  <Typography variant="h4" sx={{ fontWeight: 800, color: '#222222', mb: 1 }}>
+              <Paper elevation={0} sx={{ p: { xs: 2.5, sm: 3, md: 4 }, borderRadius: { xs: '16px', sm: '24px' }, boxShadow: '0 4px 20px rgba(0,0,0,0.1)', overflow: 'hidden', width: '100%', maxWidth: '100%', boxSizing: 'border-box' }}>
+                <Box sx={{ textAlign: 'center', mb: { xs: 3, md: 4 } }}>
+                  <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: { xs: 52, sm: 70 }, width: 'auto', maxWidth: { xs: '100%', sm: 380 }, objectFit: 'contain', display: 'block', margin: '0 auto', mb: 2 }} />
+                  <Typography variant="h4" sx={{ fontWeight: 800, color: '#222222', mb: 1, fontSize: { xs: '1.35rem', sm: '1.5rem', md: '2rem' } }}>
                     {t('auth.admin_signup.heading')}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: '#717171' }}>
+                  <Typography variant="body2" sx={{ color: '#717171', fontSize: { xs: '0.8125rem', sm: '0.875rem' } }}>
                     {t('auth.admin_signup.subtitle')}
                   </Typography>
                 </Box>
 
                 <form onSubmit={handleSubmit}>
                   <Stack spacing={3}>
-                    <Stack direction="row" spacing={2} useFlexGap>
+                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap>
                       <TextField
                         fullWidth
                         label={t('auth.admin_signup.first_name')}
@@ -280,6 +281,7 @@ export default function HostSignup() {
             </Col>
           </Row>
         </Container>
+        </Box>
       </Box>
     </>
   )

@@ -373,8 +373,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
       {open && (
         <Box sx={{ position: 'fixed', inset: 0, bgcolor: 'rgba(0,0,0,0.4)', zIndex: 1200 }} onClick={() => setOpen(false)}>
           <Box sx={{ position: 'absolute', top: 0, ...(isRtl ? { left: 0 } : { right: 0 }), width: '80%', maxWidth: 320, height: '100%', bgcolor: '#fff', p: 3 }} onClick={(e) => e.stopPropagation()}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
-              <Box component="img" src={logoUrl} alt="lipabnb" sx={{ height: 80, width: 'auto', maxWidth: 400, objectFit: 'contain', display: 'block' }} />
+            <Stack direction="row" justifyContent="flex-end" alignItems="center" sx={{ mb: 2 }}>
               <IconButton onClick={() => setOpen(false)}>
                 <CloseIcon />
               </IconButton>

@@ -7,7 +7,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import { Head, Link as InertiaLink, useForm } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 
-const logoUrl = '/images/logo-main.png'
+const logoUrl = '/images/Logo.png'
 const socialIcon = '/images/Social-icon.svg'
 const languages = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -90,7 +90,7 @@ export default function AdminLogin() {
 
 
                 <Box sx={{ textAlign: 'center', mb: 4 }}>
-                  <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: 100, width: 'auto', maxWidth: 380, objectFit: 'contain', display: 'block', margin: '0 auto', mb: 2 }} />
+                  <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: 70, width: 'auto', maxWidth: 380, objectFit: 'contain', display: 'block', margin: '0 auto', mb: 2 }} />
                   <Typography variant="h4" sx={{ fontWeight: 800, color: '#222222', mb: 1 }}>
                     {t('auth.admin_login.heading')}
                   </Typography>

@@ -7,7 +7,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { Container } from 'react-bootstrap'
 import { useLanguage } from '../../hooks/use-language'
 
-const logoUrl = '/images/logo-main.png'
+const logoUrl = '/images/Logo.png'
 const socialIcon = '/images/Social-icon.svg'
 const languages = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -71,7 +71,7 @@ export default function SignUp() {
                 <Box>
                   <Stack alignItems="center" sx={{ mb: { xs: 3, md: 4 } }}>
                     <Link href="/" style={{ textDecoration: 'none', display: 'block' }}>
-                      <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: { xs: 120, md: 150 }, width: 'auto', maxWidth: { xs: 450, md: 600 }, objectFit: 'contain', display: 'block', cursor: 'pointer', margin: '0 auto' }} />
+                      <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: 70, width: 'auto', maxWidth: 380, objectFit: 'contain', display: 'block', cursor: 'pointer', margin: '0 auto' }} />
                     </Link>
                   </Stack>
                   <Typography variant="h4" fontWeight={700} sx={{ mb: 2, fontSize: { xs: 32, md: 30 }, lineHeight: 1.15 }}>{t('auth.signup.heading')}</Typography>
