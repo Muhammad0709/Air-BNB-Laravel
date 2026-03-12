@@ -86,7 +86,7 @@ export default function AdminLogin() {
                 }}
               >
                 <Box sx={{ textAlign: 'center', mb: 4 }}>
-                  <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: 100, width: 'auto', maxWidth: 380, objectFit: 'contain', display: 'block', margin: '0 auto', mb: 2 }} />
+                  <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: 70, width: 'auto', maxWidth: 380, objectFit: 'contain', display: 'block', margin: '0 auto', mb: 2 }} />
                   <Typography variant="h4" sx={{ fontWeight: 800, color: '#222222', mb: 1 }}>
                     {t('auth.admin_login.heading')}
                   </Typography>
@@ -159,7 +159,7 @@ export default function AdminLogin() {
                       {processing ? t('auth.admin_login.signing_in') : t('auth.admin_login.submit')}
                     </Button>
 
-                    <Button
+                   {/* <Button
                       component="a"
                       href="/auth/google"
                       fullWidth
@@ -181,7 +181,7 @@ export default function AdminLogin() {
                       }}
                     >
                       {t('auth.admin_login.sign_in_google')}
-                    </Button>
+                    </Button> */}
 
                     <Box sx={{ textAlign: 'center', mt: 2 }}>
                       <Typography variant="body2" sx={{ color: '#717171' }}>
