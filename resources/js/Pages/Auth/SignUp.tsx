@@ -71,10 +71,10 @@ export default function SignUp() {
                 <Box>
                   <Stack alignItems="center" sx={{ mb: { xs: 3, md: 4 } }}>
                     <Link href="/" style={{ textDecoration: 'none', display: 'block' }}>
-                      <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: 70, width: 'auto', maxWidth: 380, objectFit: 'contain', display: 'block', cursor: 'pointer', margin: '0 auto' }} />
+                      <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: { xs: 120, md: 150 }, width: 'auto', maxWidth: { xs: 450, md: 600 }, objectFit: 'contain', display: 'block', cursor: 'pointer', margin: '0 auto' }} />
                     </Link>
                   </Stack>
-                  <Typography variant="h4" fontWeight={700} sx={{ mb: 2, fontSize: { xs: '1.4rem', sm: '1.6rem', md: '1.875rem' }, lineHeight: 1.15, wordBreak: 'break-word' }}>{t('auth.signup.heading')}</Typography>
+                  <Typography variant="h4" fontWeight={700} sx={{ mb: 2, fontSize: { xs: 32, md: 30 }, lineHeight: 1.15 }}>{t('auth.signup.heading')}</Typography>
                   <Paper elevation={0} sx={{ bgcolor: 'transparent' }}>
                     <form onSubmit={(e) => { e.preventDefault(); post('/auth/register'); }}>
                       <Stack spacing={2.5}>
@@ -136,9 +136,9 @@ export default function SignUp() {
                       </Stack>
                     </form>
                   </Paper>
-                  <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', m: 4, fontSize: { xs: '0.8125rem', sm: '0.875rem' } }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', m: 4 }}>
                     {t('auth.signup.have_account')}{' '}
-                    <MUILink component={Link} href="/auth/login" underline="none" sx={{ color: '#AD542D', fontWeight: 600, fontSize: 'inherit' }}>{t('auth.signup.log_in_link')}</MUILink>
+                    <MUILink component={Link} href="/auth/login" underline="none" sx={{ color: '#AD542D', fontWeight: 600 }}>{t('auth.signup.log_in_link')}</MUILink>
                   </Typography>
                 </Box>
               </Box>
