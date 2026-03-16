@@ -6,6 +6,7 @@ import InputError from '../../../components/InputError'
 import { Head, router, useForm, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 
@@ -16,7 +17,7 @@ function parseDateStr(s: string): Date | null {
 }
 
 export default function CreateBooking() {
-  const { t } = useLanguage()
+  const { t, isRtl } = useLanguage()
   const { properties: propertiesList } = usePage().props as { properties?: Array<{ id: number; title: string; location: string }> }
   const properties = propertiesList ?? []
 
@@ -156,12 +157,14 @@ export default function CreateBooking() {
       <Head title={t('host.bookings.add_booking_title')} />
       <HostLayout title={t('host.bookings.add_booking_title')}>
       <Button
-        startIcon={<ArrowBackIcon />}
+        startIcon={isRtl ? <ArrowForwardIcon /> : <ArrowBackIcon />}
         onClick={() => router.visit('/host/bookings')}
         sx={{
           mb: 3,
           color: '#717171',
           textTransform: 'none',
+          gap: 1,
+          '& .MuiButton-startIcon': { marginInlineEnd: 0, marginInlineStart: 0 },
           '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }
         }}
       >

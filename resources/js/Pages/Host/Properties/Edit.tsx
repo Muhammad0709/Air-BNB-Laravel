@@ -7,6 +7,7 @@ import Toast from '../../../Components/Admin/Toast'
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { AIRPORT_OPTIONS, TOUR_DURATION_OPTIONS } from '../../../constants/hostPropertyOptions'
@@ -42,7 +43,7 @@ interface Property {
 }
 
 export default function EditProperty() {
-  const { t } = useLanguage()
+  const { t, isRtl } = useLanguage()
   const { property, propertyTypes } = usePage<{ property: Property, propertyTypes: string[] }>().props
   const [toastOpen, setToastOpen] = useState(false)
   const [newFiles, setNewFiles] = useState<File[]>([])
@@ -135,12 +136,14 @@ export default function EditProperty() {
   return (
     <HostLayout title={t('host.properties.edit_property')}>
       <Button
-        startIcon={<ArrowBackIcon />}
+        startIcon={isRtl ? <ArrowForwardIcon /> : <ArrowBackIcon />}
         onClick={() => router.visit('/host/properties')}
         sx={{
           mb: 3,
           color: '#6B7280',
           textTransform: 'none',
+          gap: 1,
+          '& .MuiButton-startIcon': { marginInlineEnd: 0, marginInlineStart: 0 },
           '&:hover': { bgcolor: '#F9FAFB', color: '#111827' }
         }}
       >
@@ -248,7 +251,7 @@ export default function EditProperty() {
                   fullWidth
                   multiline
                   rows={6}
-                  placeholder="Describe the property in detail..."
+                  placeholder={t('host.properties.description_placeholder')}
                 />
               </Col>
             </Row>
@@ -258,7 +261,7 @@ export default function EditProperty() {
               {/* Airport Pickup Service – white card */}
               <Card elevation={0} sx={{ bgcolor: '#FFFFFF', border: '1px solid #E5E7EB', borderRadius: '12px', mb: 3, overflow: 'visible' }}>
                 <CardContent sx={{ p: 3 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: '#111827', mb: 2 }}>Airport Pickup Service</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 600, color: '#111827', mb: 2 }}>{t('host.properties.airport_pickup_service')}</Typography>
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -267,7 +270,7 @@ export default function EditProperty() {
                         sx={{ color: '#AD542D', '&.Mui-checked': { color: '#AD542D', bgcolor: '#FFF5F2' } }}
                       />
                     }
-                    label={<Typography sx={{ color: '#374151', fontWeight: 500 }}>Enable Airport Pickup Service</Typography>}
+                    label={<Typography sx={{ color: '#374151', fontWeight: 500 }}>{t('host.properties.enable_airport_pickup')}</Typography>}
                   />
                   {formData.airport_pickup_enabled && (
                     <Stack spacing={2.5} sx={{ mt: 3, width: '100%' }}>
@@ -307,7 +310,7 @@ export default function EditProperty() {
               {/* Guided Tours Service – white card */}
               <Card elevation={0} sx={{ bgcolor: '#FFFFFF', border: '1px solid #E5E7EB', borderRadius: '12px', overflow: 'visible' }}>
                 <CardContent sx={{ p: 3 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: '#111827', mb: 2 }}>Guided Tours Service</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 600, color: '#111827', mb: 2 }}>{t('host.properties.guided_tours_service')}</Typography>
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -316,7 +319,7 @@ export default function EditProperty() {
                         sx={{ color: '#AD542D', '&.Mui-checked': { color: '#AD542D', bgcolor: '#FFF5F2' } }}
                       />
                     }
-                    label={<Typography sx={{ color: '#374151', fontWeight: 500 }}>Enable Guided Tours Service</Typography>}
+                    label={<Typography sx={{ color: '#374151', fontWeight: 500 }}>{t('host.properties.enable_guided_tours')}</Typography>}
                   />
                   {formData.guided_tours_enabled && (
                     <Stack spacing={2.5} sx={{ mt: 3, width: '100%' }}>
@@ -362,7 +365,7 @@ export default function EditProperty() {
             <Row className="mt-4">
               <Col xs={12}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 2 }}>
-                  Property Images
+                  {t('host.properties.property_images')}
                 </Typography>
                 <Box
                   sx={{
@@ -377,7 +380,7 @@ export default function EditProperty() {
                   onClick={() => document.getElementById('image-upload-edit')?.click()}
                 >
                   <CloudUploadIcon sx={{ fontSize: 40, color: '#9CA3AF', mb: 1 }} />
-                  <Typography sx={{ color: '#374151' }}>Add more images (PNG, JPG, GIF up to 2MB)</Typography>
+                  <Typography sx={{ color: '#374151' }}>{t('host.properties.add_more_images_hint')}</Typography>
                 </Box>
                 <input
                   id="image-upload-edit"
@@ -389,7 +392,7 @@ export default function EditProperty() {
                 />
                 {property.images && property.images.length > 0 && (
                   <Box sx={{ mb: 2 }}>
-                    <Typography variant="body2" sx={{ color: '#6B7280', mb: 1 }}>Current images</Typography>
+                    <Typography variant="body2" sx={{ color: '#6B7280', mb: 1 }}>{t('host.properties.current_images')}</Typography>
                     <Stack direction="row" flexWrap="wrap" gap={2}>
                       {property.images.map((url, index) => (
                         <Box
@@ -430,7 +433,7 @@ export default function EditProperty() {
                   ))}
                 </Stack>
                 <Typography variant="caption" sx={{ color: '#6B7280', mt: 1, display: 'block' }}>
-                  Add more images below. First image is the main thumbnail.
+                  {t('host.properties.first_image_main_thumbnail')}
                 </Typography>
               </Col>
             </Row>
@@ -438,15 +441,15 @@ export default function EditProperty() {
             <Row className="mt-4">
               <Col xs={12}>
                 <FormControl fullWidth>
-                  <InputLabel>Status</InputLabel>
+                  <InputLabel>{t('host.properties.status')}</InputLabel>
                   <Select
                     value={formData.status}
                     onChange={(e) => handleSelectChange('status', e.target.value)}
-                    label="Status"
+                    label={t('host.properties.status')}
                   >
-                    <MenuItem value="Pending">Pending</MenuItem>
-                    <MenuItem value="Active">Active</MenuItem>
-                    <MenuItem value="Inactive">Inactive</MenuItem>
+                    <MenuItem value="Pending">{t('host.properties.status_pending')}</MenuItem>
+                    <MenuItem value="Active">{t('host.properties.status_active')}</MenuItem>
+                    <MenuItem value="Inactive">{t('host.properties.status_inactive')}</MenuItem>
                   </Select>
                 </FormControl>
               </Col>
@@ -488,7 +491,7 @@ export default function EditProperty() {
       <Toast
         open={toastOpen}
         onClose={handleToastClose}
-        message="Property updated successfully!"
+        message={t('host.properties.property_updated_success')}
         severity="success"
       />
     </HostLayout>

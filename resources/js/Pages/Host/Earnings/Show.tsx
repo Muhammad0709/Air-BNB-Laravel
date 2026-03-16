@@ -4,6 +4,7 @@ import HostLayout from '../../../Components/Host/HostLayout'
 import { Head, router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import PersonIcon from '@mui/icons-material/Person'
 import HomeIcon from '@mui/icons-material/Home'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
@@ -30,7 +31,7 @@ interface Props {
 }
 
 export default function ShowEarning() {
-  const { t } = useLanguage()
+  const { t, isRtl } = useLanguage()
   const { earning } = usePage<Props>().props
 
   const getStatusColor = (status: string) => {
@@ -49,12 +50,14 @@ export default function ShowEarning() {
       <Head title={t('host.earnings.earning_details')} />
       <HostLayout title={t('host.earnings.earning_details')}>
       <Button
-        startIcon={<ArrowBackIcon />}
+        startIcon={isRtl ? <ArrowForwardIcon /> : <ArrowBackIcon />}
         onClick={() => router.visit('/host/earnings')}
         sx={{
           mb: 3,
           color: '#717171',
           textTransform: 'none',
+          gap: 1,
+          '& .MuiButton-startIcon': { marginInlineEnd: 0, marginInlineStart: 0 },
           '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }
         }}
       >

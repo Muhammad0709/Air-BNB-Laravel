@@ -5,6 +5,7 @@ import HostLayout from '../../../Components/Host/HostLayout'
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import EditIcon from '@mui/icons-material/Edit'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
@@ -31,7 +32,7 @@ interface Property {
 }
 
 export default function ViewProperty() {
-  const { t } = useLanguage()
+  const { t, isRtl } = useLanguage()
   const { property } = usePage<{ property: Property }>().props
   const [localStatus, setLocalStatus] = useState(property.status)
 
@@ -77,11 +78,13 @@ export default function ViewProperty() {
     <HostLayout title={t('host.properties.view_property')}>
       <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
         <Button
-          startIcon={<ArrowBackIcon />}
+          startIcon={isRtl ? <ArrowForwardIcon /> : <ArrowBackIcon />}
           onClick={() => router.visit('/host/properties')}
           sx={{
             color: '#6B7280',
             textTransform: 'none',
+            gap: 1,
+            '& .MuiButton-startIcon': { marginInlineEnd: 0, marginInlineStart: 0 },
             '&:hover': { bgcolor: '#F9FAFB', color: '#111827' }
           }}
         >

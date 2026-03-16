@@ -7,12 +7,13 @@ import InputError from '../../../components/InputError'
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { AIRPORT_OPTIONS, TOUR_DURATION_OPTIONS } from '../../../constants/hostPropertyOptions'
 
 export default function AddProperty() {
-  const { t } = useLanguage()
+  const { t, isRtl } = useLanguage()
   const page = usePage<{
     propertyTypes: string[]
     errors?: Record<string, string[] | string>
@@ -110,12 +111,14 @@ export default function AddProperty() {
   return (
     <HostLayout title={t('host.properties.add_property')}>
       <Button
-        startIcon={<ArrowBackIcon />}
+        startIcon={isRtl ? <ArrowForwardIcon /> : <ArrowBackIcon />}
         onClick={() => router.visit('/host/properties')}
         sx={{
           mb: 3,
           color: '#6B7280',
           textTransform: 'none',
+          gap: 1,
+          '& .MuiButton-startIcon': { marginInlineEnd: 0, marginInlineStart: 0 },
           '&:hover': { bgcolor: '#F9FAFB', color: '#111827' }
         }}
       >

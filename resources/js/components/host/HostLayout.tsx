@@ -25,7 +25,7 @@ type HostLayoutProps = {
 }
 
 export default function HostLayout({ title, children }: HostLayoutProps) {
-  const { isRtl, language, switchLanguage } = useLanguage()
+  const { isRtl, language, switchLanguage, t } = useLanguage()
   const { auth } = usePage().props as { auth?: { user?: { name?: string; email?: string; profile_picture?: string | null } } }
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null)
@@ -175,12 +175,12 @@ export default function HostLayout({ title, children }: HostLayoutProps) {
                 <Box sx={{ py: 1 }}>
                   <MenuItem onClick={handleSettingsClick} sx={{ py: 1.5, px: 2, mx: 1, borderRadius: 1, '&:hover': { bgcolor: '#F9FAFB' } }}>
                     <SettingsIcon sx={{ fontSize: 18, color: '#717171', marginInlineEnd: 1.5 }} />
-                    <Typography sx={{ fontSize: 14, color: '#222222', fontWeight: 500 }}>Settings</Typography>
+                    <Typography sx={{ fontSize: 14, color: '#222222', fontWeight: 500 }}>{t('host.settings.title')}</Typography>
                   </MenuItem>
                   <Divider sx={{ mx: 1, borderColor: '#E5E7EB' }} />
                   <MenuItem onClick={handleLogoutClick} sx={{ py: 1.5, px: 2, mx: 1, borderRadius: 1, '&:hover': { bgcolor: '#F9FAFB' } }}>
                     <LogoutIcon sx={{ fontSize: 18, color: '#717171', marginInlineEnd: 1.5 }} />
-                    <Typography sx={{ fontSize: 14, color: '#222222', fontWeight: 500 }}>Log out</Typography>
+                    <Typography sx={{ fontSize: 14, color: '#222222', fontWeight: 500 }}>{t('host.settings.log_out')}</Typography>
                   </MenuItem>
                 </Box>
               </Menu>

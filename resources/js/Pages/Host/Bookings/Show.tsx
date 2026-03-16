@@ -4,6 +4,7 @@ import HostLayout from '../../../Components/Host/HostLayout'
 import { Head, router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import EditIcon from '@mui/icons-material/Edit'
 import PersonIcon from '@mui/icons-material/Person'
 import HotelIcon from '@mui/icons-material/Hotel'
@@ -14,7 +15,7 @@ import { useState } from 'react'
 import Toast from '../../../components/shared/Toast'
 
 export default function ShowBooking() {
-  const { t } = useLanguage()
+  const { t, isRtl } = useLanguage()
   const { booking } = usePage().props as { booking: {
     id: string
     guest: string
@@ -59,11 +60,13 @@ export default function ShowBooking() {
       <HostLayout title={t('host.bookings.view_booking_title')}>
       <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
         <Button
-          startIcon={<ArrowBackIcon />}
+          startIcon={isRtl ? <ArrowForwardIcon /> : <ArrowBackIcon />}
           onClick={() => router.visit('/host/bookings')}
           sx={{
             color: '#717171',
             textTransform: 'none',
+            gap: 1,
+            '& .MuiButton-startIcon': { marginInlineEnd: 0, marginInlineStart: 0 },
             '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }
           }}
         >

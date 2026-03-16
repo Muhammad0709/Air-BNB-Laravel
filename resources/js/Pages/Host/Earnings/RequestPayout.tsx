@@ -7,9 +7,10 @@ import Toast from '../../../Components/Admin/Toast'
 import { Head, router } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 
 export default function RequestPayout() {
-  const { t } = useLanguage()
+  const { t, isRtl } = useLanguage()
   const [toastOpen, setToastOpen] = useState(false)
   const [formData, setFormData] = useState({
     amount: '',
@@ -53,12 +54,14 @@ export default function RequestPayout() {
       <Head title={t('host.earnings.request_payout_title')} />
       <HostLayout title={t('host.earnings.request_payout_title')}>
       <Button
-        startIcon={<ArrowBackIcon />}
+        startIcon={isRtl ? <ArrowForwardIcon /> : <ArrowBackIcon />}
         onClick={() => router.visit('/host/earnings')}
         sx={{
           mb: 3,
           color: '#717171',
           textTransform: 'none',
+          gap: 1,
+          '& .MuiButton-startIcon': { marginInlineEnd: 0, marginInlineStart: 0 },
           '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }
         }}
       >

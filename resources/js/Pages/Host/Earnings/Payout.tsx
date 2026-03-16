@@ -5,13 +5,14 @@ import HostLayout from '../../../Components/Host/HostLayout'
 import { Head, router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import PaymentIcon from '@mui/icons-material/Payment'
 
 export default function ShowPayout() {
-  const { t } = useLanguage()
+  const { t, isRtl } = useLanguage()
   const { id } = (usePage().props as { id?: string }) || {}
   const [payout, setPayout] = useState({
     id: '',
@@ -55,12 +56,14 @@ export default function ShowPayout() {
       <Head title={t('host.earnings.payout_details')} />
       <HostLayout title={t('host.earnings.payout_details')}>
       <Button
-        startIcon={<ArrowBackIcon />}
+        startIcon={isRtl ? <ArrowForwardIcon /> : <ArrowBackIcon />}
         onClick={() => router.visit('/host/earnings')}
         sx={{
           mb: 3,
           color: '#717171',
           textTransform: 'none',
+          gap: 1,
+          '& .MuiButton-startIcon': { marginInlineEnd: 0, marginInlineStart: 0 },
           '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }
         }}
       >
