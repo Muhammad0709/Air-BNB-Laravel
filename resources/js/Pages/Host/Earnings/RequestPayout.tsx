@@ -5,9 +5,11 @@ import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import Toast from '../../../Components/Admin/Toast'
 import { Head, router } from '@inertiajs/react'
+import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 export default function RequestPayout() {
+  const { t } = useLanguage()
   const [toastOpen, setToastOpen] = useState(false)
   const [formData, setFormData] = useState({
     amount: '',
@@ -48,8 +50,8 @@ export default function RequestPayout() {
 
   return (
     <>
-      <Head title="Request Payout" />
-      <HostLayout title="Request Payout">
+      <Head title={t('host.earnings.request_payout_title')} />
+      <HostLayout title={t('host.earnings.request_payout_title')}>
       <Button
         startIcon={<ArrowBackIcon />}
         onClick={() => router.visit('/host/earnings')}
@@ -60,13 +62,13 @@ export default function RequestPayout() {
           '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }
         }}
       >
-        Back to Earnings
+        {t('host.earnings.back_to_earnings')}
       </Button>
 
       <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2 }}>
         <CardContent sx={{ p: { xs: 2, md: 4 } }}>
           <Typography variant="h5" sx={{ fontWeight: 700, color: '#222222', mb: 4 }}>
-            Request Payout
+            {t('host.earnings.request_payout_title')}
           </Typography>
 
           {/* Available Balance Info */}
@@ -80,7 +82,7 @@ export default function RequestPayout() {
             }}
           >
             <Typography variant="body2" sx={{ color: '#717171', mb: 1 }}>
-              Available Balance
+              {t('host.earnings.available_balance_label')}
             </Typography>
             <Typography variant="h4" sx={{ fontWeight: 700, color: '#10B981' }}>
               ${availableBalance.toLocaleString()}
@@ -92,7 +94,7 @@ export default function RequestPayout() {
               <Col xs={12} md={6}>
                 <Stack spacing={3}>
                   <TextField
-                    label="Amount"
+                    label={t('host.earnings.amount')}
                     name="amount"
                     type="number"
                     value={formData.amount}
@@ -102,7 +104,7 @@ export default function RequestPayout() {
                     InputProps={{
                       startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#717171' }}>$</Typography>
                     }}
-                    helperText={`Maximum: $${availableBalance.toLocaleString()}`}
+                    helperText={`${t('host.earnings.maximum')}: $${availableBalance.toLocaleString()}`}
                   />
                   {/* <FormControl fullWidth required>
                     <InputLabel>Payment Method</InputLabel>
@@ -122,7 +124,7 @@ export default function RequestPayout() {
                   {formData.paymentMethod === 'bank_transfer' && (
                     <>
                       <TextField
-                        label="Account Name"
+                        label={t('host.earnings.account_name')}
                         name="accountName"
                         value={formData.accountName}
                         onChange={handleChange}
@@ -130,7 +132,7 @@ export default function RequestPayout() {
                         fullWidth
                       />
                       <TextField
-                        label="Bank Name"
+                        label={t('host.earnings.bank_name')}
                         name="bankName"
                         value={formData.bankName}
                         onChange={handleChange}
@@ -138,7 +140,7 @@ export default function RequestPayout() {
                         fullWidth
                       />
                       <TextField
-                        label="Account Number"
+                        label={t('host.earnings.account_number')}
                         name="accountNumber"
                         value={formData.accountNumber}
                         onChange={handleChange}
@@ -146,7 +148,7 @@ export default function RequestPayout() {
                         fullWidth
                       />
                       <TextField
-                        label="Routing Number"
+                        label={t('host.earnings.routing_number')}
                         name="routingNumber"
                         value={formData.routingNumber}
                         onChange={handleChange}
@@ -157,14 +159,14 @@ export default function RequestPayout() {
                   )}
                   {formData.paymentMethod === 'paypal' && (
                     <TextField
-                      label="PayPal Email"
+                      label={t('host.earnings.paypal_email')}
                       name="paypalEmail"
                       type="email"
                       value={formData.paypalEmail}
                       onChange={handleChange}
                       required={formData.paymentMethod === 'paypal'}
                       fullWidth
-                      placeholder="your.email@example.com"
+                      placeholder={t('host.earnings.paypal_email_placeholder')}
                     />
                   )}
                 </Stack>
@@ -174,14 +176,14 @@ export default function RequestPayout() {
             <Row className="mt-3">
               <Col xs={12}>
                 <TextField
-                  label="Notes (Optional)"
+                  label={t('host.earnings.notes_optional')}
                   name="notes"
                   value={formData.notes}
                   onChange={handleChange}
                   fullWidth
                   multiline
                   rows={4}
-                  placeholder="Add any additional notes or instructions..."
+                  placeholder={t('host.earnings.notes_placeholder')}
                 />
               </Col>
             </Row>
@@ -199,7 +201,7 @@ export default function RequestPayout() {
                       '&:hover': { borderColor: '#9CA3AF', bgcolor: '#F9FAFB' }
                     }}
                   >
-                    Cancel
+                    {t('host.earnings.cancel')}
                   </Button>
                   <Button
                     type="submit"
@@ -211,7 +213,7 @@ export default function RequestPayout() {
                       '&:hover': { bgcolor: '#78381C' }
                     }}
                   >
-                    Request Payout
+                    {t('host.earnings.request_payout_btn')}
                   </Button>
                 </Stack>
               </Col>
@@ -222,7 +224,7 @@ export default function RequestPayout() {
       <Toast
         open={toastOpen}
         onClose={handleToastClose}
-        message="Payout request submitted successfully!"
+        message={t('host.earnings.payout_request_success')}
         severity="success"
       />
       </HostLayout>

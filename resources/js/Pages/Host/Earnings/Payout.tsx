@@ -3,6 +3,7 @@ import { Box, Button, Card, CardContent, Chip, Divider, Stack, Typography } from
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import { Head, router, usePage } from '@inertiajs/react'
+import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
@@ -10,6 +11,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import PaymentIcon from '@mui/icons-material/Payment'
 
 export default function ShowPayout() {
+  const { t } = useLanguage()
   const { id } = (usePage().props as { id?: string }) || {}
   const [payout, setPayout] = useState({
     id: '',
@@ -50,8 +52,8 @@ export default function ShowPayout() {
 
   return (
     <>
-      <Head title="Payout Details" />
-      <HostLayout title="Payout Details">
+      <Head title={t('host.earnings.payout_details')} />
+      <HostLayout title={t('host.earnings.payout_details')}>
       <Button
         startIcon={<ArrowBackIcon />}
         onClick={() => router.visit('/host/earnings')}
@@ -62,7 +64,7 @@ export default function ShowPayout() {
           '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }
         }}
       >
-        Back to Earnings
+        {t('host.earnings.back_to_earnings')}
       </Button>
 
       {/* Payout Header */}
@@ -99,7 +101,7 @@ export default function ShowPayout() {
           <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, mb: 3 }}>
             <CardContent sx={{ p: { xs: 2, md: 4 } }}>
               <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 3 }}>
-                Payout Information
+                {t('host.earnings.payout_information')}
               </Typography>
 
               <Stack spacing={3}>
@@ -118,7 +120,7 @@ export default function ShowPayout() {
                     <AttachMoneyIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Amount</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.earnings.amount_label')}</Typography>
                     <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>
                       {payout.amount}
                     </Typography>
@@ -142,7 +144,7 @@ export default function ShowPayout() {
                     <PaymentIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Payment Method</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.earnings.payment_method')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#222222' }}>{payout.method}</Typography>
                   </Box>
                 </Stack>
@@ -164,7 +166,7 @@ export default function ShowPayout() {
                     <AccountBalanceWalletIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Account</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.earnings.account_label')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#222222' }}>{payout.account}</Typography>
                   </Box>
                 </Stack>
@@ -177,7 +179,7 @@ export default function ShowPayout() {
           <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2 }}>
             <CardContent sx={{ p: { xs: 2, md: 4 } }}>
               <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 3 }}>
-                Transaction Details
+                {t('host.earnings.transaction_details')}
               </Typography>
 
               <Stack spacing={3}>
@@ -196,7 +198,7 @@ export default function ShowPayout() {
                     <CalendarTodayIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Request Date</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.earnings.request_date')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#222222' }}>
                       {new Date(payout.date).toLocaleDateString('en-US', {
                         year: 'numeric',
@@ -224,7 +226,7 @@ export default function ShowPayout() {
                     <CalendarTodayIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Processed Date</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.earnings.processed_date')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#222222' }}>
                       {new Date(payout.processedDate).toLocaleDateString('en-US', {
                         year: 'numeric',
@@ -238,7 +240,7 @@ export default function ShowPayout() {
                 <Divider />
 
                 <Box>
-                  <Typography sx={{ fontSize: 12, color: '#717171', mb: 1 }}>Transaction ID</Typography>
+                  <Typography sx={{ fontSize: 12, color: '#717171', mb: 1 }}>{t('host.earnings.transaction_id')}</Typography>
                   <Typography sx={{ fontWeight: 600, color: '#222222', fontFamily: 'monospace' }}>
                     {payout.transactionId}
                   </Typography>

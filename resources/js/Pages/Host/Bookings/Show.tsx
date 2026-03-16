@@ -155,7 +155,7 @@ export default function ShowBooking() {
                     <PersonIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Guest Name</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.bookings.guest_name')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#222222' }}>{booking.guest}</Typography>
                   </Box>
                 </Stack>
@@ -284,7 +284,7 @@ export default function ShowBooking() {
                 </Stack>
                 <Divider />
                 <Box>
-                  <Typography sx={{ fontSize: 12, color: '#717171', mb: 1 }}>Total Amount</Typography>
+                  <Typography sx={{ fontSize: 12, color: '#717171', mb: 1 }}>{t('host.bookings.total_amount')}</Typography>
                   <Typography variant="h5" sx={{ fontWeight: 700, color: '#222222' }}>
                     {booking.amount}
                   </Typography>

@@ -5,6 +5,7 @@ import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import Toast from '../../../Components/Admin/Toast'
 import { router, usePage } from '@inertiajs/react'
+import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -41,6 +42,7 @@ interface Property {
 }
 
 export default function EditProperty() {
+  const { t } = useLanguage()
   const { property, propertyTypes } = usePage<{ property: Property, propertyTypes: string[] }>().props
   const [toastOpen, setToastOpen] = useState(false)
   const [newFiles, setNewFiles] = useState<File[]>([])
@@ -131,7 +133,7 @@ export default function EditProperty() {
   }
 
   return (
-    <HostLayout title="Edit Property">
+    <HostLayout title={t('host.properties.edit_property')}>
       <Button
         startIcon={<ArrowBackIcon />}
         onClick={() => router.visit('/host/properties')}
@@ -142,13 +144,13 @@ export default function EditProperty() {
           '&:hover': { bgcolor: '#F9FAFB', color: '#111827' }
         }}
       >
-        Back to Properties
+        {t('host.properties.back_to_properties')}
       </Button>
 
       <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '16px' }}>
         <CardContent sx={{ p: { xs: 2, md: 4 } }}>
           <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 4 }}>
-            Edit Property Information
+            {t('host.properties.edit_property_information')}
           </Typography>
 
           <form onSubmit={handleSubmit}>
@@ -156,7 +158,7 @@ export default function EditProperty() {
               <Col xs={12} md={6}>
                 <Stack spacing={3} sx={{ mb: { xs: 3, md: 0 } }}>
                   <TextField
-                    label="Property Title"
+                    label={t('host.properties.property_title')}
                     name="title"
                     value={formData.title}
                     onChange={handleChange}
@@ -165,16 +167,16 @@ export default function EditProperty() {
                     sx={{ mb: 2 }}
                   />
                   <TextField
-                    label="Location"
+                    label={t('host.properties.location')}
                     name="location"
                     value={formData.location}
                     onChange={handleChange}
                     required
                     fullWidth
-                    placeholder="e.g., Malibu, California"
+                    placeholder={t('host.properties.location_placeholder')}
                   />
                   <TextField
-                    label="Price per Night"
+                    label={t('host.properties.price_per_night')}
                     name="price"
                     type="number"
                     value={formData.price}
@@ -190,11 +192,11 @@ export default function EditProperty() {
               <Col xs={12} md={6}>
                 <Stack spacing={3}>
                   <FormControl fullWidth required>
-                    <InputLabel>Property Type</InputLabel>
+                    <InputLabel>{t('host.properties.property_type')}</InputLabel>
                     <Select
                       value={formData.property_type}
                       onChange={(e) => handleSelectChange('property_type', e.target.value)}
-                      label="Property Type"
+                      label={t('host.properties.property_type')}
                     >
                       {propertyTypes.map((type) => (
                         <MenuItem key={type} value={type}>
@@ -204,7 +206,7 @@ export default function EditProperty() {
                     </Select>
                   </FormControl>
                   <TextField
-                    label="Bedrooms"
+                    label={t('host.properties.bedrooms')}
                     name="bedrooms"
                     type="number"
                     value={formData.bedrooms}
@@ -213,7 +215,7 @@ export default function EditProperty() {
                     fullWidth
                   />
                   <TextField
-                    label="Bathrooms"
+                    label={t('host.properties.bathrooms')}
                     name="bathrooms"
                     type="number"
                     value={formData.bathrooms}
@@ -222,7 +224,7 @@ export default function EditProperty() {
                     fullWidth
                   />
                   <TextField
-                    label="Guests"
+                    label={t('host.properties.guests')}
                     name="guests"
                     type="number"
                     value={formData.guests}
@@ -237,7 +239,7 @@ export default function EditProperty() {
             <Row className="mt-3">
               <Col xs={12}>
                 <TextField
-                  label="Description"
+                  label={t('host.properties.description')}
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
@@ -462,7 +464,7 @@ export default function EditProperty() {
                       '&:hover': { borderColor: '#9CA3AF', bgcolor: '#F9FAFB' }
                     }}
                   >
-                    Cancel
+                    {t('host.properties.cancel')}
                   </Button>
                   <Button
                     type="submit"
@@ -474,7 +476,7 @@ export default function EditProperty() {
                       '&:hover': { bgcolor: '#78381C' }
                     }}
                   >
-                    Update Property
+                    {t('host.properties.update_property')}
                   </Button>
                 </Stack>
               </Col>

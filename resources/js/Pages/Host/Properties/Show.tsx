@@ -3,6 +3,7 @@ import { Box, Button, Card, CardContent, Chip, Divider, Stack, Typography } from
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import { router, usePage } from '@inertiajs/react'
+import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import EditIcon from '@mui/icons-material/Edit'
 import VisibilityIcon from '@mui/icons-material/Visibility'
@@ -30,6 +31,7 @@ interface Property {
 }
 
 export default function ViewProperty() {
+  const { t } = useLanguage()
   const { property } = usePage<{ property: Property }>().props
   const [localStatus, setLocalStatus] = useState(property.status)
 
@@ -72,7 +74,7 @@ export default function ViewProperty() {
   }
 
   return (
-    <HostLayout title="View Property">
+    <HostLayout title={t('host.properties.view_property')}>
       <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
         <Button
           startIcon={<ArrowBackIcon />}
@@ -83,7 +85,7 @@ export default function ViewProperty() {
             '&:hover': { bgcolor: '#F9FAFB', color: '#111827' }
           }}
         >
-          Back to Properties
+          {t('host.properties.back_to_properties')}
         </Button>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: 'auto' } }}>
           <Button
@@ -147,7 +149,7 @@ export default function ViewProperty() {
               color: '#6B7280'
             }}
           >
-            <Typography variant="h6">No Image Available</Typography>
+            <Typography variant="h6">{t('host.properties.no_image_available')}</Typography>
           </Box>
         </Card>
       )}
@@ -183,7 +185,7 @@ export default function ViewProperty() {
               <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827' }}>
                 ${property.price}
                 <Typography component="span" sx={{ fontSize: 16, color: '#6B7280', fontWeight: 400, marginInlineStart: 0.5 }}>
-                  /night
+                  {t('host.properties.per_night')}
                 </Typography>
               </Typography>
             </Box>
@@ -198,7 +200,7 @@ export default function ViewProperty() {
           <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '16px', mb: 3 }}>
             <CardContent sx={{ p: { xs: 2, md: 4 } }}>
               <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 3 }}>
-                About the Property
+                {t('host.properties.about_the_property')}
               </Typography>
               <Typography sx={{ color: '#4A5568', lineHeight: 1.8, whiteSpace: 'pre-line' }}>
                 {property.description}
@@ -210,7 +212,7 @@ export default function ViewProperty() {
           <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '16px', mt: 3 }}>
             <CardContent sx={{ p: { xs: 2, md: 4 } }}>
               <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 3 }}>
-                Approval Status
+                {t('host.properties.approval_status')}
               </Typography>
               <Stack spacing={2}>
                 <Chip
@@ -235,7 +237,7 @@ export default function ViewProperty() {
           <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '16px' }}>
             <CardContent sx={{ p: { xs: 2, md: 4 } }}>
               <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 3 }}>
-                Property Details
+                {t('host.properties.property_details')}
               </Typography>
 
               <Stack spacing={3}>
@@ -254,7 +256,7 @@ export default function ViewProperty() {
                     <HomeIcon sx={{ fontSize: 20, color: '#6B7280' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 0.5 }}>Property Type</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 0.5 }}>{t('host.properties.property_type')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#111827' }}>
                       {getPropertyTypeLabel(property.property_type)}
                     </Typography>
@@ -278,7 +280,7 @@ export default function ViewProperty() {
                     <BedIcon sx={{ fontSize: 20, color: '#6B7280' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 0.5 }}>Bedrooms</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 0.5 }}>{t('host.properties.bedrooms')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#111827' }}>{property.bedrooms}</Typography>
                   </Box>
                 </Stack>
@@ -300,7 +302,7 @@ export default function ViewProperty() {
                     <BathtubIcon sx={{ fontSize: 20, color: '#6B7280' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 0.5 }}>Bathrooms</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 0.5 }}>{t('host.properties.bathrooms')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#111827' }}>{property.bathrooms}</Typography>
                   </Box>
                 </Stack>
@@ -322,7 +324,7 @@ export default function ViewProperty() {
                     <PeopleIcon sx={{ fontSize: 20, color: '#6B7280' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 0.5 }}>Guests</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 0.5 }}>{t('host.properties.guests')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#111827' }}>{property.guests}</Typography>
                   </Box>
                 </Stack>

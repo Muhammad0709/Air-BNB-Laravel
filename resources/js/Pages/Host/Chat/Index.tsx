@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import { Box, Button, Card, CardContent, Checkbox, Dialog, FormControlLabel, Stack, TextField, Typography, Avatar, Paper, IconButton, Menu, MenuItem } from '@mui/material'
 import HostLayout from '../../../Components/Host/HostLayout'
 import { Head, usePage, router } from '@inertiajs/react'
+import { useLanguage } from '../../../hooks/use-language'
 import { Row, Col } from 'react-bootstrap'
 import SendIcon from '@mui/icons-material/Send'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
@@ -57,6 +58,7 @@ function apiMessageToMessage(m: { id: number; text?: string; sender: string; tim
 }
 
 export default function HostChat() {
+  const { t } = useLanguage()
   const { props } = usePage<{ conversations: ConversationListItem[] }>()
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -332,8 +334,8 @@ export default function HostChat() {
 
   return (
     <>
-      <Head title="Messages" />
-      <HostLayout title="Messages">
+      <Head title={t('host.chat.messages')} />
+      <HostLayout title={t('host.chat.messages')}>
       <Row>
         {/* Conversations List */}
         <Col xs={12} md={4} lg={3}>
@@ -354,7 +356,7 @@ export default function HostChat() {
                     '&.Mui-focused fieldset': { borderColor: '#AD542D' }
                   }
                 }}
-                placeholder="Search conversations..."
+                placeholder={t('host.chat.search_placeholder')}
               />
             </CardContent>
             <CardContent sx={{ p: 0, flex: 1, overflowY: 'auto' }}>
@@ -919,7 +921,7 @@ export default function HostChat() {
                   </IconButton>
                   <TextField
                     fullWidth
-                    placeholder="Type a message..."
+                    placeholder={t('host.chat.type_placeholder')}
                     value={messageText}
                     onChange={(e) => setMessageText(e.target.value)}
                     onKeyPress={handleKeyPress}
@@ -973,10 +975,10 @@ export default function HostChat() {
                   <SendIcon sx={{ fontSize: 40, color: '#9CA3AF' }} />
                 </Box>
                 <Typography variant="h6" sx={{ color: '#6B7280', mb: 1 }}>
-                  Select a conversation
+                  {t('host.chat.select_conversation')}
                 </Typography>
                 <Typography variant="body2" sx={{ color: '#9CA3AF' }}>
-                  Choose a conversation from the list to start messaging, or create a new one.
+                  {t('host.chat.select_conversation_sub')}
                 </Typography>
               </Box>
             </Card>

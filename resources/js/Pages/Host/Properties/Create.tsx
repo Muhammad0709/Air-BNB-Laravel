@@ -5,12 +5,14 @@ import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import InputError from '../../../components/InputError'
 import { router, usePage } from '@inertiajs/react'
+import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { AIRPORT_OPTIONS, TOUR_DURATION_OPTIONS } from '../../../constants/hostPropertyOptions'
 
 export default function AddProperty() {
+  const { t } = useLanguage()
   const page = usePage<{
     propertyTypes: string[]
     errors?: Record<string, string[] | string>
@@ -142,18 +144,18 @@ export default function AddProperty() {
                   />
                   <InputError message={err('title')} />
                   <TextField
-                    label="Location"
+                    label={t('host.properties.location')}
                     name="location"
                     value={formData.location}
                     onChange={handleChange}
                     required
                     fullWidth
-                    placeholder="e.g., Malibu, California"
+                    placeholder={t('host.properties.location_placeholder')}
                     error={!!err('location')}
                   />
                   <InputError message={err('location')} />
                   <TextField
-                    label="Price per Night"
+                    label={t('host.properties.price_per_night')}
                     name="price"
                     type="number"
                     value={formData.price}
@@ -171,12 +173,12 @@ export default function AddProperty() {
               <Col xs={12} md={6}>
                 <Stack spacing={3}>
                   <FormControl fullWidth required error={!!err('property_type')}>
-                    <InputLabel id="property-type-label">Property Type</InputLabel>
+                    <InputLabel id="property-type-label">{t('host.properties.property_type')}</InputLabel>
                     <Select
                       labelId="property-type-label"
                       value={formData.property_type}
                       onChange={(e) => handleSelectChange('property_type', e.target.value)}
-                      label="Property Type"
+                      label={t('host.properties.property_type')}
                     >
                       {propertyTypes.map((type) => (
                         <MenuItem key={type} value={type}>
@@ -187,7 +189,7 @@ export default function AddProperty() {
                   </FormControl>
                   <InputError message={err('property_type')} />
                   <TextField
-                    label="Bedrooms"
+                    label={t('host.properties.bedrooms')}
                     name="bedrooms"
                     type="number"
                     value={formData.bedrooms}
@@ -198,7 +200,7 @@ export default function AddProperty() {
                   />
                   <InputError message={err('bedrooms')} />
                   <TextField
-                    label="Bathrooms"
+                    label={t('host.properties.bathrooms')}
                     name="bathrooms"
                     type="number"
                     value={formData.bathrooms}
@@ -209,7 +211,7 @@ export default function AddProperty() {
                   />
                   <InputError message={err('bathrooms')} />
                   <TextField
-                    label="Guests"
+                    label={t('host.properties.guests')}
                     name="guests"
                     type="number"
                     value={formData.guests}
@@ -226,7 +228,7 @@ export default function AddProperty() {
             <Row className="mt-3">
               <Col xs={12}>
                 <TextField
-                  label="Description"
+                  label={t('host.properties.description')}
                   name="description"
                   value={formData.description}
                   onChange={handleChange}
@@ -234,7 +236,7 @@ export default function AddProperty() {
                   fullWidth
                   multiline
                   rows={6}
-                  placeholder="Describe the property in detail..."
+                  placeholder={t('host.properties.description_placeholder')}
                   error={!!err('description')}
                 />
                 <InputError message={err('description')} />
@@ -246,7 +248,7 @@ export default function AddProperty() {
               {/* Airport Pickup Service – white card */}
               <Card elevation={0} sx={{ bgcolor: '#FFFFFF', border: '1px solid #E5E7EB', borderRadius: '12px', mb: 3, overflow: 'visible' }}>
                 <CardContent sx={{ p: 3 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: '#111827', mb: 2 }}>Airport Pickup Service</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 600, color: '#111827', mb: 2 }}>{t('host.properties.airport_pickup_service')}</Typography>
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -255,7 +257,7 @@ export default function AddProperty() {
                         sx={{ color: '#AD542D', '&.Mui-checked': { color: '#AD542D', bgcolor: '#FFF5F2' } }}
                       />
                     }
-                    label={<Typography sx={{ color: '#374151', fontWeight: 500 }}>Enable Airport Pickup Service</Typography>}
+                    label={<Typography sx={{ color: '#374151', fontWeight: 500 }}>{t('host.properties.enable_airport_pickup')}</Typography>}
                   />
                   {formData.airport_pickup_enabled && (
                     <Stack spacing={2.5} sx={{ mt: 3, width: '100%' }}>
@@ -295,7 +297,7 @@ export default function AddProperty() {
               {/* Guided Tours Service – white card */}
               <Card elevation={0} sx={{ bgcolor: '#FFFFFF', border: '1px solid #E5E7EB', borderRadius: '12px', overflow: 'visible' }}>
                 <CardContent sx={{ p: 3 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: '#111827', mb: 2 }}>Guided Tours Service</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 600, color: '#111827', mb: 2 }}>{t('host.properties.guided_tours_service')}</Typography>
                   <FormControlLabel
                     control={
                       <Checkbox
@@ -304,11 +306,11 @@ export default function AddProperty() {
                         sx={{ color: '#AD542D', '&.Mui-checked': { color: '#AD542D', bgcolor: '#FFF5F2' } }}
                       />
                     }
-                    label={<Typography sx={{ color: '#374151', fontWeight: 500 }}>Enable Guided Tours Service</Typography>}
+                    label={<Typography sx={{ color: '#374151', fontWeight: 500 }}>{t('host.properties.enable_guided_tours')}</Typography>}
                   />
                   {formData.guided_tours_enabled && (
                     <Stack spacing={2.5} sx={{ mt: 3, width: '100%' }}>
-                      <TextField label="Tour Description *" name="guided_tours_description" value={formData.guided_tours_description} onChange={handleChange} fullWidth multiline rows={3} size="medium" placeholder="Describe the tour experience..." variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
+                      <TextField label={`${t('host.properties.tour_description')} *`} name="guided_tours_description" value={formData.guided_tours_description} onChange={handleChange} fullWidth multiline rows={3} size="medium" placeholder={t('host.properties.tour_description_placeholder')} variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
                       <FormControl fullWidth size="medium" required>
                         <InputLabel sx={{ color: '#374151' }} shrink>Tour Duration *</InputLabel>
                         <Select
@@ -346,7 +348,7 @@ export default function AddProperty() {
             <Row className="mt-4">
               <Col xs={12}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 2 }}>
-                  Property Images
+                  {t('host.properties.property_images')}
                 </Typography>
                 <Box
                   sx={{
@@ -361,7 +363,7 @@ export default function AddProperty() {
                   onClick={() => document.getElementById('image-upload')?.click()}
                 >
                   <CloudUploadIcon sx={{ fontSize: 40, color: '#9CA3AF', mb: 1 }} />
-                  <Typography sx={{ color: '#374151' }}>Add images (PNG, JPG, GIF up to 2MB)</Typography>
+                  <Typography sx={{ color: '#374151' }}>{t('host.properties.add_images_hint')}</Typography>
                 </Box>
                 <InputError message={imageErrorText} />
                 <input
@@ -414,7 +416,7 @@ export default function AddProperty() {
                       '&:hover': { borderColor: '#9CA3AF', bgcolor: '#F9FAFB' }
                     }}
                   >
-                    Cancel
+                    {t('host.properties.cancel')}
                   </Button>
                   <Button
                     type="submit"
@@ -426,7 +428,7 @@ export default function AddProperty() {
                       '&:hover': { bgcolor: '#78381C' }
                     }}
                   >
-                    Add Property
+                    {t('host.properties.add_property')}
                   </Button>
                 </Stack>
               </Col>
