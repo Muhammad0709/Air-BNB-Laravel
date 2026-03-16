@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'sidebar' => [
+        'host_panel' => 'Host Panel',
+        'dashboard' => 'Dashboard',
+        'properties' => 'Properties',
+        'bookings' => 'Bookings',
+        'earnings' => 'Earnings',
+        'messages' => 'Messages',
+    ],
     'property' => [
         'image_max_size' => 'Each image must not be greater than 2MB.',
         'image_mimes' => 'Each image must be a file of type: jpeg, png, jpg, gif.',

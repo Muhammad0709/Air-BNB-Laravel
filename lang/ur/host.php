@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'sidebar' => [
+        'host_panel' => 'ہوسٹ پینل',
+        'dashboard' => 'ڈیش بورڈ',
+        'properties' => 'پراپرٹیز',
+        'bookings' => 'بکنگز',
+        'earnings' => 'کمائی',
+        'messages' => 'میسجز',
+    ],
     'property' => [
         'image_max_size' => 'Har tasweer 2MB se zyada nahi honi chahiye.',
         'image_mimes' => 'Har tasweer ki qisam honi chahiye: jpeg, png, jpg, gif.',

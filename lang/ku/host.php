@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'sidebar' => [
+        'host_panel' => 'پانێڵی میواندار',
+        'dashboard' => 'داشبۆرد',
+        'properties' => 'خانووبەرەکان',
+        'bookings' => 'حجزەکان',
+        'earnings' => 'داهاتەکان',
+        'messages' => 'نامەکان',
+    ],
     'property' => [
         'image_max_size' => 'هەر وێنەیەک نابێت گەورەتر لە 2MB بێت.',
         'image_mimes' => 'هەر وێنەیەک دەبێت لە جۆری: jpeg, png, jpg, gif بێت.',

@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'sidebar' => [
+        'host_panel' => 'لوحة المضيف',
+        'dashboard' => 'لوحة التحكم',
+        'properties' => 'العقارات',
+        'bookings' => 'الحجوزات',
+        'earnings' => 'الأرباح',
+        'messages' => 'الرسائل',
+    ],
     'property' => [
         'image_max_size' => 'يجب ألا تتجاوز كل صورة 2 ميجابايت.',
         'image_mimes' => 'يجب أن تكون كل صورة من نوع: jpeg, png, jpg, gif.',

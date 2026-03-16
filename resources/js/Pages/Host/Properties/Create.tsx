@@ -108,7 +108,7 @@ export default function AddProperty() {
   }
 
   return (
-    <HostLayout title="Add Property">
+    <HostLayout title={t('host.properties.add_property')}>
       <Button
         startIcon={<ArrowBackIcon />}
         onClick={() => router.visit('/host/properties')}
@@ -119,13 +119,13 @@ export default function AddProperty() {
           '&:hover': { bgcolor: '#F9FAFB', color: '#111827' }
         }}
       >
-        Back to Properties
+        {t('host.properties.back_to_properties')}
       </Button>
 
       <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '16px' }}>
         <CardContent sx={{ p: { xs: 2, md: 4 } }}>
           <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 4 }}>
-            Property Information
+            {t('host.properties.property_information')}
           </Typography>
 
           <form onSubmit={handleSubmit} noValidate>
@@ -133,7 +133,7 @@ export default function AddProperty() {
               <Col xs={12} md={6}>
                 <Stack spacing={3} sx={{ mb: { xs: 3, md: 0 } }}>
                   <TextField
-                    label="Property Title"
+                    label={t('host.properties.property_title')}
                     name="title"
                     value={formData.title}
                     onChange={handleChange}

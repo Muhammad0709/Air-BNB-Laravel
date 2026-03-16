@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'sidebar' => [
+        'host_panel' => 'Ev Sahibi Paneli',
+        'dashboard' => 'Kontrol Paneli',
+        'properties' => 'Mülkler',
+        'bookings' => 'Rezervasyonlar',
+        'earnings' => 'Kazançlar',
+        'messages' => 'Mesajlar',
+    ],
     'property' => [
         'image_max_size' => 'Her görsel 2MB dan büyük olmamalıdır.',
         'image_mimes' => 'Her görsel şu türde olmalıdır: jpeg, png, jpg, gif.',

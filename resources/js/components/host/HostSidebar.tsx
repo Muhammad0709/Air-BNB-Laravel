@@ -13,7 +13,7 @@ type HostSidebarProps = {
 }
 
 export default function HostSidebar({ sidebarOpen }: HostSidebarProps) {
-  const { isRtl } = useLanguage()
+  const { isRtl, t } = useLanguage()
   const isActive = (path: string) => {
     if (path === '/host/dashboard') {
       return window.location.pathname === '/host/dashboard'
@@ -23,31 +23,31 @@ export default function HostSidebar({ sidebarOpen }: HostSidebarProps) {
 
   const menuItems = [
     {
-      label: 'Dashboard',
+      label: t('host.sidebar.dashboard'),
       icon: DashboardIcon,
       path: '/host/dashboard',
       onClick: () => router.visit('/host/dashboard')
     },
     {
-      label: 'Properties',
+      label: t('host.sidebar.properties'),
       icon: HotelIcon,
       path: '/host/properties',
       onClick: () => router.visit('/host/properties')
     },
     {
-      label: 'Bookings',
+      label: t('host.sidebar.bookings'),
       icon: BookOnlineIcon,
       path: '/host/bookings',
       onClick: () => router.visit('/host/bookings')
     },
     {
-      label: 'Earnings',
+      label: t('host.sidebar.earnings'),
       icon: AccountBalanceWalletIcon,
       path: '/host/earnings',
       onClick: () => router.visit('/host/earnings')
     },
     {
-      label: 'Messages',
+      label: t('host.sidebar.messages'),
       icon: MessageIcon,
       path: '/host/chat',
       onClick: () => router.visit('/host/chat')
@@ -74,7 +74,7 @@ export default function HostSidebar({ sidebarOpen }: HostSidebarProps) {
       >
         <Box sx={{ p: 3, borderBottom: '1px solid #E5E7EB' }}>
           <Typography variant="h6" sx={{ fontWeight: 800, color: '#222222' }}>
-            Host Panel
+            {t('host.sidebar.host_panel')}
           </Typography>
         </Box>
         <Stack spacing={1} sx={{ p: 2, flex: 1, overflowY: 'auto' }}>

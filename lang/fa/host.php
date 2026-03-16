@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'sidebar' => [
+        'host_panel' => 'پنل میزبان',
+        'dashboard' => 'داشبورد',
+        'properties' => 'اقامتگاه‌ها',
+        'bookings' => 'رزروها',
+        'earnings' => 'درآمدها',
+        'messages' => 'پیام‌ها',
+    ],
     'property' => [
         'image_max_size' => 'Har tasvir nabayad bishtar az 2 megabayt bashad.',
         'image_mimes' => 'Har tasvir bayad az noe: jpeg, png, jpg, gif bashad.',
