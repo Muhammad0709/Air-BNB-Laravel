@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Host;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Payout;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 

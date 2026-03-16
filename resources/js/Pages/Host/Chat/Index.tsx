@@ -695,7 +695,7 @@ export default function HostChat() {
               >
                 <Box sx={{ p: 3.5, display: 'flex', flexDirection: 'column', alignItems: 'stretch', gap: 3 }}>
                   <Typography sx={{ fontWeight: 700, color: '#AD542D', fontSize: '1.25rem', textAlign: 'left' }}>
-                    Delete message?
+                    {t('host.chat.delete_message_title')}
                   </Typography>
                   {isOtherUserMessage && (
                     <FormControlLabel
@@ -706,7 +706,7 @@ export default function HostChat() {
                           sx={{ color: '#9CA3AF', '&.Mui-checked': { color: '#AD542D' } }}
                         />
                       }
-                      label="Delete file from your phone"
+                      label={t('host.chat.delete_file_from_phone')}
                       sx={{ color: '#AD542D', '& .MuiFormControlLabel-label': { color: '#AD542D' } }}
                     />
                   )}
@@ -743,7 +743,7 @@ export default function HostChat() {
                             },
                           }}
                         >
-                          Delete for everyone
+                          {t('host.chat.delete_for_everyone')}
                         </Button>
                         <Button
                           onClick={() => {
@@ -771,7 +771,7 @@ export default function HostChat() {
                             },
                           }}
                         >
-                          Delete for me
+                          {t('host.chat.delete_for_me')}
                         </Button>
                       </>
                     )}
@@ -797,7 +797,7 @@ export default function HostChat() {
                           '&:hover': { bgcolor: '#78381C' },
                         }}
                       >
-                        Delete for me
+                        {t('host.chat.delete_for_me')}
                       </Button>
                     )}
                     <Button
@@ -821,7 +821,7 @@ export default function HostChat() {
                         },
                       }}
                     >
-                      Cancel
+                      {t('host.chat.cancel')}
                     </Button>
                   </Stack>
                 </Box>
