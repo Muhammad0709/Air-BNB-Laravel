@@ -56,4 +56,16 @@ class HostBookingRequest extends FormRequest
 
         return [];
     }
+
+    /**
+     * Get custom messages for validator errors (translated).
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'checkout.after' => __('validation.custom.checkout.after'),
+        ];
+    }
 }

@@ -6,6 +6,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { Container, Row, Col } from 'react-bootstrap'
 import { Head, Link as InertiaLink, useForm } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
+import InputError from '../../../components/InputError'
 
 const logoUrl = '/images/Logo.png'
 const socialIcon = '/images/Social-icon.svg'
@@ -34,8 +35,6 @@ export default function AdminLogin() {
     e.preventDefault()
     post('/login', { onSuccess: () => {} })
   }
-
-  console.log(data);
 
   const googleIconEl = <Box component="img" src={socialIcon} alt="Google" sx={{ width: 24, height: 24 }} />
 
@@ -109,11 +108,11 @@ export default function AdminLogin() {
                       value={data.email}
                       onChange={(e) => setData('email', e.target.value)}
                       error={!!errors.email}
-                      helperText={errors.email}
                       required
                       variant="outlined"
                       sx={inputSx}
                     />
+                    <InputError message={Array.isArray(errors.email) ? errors.email[0] : errors.email} />
 
                     <TextField
                       fullWidth
@@ -123,7 +122,6 @@ export default function AdminLogin() {
                       value={data.password}
                       onChange={(e) => setData('password', e.target.value)}
                       error={!!errors.password}
-                      helperText={errors.password}
                       required
                       variant="outlined"
                       sx={inputSx}
@@ -144,6 +142,7 @@ export default function AdminLogin() {
                         ),
                       }}
                     />
+                    <InputError message={Array.isArray(errors.password) ? errors.password[0] : errors.password} />
 
                     <Button
                       type="submit"

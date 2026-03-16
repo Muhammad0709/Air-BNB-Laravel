@@ -6,6 +6,7 @@ import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { Container } from 'react-bootstrap'
 import { useLanguage } from '../../hooks/use-language'
+import InputError from '../../components/InputError'
 
 const logoUrl = '/images/Logo.png'
 const socialIcon = '/images/Social-icon.svg'
@@ -80,7 +81,8 @@ export default function SignIn() {
                       <Stack spacing={2.5}>
                         <Box>
                           <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signin.email')}</Typography>
-                          <TextField name="email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} error={!!errors.email} helperText={errors.email} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '24px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '24px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '24px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '24px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signin.email_placeholder')} />
+                          <TextField name="email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} error={!!errors.email} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '24px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '24px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '24px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '24px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signin.email_placeholder')} />
+                          <InputError message={Array.isArray(errors.email) ? errors.email[0] : errors.email} />
                         </Box>
                         <Box>
                           <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signin.password')}</Typography>
@@ -90,7 +92,6 @@ export default function SignIn() {
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
                             error={!!errors.password}
-                            helperText={errors.password}
                             placeholder={t('auth.signin.password_placeholder')}
                             sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '24px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '24px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '24px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '24px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }}
                             InputProps={{
@@ -103,6 +104,7 @@ export default function SignIn() {
                               ),
                             }}
                           />
+                          <InputError message={Array.isArray(errors.password) ? errors.password[0] : errors.password} />
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                           <FormControlLabel control={<Checkbox size="small" checked={data.remember} onChange={(e) => setData('remember', e.target.checked)} />} label={t('auth.signin.remember_me')} sx={{ color: '#151515' }} />

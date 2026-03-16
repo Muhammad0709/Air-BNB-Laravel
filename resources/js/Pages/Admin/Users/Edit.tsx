@@ -3,6 +3,7 @@ import { Avatar, Box, Button, Card, CardContent, Stack, TextField, Typography } 
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import { router, useForm, usePage } from '@inertiajs/react'
+import InputError from '../../../components/InputError'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { useLanguage } from '../../../hooks/use-language'
 
@@ -92,7 +93,6 @@ export default function EditUser() {
                     required
                     fullWidth
                     error={!!errors.name}
-                    helperText={errors.name}
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         borderRadius: '10px !important',
@@ -103,6 +103,7 @@ export default function EditUser() {
                       },
                     }}
                   />
+                  <InputError message={Array.isArray(errors.name) ? errors.name[0] : errors.name} />
                   <TextField
                     label={t('admin.users.email_address')}
                     name="email"
@@ -112,7 +113,6 @@ export default function EditUser() {
                     required
                     fullWidth
                     error={!!errors.email}
-                    helperText={errors.email}
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         borderRadius: '10px !important',
@@ -123,6 +123,7 @@ export default function EditUser() {
                       },
                     }}
                   />
+                  <InputError message={Array.isArray(errors.email) ? errors.email[0] : errors.email} />
                 </Stack>
               </Col>
             </Row>

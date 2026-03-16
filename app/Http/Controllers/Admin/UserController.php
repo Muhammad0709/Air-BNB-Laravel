@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UpdateUserRequest;
+use App\Http\Requests\Admin\UpdateUserStatusRequest;
 use App\Models\User;
 use App\Enums\UserType;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -62,14 +63,9 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-        ]);
-
-        $user->update($validated);
+        $user->update($request->validated());
 
         return redirect()->route('admin.users.index')
             ->with('success', 'User updated successfully!');
@@ -78,13 +74,9 @@ class UserController extends Controller
     /**
      * Update user status.
      */
-    public function updateStatus(Request $request, User $user)
+    public function updateStatus(UpdateUserStatusRequest $request, User $user)
     {
-        $validated = $request->validate([
-            'status' => ['required', 'in:Active,Inactive'],
-        ]);
-
-        $user->update($validated);
+        $user->update($request->validated());
 
         return redirect()->back()
             ->with('success', 'User status updated successfully!');

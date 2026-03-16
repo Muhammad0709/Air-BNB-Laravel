@@ -8,6 +8,7 @@ import SaveIcon from '@mui/icons-material/Save'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { Head, useForm, usePage, router } from '@inertiajs/react'
 import { useLanguage } from '../hooks/use-language'
+import InputError from '../components/InputError'
 
 export default function ProfileSettings() {
   const { t } = useLanguage()
@@ -212,7 +213,6 @@ export default function ProfileSettings() {
                           required
                           size="small"
                           error={!!profileErrors.name}
-                          helperText={profileErrors.name}
                           sx={{
                             '& .MuiOutlinedInput-root': {
                               borderRadius: '12px',
@@ -228,6 +228,7 @@ export default function ProfileSettings() {
                             }
                           }}
                         />
+                        <InputError message={Array.isArray(profileErrors.name) ? profileErrors.name[0] : profileErrors.name} />
                       </Box>
 
                       <Box>
@@ -244,7 +245,6 @@ export default function ProfileSettings() {
                           required
                           size="small"
                           error={!!profileErrors.email}
-                          helperText={profileErrors.email}
                           sx={{
                             '& .MuiOutlinedInput-root': {
                               borderRadius: '12px',
@@ -260,6 +260,7 @@ export default function ProfileSettings() {
                             }
                           }}
                         />
+                        <InputError message={Array.isArray(profileErrors.email) ? profileErrors.email[0] : profileErrors.email} />
                       </Box>
 
                       <Box>
@@ -274,7 +275,6 @@ export default function ProfileSettings() {
                           fullWidth
                           size="small"
                           error={!!profileErrors.phone}
-                          helperText={profileErrors.phone}
                           sx={{
                             '& .MuiOutlinedInput-root': {
                               borderRadius: '12px',
@@ -290,6 +290,7 @@ export default function ProfileSettings() {
                             }
                           }}
                         />
+                        <InputError message={Array.isArray(profileErrors.phone) ? profileErrors.phone[0] : profileErrors.phone} />
                       </Box>
 
                       <Box>
@@ -305,7 +306,6 @@ export default function ProfileSettings() {
                           multiline
                           rows={4}
                           error={!!profileErrors.bio}
-                          helperText={profileErrors.bio}
                           sx={{
                             '& .MuiOutlinedInput-root': {
                               borderRadius: '12px',
@@ -321,6 +321,7 @@ export default function ProfileSettings() {
                             }
                           }}
                         />
+                        <InputError message={Array.isArray(profileErrors.bio) ? profileErrors.bio[0] : profileErrors.bio} />
                       </Box>
 
                       <Button
@@ -373,7 +374,6 @@ export default function ProfileSettings() {
                           required
                           size="small"
                           error={!!passwordErrors.current_password}
-                          helperText={passwordErrors.current_password}
                           sx={{
                             '& .MuiOutlinedInput-root': {
                               borderRadius: '12px',
@@ -389,6 +389,7 @@ export default function ProfileSettings() {
                             }
                           }}
                         />
+                        <InputError message={Array.isArray(passwordErrors.current_password) ? passwordErrors.current_password[0] : passwordErrors.current_password} />
                       </Box>
 
                       <Box>
@@ -405,7 +406,6 @@ export default function ProfileSettings() {
                           required
                           size="small"
                           error={!!passwordErrors.new_password}
-                          helperText={passwordErrors.new_password}
                           sx={{
                             '& .MuiOutlinedInput-root': {
                               borderRadius: '12px',
@@ -421,6 +421,7 @@ export default function ProfileSettings() {
                             }
                           }}
                         />
+                        <InputError message={Array.isArray(passwordErrors.new_password) ? passwordErrors.new_password[0] : passwordErrors.new_password} />
                       </Box>
 
                       <Box>
@@ -437,7 +438,6 @@ export default function ProfileSettings() {
                           required
                           size="small"
                           error={!!passwordErrors.new_password_confirmation}
-                          helperText={passwordErrors.new_password_confirmation}
                           sx={{
                             '& .MuiOutlinedInput-root': {
                               borderRadius: '12px',
@@ -453,6 +453,7 @@ export default function ProfileSettings() {
                             }
                           }}
                         />
+                        <InputError message={Array.isArray(passwordErrors.new_password_confirmation) ? passwordErrors.new_password_confirmation[0] : passwordErrors.new_password_confirmation} />
                       </Box>
 
                       <Button

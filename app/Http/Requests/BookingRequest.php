@@ -48,4 +48,17 @@ class BookingRequest extends FormRequest
             'check_out_date' => 'required|date|after:check_in_date',
         ];
     }
+
+    /**
+     * Get custom messages for validator errors (translated).
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'check_out.after' => __('validation.custom.checkout.after'),
+            'check_out_date.after' => __('validation.custom.checkout.after'),
+        ];
+    }
 }

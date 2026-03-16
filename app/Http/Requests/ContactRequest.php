@@ -30,4 +30,17 @@ class ContactRequest extends FormRequest
             'files.*' => 'file|mimes:pdf,doc,docx,jpg,jpeg,png|max:10240',
         ];
     }
+
+    /**
+     * Get custom messages for validator errors (translated).
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'files.*.max' => __('validation.contact.files_max'),
+            'files.*.mimes' => __('validation.contact.files_mimes'),
+        ];
+    }
 }

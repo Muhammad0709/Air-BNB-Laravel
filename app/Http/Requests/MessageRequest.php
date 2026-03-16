@@ -20,11 +20,16 @@ class MessageRequest extends FormRequest
         ];
     }
 
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array<string, string>
+     */
     public function messages(): array
     {
         return [
-            'files.*.max' => 'Each file must not be greater than 10 MB.',
-            'files.*.mimes' => 'Each file must be an image (JPEG, PNG, GIF, WebP) or video (MP4, MOV, AVI, WebM).',
+            'files.*.max' => __('validation.files_max_message'),
+            'files.*.mimes' => __('validation.files_mimes_message'),
         ];
     }
 }

@@ -4,6 +4,7 @@ import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import Toast from '../../../Components/Admin/Toast'
 import { router, useForm, usePage } from '@inertiajs/react'
+import InputError from '../../../components/InputError'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -100,9 +101,9 @@ export default function EditProperty() {
                     required
                     fullWidth
                     error={!!errors.title}
-                    helperText={errors.title}
                     sx={{ mb: 2 }}
                   />
+                  <InputError message={Array.isArray(errors.title) ? errors.title[0] : errors.title} />
                   <TextField
                     label="Location"
                     name="location"
@@ -112,8 +113,8 @@ export default function EditProperty() {
                     fullWidth
                     placeholder="e.g., Malibu, California"
                     error={!!errors.location}
-                    helperText={errors.location}
                   />
+                  <InputError message={Array.isArray(errors.location) ? errors.location[0] : errors.location} />
                   <TextField
                     label="Price per Night"
                     name="price"
@@ -123,11 +124,11 @@ export default function EditProperty() {
                     required
                     fullWidth
                     error={!!errors.price}
-                    helperText={errors.price}
                     InputProps={{
                       startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#6B7280' }}>$</Typography>
                     }}
                   />
+                  <InputError message={Array.isArray(errors.price) ? errors.price[0] : errors.price} />
                 </Stack>
               </Col>
               <Col xs={12} md={6}>
@@ -146,6 +147,7 @@ export default function EditProperty() {
                       <MenuItem value="condo">Condo</MenuItem>
                     </Select>
                   </FormControl>
+                  <InputError message={Array.isArray(errors.property_type) ? errors.property_type[0] : errors.property_type} />
                   <TextField
                     label="Bedrooms"
                     name="bedrooms"
@@ -155,8 +157,8 @@ export default function EditProperty() {
                     required
                     fullWidth
                     error={!!errors.bedrooms}
-                    helperText={errors.bedrooms}
                   />
+                  <InputError message={Array.isArray(errors.bedrooms) ? errors.bedrooms[0] : errors.bedrooms} />
                   <TextField
                     label="Bathrooms"
                     name="bathrooms"
@@ -166,8 +168,8 @@ export default function EditProperty() {
                     required
                     fullWidth
                     error={!!errors.bathrooms}
-                    helperText={errors.bathrooms}
                   />
+                  <InputError message={Array.isArray(errors.bathrooms) ? errors.bathrooms[0] : errors.bathrooms} />
                   <TextField
                     label="Guests"
                     name="guests"
@@ -177,8 +179,8 @@ export default function EditProperty() {
                     required
                     fullWidth
                     error={!!errors.guests}
-                    helperText={errors.guests}
                   />
+                  <InputError message={Array.isArray(errors.guests) ? errors.guests[0] : errors.guests} />
                 </Stack>
               </Col>
             </Row>
@@ -195,8 +197,8 @@ export default function EditProperty() {
                   rows={6}
                   placeholder="Describe the property in detail..."
                   error={!!errors.description}
-                  helperText={errors.description}
                 />
+                <InputError message={Array.isArray(errors.description) ? errors.description[0] : errors.description} />
               </Col>
             </Row>
 
@@ -312,11 +314,7 @@ export default function EditProperty() {
                     </Typography>
                   </Box>
                 )}
-                {errors.image && (
-                  <Typography sx={{ color: '#EF4444', fontSize: 12, mt: 1 }}>
-                    {errors.image}
-                  </Typography>
-                )}
+                <InputError message={Array.isArray(errors.image) ? errors.image[0] : errors.image} />
               </Col>
             </Row>
 

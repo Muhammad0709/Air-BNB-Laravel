@@ -29,12 +29,12 @@ class ForgotPasswordRequest extends FormRequest
     /**
      * Get custom messages for validator errors.
      *
-     * @return array
+     * @return array<string, string>
      */
     public function messages(): array
     {
         return [
-            'email.exists' => 'We could not find a user with that email address.',
+            'email.exists' => __('validation.custom.email.exists'),
         ];
     }
 }

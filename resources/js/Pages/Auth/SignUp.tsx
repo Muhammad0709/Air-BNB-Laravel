@@ -6,6 +6,7 @@ import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { Container } from 'react-bootstrap'
 import { useLanguage } from '../../hooks/use-language'
+import InputError from '../../components/InputError'
 
 const logoUrl = '/images/Logo.png'
 const socialIcon = '/images/Social-icon.svg'
@@ -80,11 +81,13 @@ export default function SignUp() {
                       <Stack spacing={2.5}>
                         <Box>
                           <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signup.name')}</Typography>
-                          <TextField name="name" value={data.name} onChange={(e) => setData('name', e.target.value)} error={!!errors.name} helperText={errors.name} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signup.name_placeholder')} />
+                          <TextField name="name" value={data.name} onChange={(e) => setData('name', e.target.value)} error={!!errors.name} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signup.name_placeholder')} />
+                          <InputError message={Array.isArray(errors.name) ? errors.name[0] : errors.name} />
                         </Box>
                         <Box>
                           <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signup.email')}</Typography>
-                          <TextField name="email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} error={!!errors.email} helperText={errors.email} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signup.email_placeholder')} />
+                          <TextField name="email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} error={!!errors.email} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signup.email_placeholder')} />
+                          <InputError message={Array.isArray(errors.email) ? errors.email[0] : errors.email} />
                         </Box>
                         <Box>
                           <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signup.password')}</Typography>
@@ -94,7 +97,6 @@ export default function SignUp() {
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
                             error={!!errors.password}
-                            helperText={errors.password}
                             placeholder={t('auth.signup.password_placeholder')}
                             sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }}
                             InputProps={{
@@ -107,6 +109,7 @@ export default function SignUp() {
                               ),
                             }}
                           />
+                          <InputError message={Array.isArray(errors.password) ? errors.password[0] : errors.password} />
                           <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>{t('auth.signup.password_hint')}</Typography>
                         </Box>
                         <Box>
@@ -117,7 +120,6 @@ export default function SignUp() {
                             value={data.password_confirmation}
                             onChange={(e) => setData('password_confirmation', e.target.value)}
                             error={!!errors.password_confirmation}
-                            helperText={errors.password_confirmation}
                             placeholder={t('auth.signup.confirm_password_placeholder')}
                             sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }}
                             InputProps={{
@@ -130,6 +132,7 @@ export default function SignUp() {
                               ),
                             }}
                           />
+                          <InputError message={Array.isArray(errors.password_confirmation) ? errors.password_confirmation[0] : errors.password_confirmation} />
                         </Box>
                         <Button type="submit" variant="contained" size="large" disabled={processing} sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: 999, textTransform: 'none', fontWeight: 700, fontSize: 16, bgcolor: '#AD542D', boxShadow: 'none', '&:hover': { bgcolor: '#78381C', boxShadow: 'none' } }}>{processing ? t('auth.signup.creating') : t('auth.signup.submit')}</Button>
                         <Button component="a" href="/auth/google" variant="outlined" size="large" {...(isRtl ? { endIcon: googleIconEl } : { startIcon: googleIconEl })} sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: 999, borderColor: '#D0D5DD', color: '#344054', gap: 1, textDecoration: 'none', '& .MuiButton-startIcon, & .MuiButton-endIcon': { margin: 0 } }}>{t('auth.signup.sign_up_google')}</Button>

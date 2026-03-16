@@ -69,12 +69,14 @@ class ListingRequest extends FormRequest
 
     /**
      * Get custom messages for validator errors.
+     *
+     * @return array<string, string>
      */
     public function messages(): array
     {
         return [
-            'max_price.gte' => 'The maximum price must be greater than or equal to the minimum price.',
-            'checkout.after' => 'The checkout date must be after the check-in date.',
+            'max_price.gte' => __('validation.custom.max_price.gte'),
+            'checkout.after' => __('validation.custom.checkout.after'),
         ];
     }
 }

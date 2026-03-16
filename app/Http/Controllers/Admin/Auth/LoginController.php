@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Auth\LoginRequest;
 use App\Enums\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,14 +22,11 @@ class LoginController extends Controller
     /**
      * Handle an incoming admin authentication request.
      */
-    public function store(Request $request)
+    public function store(LoginRequest $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+        $request->validated();
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             $user = Auth::user();
             // Only allow Admin or Host to log in here; customers must use /auth/login
             if ($user->type === UserType::USER) {

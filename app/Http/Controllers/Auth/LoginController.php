@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Enums\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,14 +22,11 @@ class LoginController extends Controller
     /**
      * Handle an incoming authentication request (customers only).
      */
-    public function store(Request $request)
+    public function store(LoginRequest $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+        $request->validated();
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             $user = Auth::user();
             // Only allow customer (User) type to log in here
             if ($user->type !== UserType::USER) {

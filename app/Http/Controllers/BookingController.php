@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBookingRequest;
 use App\Enums\BookingStatus;
 use App\Enums\PropertyStatus;
 use App\Enums\UserType;
@@ -154,20 +155,9 @@ class BookingController extends Controller
     /**
      * Save booking to DB and redirect to confirmation (web flow).
      */
-    public function store(Request $request)
+    public function store(StoreBookingRequest $request)
     {
-        $validated = $request->validate([
-            'property_id' => 'required|integer|exists:properties,id',
-            'checkin' => 'required|date',
-            'checkout' => 'required|date|after:checkin',
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'phone_code' => 'nullable|string|max:10',
-            'phone' => 'required|string|max:20',
-            'rooms' => 'nullable|integer|min:1|max:20',
-            'adults' => 'nullable|integer|min:1|max:50',
-            'children' => 'nullable|integer|min:0|max:20',
-        ]);
+        $validated = $request->validated();
 
         $property = Property::where('id', $validated['property_id'])
             ->where('status', 'Active')

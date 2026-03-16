@@ -9,6 +9,7 @@ import AttachFileIcon from '@mui/icons-material/AttachFile'
 import CloseIcon from '@mui/icons-material/Close'
 import { Head, useForm, usePage } from '@inertiajs/react'
 import { useLanguage } from '../hooks/use-language'
+import InputError from '../components/InputError'
 
 export default function Contact() {
   const { t } = useLanguage()
@@ -128,7 +129,6 @@ export default function Contact() {
                           required
                           size="small"
                           error={!!errors.name}
-                          helperText={errors.name}
                           sx={{
                             '& .MuiOutlinedInput-root': {
                               borderRadius: '12px',
@@ -138,6 +138,7 @@ export default function Contact() {
                             }
                           }}
                         />
+                        <InputError message={Array.isArray(errors.name) ? errors.name[0] : errors.name} />
                       </Box>
 
                       <Box>
@@ -154,7 +155,6 @@ export default function Contact() {
                           required
                           size="small"
                           error={!!errors.email}
-                          helperText={errors.email}
                           sx={{
                             '& .MuiOutlinedInput-root': {
                               borderRadius: '12px',
@@ -164,6 +164,7 @@ export default function Contact() {
                             }
                           }}
                         />
+                        <InputError message={Array.isArray(errors.email) ? errors.email[0] : errors.email} />
                       </Box>
 
                       <Box>
@@ -179,7 +180,6 @@ export default function Contact() {
                           required
                           size="small"
                           error={!!errors.subject}
-                          helperText={errors.subject}
                           sx={{
                             '& .MuiOutlinedInput-root': {
                               borderRadius: '12px',
@@ -189,6 +189,7 @@ export default function Contact() {
                             }
                           }}
                         />
+                        <InputError message={Array.isArray(errors.subject) ? errors.subject[0] : errors.subject} />
                       </Box>
 
                       <Box>
@@ -268,7 +269,6 @@ export default function Contact() {
                           multiline
                           rows={6}
                           error={!!errors.message}
-                          helperText={errors.message}
                           sx={{
                             '& .MuiOutlinedInput-root': {
                               borderRadius: '12px',
@@ -278,6 +278,7 @@ export default function Contact() {
                             }
                           }}
                         />
+                        <InputError message={Array.isArray(errors.message) ? errors.message[0] : errors.message} />
                       </Box>
 
                       <Button

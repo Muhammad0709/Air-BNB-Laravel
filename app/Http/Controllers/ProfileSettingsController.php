@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\Profile\UpdateCurrencyRequest;
+use App\Http\Requests\Profile\UpdatePasswordRequest;
+use App\Http\Requests\Profile\UpdateProfileRequest;
+use App\Http\Requests\Profile\UploadProfilePictureRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 
 class ProfileSettingsController extends Controller
@@ -27,17 +29,10 @@ class ProfileSettingsController extends Controller
         ]);
     }
 
-    public function updateProfile(Request $request)
+    public function updateProfile(UpdateProfileRequest $request)
     {
         $user = Auth::user();
-        
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:20',
-            'bio' => 'nullable|string|max:500',
-        ]);
-
+        $validated = $request->validated();
         $user->update($validated);
 
         // Refresh user to get updated data
@@ -46,37 +41,26 @@ class ProfileSettingsController extends Controller
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 
-    public function updatePassword(Request $request)
+    public function updatePassword(UpdatePasswordRequest $request)
     {
-        $request->validate([
-            'current_password' => 'required|current_password',
-            'new_password' => ['required', 'confirmed', Password::min(8)],
-        ]);
-
         $user = Auth::user();
         $user->update([
-            'password' => Hash::make($request->new_password)
+            'password' => Hash::make($request->validated('new_password'))
         ]);
 
         return redirect()->back()->with('success', 'Password changed successfully!');
     }
 
-    public function updateCurrency(Request $request)
+    public function updateCurrency(UpdateCurrencyRequest $request)
     {
-        $request->validate(['currency' => 'required|string|in:USD,PKR']);
-
-        Auth::user()->update(['currency' => $request->input('currency')]);
+        Auth::user()->update(['currency' => $request->validated('currency')]);
 
         return redirect()->back();
     }
 
-    public function uploadProfilePicture(Request $request)
+    public function uploadProfilePicture(UploadProfilePictureRequest $request)
     {
         try {
-            $request->validate([
-                'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
-            ]);
-
             $user = Auth::user();
 
             if (!$user) {
@@ -103,10 +87,6 @@ class ProfileSettingsController extends Controller
             $user->refresh();
 
             return redirect()->back()->with('success', 'Profile picture updated successfully!');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return redirect()->back()
-                ->withErrors($e->errors())
-                ->withInput();
         } catch (\Exception $e) {
             \Log::error('Profile picture upload error: ' . $e->getMessage());
             return redirect()->back()->with('error', 'An error occurred while uploading the profile picture. Please try again.');

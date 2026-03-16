@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Host;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Host\Settings\UpdatePasswordRequest;
+use App\Http\Requests\Host\Settings\UpdateProfileRequest;
+use App\Http\Requests\Host\Settings\UploadProfilePictureRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 
 class SettingsController extends Controller
@@ -43,32 +45,20 @@ class SettingsController extends Controller
         return Inertia::render('Host/Settings/Profile', $this->userProps(Auth::user()));
     }
 
-    public function updateProfile(Request $request)
+    public function updateProfile(UpdateProfileRequest $request)
     {
-        $user = Auth::user();
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-        ]);
-        $user->update($validated);
+        Auth::user()->update($request->validated());
         return redirect()->back()->with('success', __('host.settings.profile_updated_success'));
     }
 
-    public function updatePassword(Request $request)
+    public function updatePassword(UpdatePasswordRequest $request)
     {
-        $request->validate([
-            'current_password' => 'required|current_password',
-            'new_password' => ['required', 'confirmed', Password::min(8)],
-        ]);
-        Auth::user()->update(['password' => Hash::make($request->new_password)]);
+        Auth::user()->update(['password' => Hash::make($request->validated('new_password'))]);
         return redirect()->back()->with('success', __('host.settings.password_changed_success'));
     }
 
-    public function uploadProfilePicture(Request $request)
+    public function uploadProfilePicture(UploadProfilePictureRequest $request)
     {
-        $request->validate([
-            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
         $user = Auth::user();
         if ($user->profile_picture) {
             Storage::disk('public')->delete($user->profile_picture);

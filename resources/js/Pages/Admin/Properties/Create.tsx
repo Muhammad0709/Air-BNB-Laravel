@@ -4,6 +4,7 @@ import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import Toast from '../../../Components/Admin/Toast'
 import { router, useForm } from '@inertiajs/react'
+import InputError from '../../../components/InputError'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DeleteIcon from '@mui/icons-material/Delete'
@@ -85,93 +86,107 @@ export default function AddProperty() {
             <Row>
               <Col xs={12} md={6}>
                 <Stack spacing={3}>
-                  <TextField
-                    label="Property Title"
-                    name="title"
-                    value={data.title}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                    error={!!errors.title}
-                    helperText={errors.title}
-                    sx={{ mb: 2 }}
-                  />
-                  <TextField
-                    label="Location"
-                    name="location"
-                    value={data.location}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                    placeholder="e.g., Malibu, California"
-                    error={!!errors.location}
-                    helperText={errors.location}
-                  />
-                  <TextField
-                    label="Price per Night"
-                    name="price"
-                    type="number"
-                    value={data.price}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                    error={!!errors.price}
-                    helperText={errors.price}
-                    InputProps={{
-                      startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#6B7280' }}>$</Typography>
-                    }}
-                  />
+                  <Box>
+                    <TextField
+                      label="Property Title"
+                      name="title"
+                      value={data.title}
+                      onChange={handleChange}
+                      required
+                      fullWidth
+                      error={!!errors.title}
+                    />
+                    <InputError message={Array.isArray(errors.title) ? errors.title[0] : errors.title} />
+                  </Box>
+                  <Box>
+                    <TextField
+                      label="Location"
+                      name="location"
+                      value={data.location}
+                      onChange={handleChange}
+                      required
+                      fullWidth
+                      placeholder="e.g., Malibu, California"
+                      error={!!errors.location}
+                    />
+                    <InputError message={Array.isArray(errors.location) ? errors.location[0] : errors.location} />
+                  </Box>
+                  <Box>
+                    <TextField
+                      label="Price per Night"
+                      name="price"
+                      type="number"
+                      value={data.price}
+                      onChange={handleChange}
+                      required
+                      fullWidth
+                      error={!!errors.price}
+                      InputProps={{
+                        startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#6B7280' }}>$</Typography>
+                      }}
+                    />
+                    <InputError message={Array.isArray(errors.price) ? errors.price[0] : errors.price} />
+                  </Box>
                 </Stack>
               </Col>
               <Col xs={12} md={6}>
                 <Stack spacing={3}>
-                  <FormControl fullWidth required error={!!errors.property_type}>
-                    <InputLabel>Property Type</InputLabel>
-                    <Select
-                      value={data.property_type}
-                      onChange={(e) => handleSelectChange('property_type', e.target.value)}
-                      label="Property Type"
-                    >
-                      <MenuItem value="apartment">Apartment</MenuItem>
-                      <MenuItem value="house">House</MenuItem>
-                      <MenuItem value="villa">Villa</MenuItem>
-                      <MenuItem value="studio">Studio</MenuItem>
-                      <MenuItem value="condo">Condo</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <TextField
-                    label="Bedrooms"
-                    name="bedrooms"
-                    type="number"
-                    value={data.bedrooms}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                    error={!!errors.bedrooms}
-                    helperText={errors.bedrooms}
-                  />
-                  <TextField
-                    label="Bathrooms"
-                    name="bathrooms"
-                    type="number"
-                    value={data.bathrooms}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                    error={!!errors.bathrooms}
-                    helperText={errors.bathrooms}
-                  />
-                  <TextField
-                    label="Guests"
-                    name="guests"
-                    type="number"
-                    value={data.guests}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                    error={!!errors.guests}
-                    helperText={errors.guests}
-                  />
+                  <Box>
+                    <FormControl fullWidth required error={!!errors.property_type}>
+                      <InputLabel>Property Type</InputLabel>
+                      <Select
+                        value={data.property_type}
+                        onChange={(e) => handleSelectChange('property_type', e.target.value)}
+                        label="Property Type"
+                      >
+                        <MenuItem value="apartment">Apartment</MenuItem>
+                        <MenuItem value="house">House</MenuItem>
+                        <MenuItem value="villa">Villa</MenuItem>
+                        <MenuItem value="studio">Studio</MenuItem>
+                        <MenuItem value="condo">Condo</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <InputError message={Array.isArray(errors.property_type) ? errors.property_type[0] : errors.property_type} />
+                  </Box>
+                  <Box>
+                    <TextField
+                      label="Bedrooms"
+                      name="bedrooms"
+                      type="number"
+                      value={data.bedrooms}
+                      onChange={handleChange}
+                      required
+                      fullWidth
+                      error={!!errors.bedrooms}
+                    />
+                    <InputError message={Array.isArray(errors.bedrooms) ? errors.bedrooms[0] : errors.bedrooms} />
+                  </Box>
+                  <Box>
+                    <TextField
+                      label="Bathrooms"
+                      name="bathrooms"
+                      type="number"
+                      value={data.bathrooms}
+                      onChange={handleChange}
+                      required
+                      fullWidth
+                      error={!!errors.bathrooms}
+                    />
+                    <InputError message={Array.isArray(errors.bathrooms) ? errors.bathrooms[0] : errors.bathrooms} />
+                  </Box>
+                  <Box>
+                    <TextField
+                      label="Guests"
+                      name="guests"
+                      type="number"
+                      value={data.guests}
+                      onChange={handleChange}
+                      required
+                      fullWidth
+                      error={!!errors.guests}
+                    />
+                    <InputError message={Array.isArray(errors.guests) ? errors.guests[0] : errors.guests} />
+                  </Box>
                 </Stack>
               </Col>
             </Row>
@@ -188,8 +203,8 @@ export default function AddProperty() {
                   rows={6}
                   placeholder="Describe the property in detail..."
                   error={!!errors.description}
-                  helperText={errors.description}
                 />
+                <InputError message={Array.isArray(errors.description) ? errors.description[0] : errors.description} />
               </Col>
             </Row>
 
@@ -305,11 +320,7 @@ export default function AddProperty() {
                     </Typography>
                   </Box>
                 )}
-                {errors.image && (
-                  <Typography sx={{ color: '#EF4444', fontSize: 12, mt: 1 }}>
-                    {errors.image}
-                  </Typography>
-                )}
+                <InputError message={Array.isArray(errors.image) ? errors.image[0] : errors.image} />
               </Col>
             </Row>
 

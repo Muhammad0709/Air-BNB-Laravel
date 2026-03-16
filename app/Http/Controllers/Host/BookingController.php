@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Host;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Host\UpdateBookingStatusRequest;
 use App\Models\Booking;
 use App\Models\Property;
 use Illuminate\Http\Request;
@@ -118,7 +119,7 @@ class BookingController extends Controller
         ]);
     }
 
-    public function updateStatus(Request $request, string $id)
+    public function updateStatus(UpdateBookingStatusRequest $request, string $id)
     {
         $propertyIds = Property::where('user_id', Auth::id())->pluck('id');
 
@@ -126,12 +127,8 @@ class BookingController extends Controller
             ->whereIn('property_id', $propertyIds)
             ->firstOrFail();
 
-        $request->validate([
-            'status' => ['required', 'string', 'in:pending,confirmed,cancelled,completed'],
-        ]);
-
         $booking->update([
-            'status' => $request->status,
+            'status' => $request->validated('status'),
         ]);
 
         return redirect()->back()->with('success', 'Booking status updated successfully!');

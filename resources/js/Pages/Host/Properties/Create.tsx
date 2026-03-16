@@ -3,6 +3,7 @@ import { Box, Button, Card, CardContent, FormControl, FormControlLabel, IconButt
 import Checkbox from '@mui/material/Checkbox'
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
+import InputError from '../../../components/InputError'
 import { router, usePage } from '@inertiajs/react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
@@ -10,7 +11,13 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { AIRPORT_OPTIONS, TOUR_DURATION_OPTIONS } from '../../../constants/hostPropertyOptions'
 
 export default function AddProperty() {
-  const { propertyTypes, errors: pageErrors = {} } = usePage<{ propertyTypes: string[]; errors?: Record<string, string | string[]> }>().props
+  const page = usePage<{
+    propertyTypes: string[]
+    errors?: Record<string, string[] | string>
+    validationErrors?: Record<string, string[]>
+  }>()
+  const { propertyTypes } = page.props
+  const pageErrors = page.props.validationErrors ?? page.props.errors ?? {}
   const [formData, setFormData] = useState({
     title: '',
     location: '',
@@ -33,6 +40,11 @@ export default function AddProperty() {
   })
   const [guidedToursDurationCustom, setGuidedToursDurationCustom] = useState('')
 
+  const err = (field: string): string | null =>
+    (Array.isArray((pageErrors as Record<string, unknown>)[field])
+      ? (pageErrors as Record<string, string[]>)[field][0]
+      : (pageErrors as Record<string, string>)[field]) ?? null
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
@@ -48,10 +60,11 @@ export default function AddProperty() {
     if (files.length) setFormData(prev => ({ ...prev, images: [...prev.images, ...files] }))
   }
 
-  const imageError = pageErrors && typeof pageErrors === 'object'
-    ? (Object.entries(pageErrors).find(([k]) => k.startsWith('images.'))?.[1] ?? null)
-    : null
-  const imageErrorText = Array.isArray(imageError) ? imageError[0] : imageError
+  const imageErrorText = (() => {
+    const key = Object.keys(pageErrors || {}).find((k) => k.startsWith('images.'))
+    const r = key ? (pageErrors as Record<string, unknown>)[key] : null
+    return r ? (Array.isArray(r) ? r[0] : String(r)) : null
+  })()
 
   const removeImage = (index: number) => {
     setFormData(prev => ({ ...prev, images: prev.images.filter((_, i) => i !== index) }))
@@ -59,7 +72,6 @@ export default function AddProperty() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    
     const submitData = new FormData()
     submitData.append('title', formData.title)
     submitData.append('location', formData.location)
@@ -89,6 +101,7 @@ export default function AddProperty() {
 
     router.post('/host/properties', submitData, {
       forceFormData: true,
+      preserveState: false, // ensure we get fresh props (including errors) after validation redirect
     })
   }
 
@@ -113,7 +126,7 @@ export default function AddProperty() {
             Property Information
           </Typography>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
             <Row>
               <Col xs={12} md={6}>
                 <Stack spacing={3} sx={{ mb: { xs: 3, md: 0 } }}>
@@ -124,8 +137,10 @@ export default function AddProperty() {
                     onChange={handleChange}
                     required
                     fullWidth
+                    error={!!err('title')}
                     sx={{ mb: 2 }}
                   />
+                  <InputError message={err('title')} />
                   <TextField
                     label="Location"
                     name="location"
@@ -134,7 +149,9 @@ export default function AddProperty() {
                     required
                     fullWidth
                     placeholder="e.g., Malibu, California"
+                    error={!!err('location')}
                   />
+                  <InputError message={err('location')} />
                   <TextField
                     label="Price per Night"
                     name="price"
@@ -143,17 +160,20 @@ export default function AddProperty() {
                     onChange={handleChange}
                     required
                     fullWidth
+                    error={!!err('price')}
                     InputProps={{
                       startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#6B7280' }}>$</Typography>
                     }}
                   />
+                  <InputError message={err('price')} />
                 </Stack>
               </Col>
               <Col xs={12} md={6}>
                 <Stack spacing={3}>
-                  <FormControl fullWidth required>
-                    <InputLabel>Property Type</InputLabel>
+                  <FormControl fullWidth required error={!!err('property_type')}>
+                    <InputLabel id="property-type-label">Property Type</InputLabel>
                     <Select
+                      labelId="property-type-label"
                       value={formData.property_type}
                       onChange={(e) => handleSelectChange('property_type', e.target.value)}
                       label="Property Type"
@@ -165,6 +185,7 @@ export default function AddProperty() {
                       ))}
                     </Select>
                   </FormControl>
+                  <InputError message={err('property_type')} />
                   <TextField
                     label="Bedrooms"
                     name="bedrooms"
@@ -173,7 +194,9 @@ export default function AddProperty() {
                     onChange={handleChange}
                     required
                     fullWidth
+                    error={!!err('bedrooms')}
                   />
+                  <InputError message={err('bedrooms')} />
                   <TextField
                     label="Bathrooms"
                     name="bathrooms"
@@ -182,7 +205,9 @@ export default function AddProperty() {
                     onChange={handleChange}
                     required
                     fullWidth
+                    error={!!err('bathrooms')}
                   />
+                  <InputError message={err('bathrooms')} />
                   <TextField
                     label="Guests"
                     name="guests"
@@ -191,7 +216,9 @@ export default function AddProperty() {
                     onChange={handleChange}
                     required
                     fullWidth
+                    error={!!err('guests')}
                   />
+                  <InputError message={err('guests')} />
                 </Stack>
               </Col>
             </Row>
@@ -208,7 +235,9 @@ export default function AddProperty() {
                   multiline
                   rows={6}
                   placeholder="Describe the property in detail..."
+                  error={!!err('description')}
                 />
+                <InputError message={err('description')} />
               </Col>
             </Row>
 
@@ -334,11 +363,7 @@ export default function AddProperty() {
                   <CloudUploadIcon sx={{ fontSize: 40, color: '#9CA3AF', mb: 1 }} />
                   <Typography sx={{ color: '#374151' }}>Add images (PNG, JPG, GIF up to 2MB)</Typography>
                 </Box>
-                {imageErrorText && (
-                  <Typography color="error" variant="body2" sx={{ mb: 2 }}>
-                    {imageErrorText}
-                  </Typography>
-                )}
+                <InputError message={imageErrorText} />
                 <input
                   id="image-upload"
                   type="file"

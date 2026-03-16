@@ -32,14 +32,14 @@ class ResetPasswordRequest extends FormRequest
     /**
      * Get custom messages for validator errors.
      *
-     * @return array
+     * @return array<string, string>
      */
     public function messages(): array
     {
         return [
-            'email.exists' => 'We could not find a user with that email address.',
-            'token.required' => 'Reset token is required.',
-            'password.confirmed' => 'Password confirmation does not match.',
+            'email.exists' => __('validation.custom.email.exists'),
+            'token.required' => __('validation.custom.token.required'),
+            'password.confirmed' => __('validation.custom.password.confirmed'),
         ];
     }
 }

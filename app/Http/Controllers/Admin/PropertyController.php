@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UpdatePropertyRequest;
 use App\Models\Property;
 use App\Enums\PropertyStatus;
 use Illuminate\Http\Request;
@@ -75,22 +76,9 @@ class PropertyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Property $property)
+    public function update(UpdatePropertyRequest $request, Property $property)
     {
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'location' => ['required', 'string', 'max:255'],
-            'price' => ['required', 'numeric', 'min:0'],
-            'bedrooms' => ['required', 'integer', 'min:0'],
-            'bathrooms' => ['required', 'integer', 'min:0'],
-            'guests' => ['required', 'integer', 'min:1'],
-            'property_type' => ['required', 'in:apartment,house,villa,studio,condo'],
-            'status' => ['required', 'in:Active,Inactive'],
-            'description' => ['nullable', 'string'],
-            'amenities' => ['nullable', 'array'],
-            'image' => ['nullable', 'sometimes', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
-        ]);
-
+        $validated = $request->validated();
         $validated['amenities'] = $validated['amenities'] ?? [];
 
         // Handle image

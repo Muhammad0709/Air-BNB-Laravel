@@ -6,6 +6,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { Container, Row, Col } from 'react-bootstrap'
 import { Head, Link as InertiaLink, useForm } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
+import InputError from '../../../components/InputError'
 
 const logoUrl = '/images/Logo.png'
 const socialIcon = '/images/Social-icon.svg'
@@ -103,30 +104,34 @@ export default function HostSignup() {
                 <form onSubmit={handleSubmit}>
                   <Stack spacing={3}>
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap>
-                      <TextField
-                        fullWidth
-                        label={t('auth.admin_signup.first_name')}
-                        name="firstName"
-                        value={data.firstName}
-                        onChange={handleChange}
-                        required
-                        variant="outlined"
-                        error={!!errors.firstName}
-                        helperText={errors.firstName}
-                        sx={inputSx}
-                      />
-                      <TextField
-                        fullWidth
-                        label={t('auth.admin_signup.last_name')}
-                        name="lastName"
-                        value={data.lastName}
-                        onChange={handleChange}
-                        required
-                        variant="outlined"
-                        error={!!errors.lastName}
-                        helperText={errors.lastName}
-                        sx={inputSx}
-                      />
+                      <Box sx={{ flex: 1, minWidth: 0 }}>
+                        <TextField
+                          fullWidth
+                          label={t('auth.admin_signup.first_name')}
+                          name="firstName"
+                          value={data.firstName}
+                          onChange={handleChange}
+                          required
+                          variant="outlined"
+                          error={!!errors.firstName}
+                          sx={inputSx}
+                        />
+                        <InputError message={Array.isArray(errors.firstName) ? errors.firstName[0] : errors.firstName} />
+                      </Box>
+                      <Box sx={{ flex: 1, minWidth: 0 }}>
+                        <TextField
+                          fullWidth
+                          label={t('auth.admin_signup.last_name')}
+                          name="lastName"
+                          value={data.lastName}
+                          onChange={handleChange}
+                          required
+                          variant="outlined"
+                          error={!!errors.lastName}
+                          sx={inputSx}
+                        />
+                        <InputError message={Array.isArray(errors.lastName) ? errors.lastName[0] : errors.lastName} />
+                      </Box>
                     </Stack>
 
                     <TextField
@@ -139,9 +144,9 @@ export default function HostSignup() {
                       required
                       variant="outlined"
                       error={!!errors.email}
-                      helperText={errors.email}
                       sx={inputSx}
                     />
+                    <InputError message={Array.isArray(errors.email) ? errors.email[0] : errors.email} />
 
                     <TextField
                       fullWidth
@@ -153,9 +158,9 @@ export default function HostSignup() {
                       required
                       variant="outlined"
                       error={!!errors.phone}
-                      helperText={errors.phone}
                       sx={inputSx}
                     />
+                    <InputError message={Array.isArray(errors.phone) ? errors.phone[0] : errors.phone} />
 
                     <TextField
                       fullWidth
@@ -167,7 +172,6 @@ export default function HostSignup() {
                       required
                       variant="outlined"
                       error={!!errors.password}
-                      helperText={errors.password}
                       sx={inputSx}
                       InputProps={{
                         endAdornment: (
@@ -186,6 +190,7 @@ export default function HostSignup() {
                         ),
                       }}
                     />
+                    <InputError message={Array.isArray(errors.password) ? errors.password[0] : errors.password} />
 
                     <TextField
                       fullWidth
@@ -197,7 +202,6 @@ export default function HostSignup() {
                       required
                       variant="outlined"
                       error={!!errors.password_confirmation}
-                      helperText={errors.password_confirmation}
                       sx={inputSx}
                       InputProps={{
                         endAdornment: (
@@ -216,6 +220,7 @@ export default function HostSignup() {
                         ),
                       }}
                     />
+                    <InputError message={Array.isArray(errors.password_confirmation) ? errors.password_confirmation[0] : errors.password_confirmation} />
 
                     <Button
                       type="submit"

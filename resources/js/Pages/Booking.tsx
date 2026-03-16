@@ -11,6 +11,7 @@ import { useLanguage } from '../hooks/use-language'
 import { useCurrency } from '../contexts/CurrencyContext'
 import { formatPrice } from '../utils/currency'
 import PhoneCountrySelect from '../components/PhoneCountrySelect'
+import InputError from '../components/InputError'
 
 const PLACEHOLDER_IMAGE = '/images/popular-stay-1.svg'
 
@@ -234,8 +235,8 @@ export default function Booking() {
                         onChange={(e) => handleChange('name', e.target.value)}
                         required
                         error={!!errors.name}
-                        helperText={errors.name}
                       />
+                      <InputError message={errors.name} />
                     </Box>
 
                     <Box className="field">
@@ -301,8 +302,8 @@ export default function Booking() {
                         onChange={(e) => handleChange('email', e.target.value)}
                         required
                         error={!!errors.email}
-                        helperText={errors.email}
                       />
+                      <InputError message={errors.email} />
                     </Box>
 
                     <Box className="field">
@@ -318,9 +319,9 @@ export default function Booking() {
                           value={formData.phone}
                           onChange={(e) => handleChange('phone', e.target.value)}
                           error={!!errors.phone}
-                          helperText={errors.phone}
                         />
                       </Stack>
+                      <InputError message={errors.phone} />
                       <Typography className="help">{t('booking.phone_note')}</Typography>
                     </Box>
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Host;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreHostPropertyRequest;
+use App\Http\Requests\UpdateHostPropertyRequest;
 use App\Models\Property;
 use App\Enums\PropertyType;
 use App\Enums\PropertyStatus;
@@ -75,12 +77,11 @@ class PropertyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreHostPropertyRequest $request)
     {
         $host = Auth::user();
 
-        // Explicit 2MB max per image (backend validation)
-        $maxBytes = 2 * 1024 * 1024; // 2MB
+        $maxBytes = 2 * 1024 * 1024;
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $file) {
                 if ($file->getSize() > $maxBytes) {
@@ -91,34 +92,7 @@ class PropertyController extends Controller
             }
         }
 
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'property_type' => 'required|in:' . implode(',', array_column(PropertyType::cases(), 'value')),
-            'bedrooms' => 'required|integer|min:1',
-            'bathrooms' => 'required|integer|min:1',
-            'guests' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
-            'location' => 'required|string|max:255',
-            'amenities' => 'nullable|array',
-            'amenities.*' => 'string',
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 2048 KB = 2MB
-            'airport_pickup_enabled' => 'nullable|boolean',
-            'airport' => 'nullable|required_if:airport_pickup_enabled,true|string|max:255',
-            'pickup_start_time' => 'nullable|required_if:airport_pickup_enabled,true|string|max:10',
-            'pickup_end_time' => 'nullable|required_if:airport_pickup_enabled,true|string|max:10',
-            'airport_pickup_price' => 'nullable|required_if:airport_pickup_enabled,true|numeric|min:0',
-            'guided_tours_enabled' => 'nullable|boolean',
-            'guided_tours_description' => 'nullable|required_if:guided_tours_enabled,true|string|max:2000',
-            'guided_tours_duration' => 'nullable|required_if:guided_tours_enabled,true|string|max:255',
-            'guided_tours_price' => 'nullable|required_if:guided_tours_enabled,true|numeric|min:0',
-        ], [
-            'images.*.max' => __('host.property.image_max_size'),
-            'images.*.mimes' => __('host.property.image_mimes'),
-            'images.*.image' => __('host.property.image_file'),
-        ]);
-
+        $validated = $request->validated();
         $imagePaths = [];
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
@@ -181,43 +155,13 @@ class PropertyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Property $property)
+    public function update(UpdateHostPropertyRequest $request, Property $property)
     {
-        // Ensure host can only update their own properties
         if ($property->user_id !== Auth::id()) {
             abort(403, __('host.property.unauthorized'));
         }
-        
-        // Image rules: max 2048 KB = 2MB per file (backend validation)
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'property_type' => 'required|in:' . implode(',', array_column(PropertyType::cases(), 'value')),
-            'bedrooms' => 'required|integer|min:1',
-            'bathrooms' => 'required|integer|min:1',
-            'guests' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
-            'location' => 'required|string|max:255',
-            'status' => 'required|in:Active,Inactive,Pending',
-            'amenities' => 'nullable|array',
-            'amenities.*' => 'string',
-            'images' => 'nullable|array',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // 2048 KB = 2MB
-            'airport_pickup_enabled' => 'nullable|boolean',
-            'airport' => 'nullable|required_if:airport_pickup_enabled,true|string|max:255',
-            'pickup_start_time' => 'nullable|required_if:airport_pickup_enabled,true|string|max:10',
-            'pickup_end_time' => 'nullable|required_if:airport_pickup_enabled,true|string|max:10',
-            'airport_pickup_price' => 'nullable|required_if:airport_pickup_enabled,true|numeric|min:0',
-            'guided_tours_enabled' => 'nullable|boolean',
-            'guided_tours_description' => 'nullable|required_if:guided_tours_enabled,true|string|max:2000',
-            'guided_tours_duration' => 'nullable|required_if:guided_tours_enabled,true|string|max:255',
-            'guided_tours_price' => 'nullable|required_if:guided_tours_enabled,true|numeric|min:0',
-        ], [
-            'images.*.max' => __('host.property.image_max_size'),
-            'images.*.mimes' => __('host.property.image_mimes'),
-            'images.*.image' => __('host.property.image_file'),
-        ]);
 
+        $validated = $request->validated();
         $imagePaths = $property->images ?? [];
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
