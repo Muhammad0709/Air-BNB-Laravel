@@ -8,6 +8,7 @@ import Toast from '../../../Components/Admin/Toast'
 import Pagination from '../../../components/Pagination'
 import SearchIcon from '@mui/icons-material/Search'
 import { Head, router, usePage } from '@inertiajs/react'
+import { useLanguage } from '../../../hooks/use-language'
 
 type BookingRow = {
   id: number
@@ -22,6 +23,7 @@ type BookingRow = {
 type BookingsProp = { data: BookingRow[]; current_page: number; last_page: number }
 
 export default function HostBookings() {
+  const { t } = useLanguage()
   const props = usePage().props as { bookings?: BookingsProp; filters?: { search?: string }; flash?: { success?: string } }
   const bookingsProp = props.bookings
   const filters = props.filters ?? {}
@@ -60,10 +62,10 @@ export default function HostBookings() {
 
   const getStatusLabel = (status: string) => {
     switch (String(status).toLowerCase()) {
-      case 'confirmed': return 'Confirmed'
-      case 'pending': return 'Pending'
-      case 'cancelled': return 'Cancelled'
-      case 'completed': return 'Completed'
+      case 'confirmed': return t('host.bookings.status_confirmed')
+      case 'pending': return t('host.bookings.status_pending')
+      case 'cancelled': return t('host.bookings.status_cancelled')
+      case 'completed': return t('host.earnings.completed')
       default: return status
     }
   }
@@ -87,21 +89,21 @@ export default function HostBookings() {
 
   return (
     <>
-      <Head title="Bookings" />
-      <HostLayout title="Bookings">
+      <Head title={t('host.bookings.title')} />
+      <HostLayout title={t('host.bookings.title')}>
       <Row>
         <Col xs={12}>
           <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2 }}>
             <CardContent>
               <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>
-                  My Bookings
+                  {t('host.bookings.my_bookings')}
                 </Typography>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap alignItems="center" sx={{ width: { xs: '100%', sm: 'auto' } }}>
                   <TextField
                     value={search}
                     onChange={(e) => handleSearchChange(e.target.value)}
-                    placeholder="Search bookings..."
+                    placeholder={t('host.bookings.search_placeholder')}
                     size="small"
                     sx={{ width: { xs: '100%', sm: 250 } }}
                     InputProps={{
@@ -123,7 +125,7 @@ export default function HostBookings() {
                       '&:hover': { bgcolor: '#78381C' }
                     }}
                   >
-                    Add Booking
+                    {t('host.bookings.add_booking')}
                   </Button>
                 </Stack>
               </Stack>
@@ -132,20 +134,20 @@ export default function HostBookings() {
                 <Table sx={{ minWidth: 800, width: '100%' }}>
                   <TableHead>
                     <TableRow sx={{ bgcolor: '#F9FAFB' }}>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Guest</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Property</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Check-in</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Check-out</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Status</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Amount</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Actions</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.bookings.guest')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.bookings.property')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.bookings.check_in')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.bookings.check_out')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.bookings.status')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.bookings.amount')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.bookings.actions')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {list.length === 0 ? (
                       <TableRow>
                         <TableCell colSpan={7} sx={{ textAlign: 'center', py: 4 }}>
-                          <Typography sx={{ color: '#6B7280' }}>No bookings found</Typography>
+                          <Typography sx={{ color: '#6B7280' }}>{t('host.bookings.no_bookings_found')}</Typography>
                         </TableCell>
                       </TableRow>
                     ) : (
@@ -173,8 +175,8 @@ export default function HostBookings() {
                             onView={() => router.visit(`/host/bookings/${booking.id}`)}
                             onEdit={() => router.visit(`/host/bookings/${booking.id}/edit`)}
                             onDelete={() => handleDeleteClick({ id: booking.id, guest: booking.guest })}
-                            viewLabel="View"
-                            editLabel="Edit"
+                            viewLabel={t('host.bookings.view')}
+                            editLabel={t('host.bookings.edit')}
                           />
                         </TableCell>
                       </TableRow>
@@ -199,8 +201,8 @@ export default function HostBookings() {
         open={deleteDialogOpen}
         onClose={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
-        title="Are you sure you want to delete this booking?"
-        itemName="the booking"
+        title={t('host.bookings.delete_confirm')}
+        itemName={t('host.bookings.item_name')}
       />
       <Toast
         open={toastOpen}

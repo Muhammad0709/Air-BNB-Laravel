@@ -6,6 +6,7 @@ import ActionsMenu from '../../../Components/Admin/ActionsMenu'
 import SearchIcon from '@mui/icons-material/Search'
 import DownloadIcon from '@mui/icons-material/Download'
 import { Head, router, usePage } from '@inertiajs/react'
+import { useLanguage } from '../../../hooks/use-language'
 
 interface Earning {
   id: number
@@ -25,12 +26,13 @@ interface Props {
 }
 
 export default function HostEarnings() {
+  const { t } = useLanguage()
   const { earnings, totalEarnings, availableBalance } = usePage<Props>().props
   const [search, setSearch] = useState('')
 
   const earningsStats = [
-    { title: 'Total Earnings', value: totalEarnings, color: '#10B981', change: '+22% this month' },
-    { title: 'Available Balance', value: availableBalance, color: '#4F46E5', change: 'Available' },
+    { title: t('host.earnings.total_earnings'), value: totalEarnings, color: '#10B981', change: t('host.earnings.change_this_month') },
+    { title: t('host.earnings.available_balance'), value: availableBalance, color: '#4F46E5', change: t('host.earnings.ready_to_withdraw') },
   ]
 
   useEffect(() => {
@@ -56,7 +58,7 @@ export default function HostEarnings() {
   }
 
   const handleExport = () => {
-    const headers = ['Booking ID', 'Guest', 'Property', 'Date', 'Amount', 'Status', 'Payout Date']
+    const headers = [t('host.earnings.booking_id'), t('host.earnings.guest'), t('host.earnings.property'), t('host.earnings.date'), t('host.earnings.amount'), t('host.earnings.status'), t('host.earnings.payout_date')]
     const csvData = earnings.map(earning => [
       earning.bookingId,
       earning.guest,
@@ -83,10 +85,17 @@ export default function HostEarnings() {
     document.body.removeChild(downloadLink)
   }
 
+  const statusLabel = (status: string) => {
+    if (status === 'Paid') return t('host.earnings.paid')
+    if (status === 'Pending') return t('host.earnings.pending')
+    if (status === 'Completed') return t('host.earnings.completed')
+    return status
+  }
+
   return (
     <>
-      <Head title="Earnings" />
-      <HostLayout title="Earnings">
+      <Head title={t('host.earnings.title')} />
+      <HostLayout title={t('host.earnings.title')}>
       <Row className="g-3 mb-4">
         {earningsStats.map((stat, idx) => (
           <Col key={idx} xs={12} sm={6} lg={4}>
@@ -139,13 +148,13 @@ export default function HostEarnings() {
             <CardContent>
               <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>
-                  Earnings History
+                  {t('host.earnings.earnings_history')}
                 </Typography>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap alignItems="center" sx={{ width: { xs: '100%', sm: 'auto' } }}>
                   <TextField
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Search earnings..."
+                    placeholder={t('host.earnings.search_placeholder')}
                     size="small"
                     sx={{ width: { xs: '100%', sm: 250 } }}
                     InputProps={{
@@ -169,7 +178,7 @@ export default function HostEarnings() {
                       '&:hover': { borderColor: '#D0D5DD', bgcolor: '#F9FAFB' }
                     }}
                   >
-                    Export
+                    {t('host.earnings.export')}
                   </Button>
                 </Stack>
               </Stack>
@@ -178,14 +187,14 @@ export default function HostEarnings() {
                 <Table sx={{ minWidth: 800, width: '100%' }}>
                   <TableHead>
                     <TableRow sx={{ bgcolor: '#F9FAFB' }}>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Booking ID</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Guest</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Property</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Date</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Amount</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Status</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Payout Date</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>Actions</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.earnings.booking_id')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.earnings.guest')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.earnings.property')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.earnings.date')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.earnings.amount')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.earnings.status')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.earnings.payout_date')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.earnings.actions')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -198,7 +207,7 @@ export default function HostEarnings() {
                         <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{earning.amount}</TableCell>
                         <TableCell>
                           <Chip
-                            label={earning.status}
+                            label={statusLabel(earning.status)}
                             size="small"
                             sx={{
                               bgcolor: `${getStatusColor(earning.status)}15`,
@@ -212,7 +221,7 @@ export default function HostEarnings() {
                         <TableCell>
                           <ActionsMenu
                             onView={() => router.visit(`/host/earnings/show/${earning.id}`)}
-                            viewLabel="View"
+                            viewLabel={t('host.earnings.view')}
                           />
                         </TableCell>
                       </TableRow>

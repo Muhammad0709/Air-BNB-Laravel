@@ -2,6 +2,7 @@ import { Box, Button, Card, CardContent, Chip, Divider, FormControl, MenuItem, S
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import { Head, router, usePage } from '@inertiajs/react'
+import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import EditIcon from '@mui/icons-material/Edit'
 import PersonIcon from '@mui/icons-material/Person'
@@ -13,6 +14,7 @@ import { useState } from 'react'
 import Toast from '../../../components/shared/Toast'
 
 export default function ShowBooking() {
+  const { t } = useLanguage()
   const { booking } = usePage().props as { booking: {
     id: string
     guest: string
@@ -45,16 +47,16 @@ export default function ShowBooking() {
     router.patch(`/host/bookings/${id}/status`, { status: newStatus.toLowerCase() }, {
       onSuccess: () => {
         setCurrentStatus(newStatus)
-        setToast({ open: true, message: 'Status updated!', severity: 'success' })
+        setToast({ open: true, message: t('host.bookings.status_updated'), severity: 'success' })
       },
-      onError: () => setToast({ open: true, message: 'Update failed', severity: 'error' })
+      onError: () => setToast({ open: true, message: t('host.bookings.update_failed'), severity: 'error' })
     })
   }
 
   return (
     <>
-      <Head title="View Booking" />
-      <HostLayout title="View Booking">
+      <Head title={t('host.bookings.view_booking_title')} />
+      <HostLayout title={t('host.bookings.view_booking_title')}>
       <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
         <Button
           startIcon={<ArrowBackIcon />}
@@ -65,7 +67,7 @@ export default function ShowBooking() {
             '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }
           }}
         >
-          Back to Bookings
+          {t('host.bookings.back_to_bookings')}
         </Button>
         <Button
           variant="contained"
@@ -79,7 +81,7 @@ export default function ShowBooking() {
             '&:hover': { bgcolor: '#78381C' }
           }}
         >
-          Edit Booking
+          {t('host.bookings.edit_booking_title')}
         </Button>
       </Stack>
 
@@ -101,7 +103,7 @@ export default function ShowBooking() {
             </Box>
             <Box sx={{ textAlign: { xs: 'left', sm: 'right' } }}>
               <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2, justifyContent: { xs: 'flex-start', sm: 'flex-end' } }}>
-                <Typography sx={{ color: '#717171', fontSize: 14 }}>Status:</Typography>
+                <Typography sx={{ color: '#717171', fontSize: 14 }}>{t('host.bookings.status')}:</Typography>
                 <FormControl size="small">
                   <Select
                     value={currentStatus}
@@ -114,10 +116,10 @@ export default function ShowBooking() {
                       '& .MuiOutlinedInput-notchedOutline': { borderColor: statusColor }
                     }}
                   >
-                    <MenuItem value="Pending">Pending</MenuItem>
-                    <MenuItem value="Confirmed">Confirmed</MenuItem>
-                    <MenuItem value="Completed">Completed</MenuItem>
-                    <MenuItem value="Cancelled">Cancelled</MenuItem>
+                    <MenuItem value="Pending">{t('host.bookings.status_pending')}</MenuItem>
+                    <MenuItem value="Confirmed">{t('host.bookings.status_confirmed')}</MenuItem>
+                    <MenuItem value="Completed">{t('host.earnings.completed')}</MenuItem>
+                    <MenuItem value="Cancelled">{t('host.bookings.status_cancelled')}</MenuItem>
                   </Select>
                 </FormControl>
               </Stack>

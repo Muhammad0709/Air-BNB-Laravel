@@ -4,6 +4,7 @@ import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import InputError from '../../../components/InputError'
 import { Head, router, useForm, usePage } from '@inertiajs/react'
+import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
@@ -15,6 +16,7 @@ function parseDateStr(s: string): Date | null {
 }
 
 export default function CreateBooking() {
+  const { t } = useLanguage()
   const { properties: propertiesList } = usePage().props as { properties?: Array<{ id: number; title: string; location: string }> }
   const properties = propertiesList ?? []
 
@@ -151,8 +153,8 @@ export default function CreateBooking() {
 
   return (
     <>
-      <Head title="Add Booking" />
-      <HostLayout title="Add Booking">
+      <Head title={t('host.bookings.add_booking_title')} />
+      <HostLayout title={t('host.bookings.add_booking_title')}>
       <Button
         startIcon={<ArrowBackIcon />}
         onClick={() => router.visit('/host/bookings')}
@@ -163,13 +165,13 @@ export default function CreateBooking() {
           '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }
         }}
       >
-        Back to Bookings
+        {t('host.bookings.back_to_bookings')}
       </Button>
 
       <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2 }}>
         <CardContent sx={{ p: { xs: 2, md: 4 } }}>
           <Typography variant="h5" sx={{ fontWeight: 700, color: '#222222', mb: 4 }}>
-            Booking Information
+            {t('host.bookings.booking_information')}
           </Typography>
 
           <form onSubmit={handleSubmit}>
@@ -178,7 +180,7 @@ export default function CreateBooking() {
                 <Stack spacing={3} sx={{ mb: { xs: 3, md: 0 } }}>
                   <Box>
                     <TextField
-                      label="Guest Name"
+                      label={t('host.bookings.guest_name')}
                       name="guest"
                       value={data.guest}
                       onChange={handleChange}
@@ -189,7 +191,7 @@ export default function CreateBooking() {
                   </Box>
                   <Box>
                     <TextField
-                      label="Email Address"
+                      label={t('host.bookings.email_address')}
                       name="email"
                       type="email"
                       value={data.email}
@@ -201,7 +203,7 @@ export default function CreateBooking() {
                   </Box>
                   <Box>
                     <TextField
-                      label="Phone Number"
+                      label={t('host.bookings.phone_number')}
                       name="phone"
                       value={data.phone}
                       onChange={handleChange}
@@ -212,11 +214,11 @@ export default function CreateBooking() {
                   </Box>
                   <Box>
                     <FormControl fullWidth error={Boolean(errors.property_id)}>
-                      <InputLabel>Property</InputLabel>
+                      <InputLabel>{t('host.bookings.property_label')}</InputLabel>
                       <Select
                         value={data.property_id}
                         onChange={(e) => handleSelectChange('property_id', e.target.value)}
-                        label="Property"
+                        label={t('host.bookings.property_label')}
                       >
                         {properties.map((property) => (
                           <MenuItem key={property.id} value={String(property.id)}>
@@ -233,7 +235,7 @@ export default function CreateBooking() {
                 <Stack spacing={3}>
                   <Box>
                     <TextField
-                      label="Total Amount"
+                      label={t('host.bookings.total_amount')}
                       name="amount"
                       type="number"
                       value={data.amount}
@@ -248,15 +250,15 @@ export default function CreateBooking() {
                   </Box>
                   <Box>
                     <FormControl fullWidth>
-                      <InputLabel>Status</InputLabel>
+                      <InputLabel>{t('host.bookings.status_label')}</InputLabel>
                       <Select
                         value={data.status}
                         onChange={(e) => handleSelectChange('status', e.target.value)}
-                        label="Status"
+                        label={t('host.bookings.status_label')}
                       >
-                        <MenuItem value="pending">Pending</MenuItem>
-                        <MenuItem value="confirmed">Confirmed</MenuItem>
-                        <MenuItem value="cancelled">Cancelled</MenuItem>
+                        <MenuItem value="pending">{t('host.bookings.status_pending')}</MenuItem>
+                        <MenuItem value="confirmed">{t('host.bookings.status_confirmed')}</MenuItem>
+                        <MenuItem value="cancelled">{t('host.bookings.status_cancelled')}</MenuItem>
                       </Select>
                     </FormControl>
                     <InputError message={Array.isArray(errors.status) ? errors.status[0] : errors.status} />
@@ -269,7 +271,7 @@ export default function CreateBooking() {
             <Row className="mt-4">
               <Col xs={12}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 3 }}>
-                  Select Dates
+                  {t('host.bookings.select_dates')}
                 </Typography>
                 <Box sx={{ width: '100%', maxWidth: { xs: '100%', lg: '500px' }, mx: 'auto', px: { xs: 0, sm: 1 } }}>
                   <Paper 
@@ -415,18 +417,18 @@ export default function CreateBooking() {
                       >
                         <Box sx={{ textAlign: 'center' }}>
                           <Typography sx={{ fontSize: { xs: 11, md: 12 }, color: '#717171', fontWeight: 500 }}>
-                            Check-in
+                            {t('host.bookings.check_in')}
                           </Typography>
                           <Typography sx={{ fontSize: { xs: 12, md: 13 }, color: data.checkin ? '#222222' : '#9CA3AF', fontWeight: 600, mt: 0.5 }}>
-                            {data.checkin || 'Not selected'}
+                            {data.checkin || t('host.bookings.not_selected')}
                           </Typography>
                         </Box>
                         <Box sx={{ textAlign: 'center' }}>
                           <Typography sx={{ fontSize: { xs: 11, md: 12 }, color: '#717171', fontWeight: 500 }}>
-                            Check-out
+                            {t('host.bookings.check_out')}
                           </Typography>
                           <Typography sx={{ fontSize: { xs: 12, md: 13 }, color: data.checkout ? '#222222' : '#9CA3AF', fontWeight: 600, mt: 0.5 }}>
-                            {data.checkout || 'Not selected'}
+                            {data.checkout || t('host.bookings.not_selected')}
                           </Typography>
                         </Box>
                       </Box>
@@ -453,7 +455,7 @@ export default function CreateBooking() {
                       '&:hover': { borderColor: '#9CA3AF', bgcolor: '#F9FAFB' }
                     }}
                   >
-                    Cancel
+                    {t('host.bookings.cancel')}
                   </Button>
                   <Button
                     type="submit"
@@ -466,7 +468,7 @@ export default function CreateBooking() {
                       '&:hover': { bgcolor: '#78381C' }
                     }}
                   >
-                    {processing ? 'Saving...' : 'Add Booking'}
+                    {processing ? t('host.bookings.saving') : t('host.bookings.add_booking_btn')}
                   </Button>
                 </Stack>
               </Col>
