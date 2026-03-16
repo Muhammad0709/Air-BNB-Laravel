@@ -8,6 +8,7 @@ import Pagination from '../../../components/Pagination'
 import Toast from '../../../Components/Admin/Toast'
 import SearchIcon from '@mui/icons-material/Search'
 import { router, usePage } from '@inertiajs/react'
+import { useLanguage } from '../../../hooks/use-language'
 
 const DEFAULT_IMAGE = '/images/popular-stay-1.svg'
 
@@ -41,6 +42,7 @@ interface Filters {
 }
 
 export default function HostProperties() {
+  const { t } = useLanguage()
   const { properties, filters, statusOptions, approvalStatusOptions, flash } = usePage<{
     properties: PaginatedProperties
     filters: Filters
@@ -90,6 +92,15 @@ export default function HostProperties() {
     }
   }
 
+  const getApprovalLabel = (status: string) => {
+    switch (status) {
+      case 'Approved': return t('host.properties.approved')
+      case 'Rejected': return t('host.properties.rejected')
+      case 'Pending': return t('host.properties.pending')
+      default: return status
+    }
+  }
+
   const handleDeleteClick = (property: { id: number; title: string }) => {
     setPropertyToDelete(property)
     setDeleteDialogOpen(true)
@@ -112,7 +123,7 @@ export default function HostProperties() {
   }
 
   return (
-    <HostLayout title="Properties">
+    <HostLayout title={t('host.properties.manage_properties')}>
       {/* Properties Table */}
       <Row>
         <Col xs={12}>
@@ -120,14 +131,14 @@ export default function HostProperties() {
             <CardContent>
               <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827' }}>
-                  My Properties
+                  {t('host.properties.my_properties')}
                 </Typography>
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap alignItems="center" sx={{ width: { xs: '100%', sm: 'auto' } }}>
                 <TextField
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  placeholder="Search properties..."
+                  placeholder={t('host.properties.search_placeholder')}
                   size="small"
                   sx={{ width: { xs: '100%', sm: 250 } }}
                   InputProps={{
@@ -149,7 +160,7 @@ export default function HostProperties() {
                       '&:hover': { bgcolor: '#78381C' }
                     }}
                   >
-                    Add Property
+                    {t('host.properties.add_property')}
                   </Button>
                 </Stack>
               </Stack>
@@ -158,18 +169,18 @@ export default function HostProperties() {
                 <Table sx={{ minWidth: 800, width: '100%' }}>
                     <TableHead>
                       <TableRow sx={{ bgcolor: '#F9FAFB' }}>
-                        <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Property</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Location</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Price</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Approval</TableCell>
-                        <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Actions</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('host.properties.title')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('host.properties.location')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('host.properties.price')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('host.properties.approval')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('host.properties.actions')}</TableCell>
                       </TableRow>
                     </TableHead>
                   <TableBody>
                     {filteredProperties.length === 0 ? (
                       <TableRow>
                         <TableCell colSpan={5} sx={{ textAlign: 'center', py: 4 }}>
-                          <Typography sx={{ color: '#6B7280' }}>No Property Found</Typography>
+                          <Typography sx={{ color: '#6B7280' }}>{t('host.properties.no_properties_found')}</Typography>
                         </TableCell>
                       </TableRow>
                     ) : (
@@ -211,7 +222,7 @@ export default function HostProperties() {
                         </TableCell>
                         <TableCell>
                           <Chip
-                            label={property.approval_status}
+                            label={getApprovalLabel(property.approval_status)}
                             size="small"
                             sx={{
                               bgcolor: `${getApprovalStatusColor(property.approval_status)}15`,
@@ -226,8 +237,8 @@ export default function HostProperties() {
                             onView={() => router.visit(`/host/properties/${property.id}`)}
                             onEdit={() => router.visit(`/host/properties/${property.id}/edit`)}
                             onDelete={() => handleDeleteClick({ id: property.id, title: property.title })}
-                            viewLabel="View"
-                            editLabel="Edit"
+                            viewLabel={t('host.properties.view')}
+                            editLabel={t('host.properties.edit')}
                           />
                         </TableCell>
                       </TableRow>
@@ -248,13 +259,12 @@ export default function HostProperties() {
         </Col>
       </Row>
 
-      {/* Delete Confirmation Dialog */}
       <DeleteConfirmationDialog
         open={deleteDialogOpen}
         onClose={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
-        title="Are you sure you want to delete this property?"
-        itemName="the property"
+        title={t('host.properties.delete_confirm')}
+        itemName={t('host.properties.item_name')}
       />
 
       <Toast

@@ -8,6 +8,7 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import HostLayout from '../../Components/Host/HostLayout'
 import { usePage } from '@inertiajs/react'
+import { useLanguage } from '../../hooks/use-language'
 
 interface Stats {
   total_properties: number
@@ -32,14 +33,15 @@ interface Host {
 }
 
 export default function HostDashboard() {
+  const { t } = useLanguage()
   const { stats = {}, recentBookings = [], host = { name: '', email: '' } } = (usePage().props as { stats?: Stats; recentBookings?: Booking[]; host?: Host }) ?? {}
   const [search, setSearch] = useState('')
   
   const statsCards = [
-    { title: 'Total Properties', value: (stats.total_properties || 0).toString(), icon: HotelIcon, color: '#AD542D' },
-    { title: 'Total Bookings', value: (stats.total_bookings || 0).toString(), icon: DashboardIcon, color: '#4F46E5' },
-    { title: 'Revenue', value: stats.revenue || '$0', icon: TrendingUpIcon, color: '#10B981' },
-    { title: 'Upcoming Bookings', value: (stats.upcoming_bookings || 0).toString(), icon: CalendarTodayIcon, color: '#F59E0B' },
+    { title: t('host.dashboard.total_properties'), value: (stats.total_properties || 0).toString(), icon: HotelIcon, color: '#AD542D' },
+    { title: t('host.dashboard.total_bookings'), value: (stats.total_bookings || 0).toString(), icon: DashboardIcon, color: '#4F46E5' },
+    { title: t('host.dashboard.revenue'), value: stats.revenue || '$0', icon: TrendingUpIcon, color: '#10B981' },
+    { title: t('host.dashboard.upcoming_bookings'), value: (stats.upcoming_bookings || 0).toString(), icon: CalendarTodayIcon, color: '#F59E0B' },
   ]
 
   const filteredBookings = (recentBookings || []).filter(booking =>
@@ -58,8 +60,18 @@ export default function HostDashboard() {
     }
   }
 
+  const getStatusLabel = (status: string) => {
+    switch (String(status).toLowerCase()) {
+      case 'confirmed': return t('host.dashboard.status_confirmed')
+      case 'pending': return t('host.dashboard.status_pending')
+      case 'cancelled': return t('host.dashboard.status_cancelled')
+      case 'completed': return t('host.earnings.completed')
+      default: return status
+    }
+  }
+
   return (
-    <HostLayout title="Dashboard">
+    <HostLayout title={t('host.dashboard.title')}>
       {/* Stats Cards */}
       <Row className="g-3 mb-4">
         {statsCards.map((stat, idx) => (
@@ -100,12 +112,12 @@ export default function HostDashboard() {
             <CardContent>
               <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827' }}>
-                  Recent Bookings
+                  {t('host.dashboard.recent_bookings')}
                 </Typography>
                 <TextField
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search bookings..."
+                  placeholder={t('host.dashboard.search_placeholder')}
                   size="small"
                   sx={{ width: { xs: '100%', sm: 250 } }}
                   InputProps={{
@@ -122,12 +134,12 @@ export default function HostDashboard() {
                 <Table sx={{ minWidth: 650, width: '100%' }}>
                   <TableHead>
                     <TableRow sx={{ bgcolor: '#F9FAFB' }}>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Guest</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Property</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Check-in</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Check-out</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Status</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>Amount</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('host.dashboard.guest')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('host.dashboard.property')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('host.dashboard.check_in')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('host.dashboard.check_out')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('host.dashboard.status')}</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#111827', whiteSpace: 'nowrap' }}>{t('host.dashboard.amount')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -143,7 +155,7 @@ export default function HostDashboard() {
                             }}
                           >
                             <Typography variant="body1" sx={{ color: '#6B7280', fontWeight: 600 }}>
-                              No data found
+                              {t('host.dashboard.no_data_found')}
                             </Typography>
                           </Box>
                         </TableCell>
@@ -157,7 +169,7 @@ export default function HostDashboard() {
                           <TableCell>{booking.checkout}</TableCell>
                           <TableCell>
                             <Chip
-                              label={booking.status}
+                              label={getStatusLabel(booking.status)}
                               size="small"
                               sx={{
                                 bgcolor: `${getStatusColor(booking.status)}15`,

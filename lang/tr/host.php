@@ -33,6 +33,8 @@ return [
         'update_password' => 'Şifreyi güncelle',
         'password_description' => 'Hesabınızın güvende kalması için güçlü bir şifre kullanın.',
         'save_password' => 'Şifreyi kaydet',
+        'manage_profile_desc' => 'Profilinizi ve hesabınızı yönetin',
+        'update_profile_desc' => 'Profilinizi ve doğrulama bilgilerinizi güncelleyin',
     ],
     'dashboard' => [
         'title' => 'Kontrol paneli',

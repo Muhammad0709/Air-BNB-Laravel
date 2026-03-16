@@ -2,6 +2,7 @@ import { Box, Button, Card, CardContent, Chip, Divider, Stack, Typography } from
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import { Head, router, usePage } from '@inertiajs/react'
+import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import PersonIcon from '@mui/icons-material/Person'
 import HomeIcon from '@mui/icons-material/Home'
@@ -29,6 +30,7 @@ interface Props {
 }
 
 export default function ShowEarning() {
+  const { t } = useLanguage()
   const { earning } = usePage<Props>().props
 
   const getStatusColor = (status: string) => {
@@ -40,10 +42,12 @@ export default function ShowEarning() {
     }
   }
 
+  const statusLabel = earning.status === 'Paid' ? t('host.earnings.paid') : earning.status === 'Pending' ? t('host.earnings.pending') : earning.status
+
   return (
     <>
-      <Head title="Earning Details" />
-      <HostLayout title="Earning Details">
+      <Head title={t('host.earnings.earning_details')} />
+      <HostLayout title={t('host.earnings.earning_details')}>
       <Button
         startIcon={<ArrowBackIcon />}
         onClick={() => router.visit('/host/earnings')}
@@ -54,7 +58,7 @@ export default function ShowEarning() {
           '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }
         }}
       >
-        Back to Earnings
+        {t('host.earnings.back_to_earnings')}
       </Button>
 
       <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, mb: 3 }}>
@@ -62,10 +66,10 @@ export default function ShowEarning() {
           <Stack direction="row" alignItems="flex-start" justifyContent="space-between" sx={{ mb: 3 }}>
             <Box>
               <Typography variant="h4" sx={{ fontWeight: 700, color: '#222222', mb: 2 }}>
-                Earning #{earning.bookingId}
+                {t('host.earnings.earning_details')} #{earning.bookingId}
               </Typography>
               <Chip
-                label={earning.status}
+                label={statusLabel}
                 size="small"
                 sx={{
                   bgcolor: `${getStatusColor(earning.status)}15`,
@@ -80,7 +84,7 @@ export default function ShowEarning() {
                 {earning.amount}
               </Typography>
               <Typography variant="body2" sx={{ color: '#717171' }}>
-                {earning.nights} {earning.nights === 1 ? 'night' : 'nights'}
+                {earning.nights} {earning.nights === 1 ? t('host.earnings.night') : t('host.earnings.nights')}
               </Typography>
             </Box>
           </Stack>
@@ -92,7 +96,7 @@ export default function ShowEarning() {
           <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, mb: 3 }}>
             <CardContent sx={{ p: { xs: 2, md: 4 } }}>
               <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 3 }}>
-                Booking Information
+                {t('host.earnings.booking_information')}
               </Typography>
 
               <Stack spacing={3}>
@@ -111,7 +115,7 @@ export default function ShowEarning() {
                     <PersonIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Guest</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.earnings.guest')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#222222' }}>{earning.guest}</Typography>
                   </Box>
                 </Stack>
@@ -133,7 +137,7 @@ export default function ShowEarning() {
                     <HomeIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Property</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.earnings.property')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#222222' }}>{earning.property}</Typography>
                   </Box>
                 </Stack>
@@ -155,7 +159,7 @@ export default function ShowEarning() {
                     <CalendarTodayIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Booking Date</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.earnings.date')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#222222' }}>{earning.date}</Typography>
                   </Box>
                 </Stack>
@@ -168,7 +172,7 @@ export default function ShowEarning() {
           <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2 }}>
             <CardContent sx={{ p: { xs: 2, md: 4 } }}>
               <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 3 }}>
-                Payment Details
+                {t('host.earnings.payout_details')}
               </Typography>
 
               <Stack spacing={3}>
@@ -187,7 +191,7 @@ export default function ShowEarning() {
                     <AttachMoneyIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Total Amount</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.earnings.total_amount_label')}</Typography>
                     <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>
                       {earning.amount}
                     </Typography>
@@ -211,7 +215,7 @@ export default function ShowEarning() {
                     <AttachMoneyIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Commission ({earning.commissionRate}%)</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.earnings.commission')} ({earning.commissionRate}%)</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#222222' }}>{earning.commission}</Typography>
                   </Box>
                 </Stack>
@@ -233,7 +237,7 @@ export default function ShowEarning() {
                     <AccountBalanceWalletIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Net Amount</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.earnings.net_amount')}</Typography>
                     <Typography variant="h6" sx={{ fontWeight: 700, color: '#10B981' }}>
                       {earning.netAmount}
                     </Typography>
@@ -243,9 +247,9 @@ export default function ShowEarning() {
                 <Divider />
 
                 <Box>
-                  <Typography sx={{ fontSize: 12, color: '#717171', mb: 1 }}>Payout Date</Typography>
+                  <Typography sx={{ fontSize: 12, color: '#717171', mb: 1 }}>{t('host.earnings.payout_date')}</Typography>
                   <Typography sx={{ fontWeight: 600, color: '#222222' }}>
-                    {earning.payoutDate !== '-' ? earning.payoutDate : 'Pending'}
+                    {earning.payoutDate !== '-' ? earning.payoutDate : t('host.earnings.pending')}
                   </Typography>
                 </Box>
               </Stack>

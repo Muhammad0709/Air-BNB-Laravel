@@ -33,6 +33,8 @@ return [
         'update_password' => 'پاس ورڈ اپ ڈیٹ کریں',
         'password_description' => 'حساب کو محفوظ رکھنے کے لیے لمبا پاس ورڈ استعمال کریں۔',
         'save_password' => 'پاس ورڈ محفوظ کریں',
+        'manage_profile_desc' => 'اپنا پروفائل اور اکاؤنٹ منظم کریں',
+        'update_profile_desc' => 'اپنا پروفائل اور تصدیق کی تفصیلات اپ ڈیٹ کریں',
     ],
     'dashboard' => [
         'title' => 'ڈیش بورڈ',

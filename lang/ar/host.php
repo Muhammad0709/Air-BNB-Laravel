@@ -32,6 +32,8 @@ return [
         'save' => 'حفظ',
         'update_password' => 'تحديث كلمة المرور',
         'password_description' => 'تأكد من استخدام كلمة مرور طويلة وعشوائية للأمان.',
+        'manage_profile_desc' => 'إدارة ملفك الشخصي وحسابك',
+        'update_profile_desc' => 'تحديث ملفك الشخصي وتفاصيل التحقق',
         'save_password' => 'حفظ كلمة المرور',
     ],
     'dashboard' => [

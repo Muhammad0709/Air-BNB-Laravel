@@ -33,6 +33,8 @@ return [
         'update_password' => 'به‌روزرسانی رمز عبور',
         'password_description' => 'برای امنیت حساب از رمز قوی استفاده کنید.',
         'save_password' => 'ذخیره رمز عبور',
+        'manage_profile_desc' => 'پروفایل و حساب خود را مدیریت کنید',
+        'update_profile_desc' => 'پروفایل و جزئیات تأیید را به‌روزرسانی کنید',
     ],
     'dashboard' => [
         'title' => 'داشبورد',

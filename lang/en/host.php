@@ -33,6 +33,8 @@ return [
         'update_password' => 'Update password',
         'password_description' => 'Ensure your account is using a long, random password to stay secure.',
         'save_password' => 'Save password',
+        'manage_profile_desc' => 'Manage your profile and account',
+        'update_profile_desc' => 'Update your profile and verification details',
     ],
     'dashboard' => [
         'title' => 'Dashboard',
@@ -155,6 +157,13 @@ return [
         'processed_date' => 'Processed Date',
         'transaction_id' => 'Transaction ID',
         'earning_details' => 'Earning Details',
+        'back_to_earnings' => 'Back to Earnings',
+        'booking_information' => 'Booking Information',
+        'total_amount_label' => 'Total Amount',
+        'commission' => 'Commission',
+        'net_amount' => 'Net Amount',
+        'night' => 'night',
+        'nights' => 'nights',
     ],
     'properties' => [
         'manage_properties' => 'Properties',
