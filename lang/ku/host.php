@@ -203,6 +203,7 @@ return [
         'location' => 'شوێن',
         'price' => 'نرخ',
         'price_per_night' => 'نرخی هەر شەو',
+        'price_per_night_hint' => 'نرخی مانەوەی یەک شەو. کۆی گشتی بە لێدانی ژمارەی شەوەکان دەژمێردرێت.',
         'property_type' => 'جۆری خانووبەر',
         'bedrooms' => 'ژووری خەو',
         'bathrooms' => 'حەمام',

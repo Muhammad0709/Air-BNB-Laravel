@@ -183,6 +183,7 @@ export default function EditProperty() {
                     onChange={handleChange}
                     required
                     fullWidth
+                    helperText={t('host.properties.price_per_night_hint')}
                     InputProps={{
                       startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#6B7280' }}>$</Typography>
                     }}

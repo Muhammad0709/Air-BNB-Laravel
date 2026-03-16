@@ -203,6 +203,7 @@ return [
         'location' => 'لوکیشن',
         'price' => 'قیمت',
         'price_per_night' => 'فی رات قیمت',
+        'price_per_night_hint' => 'ایک رات کے قیام کی قیمت۔ کل رقم راتوں کی تعداد سے ضرب دے کر نکالی جائے گی۔',
         'property_type' => 'پراپرٹی کی قسم',
         'bedrooms' => 'بیڈروم',
         'bathrooms' => 'باتھ روم',

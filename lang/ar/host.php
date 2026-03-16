@@ -203,6 +203,7 @@ return [
         'location' => 'الموقع',
         'price' => 'السعر',
         'price_per_night' => 'السعر لليلة',
+        'price_per_night_hint' => 'سعر إقامة ليلة واحدة. يتم حساب الإجمالي بضرب عدد الليالي.',
         'property_type' => 'نوع العقار',
         'bedrooms' => 'غرف النوم',
         'bathrooms' => 'الحمامات',

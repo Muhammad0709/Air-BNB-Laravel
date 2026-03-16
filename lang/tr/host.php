@@ -203,6 +203,7 @@ return [
         'location' => 'Konum',
         'price' => 'Fiyat',
         'price_per_night' => 'Gecelik fiyat',
+        'price_per_night_hint' => 'Bir gecelik konaklama fiyatı. Toplam, gece sayısı ile çarpılarak hesaplanır.',
         'property_type' => 'Mülk tipi',
         'bedrooms' => 'Yatak odaları',
         'bathrooms' => 'Banyolar',

@@ -203,6 +203,7 @@ return [
         'location' => 'Location',
         'price' => 'Price',
         'price_per_night' => 'Price per Night',
+        'price_per_night_hint' => 'Price for one night stay. Total will be calculated by multiplying with number of nights.',
         'property_type' => 'Property Type',
         'bedrooms' => 'Bedrooms',
         'bathrooms' => 'Bathrooms',

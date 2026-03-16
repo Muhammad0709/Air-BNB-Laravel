@@ -163,6 +163,7 @@ export default function AddProperty() {
                     required
                     fullWidth
                     error={!!err('price')}
+                    helperText={t('host.properties.price_per_night_hint')}
                     InputProps={{
                       startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#6B7280' }}>$</Typography>
                     }}
