@@ -1,12 +1,18 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Box, Button, Card, CardContent, FormControl, InputLabel, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
-import Toast from '../../../Components/Admin/Toast'
-import { Head, router, usePage } from '@inertiajs/react'
+import InputError from '../../../components/InputError'
+import { Head, router, useForm, usePage } from '@inertiajs/react'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+
+function parseDateStr(s: string): Date | null {
+  if (!s) return null
+  const [y, m, d] = s.split('-').map(Number)
+  return new Date(y, (m ?? 1) - 1, d ?? 1)
+}
 
 export default function EditBooking() {
   const { booking, properties: propertiesList } = usePage().props as {
@@ -25,40 +31,27 @@ export default function EditBooking() {
     properties: Array<{ id: number; title: string; location: string }>
   }
   const id = booking?.id ?? ''
-  const [toastOpen, setToastOpen] = useState(false)
-  const [currentMonth, setCurrentMonth] = useState(() => {
-    if (!booking?.checkin) return new Date()
-    const [y, m, d] = booking.checkin.split('-').map(Number)
-    return new Date(y, (m ?? 1) - 1, 1)
-  })
-  const [selectedCheckin, setSelectedCheckin] = useState<Date | null>(() => {
-    if (!booking?.checkin) return null
-    const [y, m, d] = booking.checkin.split('-').map(Number)
-    const dte = new Date(y, (m ?? 1) - 1, d ?? 1)
-    dte.setHours(0, 0, 0, 0)
-    return dte
-  })
-  const [selectedCheckout, setSelectedCheckout] = useState<Date | null>(() => {
-    if (!booking?.checkout) return null
-    const [y, m, d] = booking.checkout.split('-').map(Number)
-    const dte = new Date(y, (m ?? 1) - 1, d ?? 1)
-    dte.setHours(0, 0, 0, 0)
-    return dte
-  })
-  const [renderKey, setRenderKey] = useState(0)
-  
-  const [formData, setFormData] = useState({
+  const properties = propertiesList ?? []
+
+  const statusValue = booking?.status ? String(booking.status).toLowerCase() : 'pending'
+  const { data, setData, put, processing, errors } = useForm({
+    property_id: String(booking?.propertyId ?? ''),
     guest: booking?.guest ?? '',
-    guestEmail: booking?.guestEmail ?? '',
-    guestPhone: booking?.guestPhone ?? '',
-    property: String(booking?.propertyId ?? ''),
+    email: booking?.guestEmail ?? '',
+    phone: booking?.guestPhone ?? '',
     checkin: booking?.checkin ?? '',
     checkout: booking?.checkout ?? '',
-    status: booking?.status ? booking.status.charAt(0).toUpperCase() + booking.status.slice(1).toLowerCase() : 'Pending',
-    amount: booking?.amount ?? ''
+    amount: booking?.amount ?? '',
+    status: statusValue,
   })
 
-  const properties = propertiesList ?? []
+  const [currentMonth, setCurrentMonth] = useState(() => {
+    if (!booking?.checkin) return new Date()
+    const [y, m] = booking.checkin.split('-').map(Number)
+    return new Date(y, (m ?? 1) - 1, 1)
+  })
+  const selectedCheckin = useMemo(() => parseDateStr(data.checkin), [data.checkin])
+  const selectedCheckout = useMemo(() => parseDateStr(data.checkout), [data.checkout])
 
   const handlePrevMonth = () => {
     const newDate = new Date(currentMonth)
@@ -113,32 +106,19 @@ export default function EditBooking() {
   }
 
   const handleDateClick = (date: Date) => {
-    // Normalize the clicked date
     const normalizedDate = new Date(date)
     normalizedDate.setHours(0, 0, 0, 0)
-    
+    const dateStr = `${normalizedDate.getFullYear()}-${String(normalizedDate.getMonth() + 1).padStart(2, '0')}-${String(normalizedDate.getDate()).padStart(2, '0')}`
+
     if (!selectedCheckin || (selectedCheckin && selectedCheckout)) {
-      // Start new selection
-      setSelectedCheckin(new Date(normalizedDate))
-      setSelectedCheckout(null)
-      const dateStr = `${normalizedDate.getFullYear()}-${String(normalizedDate.getMonth() + 1).padStart(2, '0')}-${String(normalizedDate.getDate()).padStart(2, '0')}`
-      setFormData(prev => ({ ...prev, checkin: dateStr, checkout: '' }))
+      setData({ ...data, checkin: dateStr, checkout: '' })
     } else if (selectedCheckin && !selectedCheckout) {
-      // Normalize selectedCheckin for comparison
       const normalizedCheckin = new Date(selectedCheckin)
       normalizedCheckin.setHours(0, 0, 0, 0)
-      
-      // Select checkout date
       if (normalizedDate > normalizedCheckin) {
-        setSelectedCheckout(new Date(normalizedDate))
-        const dateStr = `${normalizedDate.getFullYear()}-${String(normalizedDate.getMonth() + 1).padStart(2, '0')}-${String(normalizedDate.getDate()).padStart(2, '0')}`
-        setFormData(prev => ({ ...prev, checkout: dateStr }))
-      } else if (normalizedDate < normalizedCheckin) {
-        // If clicked date is before checkin, make it the new checkin
-        setSelectedCheckin(new Date(normalizedDate))
-        setSelectedCheckout(null)
-        const dateStr = `${normalizedDate.getFullYear()}-${String(normalizedDate.getMonth() + 1).padStart(2, '0')}-${String(normalizedDate.getDate()).padStart(2, '0')}`
-        setFormData(prev => ({ ...prev, checkin: dateStr, checkout: '' }))
+        setData({ ...data, checkout: dateStr })
+      } else if (normalizedDate.getTime() !== normalizedCheckin.getTime()) {
+        setData({ ...data, checkin: dateStr, checkout: '' })
       }
     }
   }
@@ -189,30 +169,18 @@ export default function EditBooking() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    setData(name as keyof typeof data, value)
   }
 
   const handleSelectChange = (name: string, value: string) => {
-    setFormData(prev => ({ ...prev, [name]: value }))
+    setData(name as keyof typeof data, value)
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Convert status to lowercase for backend
-    const submitData = {
-      ...formData,
-      status: formData.status.toLowerCase()
-    }
-    console.log('Updated booking data:', submitData)
-    setToastOpen(true)
-    // Navigate back to bookings list after successful submission
-    setTimeout(() => {
-      router.visit('/host/bookings')
-    }, 1500)
-  }
-
-  const handleToastClose = () => {
-    setToastOpen(false)
+    put(`/host/bookings/${id}`, {
+      onSuccess: () => router.visit('/host/bookings'),
+    })
   }
 
   return (
@@ -242,74 +210,92 @@ export default function EditBooking() {
             <Row>
               <Col xs={12} md={6}>
                 <Stack spacing={3} sx={{ mb: { xs: 3, md: 0 } }}>
-                  <TextField
-                    label="Guest Name"
-                    name="guest"
-                    value={formData.guest}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                  />
-                  <TextField
-                    label="Email Address"
-                    name="guestEmail"
-                    type="email"
-                    value={formData.guestEmail}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                  />
-                  <TextField
-                    label="Phone Number"
-                    name="guestPhone"
-                    value={formData.guestPhone}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                  />
-                  <FormControl fullWidth required>
-                    <InputLabel>Property</InputLabel>
-                    <Select
-                      value={formData.property}
-                      onChange={(e) => handleSelectChange('property', e.target.value)}
-                      label="Property"
-                    >
-                      {properties.map((property) => (
-                        <MenuItem key={property.id} value={String(property.id)}>
-                          {property.title} - {property.location}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                  <Box>
+                    <TextField
+                      label="Guest Name"
+                      name="guest"
+                      value={data.guest}
+                      onChange={handleChange}
+                      fullWidth
+                      error={Boolean(errors.guest)}
+                    />
+                    <InputError message={Array.isArray(errors.guest) ? errors.guest[0] : errors.guest} />
+                  </Box>
+                  <Box>
+                    <TextField
+                      label="Email Address"
+                      name="email"
+                      type="email"
+                      value={data.email}
+                      onChange={handleChange}
+                      fullWidth
+                      error={Boolean(errors.email)}
+                    />
+                    <InputError message={Array.isArray(errors.email) ? errors.email[0] : errors.email} />
+                  </Box>
+                  <Box>
+                    <TextField
+                      label="Phone Number"
+                      name="phone"
+                      value={data.phone}
+                      onChange={handleChange}
+                      fullWidth
+                      error={Boolean(errors.phone)}
+                    />
+                    <InputError message={Array.isArray(errors.phone) ? errors.phone[0] : errors.phone} />
+                  </Box>
+                  <Box>
+                    <FormControl fullWidth error={Boolean(errors.property_id)}>
+                      <InputLabel>Property</InputLabel>
+                      <Select
+                        value={data.property_id}
+                        onChange={(e) => handleSelectChange('property_id', e.target.value)}
+                        label="Property"
+                      >
+                        {properties.map((property) => (
+                          <MenuItem key={property.id} value={String(property.id)}>
+                            {property.title} - {property.location}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <InputError message={Array.isArray(errors.property_id) ? errors.property_id[0] : errors.property_id} />
+                  </Box>
                 </Stack>
               </Col>
               <Col xs={12} md={6}>
                 <Stack spacing={3}>
-                  <TextField
-                    label="Total Amount"
-                    name="amount"
-                    type="number"
-                    value={formData.amount}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                    InputProps={{
-                      startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#717171' }}>$</Typography>
-                    }}
-                  />
-                  <FormControl fullWidth>
-                    <InputLabel>Status</InputLabel>
-                    <Select
-                      value={formData.status}
-                      onChange={(e) => handleSelectChange('status', e.target.value)}
-                      label="Status"
-                    >
-                      <MenuItem value="Pending">Pending</MenuItem>
-                      <MenuItem value="Confirmed">Confirmed</MenuItem>
-                      <MenuItem value="Completed">Completed</MenuItem>
-                      <MenuItem value="Cancelled">Cancelled</MenuItem>
-                    </Select>
-                  </FormControl>
+                  <Box>
+                    <TextField
+                      label="Total Amount"
+                      name="amount"
+                      type="number"
+                      value={data.amount}
+                      onChange={handleChange}
+                      fullWidth
+                      error={Boolean(errors.amount)}
+                      InputProps={{
+                        startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#717171' }}>$</Typography>
+                      }}
+                    />
+                    <InputError message={Array.isArray(errors.amount) ? errors.amount[0] : errors.amount} />
+                  </Box>
+                  <Box>
+                    <FormControl fullWidth>
+                      <InputLabel>Status</InputLabel>
+                      <Select
+                        value={data.status}
+                        onChange={(e) => handleSelectChange('status', e.target.value)}
+                        label="Status"
+                      >
+                        <MenuItem value="pending">Pending</MenuItem>
+                        <MenuItem value="confirmed">Confirmed</MenuItem>
+                        <MenuItem value="completed">Completed</MenuItem>
+                        <MenuItem value="cancelled">Cancelled</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <InputError message={Array.isArray(errors.status) ? errors.status[0] : errors.status} />
+                  </Box>
                 </Stack>
               </Col>
             </Row>
@@ -322,7 +308,7 @@ export default function EditBooking() {
                 </Typography>
                 <Box sx={{ width: '100%', maxWidth: { xs: '100%', lg: '500px' }, mx: 'auto', px: { xs: 0, sm: 1 } }}>
                   <Paper 
-                    key={`calendar-${currentMonth.getTime()}-${selectedCheckin?.getTime() || 0}-${selectedCheckout?.getTime() || 0}-${renderKey}`}
+                    key={`calendar-${currentMonth.getTime()}-${selectedCheckin?.getTime() ?? 0}-${selectedCheckout?.getTime() ?? 0}`}
                     elevation={0} 
                     sx={{ 
                       backgroundColor: '#FFFFFF',
@@ -413,13 +399,6 @@ export default function EditBooking() {
                           const isSelected = isStart || isEnd
                           const isPast = !d.isOtherMonth && isPastDate(d.date)
                           const isDisabled = d.isOtherMonth || isPast
-                          
-                          // Debug: Log actual boolean values
-                          if (d.day >= 14 && d.day <= 20 && !d.isOtherMonth) {
-                            console.log(`Date ${d.day}: isStart=${isStart}, isEnd=${isEnd}, isInRange=${isInRange}, isSelected=${isSelected}, bgcolor will be:`, isSelected ? '#AD542D' : isInRange ? '#FFF5F5' : 'transparent')
-                          }
-                          
-                          // Force React to see this as a new component when dates change
                           const uniqueKey = `${idx}-${d.date.getTime()}-${selectedCheckin?.getTime() || 0}-${selectedCheckout?.getTime() || 0}`
                           
                           return (
@@ -434,7 +413,6 @@ export default function EditBooking() {
                                 cursor: isDisabled ? 'not-allowed' : 'pointer',
                                 color: isDisabled ? '#D1D5DB' : isSelected ? '#FFFFFF' : '#374151',
                                 bgcolor: isSelected ? '#AD542D' : isInRange ? '#FFF5F5' : 'transparent',
-                                backgroundColor: isSelected ? '#AD542D' : isInRange ? '#FFF5F5' : 'transparent',
                                 borderRadius: isStart ? { xs: '4px 0 0 4px', md: '8px 0 0 8px' } : isEnd ? { xs: '0 4px 4px 0', md: '0 8px 8px 0' } : isInRange ? 0 : { xs: 1, md: 2 },
                                 fontSize: { xs: 12, md: 13 },
                                 fontWeight: isSelected ? 700 : 500,
@@ -475,19 +453,24 @@ export default function EditBooking() {
                           <Typography sx={{ fontSize: { xs: 11, md: 12 }, color: '#717171', fontWeight: 500 }}>
                             Check-in
                           </Typography>
-                          <Typography sx={{ fontSize: { xs: 12, md: 13 }, color: formData.checkin ? '#222222' : '#9CA3AF', fontWeight: 600, mt: 0.5 }}>
-                            {formData.checkin || 'Not selected'}
+                          <Typography sx={{ fontSize: { xs: 12, md: 13 }, color: data.checkin ? '#222222' : '#9CA3AF', fontWeight: 600, mt: 0.5 }}>
+                            {data.checkin || 'Not selected'}
                           </Typography>
                         </Box>
                         <Box sx={{ textAlign: 'center' }}>
                           <Typography sx={{ fontSize: { xs: 11, md: 12 }, color: '#717171', fontWeight: 500 }}>
                             Check-out
                           </Typography>
-                          <Typography sx={{ fontSize: { xs: 12, md: 13 }, color: formData.checkout ? '#222222' : '#9CA3AF', fontWeight: 600, mt: 0.5 }}>
-                            {formData.checkout || 'Not selected'}
+                          <Typography sx={{ fontSize: { xs: 12, md: 13 }, color: data.checkout ? '#222222' : '#9CA3AF', fontWeight: 600, mt: 0.5 }}>
+                            {data.checkout || 'Not selected'}
                           </Typography>
                         </Box>
                       </Box>
+                      {(errors.checkin || errors.checkout) && (
+                        <Box sx={{ mt: 1 }}>
+                          <InputError message={(Array.isArray(errors.checkin) ? errors.checkin[0] : errors.checkin) || (Array.isArray(errors.checkout) ? errors.checkout[0] : errors.checkout)} />
+                        </Box>
+                      )}
                     </Paper>
                 </Box>
               </Col>
@@ -511,6 +494,7 @@ export default function EditBooking() {
                   <Button
                     type="submit"
                     variant="contained"
+                    disabled={processing}
                     sx={{
                       bgcolor: '#AD542D',
                       textTransform: 'none',
@@ -518,7 +502,7 @@ export default function EditBooking() {
                       '&:hover': { bgcolor: '#78381C' }
                     }}
                   >
-                    Update Booking
+                    {processing ? 'Saving...' : 'Update Booking'}
                   </Button>
                 </Stack>
               </Col>
@@ -526,12 +510,6 @@ export default function EditBooking() {
           </form>
         </CardContent>
       </Card>
-      <Toast
-        open={toastOpen}
-        onClose={handleToastClose}
-        message="Booking updated successfully!"
-        severity="success"
-      />
       </HostLayout>
     </>
   )

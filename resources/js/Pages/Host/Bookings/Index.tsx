@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button, Card, CardContent, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, InputAdornment, Chip } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import DeleteConfirmationDialog from '../../../Components/Admin/DeleteConfirmationDialog'
 import ActionsMenu from '../../../Components/Admin/ActionsMenu'
+import Toast from '../../../Components/Admin/Toast'
 import Pagination from '../../../components/Pagination'
 import SearchIcon from '@mui/icons-material/Search'
 import { Head, router, usePage } from '@inertiajs/react'
@@ -21,12 +22,18 @@ type BookingRow = {
 type BookingsProp = { data: BookingRow[]; current_page: number; last_page: number }
 
 export default function HostBookings() {
-  const props = usePage().props as { bookings?: BookingsProp; filters?: { search?: string } }
+  const props = usePage().props as { bookings?: BookingsProp; filters?: { search?: string }; flash?: { success?: string } }
   const bookingsProp = props.bookings
   const filters = props.filters ?? {}
+  const flashSuccess = props.flash?.success
   const [search, setSearch] = useState(filters.search ?? '')
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [bookingToDelete, setBookingToDelete] = useState<{ id: number; guest: string } | null>(null)
+  const [toastOpen, setToastOpen] = useState(false)
+
+  useEffect(() => {
+    if (flashSuccess) setToastOpen(true)
+  }, [flashSuccess])
 
   const list = bookingsProp?.data ?? []
   const currentPage = bookingsProp?.current_page ?? 1
@@ -194,6 +201,12 @@ export default function HostBookings() {
         onConfirm={handleDeleteConfirm}
         title="Are you sure you want to delete this booking?"
         itemName="the booking"
+      />
+      <Toast
+        open={toastOpen}
+        onClose={() => setToastOpen(false)}
+        message={flashSuccess ?? 'Success'}
+        severity="success"
       />
       </HostLayout>
     </>

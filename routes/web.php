@@ -139,8 +139,10 @@ Route::prefix('host')->name('host.')->middleware('host')->group(function () {
     Route::resource('properties', HostPropertyController::class);
     Route::get('/bookings', [HostBookingController::class, 'index'])->name('bookings.index');
     Route::get('/bookings/create', [HostBookingController::class, 'create'])->name('bookings.create');
+    Route::post('/bookings', [HostBookingController::class, 'store'])->name('bookings.store');
     Route::get('/bookings/{id}', [HostBookingController::class, 'show'])->name('bookings.show');
     Route::get('/bookings/{id}/edit', [HostBookingController::class, 'edit'])->name('bookings.edit');
+    Route::put('/bookings/{id}', [HostBookingController::class, 'update'])->name('bookings.update');
     Route::patch('/bookings/{id}/status', [HostBookingController::class, 'updateStatus'])->name('bookings.updateStatus');
     Route::get('/earnings', [EarningsController::class, 'index'])->name('earnings.index');
     Route::get('/earnings/show/{id}', [EarningsController::class, 'show'])->name('earnings.show');
