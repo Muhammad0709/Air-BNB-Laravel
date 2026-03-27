@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Enums\PropertyStatus;
 
 class Property extends Model
 {
@@ -85,3 +86,46 @@ class Property extends Model
         return $path ? asset(Storage::url($path)) : null;
     }
 }
+
+    /**
+     * Get notification templates for property events
+     */
+    public static function getNotificationTemplates(): array
+    {
+        return [
+            'property_created' => [
+                'user' => [
+                    'title' => __('notifications.property_created.user.title'),
+                    'body' => __('notifications.property_created.user.body'),
+                    'image' => null,
+                ],
+            ],
+            'property_approved' => [
+                'host' => [
+                    'title' => __('notifications.property_approved.host.title'),
+                    'body' => __('notifications.property_approved.host.body'),
+                    'image' => null,
+                ],
+            ],
+            'property_rejected' => [
+                'host' => [
+                    'title' => __('notifications.property_rejected.host.title'),
+                    'body' => __('notifications.property_rejected.host.body'),
+                    'image' => null,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Get placeholders for notification templates
+     */
+    public function getNotificationPlaceholders($recipient, $recipientType): array
+    {
+        return [
+            '{property_title}' => $this->title,
+            '{property_location}' => $this->location,
+            '{property_price}' => '$' . number_format($this->price, 2),
+            '{host_name}' => $this->user->name ?? 'Host',
+        ];
+    }

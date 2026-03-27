@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreHostPropertyRequest;
 use App\Http\Requests\UpdateHostPropertyRequest;
 use App\Models\Property;
+use App\Models\User;
 use App\Enums\PropertyType;
 use App\Enums\PropertyStatus;
+use App\Enums\UserType;
+use App\Events\NotificationEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -108,6 +111,23 @@ class PropertyController extends Controller
         $validated['guided_tours_enabled'] = $validated['guided_tours_enabled'] ?? false;
 
         $property = Property::create($validated);
+        
+        // Send notification to all regular users about new property
+        $users = User::where('type', UserType::User->value)->get();
+        
+        if ($users->isNotEmpty()) {
+            $recipients = [];
+            foreach ($users as $user) {
+                $recipients['user'] = $user;
+                
+                // Fire event for each user individually
+                event(new NotificationEvent(
+                    $property,
+                    'property_created',
+                    $recipients
+                ));
+            }
+        }
         
         return redirect()->route('host.properties.index')
             ->with('success', __('host.property.created_success'));

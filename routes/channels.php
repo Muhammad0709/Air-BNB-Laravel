@@ -16,3 +16,11 @@ Broadcast::channel('conversation.{conversationId}', function ($user, $conversati
     }
     return $user->id === $conversation->user_id || $user->id === $conversation->property->user_id;
 });
+
+Broadcast::channel('admin-notifications', function ($user) {
+    return $user->type === UserType::Admin->value;
+});
+
+Broadcast::channel('user-notifications', function ($user) {
+    return $user->type === UserType::User->value;
+});

@@ -90,6 +90,10 @@ Route::middleware(['auth', 'redirect.admin.host'])->group(function () {
     Route::delete('/chat/conversations/{conversation}', [PageController::class, 'deleteConversation'])->name('chat.conversations.destroy');
     Route::get('/bookings', [PageController::class, 'customerBookings'])->name('bookings');
     
+    // User notifications
+    Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+    Route::patch('/notifications/{notification}/mark-as-read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
+    
     // User-specific routes
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::post('/wishlist/{id}', [WishlistController::class, 'add'])->name('wishlist.add');
@@ -130,6 +134,13 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::put('/settings/configuration', [AdminSettingsController::class, 'updateConfiguration'])->name('settings.configuration.update');
     Route::put('/settings/password', [AdminSettingsController::class, 'updatePassword'])->name('settings.password.update');
     Route::post('/settings/picture', [AdminSettingsController::class, 'uploadProfilePicture'])->name('settings.picture');
+    
+    // Notification routes
+    Route::get('/notifications', [App\Http\Controllers\Admin\NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/latest', [App\Http\Controllers\Admin\NotificationController::class, 'latest'])->name('notifications.latest');
+    Route::get('/notifications/unread-count', [App\Http\Controllers\Admin\NotificationController::class, 'unreadCount'])->name('notifications.unread-count');
+    Route::patch('/notifications/{notification}/mark-as-read', [App\Http\Controllers\Admin\NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
+    Route::patch('/notifications/mark-all-as-read', [App\Http\Controllers\Admin\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-as-read');
 });
 
 // Host routes (require host authentication) - separate from auth group to avoid default redirect

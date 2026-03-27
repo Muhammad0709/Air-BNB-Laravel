@@ -7,6 +7,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import SettingsIcon from '@mui/icons-material/Settings'
 import LogoutIcon from '@mui/icons-material/Logout'
 import AdminSidebar from './AdminSidebar'
+import NotificationDropdown from './NotificationDropdown'
 import { useLanguage } from '../../hooks/use-language'
 import { usePage, router } from '@inertiajs/react'
 
@@ -115,6 +116,7 @@ export default function AdminLayout({ title, children }: AdminLayoutProps) {
                   <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem', marginInlineStart: 0.75 }}>{currentLanguage.code.toUpperCase()}</Typography>
                   <ArrowDropDownIcon sx={{ fontSize: 22, color: '#222222' }} />
                 </Box>
+                <NotificationDropdown />
                 <Box
                   onClick={(e: React.MouseEvent<HTMLElement>) => setProfileAnchor(e.currentTarget)}
                   sx={{

@@ -5,6 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import MessageIcon from '@mui/icons-material/Message'
+import UserNotificationDropdown from './UserNotificationDropdown'
 import { useLanguage } from '../hooks/use-language'
 import { useCurrency } from '../contexts/CurrencyContext'
 
@@ -166,19 +167,22 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
           {showAuth && (
             <Stack direction="row" spacing={2} useFlexGap sx={{ display: { xs: 'none', md: 'flex' } }} alignItems="center">
               {isAuthenticated && (
-                <IconButton
-                  component={Link}
-                  href="/chat"
-                  aria-label={t('nav.messages')}
-                  sx={{
-                    color: '#AD542D',
-                    p: 1,
-                    transition: 'all 0.2s',
-                    '&:hover': { color: '#8a4224', bgcolor: 'rgba(173, 84, 45, 0.08)' }
-                  }}
-                >
-                  <MessageIcon sx={{ fontSize: 24 }} />
-                </IconButton>
+                <>
+                  <IconButton
+                    component={Link}
+                    href="/chat"
+                    aria-label={t('nav.messages')}
+                    sx={{
+                      color: '#AD542D',
+                      p: 1,
+                      transition: 'all 0.2s',
+                      '&:hover': { color: '#8a4224', bgcolor: 'rgba(173, 84, 45, 0.08)' }
+                    }}
+                  >
+                    <MessageIcon sx={{ fontSize: 24 }} />
+                  </IconButton>
+                  <UserNotificationDropdown />
+                </>
               )}
               <Box
                 onClick={handleLanguageClick}
@@ -336,6 +340,14 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                     >
                       <Typography sx={{ fontWeight: 400, fontSize: '0.875rem', color: '#222222' }}>{t('nav.booking_history')}</Typography>
                     </MenuItem>
+                    <MenuItem
+                      component={Link}
+                      href="/notifications"
+                      onClick={handleProfileClose}
+                      sx={{ py: 1.5, px: 2, '&:hover': { bgcolor: '#F7F7F7' } }}
+                    >
+                      <Typography sx={{ fontWeight: 400, fontSize: '0.875rem', color: '#222222' }}>{t('nav.notifications')}</Typography>
+                    </MenuItem>
                     {/* <MenuItem
                       component={Link}
                       href="/auth/register"
@@ -397,6 +409,9 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                   </Typography>
                   <Typography component={Link} href="/bookings" onClick={() => setOpen(false)} sx={{ textDecoration: 'none', color: isActive('/bookings') ? '#AD542D' : '#222222', fontWeight: 700 }}>
                     {t('nav.booking_history')}
+                  </Typography>
+                  <Typography component={Link} href="/notifications" onClick={() => setOpen(false)} sx={{ textDecoration: 'none', color: isActive('/notifications') ? '#AD542D' : '#222222', fontWeight: 700 }}>
+                    {t('nav.notifications')}
                   </Typography>
                 </>
               )}
