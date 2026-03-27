@@ -85,7 +85,6 @@ class Property extends Model
 
         return $path ? asset(Storage::url($path)) : null;
     }
-}
 
     /**
      * Get notification templates for property events
