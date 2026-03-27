@@ -42,6 +42,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/password/forgot', [AuthController::class, 'forgotPassword']);
 Route::post('/password/reset', [AuthController::class, 'resetPassword']);
+Route::post('/social-login', [AuthController::class, 'socialLogin']);
 
 // Public search (no auth required – destination, dates, guests)
 Route::get('/search', [SearchController::class, 'index']);

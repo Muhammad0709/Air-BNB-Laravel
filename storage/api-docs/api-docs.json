@@ -542,6 +542,229 @@
                 }
             }
         },
+        "/api/social-login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Social login (Google)",
+                "description": "Authenticate user using Google OAuth token",
+                "operationId": "e1acb92b1b752c32bd022b51e961cc40",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "provider",
+                                    "token",
+                                    "type"
+                                ],
+                                "properties": {
+                                    "provider": {
+                                        "description": "Social provider (currently only Google is supported)",
+                                        "type": "string",
+                                        "enum": [
+                                            "google"
+                                        ],
+                                        "example": "google"
+                                    },
+                                    "token": {
+                                        "description": "Google ID token obtained from Google Sign-In",
+                                        "type": "string",
+                                        "example": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE..."
+                                    },
+                                    "type": {
+                                        "description": "User type: User or Host",
+                                        "type": "string",
+                                        "enum": [
+                                            "User",
+                                            "Host"
+                                        ],
+                                        "example": "User"
+                                    },
+                                    "device_type": {
+                                        "description": "Device type (optional)",
+                                        "type": "string",
+                                        "enum": [
+                                            "ios",
+                                            "android",
+                                            "web"
+                                        ],
+                                        "example": "web"
+                                    },
+                                    "devices_token": {
+                                        "description": "Device token for push notifications (optional)",
+                                        "type": "string",
+                                        "example": "device_token_123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Google login successful"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "token": {
+                                                    "description": "Sanctum authentication token",
+                                                    "type": "string",
+                                                    "example": "1|xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                                                },
+                                                "user": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "John Doe"
+                                                        },
+                                                        "email": {
+                                                            "type": "string",
+                                                            "example": "john@example.com"
+                                                        },
+                                                        "type": {
+                                                            "type": "string",
+                                                            "example": "User"
+                                                        },
+                                                        "profile_picture": {
+                                                            "type": "string",
+                                                            "example": "https://lh3.googleusercontent.com/..."
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid Google token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid Google token"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Role conflict - user exists with different type",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "An account with this email already exists with a different role"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "provider": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The provider field is required."
+                                                    }
+                                                },
+                                                "token": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The token field is required."
+                                                    }
+                                                },
+                                                "type": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The type field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "error"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Social login failed: ..."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/booking/{property_id}": {
             "get": {
                 "tags": [
@@ -5541,12 +5764,225 @@
             }
         },
         "/api/search": {
+            "get": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Search properties (GET)",
+                "description": "Search properties by destination/location, check-in/check-out dates, guests. Query params. No authentication required.",
+                "operationId": "1c7494da45b3a4cc04e4439b9ccd0bc6",
+                "parameters": [
+                    {
+                        "name": "location",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "California"
+                        }
+                    },
+                    {
+                        "name": "checkin",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2026-03-01"
+                        }
+                    },
+                    {
+                        "name": "checkout",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2026-03-07"
+                        }
+                    },
+                    {
+                        "name": "adults",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    },
+                    {
+                        "name": "children",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "rooms",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "beachfront"
+                        }
+                    },
+                    {
+                        "name": "min_price",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 100
+                        }
+                    },
+                    {
+                        "name": "max_price",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": 500
+                        }
+                    },
+                    {
+                        "name": "sort_by",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "featured",
+                                "price_low",
+                                "price_high",
+                                "rating_high",
+                                "newest"
+                            ],
+                            "example": "featured"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 12
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Search results",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Search results retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "properties": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Property"
+                                                    }
+                                                },
+                                                "pagination": {
+                                                    "properties": {
+                                                        "current_page": {
+                                                            "type": "integer"
+                                                        },
+                                                        "last_page": {
+                                                            "type": "integer"
+                                                        },
+                                                        "per_page": {
+                                                            "type": "integer"
+                                                        },
+                                                        "total": {
+                                                            "type": "integer"
+                                                        },
+                                                        "from": {
+                                                            "type": "integer"
+                                                        },
+                                                        "to": {
+                                                            "type": "integer"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "checkin": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "checkout": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "nights": {
+                                                    "type": "integer",
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Search"
                 ],
-                "summary": "Search properties (public)",
-                "description": "Search properties by destination/location, check-in/check-out dates, guests (adults, children, rooms). POST body (JSON or form). No authentication required.",
+                "summary": "Search properties (POST)",
+                "description": "Search properties by destination/location, check-in/check-out dates, guests. POST body (JSON or form). No authentication required.",
                 "operationId": "5a72f01c02524d82eb2608566fe44476",
                 "requestBody": {
                     "required": false,
@@ -5594,13 +6030,6 @@
                                     },
                                     "sort_by": {
                                         "type": "string",
-                                        "enum": [
-                                            "featured",
-                                            "price_low",
-                                            "price_high",
-                                            "rating_high",
-                                            "newest"
-                                        ],
                                         "example": "featured"
                                     },
                                     "page": {
@@ -5641,47 +6070,18 @@
                                                     }
                                                 },
                                                 "pagination": {
-                                                    "properties": {
-                                                        "current_page": {
-                                                            "type": "integer",
-                                                            "example": 1
-                                                        },
-                                                        "last_page": {
-                                                            "type": "integer",
-                                                            "example": 5
-                                                        },
-                                                        "per_page": {
-                                                            "type": "integer",
-                                                            "example": 12
-                                                        },
-                                                        "total": {
-                                                            "type": "integer",
-                                                            "example": 50
-                                                        },
-                                                        "from": {
-                                                            "type": "integer",
-                                                            "example": 1
-                                                        },
-                                                        "to": {
-                                                            "type": "integer",
-                                                            "example": 12
-                                                        }
-                                                    },
                                                     "type": "object"
                                                 },
                                                 "checkin": {
                                                     "type": "string",
-                                                    "example": "2026-03-01",
                                                     "nullable": true
                                                 },
                                                 "checkout": {
                                                     "type": "string",
-                                                    "example": "2026-03-07",
                                                     "nullable": true
                                                 },
                                                 "nights": {
                                                     "type": "integer",
-                                                    "example": 6,
                                                     "nullable": true
                                                 }
                                             },
@@ -6463,7 +6863,7 @@
         },
         {
             "name": "Search",
-            "description": "Public API for property search (destination, dates, guests) - no auth required"
+            "description": "Public API for property search (destination, dates, guests) – no auth required"
         },
         {
             "name": "Stays",

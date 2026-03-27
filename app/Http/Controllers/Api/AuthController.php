@@ -452,5 +452,230 @@ class AuthController extends Controller
             'message' => 'Password has been reset successfully'
         ], 200);
     }
+
+    /**
+     * @OA\Post(
+     *     path="/api/social-login",
+     *     summary="Social login (Google)",
+     *     description="Authenticate user using Google OAuth token",
+     *     tags={"Authentication"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"provider", "token", "type"},
+     *             @OA\Property(property="provider", type="string", enum={"google"}, example="google", description="Social provider (currently only Google is supported)"),
+     *             @OA\Property(property="token", type="string", example="eyJhbGciOiJSUzI1NiIsImtpZCI6IjE...", description="Google ID token obtained from Google Sign-In"),
+     *             @OA\Property(property="type", type="string", enum={"User", "Host"}, example="User", description="User type: User or Host"),
+     *             @OA\Property(property="device_type", type="string", enum={"ios", "android", "web"}, example="web", description="Device type (optional)"),
+     *             @OA\Property(property="devices_token", type="string", example="device_token_123", description="Device token for push notifications (optional)")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Login successful",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Google login successful"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="token", type="string", example="1|xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", description="Sanctum authentication token"),
+     *                 @OA\Property(property="user", type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="name", type="string", example="John Doe"),
+     *                     @OA\Property(property="email", type="string", example="john@example.com"),
+     *                     @OA\Property(property="type", type="string", example="User"),
+     *                     @OA\Property(property="profile_picture", type="string", example="https://lh3.googleusercontent.com/...")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Invalid Google token",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="Invalid Google token"),
+     *             @OA\Property(property="error", type="string", example="Token verification failed")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=409,
+     *         description="Role conflict - user exists with different type",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="An account with this email already exists with a different role")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="The given data was invalid."),
+     *             @OA\Property(property="errors", type="object",
+     *                 @OA\Property(property="provider", type="array", @OA\Items(type="string", example="The provider field is required.")),
+     *                 @OA\Property(property="token", type="array", @OA\Items(type="string", example="The token field is required.")),
+     *                 @OA\Property(property="type", type="array", @OA\Items(type="string", example="The type field is required."))
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Server error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="error"),
+     *             @OA\Property(property="message", type="string", example="Google login failed"),
+     *             @OA\Property(property="error", type="string", example="Detailed error message")
+     *         )
+     *     )
+     * )
+     */
+    public function socialLogin(Request $request)
+    {
+        try {
+            $request->validate([
+                'provider' => 'required|string|in:google',
+                'token' => 'required|string',
+                'type' => 'required|string|in:User,Host',
+                'device_type' => 'nullable|string|in:ios,android,web',
+                'devices_token' => 'nullable|string',
+            ]);
+
+            $provider = strtolower($request->provider);
+            $userType = $request->type;
+
+            if ($provider === 'google') {
+                return $this->loginWithGoogle($request);
+            }
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Provider not supported',
+            ], 400);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Social login failed: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Login with Google
+     */
+    private function loginWithGoogle(Request $request)
+    {
+        try {
+            $accessToken = $request->input('token');
+            $userType = $request->input('type', 'User');
+
+            // Verify Google token
+            $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
+            
+            try {
+                $payload = $client->verifyIdToken($accessToken);
+            } catch (\Exception $e) {
+                \Log::error('Google token verification failed: ' . $e->getMessage());
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid Google token',
+                    'error' => 'Token verification failed',
+                ], 401);
+            }
+
+            if (!$payload) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid Google token',
+                    'error' => 'Token payload is empty',
+                ], 401);
+            }
+
+            $googleId = $payload['sub'] ?? null;
+            $email = $payload['email'] ?? null;
+            $name = $payload['name'] ?? 'Google User';
+            $profileImage = $payload['picture'] ?? null;
+
+            if (!$googleId) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid Google token',
+                    'error' => 'Google ID not found in token',
+                ], 401);
+            }
+
+            // Find or create user
+            $user = User::where('google_id', $googleId)->first();
+
+            if (!$user && $email) {
+                $user = User::where('email', $email)->first();
+                
+                // If user exists with different type, prevent role conflict
+                if ($user && $user->type->value !== $userType) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'An account with this email already exists with a different role',
+                    ], 409);
+                }
+            }
+
+            if (!$user) {
+                // Create new user
+                $user = User::create([
+                    'name' => $name,
+                    'email' => $email,
+                    'google_id' => $googleId,
+                    'profile_picture' => $profileImage,
+                    'password' => Hash::make(Str::random(24)),
+                    'type' => $userType,
+                ]);
+            } else {
+                // Update existing user with Google data if needed
+                $updateData = [];
+
+                if (!$user->google_id) {
+                    $updateData['google_id'] = $googleId;
+                }
+
+                if (!$user->profile_picture && $profileImage) {
+                    $updateData['profile_picture'] = $profileImage;
+                }
+
+                if ($user->type->value !== $userType) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Role conflict detected',
+                    ], 409);
+                }
+
+                if (!empty($updateData)) {
+                    $user->update($updateData);
+                }
+            }
+
+            $token = $user->createToken('google_auth')->plainTextToken;
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Google login successful',
+                'data' => [
+                    'token' => $token,
+                    'user' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'type' => $user->type->value,
+                        'profile_picture' => $user->profile_picture,
+                    ],
+                ],
+            ], 200);
+        } catch (\Exception $e) {
+            \Log::error('Google login failed: ' . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Google login failed',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }
+
 

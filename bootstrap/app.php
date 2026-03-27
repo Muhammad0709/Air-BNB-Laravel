@@ -30,6 +30,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'api/logout',
             'api/password/forgot',
             'api/password/reset',
+            'api/social-login',
             // Public search (no auth, no session)
             'api/search',
         ]);
