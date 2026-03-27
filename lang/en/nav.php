@@ -17,5 +17,6 @@ return [
     'become_host' => 'Become a host',
     'become_host_sub' => 'Start hosting and earn extra income',
     'booking_history' => 'Booking History',
+    'notifications' => 'Notifications',
     'logout' => 'Logout',
 ];

@@ -17,5 +17,6 @@ return [
     'become_host' => 'میزبان بنیں',
     'become_host_sub' => 'میزبانی شروع کریں اور اضافی آمدنی حاصل کریں',
     'booking_history' => 'بکنگ ہسٹری',
+    'notifications' => 'اطلاعات',
     'logout' => 'لاگ آؤٹ',
 ];

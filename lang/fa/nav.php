@@ -17,5 +17,6 @@ return [
     'become_host' => 'میزبان شوید',
     'become_host_sub' => 'میزبانی را شروع کنید و درآمد اضافه کسب کنید',
     'booking_history' => 'تاریخچه رزرو',
+    'notifications' => 'اعلان‌ها',
     'logout' => 'خروج',
 ];

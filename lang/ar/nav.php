@@ -17,5 +17,6 @@ return [
     'become_host' => 'كن مضيفاً',
     'become_host_sub' => 'ابدأ الاستضافة واكسب دخلاً إضافياً',
     'booking_history' => 'سجل الحجوزات',
+    'notifications' => 'الإشعارات',
     'logout' => 'تسجيل الخروج',
 ];

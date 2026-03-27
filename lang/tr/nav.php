@@ -17,5 +17,6 @@ return [
     'become_host' => 'Ev sahibi ol',
     'become_host_sub' => 'Ev sahipliği yapmaya başlayın ve ek gelir elde edin',
     'booking_history' => 'Rezervasyon geçmişi',
+    'notifications' => 'Bildirimler',
     'logout' => 'Çıkış',
 ];

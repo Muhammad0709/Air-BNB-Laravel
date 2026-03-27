@@ -17,5 +17,6 @@ return [
     'become_host' => 'ببە بە خاوەن ماڵ',
     'become_host_sub' => 'خاوەنماڵی دەست پێ بکە و داهاتی زیادە وەربگرە',
     'booking_history' => 'مێژووی حجز',
+    'notifications' => 'ئاگادارییەکان',
     'logout' => 'چوونەدەرەوە',
 ];
