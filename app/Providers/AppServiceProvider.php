@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Event;
+use App\Events\NotificationEvent;
+use App\Listeners\NotificationEventListener;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Register event listeners
+        Event::listen(
+            NotificationEvent::class,
+            NotificationEventListener::class
+        );
     }
 }

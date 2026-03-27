@@ -69,4 +69,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Models\Message::class, 'sender_id');
     }
+
+    public function deviceTokens()
+    {
+        return $this->hasMany(UserDevice::class);
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
 }

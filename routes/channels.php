@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Conversation;
+use App\Models\User;
+use App\Enums\UserType;
 use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {

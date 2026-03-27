@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('BROADCAST_CONNECTION', 'null'),
+    'default' => env('BROADCAST_DRIVER', 'reverb'),
 
     /*
     |--------------------------------------------------------------------------
@@ -36,14 +36,10 @@ return [
             'secret' => env('REVERB_APP_SECRET'),
             'app_id' => env('REVERB_APP_ID'),
             'options' => [
-                // Internal backend connection - use HTTP to localhost
-                'host' => env('REVERB_SERVER_HOST', '127.0.0.1'),
-                'port' => env('REVERB_SERVER_PORT', 6001),
-                'scheme' => 'http',
-                'useTLS' => false,
-            ],
-            'client_options' => [
-                // Guzzle client options: https://docs.guzzlephp.org/en/stable/request-options.html
+                'host' => env('REVERB_HOST'),
+                'port' => env('REVERB_PORT', 6001),
+                'scheme' => env('REVERB_SCHEME', 'https'),
+                'useTLS' => env('REVERB_SCHEME', 'https') === 'https',
             ],
         ],
 

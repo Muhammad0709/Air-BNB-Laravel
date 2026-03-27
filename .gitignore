@@ -23,3 +23,7 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Firebase credentials (contains private keys)
+firebase-credentials.json
+storage/app/firebase-credentials.json
