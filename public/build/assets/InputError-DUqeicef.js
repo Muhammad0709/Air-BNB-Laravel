@@ -1,1 +1,0 @@
-import{j as o}from"./app-B_RpLRnI.js";import{T as n}from"./use-language-Ck0pG1ux.js";function i({message:r}){return r?o.jsx(n,{component:"p",sx:{marginTop:"8px !important",fontSize:"0.875rem",color:"#d32f2f"},children:r}):null}export{i as I};
