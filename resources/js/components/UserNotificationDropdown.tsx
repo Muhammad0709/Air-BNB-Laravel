@@ -107,8 +107,8 @@ export default function UserNotificationDropdown() {
             fetchNotifications();
             fetchUnreadCount();
 
-            // Subscribe to real-time notifications
-            const channel = (window as any).Echo?.private('user-notifications');
+            // Subscribe to user's private notification channel
+            const channel = (window as any).Echo?.private(`user.${auth.user.id}`);
             if (channel) {
                 channel.listen('.notification.created', (data: any) => {
                     const newNotification: Notification = {
