@@ -14,9 +14,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        NotificationEvent::class => [
-            NotificationEventListener::class,
-        ],
+        // NotificationEvent listener is auto-discovered by Laravel
+        // based on naming convention: NotificationEvent -> NotificationEventListener
     ];
 
     /**
@@ -32,6 +31,6 @@ class EventServiceProvider extends ServiceProvider
      */
     public function shouldDiscoverEvents(): bool
     {
-        return false;
+        return true; // Enable auto-discovery
     }
 }

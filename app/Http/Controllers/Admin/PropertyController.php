@@ -104,6 +104,16 @@ class PropertyController extends Controller
             'approval_status' => PropertyStatus::APPROVED->value
         ]);
 
+        // Send notification to host
+        $host = $property->user;
+        if ($host) {
+            event(new \App\Events\NotificationEvent(
+                $property,
+                'property_approved',
+                ['host' => $host]
+            ));
+        }
+
         return redirect()->route('admin.properties.index')
             ->with('success', 'Property approved successfully!');
     }
@@ -116,6 +126,17 @@ class PropertyController extends Controller
         $property->update([
             'approval_status' => PropertyStatus::REJECTED->value
         ]);
+
+        // Send notification to host
+        $host = $property->user;
+        if ($host) {
+            event(new \App\Events\NotificationEvent(
+                $property,
+                'property_rejected',
+                ['host' => $host],
+                ['rejection_reason' => 'Property does not meet our standards'] // You can make this dynamic later
+            ));
+        }
 
         return redirect()->route('admin.properties.index')
             ->with('success', 'Property rejected successfully!');
