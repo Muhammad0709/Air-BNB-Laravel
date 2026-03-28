@@ -92,7 +92,7 @@ class Booking extends Model
             '{check_in_date}' => $this->check_in_date->format('M d, Y'),
             '{check_out_date}' => $this->check_out_date->format('M d, Y'),
             '{nights}' => $this->nights,
-            '{total_amount}' => '$' . number_format($this->total_amount, 2),
+            '{total_amount}' => number_format($this->total_amount, 2),
         ];
     }
 }
