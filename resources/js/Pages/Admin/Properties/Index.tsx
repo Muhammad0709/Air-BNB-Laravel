@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, InputAdornment, Chip } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import ActionsMenu from '../../../Components/Admin/ActionsMenu'
 import Pagination from '../../../components/Pagination'
+import Toast from '../../../Components/Admin/Toast'
 import SearchIcon from '@mui/icons-material/Search'
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
@@ -12,11 +13,20 @@ const DEFAULT_IMAGE = '/images/filter-1.svg'
 
 export default function AdminProperties() {
   const { t } = useLanguage()
-  const { properties, filters } = usePage().props as any
+  const { properties, filters, flash } = usePage().props as any
   const [search, setSearch] = useState(filters?.search || '')
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false)
   const [propertyToReject, setPropertyToReject] = useState<any>(null)
   const [rejectionReason, setRejectionReason] = useState('')
+  const [toastOpen, setToastOpen] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
+
+  useEffect(() => {
+    if (flash?.success) {
+      setToastMessage(flash.success)
+      setToastOpen(true)
+    }
+  }, [flash])
 
   const handleSearchChange = (value: string) => {
     setSearch(value)
@@ -230,6 +240,13 @@ export default function AdminProperties() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Toast
+        open={toastOpen}
+        onClose={() => setToastOpen(false)}
+        message={toastMessage}
+        severity="success"
+      />
 
     </AdminLayout>
   )
