@@ -25,4 +25,14 @@ return [
             'body' => 'ملک شما "{property_title}" رد شده است. دلیل: {rejection_reason}',
         ],
     ],
+    'booking_created' => [
+        'host' => [
+            'title' => 'رزرو جدید دریافت شد',
+            'body' => '{guest_name} ملک شما "{property_title}" را از {check_in_date} تا {check_out_date} ({nights} شب) به مبلغ ${total_amount} رزرو کرده است',
+        ],
+        'admin' => [
+            'title' => 'رزرو جدید ایجاد شد',
+            'body' => '{guest_name} ملک "{property_title}" را از {check_in_date} تا {check_out_date} ({nights} شب) رزرو کرد - مجموع: ${total_amount}',
+        ],
+    ],
 ];

@@ -25,4 +25,14 @@ return [
             'body' => 'آپ کی پراپرٹی "{property_title}" مسترد کر دی گئی ہے۔ وجہ: {rejection_reason}',
         ],
     ],
+    'booking_created' => [
+        'host' => [
+            'title' => 'نئی بکنگ موصول ہوئی',
+            'body' => '{guest_name} نے آپ کی پراپرٹی "{property_title}" کو {check_in_date} سے {check_out_date} تک ({nights} راتیں) ${total_amount} میں بک کیا ہے',
+        ],
+        'admin' => [
+            'title' => 'نئی بکنگ بنائی گئی',
+            'body' => '{guest_name} نے "{property_title}" کو {check_in_date} سے {check_out_date} تک ({nights} راتیں) بک کیا - کل: ${total_amount}',
+        ],
+    ],
 ];

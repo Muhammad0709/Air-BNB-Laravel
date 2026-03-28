@@ -109,7 +109,12 @@ export default function NotificationDropdown() {
             markAsRead(notification.id);
         }
         setAnchorEl(null);
-        // Navigate based on notification type if needed
+        // Navigate based on notification type
+        if (notification.notifiable_type === 'App\\Models\\Property') {
+            router.visit('/admin/properties');
+        } else if (notification.notifiable_type === 'App\\Models\\Booking') {
+            router.visit('/admin/bookings');
+        }
     };
 
     const formatTimeAgo = (date: string) => {

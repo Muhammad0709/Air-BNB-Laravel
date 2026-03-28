@@ -25,4 +25,14 @@ return [
             'body' => 'Your property "{property_title}" has been rejected. Reason: {rejection_reason}',
         ],
     ],
+    'booking_created' => [
+        'host' => [
+            'title' => 'New Booking Received',
+            'body' => '{guest_name} has booked your property "{property_title}" from {check_in_date} to {check_out_date} ({nights} nights) for ${total_amount}',
+        ],
+        'admin' => [
+            'title' => 'New Booking Created',
+            'body' => '{guest_name} booked "{property_title}" from {check_in_date} to {check_out_date} ({nights} nights) - Total: ${total_amount}',
+        ],
+    ],
 ];

@@ -111,9 +111,11 @@ export default function UserNotificationDropdown() {
             markAsRead(notification.id);
         }
         setAnchorEl(null);
-        // Navigate to property detail if it's a property notification
+        // Navigate based on notification type
         if (notification.notifiable_type === 'App\\Models\\Property') {
-            router.visit(`/detail/${notification.notifiable_id}`);
+            router.visit('/listing');
+        } else if (notification.notifiable_type === 'App\\Models\\Booking') {
+            router.visit('/booking-history');
         }
     };
 

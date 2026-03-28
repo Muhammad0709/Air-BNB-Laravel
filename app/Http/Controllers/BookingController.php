@@ -190,7 +190,7 @@ class BookingController extends Controller
 
         $phoneCode = $validated['phone_code'] ?? '+31';
 
-        Booking::create([
+        $booking = Booking::create([
             'property_id' => $property->id,
             'user_id' => $user->id,
             'name' => $validated['name'],
@@ -209,6 +209,26 @@ class BookingController extends Controller
             'total_amount' => $totalAmount,
             'status' => BookingStatus::PENDING,
         ]);
+        
+        // Send notification to property host
+        $host = $property->user;
+        if ($host) {
+            event(new \App\Events\NotificationEvent(
+                $booking,
+                'booking_created',
+                ['host' => $host]
+            ));
+        }
+        
+        // Send notification to all admins
+        $admins = User::where('type', UserType::ADMIN->value)->get();
+        if ($admins->isNotEmpty()) {
+            event(new \App\Events\NotificationEvent(
+                $booking,
+                'booking_created',
+                ['admins' => $admins]
+            ));
+        }
 
         return redirect()->route('confirmation', [
             'property_id' => $property->id,

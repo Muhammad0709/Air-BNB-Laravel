@@ -57,4 +57,42 @@ class Booking extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get notification templates for booking events
+     */
+    public static function getNotificationTemplates(): array
+    {
+        return [
+            'booking_created' => [
+                'host' => [
+                    'title' => __('notifications.booking_created.host.title'),
+                    'body' => __('notifications.booking_created.host.body'),
+                    'image' => null,
+                ],
+                'admin' => [
+                    'title' => __('notifications.booking_created.admin.title'),
+                    'body' => __('notifications.booking_created.admin.body'),
+                    'image' => null,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Get placeholders for notification templates
+     */
+    public function getNotificationPlaceholders($recipient, $recipientType): array
+    {
+        $property = $this->property;
+        
+        return [
+            '{guest_name}' => $this->name,
+            '{property_title}' => $property ? $property->title : 'Property',
+            '{check_in_date}' => $this->check_in_date->format('M d, Y'),
+            '{check_out_date}' => $this->check_out_date->format('M d, Y'),
+            '{nights}' => $this->nights,
+            '{total_amount}' => '$' . number_format($this->total_amount, 2),
+        ];
+    }
 }

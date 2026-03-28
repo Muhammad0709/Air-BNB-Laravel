@@ -25,4 +25,14 @@ return [
             'body' => '"{property_title}" mülkünüz reddedildi. Sebep: {rejection_reason}',
         ],
     ],
+    'booking_created' => [
+        'host' => [
+            'title' => 'Yeni Rezervasyon Alındı',
+            'body' => '{guest_name}, "{property_title}" mülkünüzü {check_in_date} - {check_out_date} tarihleri arasında ({nights} gece) ${total_amount} karşılığında rezerve etti',
+        ],
+        'admin' => [
+            'title' => 'Yeni Rezervasyon Oluşturuldu',
+            'body' => '{guest_name}, "{property_title}" mülkünü {check_in_date} - {check_out_date} tarihleri arasında ({nights} gece) rezerve etti - Toplam: ${total_amount}',
+        ],
+    ],
 ];

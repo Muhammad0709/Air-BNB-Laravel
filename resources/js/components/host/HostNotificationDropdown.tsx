@@ -113,7 +113,9 @@ export default function HostNotificationDropdown() {
         setAnchorEl(null);
         // Navigate based on notification type
         if (notification.notifiable_type === 'App\\Models\\Property') {
-            router.visit(`/host/properties/${notification.notifiable_id}`);
+            router.visit('/host/properties');
+        } else if (notification.notifiable_type === 'App\\Models\\Booking') {
+            router.visit('/host/bookings');
         }
     };
 

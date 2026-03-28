@@ -25,4 +25,14 @@ return [
             'body' => 'تم رفض عقارك "{property_title}". السبب: {rejection_reason}',
         ],
     ],
+    'booking_created' => [
+        'host' => [
+            'title' => 'حجز جديد مستلم',
+            'body' => '{guest_name} حجز عقارك "{property_title}" من {check_in_date} إلى {check_out_date} ({nights} ليالٍ) مقابل ${total_amount}',
+        ],
+        'admin' => [
+            'title' => 'تم إنشاء حجز جديد',
+            'body' => '{guest_name} حجز "{property_title}" من {check_in_date} إلى {check_out_date} ({nights} ليالٍ) - الإجمالي: ${total_amount}',
+        ],
+    ],
 ];

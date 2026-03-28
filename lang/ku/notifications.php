@@ -25,4 +25,14 @@ return [
             'body' => 'موڵکەکەت "{property_title}" ڕەت کرایەوە. هۆکار: {rejection_reason}',
         ],
     ],
+    'booking_created' => [
+        'host' => [
+            'title' => 'نۆرەی نوێ وەرگیرا',
+            'body' => '{guest_name} موڵکەکەت "{property_title}" لە {check_in_date} بۆ {check_out_date} ({nights} شەو) بە ${total_amount} نۆرە کردووە',
+        ],
+        'admin' => [
+            'title' => 'نۆرەی نوێ دروست کرا',
+            'body' => '{guest_name} "{property_title}" لە {check_in_date} بۆ {check_out_date} ({nights} شەو) نۆرە کرد - کۆی گشتی: ${total_amount}',
+        ],
+    ],
 ];
