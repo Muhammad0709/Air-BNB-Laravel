@@ -8,6 +8,7 @@ return [
         'bookings' => 'بکنگز',
         'earnings' => 'کمائی',
         'messages' => 'میسجز',
+        'notifications' => 'اطلاعات',
     ],
     'property' => [
         'image_max_size' => 'Har tasweer 2MB se zyada nahi honi chahiye.',
@@ -256,5 +257,10 @@ return [
         'property_details' => 'پراپرٹی کی تفصیلات',
         'approval_status' => 'منظوری کی حیثیت',
         'per_night' => '/رات',
+    ],
+    'notifications' => [
+        'title' => 'اطلاعات',
+        'all_notifications' => 'تمام اطلاعات',
+        'no_notifications' => 'ابھی تک کوئی اطلاع نہیں',
     ],
 ];

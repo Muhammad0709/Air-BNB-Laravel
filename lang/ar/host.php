@@ -8,6 +8,7 @@ return [
         'bookings' => 'الحجوزات',
         'earnings' => 'الأرباح',
         'messages' => 'الرسائل',
+        'notifications' => 'الإشعارات',
     ],
     'property' => [
         'image_max_size' => 'يجب ألا تتجاوز كل صورة 2 ميجابايت.',
@@ -256,5 +257,10 @@ return [
         'property_details' => 'تفاصيل العقار',
         'approval_status' => 'حالة الموافقة',
         'per_night' => '/ليلة',
+    ],
+    'notifications' => [
+        'title' => 'الإشعارات',
+        'all_notifications' => 'جميع الإشعارات',
+        'no_notifications' => 'لا توجد إشعارات بعد',
     ],
 ];

@@ -8,6 +8,7 @@ return [
         'bookings' => 'Rezervasyonlar',
         'earnings' => 'Kazançlar',
         'messages' => 'Mesajlar',
+        'notifications' => 'Bildirimler',
     ],
     'property' => [
         'image_max_size' => 'Her görsel 2MB dan büyük olmamalıdır.',
@@ -256,5 +257,10 @@ return [
         'property_details' => 'Mülk detayları',
         'approval_status' => 'Onay durumu',
         'per_night' => '/gece',
+    ],
+    'notifications' => [
+        'title' => 'Bildirimler',
+        'all_notifications' => 'Tüm Bildirimler',
+        'no_notifications' => 'Henüz bildirim yok',
     ],
 ];

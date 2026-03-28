@@ -8,6 +8,7 @@ return [
         'bookings' => 'Bookings',
         'earnings' => 'Earnings',
         'messages' => 'Messages',
+        'notifications' => 'Notifications',
     ],
     'property' => [
         'image_max_size' => 'Each image must not be greater than 2MB.',
@@ -256,5 +257,10 @@ return [
         'property_details' => 'Property Details',
         'approval_status' => 'Approval Status',
         'per_night' => '/night',
+    ],
+    'notifications' => [
+        'title' => 'Notifications',
+        'all_notifications' => 'All Notifications',
+        'no_notifications' => 'No notifications yet',
     ],
 ];

@@ -8,6 +8,7 @@ return [
         'bookings' => 'رزروها',
         'earnings' => 'درآمدها',
         'messages' => 'پیام‌ها',
+        'notifications' => 'اعلان‌ها',
     ],
     'property' => [
         'image_max_size' => 'Har tasvir nabayad bishtar az 2 megabayt bashad.',
@@ -256,5 +257,10 @@ return [
         'property_details' => 'جزئیات اقامتگاه',
         'approval_status' => 'وضعیت تأیید',
         'per_night' => '/شب',
+    ],
+    'notifications' => [
+        'title' => 'اعلان‌ها',
+        'all_notifications' => 'همه اعلان‌ها',
+        'no_notifications' => 'هنوز اعلانی وجود ندارد',
     ],
 ];

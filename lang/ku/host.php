@@ -8,6 +8,7 @@ return [
         'bookings' => 'حجزەکان',
         'earnings' => 'داهاتەکان',
         'messages' => 'نامەکان',
+        'notifications' => 'ئاگادارییەکان',
     ],
     'property' => [
         'image_max_size' => 'هەر وێنەیەک نابێت گەورەتر لە 2MB بێت.',
@@ -256,5 +257,10 @@ return [
         'property_details' => 'وردەکاری خانووبەر',
         'approval_status' => 'دۆخی ڕازبوون',
         'per_night' => '/شەو',
+    ],
+    'notifications' => [
+        'title' => 'ئاگادارییەکان',
+        'all_notifications' => 'هەموو ئاگادارییەکان',
+        'no_notifications' => 'هێشتا هیچ ئاگادارییەک نییە',
     ],
 ];
