@@ -116,10 +116,7 @@ class PropertyController extends Controller
         $users = User::where('type', UserType::USER->value)->get();
         
         if ($users->isNotEmpty()) {
-            $recipients = [];
-            foreach ($users as $user) {
-                $recipients['user_' . $user->id] = $user;
-            }
+            $recipients = ['users' => $users];
             event(new NotificationEvent(
                 $property,
                 'property_created',
@@ -131,10 +128,7 @@ class PropertyController extends Controller
         $admins = User::where('type', UserType::ADMIN->value)->get();
         
         if ($admins->isNotEmpty()) {
-            $recipients = [];
-            foreach ($admins as $admin) {
-                $recipients['admin_' . $admin->id] = $admin;
-            }
+            $recipients = ['admins' => $admins];
             event(new NotificationEvent(
                 $property,
                 'property_pending_approval',

@@ -16,6 +16,23 @@ class NotificationEventListener
 {
     public function handle(NotificationEvent $event): void
     {
+        // Prevent duplicate processing of the same event
+        static $processedEvents = [];
+        $eventHash = md5(serialize([
+            get_class($event->notifiableModel),
+            $event->notifiableModel->getKey(),
+            $event->notificationType,
+            array_map(fn($r) => $r instanceof User ? $r->id : null, 
+                      $event->recipients instanceof \Illuminate\Support\Collection ? $event->recipients->all() : 
+                      (is_array($event->recipients) ? $event->recipients : []))
+        ]));
+        
+        if (isset($processedEvents[$eventHash])) {
+            Log::info("Skipping duplicate event processing", ['event_hash' => $eventHash]);
+            return;
+        }
+        $processedEvents[$eventHash] = true;
+        
         try {
             $model = $event->notifiableModel;
             $notificationType = $event->notificationType;
@@ -42,74 +59,91 @@ class NotificationEventListener
                 return;
             }
 
-            foreach ($event->recipients as $recipientType => $recipient) {
-                if (!$recipient instanceof User) {
-                    Log::warning("Recipient is not a User instance for type: {$recipientType} in event for {$modelClass} ID {$model->getKey()}");
-                    continue;
-                }
-
-                // Check if user has enabled notifications for this type BEFORE processing
-                if (!$this->shouldSendNotification($recipient, $notificationType)) {
-                    Log::info("User {$recipient->id} has disabled notifications for type: {$notificationType}");
-                    continue;
-                }
-
-                // Set the locale to the user's language preference before generating templates
-                $userLocale = $recipient->language_preference ?? config('app.fallback_locale', 'en');
-                app()->setLocale($userLocale);
+            foreach ($event->recipients as $recipientType => $recipientOrCollection) {
+                // Handle both single User and Collection of Users
+                $recipients = [];
                 
-                // Regenerate templates with the user's locale
-                if (method_exists($modelClass, 'getNotificationTemplates')) {
-                    $baseTemplates = $modelClass::getNotificationTemplates();
-                    $eventTemplates = Arr::get($baseTemplates, $notificationType);
-                }
-
-                $recipientTemplateSet = Arr::get($eventTemplates, $recipientType);
-                if (empty($recipientTemplateSet)) {
-                    Log::info("No specific template found for model {$modelClass}, type: {$notificationType}, recipient type: {$recipientType}");
-                    continue;
-                }
-
-                $titleTemplate = Arr::get($recipientTemplateSet, 'title', '');
-                $bodyTemplate = Arr::get($recipientTemplateSet, 'body', '');
-                $imagePath = Arr::get($recipientTemplateSet, 'image', '');
-
-                $placeholders = $this->getPlaceholders($model, $recipient, $recipientType);
-
-                // Generate content in all languages
-                $multilingualContent = $this->generateMultilingualContent($modelClass, $notificationType, $recipientType, $placeholders);
-
-                $contextData = $this->getNotificationContextData($model, $recipient, $recipientType, $notificationType);
-
-                $notificationData = [
-                    'title' => $multilingualContent['en']['title'],
-                    'description' => $multilingualContent['en']['description'],
-                    'image' => $imagePath,
-                    'user_id' => $recipient->id,
-                    'notifiable_id' => $model->getKey(),
-                    'notifiable_type' => $modelClass,
-                    'notification_type' => $notificationType,
-                    'recipient_type' => $recipientType,
-                    'status' => 'unread'
-                ];
-
-                // Add rejection reason if it exists in additional data
-                if (!empty($additionalData) && isset($additionalData['rejection_reason'])) {
-                    $notificationData['rejection_reason'] = $additionalData['rejection_reason'];
-                }
-
-                $notification = Notification::create($notificationData);
-                
-                Log::info("Notification created for user {$recipient->id}: {$notification->title}");
-
-                // Broadcast real-time notification
-                broadcast(new \App\Events\NotificationCreated($notification, $recipient->id));
-
-                // Send push notification if user has device tokens
-                if (method_exists($recipient, 'deviceTokens') && $recipient->deviceTokens()->exists()) {
-                    SendPushNotification::dispatch($notification, $recipient);
+                if ($recipientOrCollection instanceof \Illuminate\Support\Collection) {
+                    $recipients = $recipientOrCollection->all();
+                } elseif ($recipientOrCollection instanceof User) {
+                    $recipients = [$recipientOrCollection];
                 } else {
-                    Log::info("User {$recipient->id} has no device tokens for push notification for {$modelClass} ID {$model->getKey()}.");
+                    Log::warning("Recipient is not a User or Collection for type: {$recipientType} in event for {$modelClass} ID {$model->getKey()}");
+                    continue;
+                }
+                
+                // Normalize recipient type (remove plural 's' if present)
+                $normalizedRecipientType = rtrim($recipientType, 's');
+                
+                foreach ($recipients as $recipient) {
+                    if (!$recipient instanceof User) {
+                        Log::warning("Recipient in collection is not a User instance for type: {$recipientType}");
+                        continue;
+                    }
+
+                    // Check if user has enabled notifications for this type BEFORE processing
+                    if (!$this->shouldSendNotification($recipient, $notificationType)) {
+                        Log::info("User {$recipient->id} has disabled notifications for type: {$notificationType}");
+                        continue;
+                    }
+
+                    // Set the locale to the user's language preference before generating templates
+                    $userLocale = $recipient->language_preference ?? config('app.fallback_locale', 'en');
+                    app()->setLocale($userLocale);
+                    
+                    // Regenerate templates with the user's locale
+                    if (method_exists($modelClass, 'getNotificationTemplates')) {
+                        $baseTemplates = $modelClass::getNotificationTemplates();
+                        $eventTemplates = Arr::get($baseTemplates, $notificationType);
+                    }
+
+                    $recipientTemplateSet = Arr::get($eventTemplates, $normalizedRecipientType);
+                    if (empty($recipientTemplateSet)) {
+                        Log::info("No specific template found for model {$modelClass}, type: {$notificationType}, recipient type: {$normalizedRecipientType}");
+                        continue;
+                    }
+
+                    $titleTemplate = Arr::get($recipientTemplateSet, 'title', '');
+                    $bodyTemplate = Arr::get($recipientTemplateSet, 'body', '');
+                    $imagePath = Arr::get($recipientTemplateSet, 'image', '');
+
+                    $placeholders = $this->getPlaceholders($model, $recipient, $normalizedRecipientType);
+
+                    // Generate content in all languages
+                    $multilingualContent = $this->generateMultilingualContent($modelClass, $notificationType, $normalizedRecipientType, $placeholders);
+
+                    $contextData = $this->getNotificationContextData($model, $recipient, $normalizedRecipientType, $notificationType);
+
+                    $notificationData = [
+                        'title' => $multilingualContent['en']['title'],
+                        'description' => $multilingualContent['en']['description'],
+                        'image' => $imagePath,
+                        'user_id' => $recipient->id,
+                        'notifiable_id' => $model->getKey(),
+                        'notifiable_type' => $modelClass,
+                        'notification_type' => $notificationType,
+                        'recipient_type' => $normalizedRecipientType,
+                        'status' => 'unread'
+                    ];
+
+                    // Add rejection reason if it exists in additional data
+                    if (!empty($additionalData) && isset($additionalData['rejection_reason'])) {
+                        $notificationData['rejection_reason'] = $additionalData['rejection_reason'];
+                    }
+
+                    $notification = Notification::create($notificationData);
+                    
+                    Log::info("Notification created for user {$recipient->id}: {$notification->title}");
+
+                    // Broadcast real-time notification
+                    broadcast(new \App\Events\NotificationCreated($notification, $recipient->id));
+
+                    // Send push notification if user has device tokens
+                    if (method_exists($recipient, 'deviceTokens') && $recipient->deviceTokens()->exists()) {
+                        SendPushNotification::dispatch($notification, $recipient);
+                    } else {
+                        Log::info("User {$recipient->id} has no device tokens for push notification for {$modelClass} ID {$model->getKey()}.");
+                    }
                 }
             }
         } catch (\Throwable $e) {
