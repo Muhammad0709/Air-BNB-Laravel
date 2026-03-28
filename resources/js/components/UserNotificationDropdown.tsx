@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Badge, IconButton, Menu, MenuItem, Typography, Box, Divider, Snackbar, Alert } from '@mui/material';
+import { Badge, IconButton, Menu, MenuItem, Typography, Box, Divider } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { router, usePage } from '@inertiajs/react';
+import Toast from '../Components/Admin/Toast';
 
 interface Notification {
     id: number;
@@ -275,20 +276,12 @@ export default function UserNotificationDropdown() {
                 </Box>
             </Menu>
             
-            <Snackbar
+            <Toast
                 open={showToast}
-                autoHideDuration={3000}
                 onClose={() => setShowToast(false)}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            >
-                <Alert 
-                    onClose={() => setShowToast(false)} 
-                    severity="success" 
-                    sx={{ width: '100%' }}
-                >
-                    {toastMessage}
-                </Alert>
-            </Snackbar>
+                message={toastMessage}
+                severity="success"
+            />
         </>
     );
 }
