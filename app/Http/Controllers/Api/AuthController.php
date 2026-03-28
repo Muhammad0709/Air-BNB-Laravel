@@ -567,25 +567,38 @@ class AuthController extends Controller
             $accessToken = $request->input('token');
             $userType = $request->input('type', 'User');
 
-            // Verify Google token
-            $client = new \Google_Client(['client_id' => config('services.google.client_id')]);
+            // Verify Google token - allow multiple client IDs
+            $clientIds = [
+                config('services.google.client_id'),
+                '731015124326-b8acb9e7hflv9ei2lnfrq12kmtouri8k.apps.googleusercontent.com', // Web client
+                '731015124326-6ak3bfcpr9p446c04ood7iimif2ij6o8.apps.googleusercontent.com', // Android client
+            ];
             
-            try {
-                $payload = $client->verifyIdToken($accessToken);
-            } catch (\Exception $e) {
-                \Log::error('Google token verification failed: ' . $e->getMessage());
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Invalid Google token',
-                    'error' => 'Token verification failed',
-                ], 401);
+            $payload = null;
+            $lastError = null;
+            
+            foreach ($clientIds as $clientId) {
+                try {
+                    $client = new \Google_Client(['client_id' => $clientId]);
+                    $payload = $client->verifyIdToken($accessToken);
+                    
+                    if ($payload) {
+                        \Log::info('Google token verified successfully with client_id: ' . $clientId);
+                        break;
+                    }
+                } catch (\Exception $e) {
+                    $lastError = $e->getMessage();
+                    \Log::warning('Failed to verify with client_id ' . $clientId . ': ' . $e->getMessage());
+                    continue;
+                }
             }
-
+            
             if (!$payload) {
+                \Log::error('Google token verification failed for all client IDs. Last error: ' . $lastError);
                 return response()->json([
                     'status' => 'error',
                     'message' => 'Invalid Google token',
-                    'error' => 'Token payload is empty',
+                    'error' => 'Token verification failed: ' . ($lastError ?? 'Token payload is empty'),
                 ], 401);
             }
 
