@@ -7,6 +7,12 @@ return [
             'body' => 'A new property "{property_title}" has been listed in {property_location} for ${property_price}/night',
         ],
     ],
+    'property_pending_approval' => [
+        'admin' => [
+            'title' => 'New Property Pending Approval',
+            'body' => 'Host {host_name} has submitted a new property "{property_title}" in {property_location} for approval',
+        ],
+    ],
     'property_approved' => [
         'host' => [
             'title' => 'Property Approved',

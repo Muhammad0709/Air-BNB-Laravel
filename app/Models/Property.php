@@ -99,6 +99,13 @@ class Property extends Model
                     'image' => null,
                 ],
             ],
+            'property_pending_approval' => [
+                'admin' => [
+                    'title' => __('notifications.property_pending_approval.admin.title'),
+                    'body' => __('notifications.property_pending_approval.admin.body'),
+                    'image' => null,
+                ],
+            ],
             'property_approved' => [
                 'host' => [
                     'title' => __('notifications.property_approved.host.title'),
