@@ -7,6 +7,12 @@ return [
             'body' => '{property_location} bölgesinde "{property_title}" adlı yeni bir mülk ${property_price}/gece fiyatıyla listelendi',
         ],
     ],
+    'property_pending_approval' => [
+        'admin' => [
+            'title' => 'Onay Bekleyen Yeni Mülk',
+            'body' => 'Ev sahibi {host_name}, {property_location} bölgesinde "{property_title}" adlı yeni bir mülk onay için gönderdi',
+        ],
+    ],
     'property_approved' => [
         'host' => [
             'title' => 'Mülk Onaylandı',

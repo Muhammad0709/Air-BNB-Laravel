@@ -7,6 +7,12 @@ return [
             'body' => 'ایک نئی پراپرٹی "{property_title}" {property_location} میں ${property_price}/رات کے لیے درج کی گئی ہے',
         ],
     ],
+    'property_pending_approval' => [
+        'admin' => [
+            'title' => 'نئی پراپرٹی منظوری کے منتظر',
+            'body' => 'میزبان {host_name} نے ایک نئی پراپرٹی "{property_title}" {property_location} میں منظوری کے لیے جمع کرائی ہے',
+        ],
+    ],
     'property_approved' => [
         'host' => [
             'title' => 'پراپرٹی منظور ہو گئی',

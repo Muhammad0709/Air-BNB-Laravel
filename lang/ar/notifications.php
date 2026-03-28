@@ -7,6 +7,12 @@ return [
             'body' => 'تم إدراج عقار جديد "{property_title}" في {property_location} مقابل ${property_price}/ليلة',
         ],
     ],
+    'property_pending_approval' => [
+        'admin' => [
+            'title' => 'عقار جديد في انتظار الموافقة',
+            'body' => 'قدم المضيف {host_name} عقارًا جديدًا "{property_title}" في {property_location} للموافقة عليه',
+        ],
+    ],
     'property_approved' => [
         'host' => [
             'title' => 'تمت الموافقة على العقار',
