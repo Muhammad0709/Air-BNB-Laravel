@@ -5,6 +5,7 @@ import HotelIcon from '@mui/icons-material/Hotel'
 import BookOnlineIcon from '@mui/icons-material/BookOnline'
 import MessageIcon from '@mui/icons-material/Message'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+import NotificationsIcon from '@mui/icons-material/Notifications'
 import { router } from '@inertiajs/react'
 import { useLanguage } from '../../hooks/use-language'
 
@@ -51,6 +52,12 @@ export default function HostSidebar({ sidebarOpen }: HostSidebarProps) {
       icon: MessageIcon,
       path: '/host/chat',
       onClick: () => router.visit('/host/chat')
+    },
+    {
+      label: t('host.sidebar.notifications') || 'Notifications',
+      icon: NotificationsIcon,
+      path: '/host/notifications',
+      onClick: () => router.visit('/host/notifications')
     },
   ]
 

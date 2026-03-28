@@ -166,4 +166,11 @@ Route::prefix('host')->name('host.')->middleware('host')->group(function () {
     Route::post('/settings/picture', [HostSettingsController::class, 'uploadProfilePicture'])->name('settings.picture');
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
     Route::delete('/chat/conversations/{conversation}', [ChatController::class, 'destroyConversation'])->name('chat.conversations.destroy');
+    
+    // Host notification routes
+    Route::get('/notifications', [App\Http\Controllers\Host\NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/latest', [App\Http\Controllers\Host\NotificationController::class, 'latest'])->name('notifications.latest');
+    Route::get('/notifications/unread-count', [App\Http\Controllers\Host\NotificationController::class, 'unreadCount'])->name('notifications.unread-count');
+    Route::patch('/notifications/{notification}/mark-as-read', [App\Http\Controllers\Host\NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
+    Route::patch('/notifications/mark-all-as-read', [App\Http\Controllers\Host\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-as-read');
 });
