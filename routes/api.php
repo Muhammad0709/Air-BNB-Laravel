@@ -123,6 +123,11 @@ Route::middleware('auth:sanctum')->group(function () {
         
         // Wishlist API
         Route::get('/wishlist', [WishlistController::class, 'index']);
+        
+        // Notification API
+        Route::get('/notifications/latest', [\App\Http\Controllers\Api\NotificationController::class, 'latest']);
+        Route::get('/notifications/unread-count', [\App\Http\Controllers\Api\NotificationController::class, 'unreadCount']);
+        Route::patch('/notifications/{notification}/mark-as-read', [\App\Http\Controllers\Api\NotificationController::class, 'markAsRead']);
     });
 });
 
