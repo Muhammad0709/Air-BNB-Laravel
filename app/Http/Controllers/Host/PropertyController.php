@@ -116,26 +116,30 @@ class PropertyController extends Controller
         $users = User::where('type', UserType::USER->value)->get();
         
         if ($users->isNotEmpty()) {
+            $recipients = [];
             foreach ($users as $user) {
-                event(new NotificationEvent(
-                    $property,
-                    'property_created',
-                    ['user' => $user]
-                ));
+                $recipients['user_' . $user->id] = $user;
             }
+            event(new NotificationEvent(
+                $property,
+                'property_created',
+                $recipients
+            ));
         }
         
         // Send notification to admin about new property pending approval
         $admins = User::where('type', UserType::ADMIN->value)->get();
         
         if ($admins->isNotEmpty()) {
+            $recipients = [];
             foreach ($admins as $admin) {
-                event(new NotificationEvent(
-                    $property,
-                    'property_pending_approval',
-                    ['admin' => $admin]
-                ));
+                $recipients['admin_' . $admin->id] = $admin;
             }
+            event(new NotificationEvent(
+                $property,
+                'property_pending_approval',
+                $recipients
+            ));
         }
         
         return redirect()->route('host.properties.index')
