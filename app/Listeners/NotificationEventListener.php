@@ -12,10 +12,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
-class NotificationEventListener implements ShouldQueue
+class NotificationEventListener
 {
-    use InteractsWithQueue;
-
     public function handle(NotificationEvent $event): void
     {
         try {
@@ -101,6 +99,11 @@ class NotificationEventListener implements ShouldQueue
                 }
 
                 $notification = Notification::create($notificationData);
+                
+                Log::info("Notification created for user {$recipient->id}: {$notification->title}");
+
+                // Broadcast real-time notification
+                broadcast(new \App\Events\NotificationCreated($notification, $recipient->id));
 
                 // Send push notification if user has device tokens
                 if (method_exists($recipient, 'deviceTokens') && $recipient->deviceTokens()->exists()) {

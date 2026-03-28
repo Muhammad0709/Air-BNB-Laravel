@@ -22,10 +22,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Register event listeners
-        Event::listen(
-            NotificationEvent::class,
-            NotificationEventListener::class
-        );
+        // Event listener is auto-discovered via EventServiceProvider
     }
 }

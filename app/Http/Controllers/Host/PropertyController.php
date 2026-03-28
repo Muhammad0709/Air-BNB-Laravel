@@ -116,15 +116,12 @@ class PropertyController extends Controller
         $users = User::where('type', UserType::USER->value)->get();
         
         if ($users->isNotEmpty()) {
-            $recipients = [];
+            // Fire event once with all users
             foreach ($users as $user) {
-                $recipients['user'] = $user;
-                
-                // Fire event for each user individually
                 event(new NotificationEvent(
                     $property,
                     'property_created',
-                    $recipients
+                    ['user' => $user]
                 ));
             }
         }
