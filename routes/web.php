@@ -93,6 +93,7 @@ Route::middleware(['auth', 'redirect.admin.host'])->group(function () {
     // User notifications
     Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
     Route::patch('/notifications/{notification}/mark-as-read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
+    Route::patch('/notifications/mark-all-as-read', [App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-as-read');
     
     // User-specific routes
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');

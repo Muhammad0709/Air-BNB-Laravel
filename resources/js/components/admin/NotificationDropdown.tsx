@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Badge, IconButton, Menu, MenuItem, Typography, Box, Divider } from '@mui/material';
+import { Badge, IconButton, Menu, MenuItem, Typography, Box, Divider, Snackbar, Alert } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { router, usePage } from '@inertiajs/react';
 
@@ -19,6 +19,8 @@ export default function NotificationDropdown() {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
     const { auth } = usePage().props as any;
 
     const fetchNotifications = async () => {
@@ -90,10 +92,14 @@ export default function NotificationDropdown() {
                         prev.map(notif => ({ ...notif, read_at: new Date().toISOString() }))
                     );
                     setUnreadCount(0);
+                    setToastMessage('All notifications marked as read');
+                    setShowToast(true);
                 },
             });
         } catch (error) {
             console.error('Failed to mark all notifications as read:', error);
+            setToastMessage('Failed to mark notifications as read');
+            setShowToast(true);
         }
     };
 
@@ -252,6 +258,21 @@ export default function NotificationDropdown() {
                     </Typography>
                 </Box>
             </Menu>
+            
+            <Snackbar
+                open={showToast}
+                autoHideDuration={3000}
+                onClose={() => setShowToast(false)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            >
+                <Alert 
+                    onClose={() => setShowToast(false)} 
+                    severity="success" 
+                    sx={{ width: '100%' }}
+                >
+                    {toastMessage}
+                </Alert>
+            </Snackbar>
         </>
     );
 }

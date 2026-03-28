@@ -63,7 +63,10 @@ class NotificationController extends Controller
     {
         // Ensure the notification belongs to the authenticated user
         if ($notification->user_id !== $request->user()->id) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Unauthorized'], 403);
+            }
+            abort(403);
         }
 
         $notification->update([
@@ -71,11 +74,15 @@ class NotificationController extends Controller
             'read_at' => now(),
         ]);
 
-        return response()->json([
-            'data' => [
-                'notification' => $notification,
-            ],
-        ]);
+        if ($request->wantsJson()) {
+            return response()->json([
+                'data' => [
+                    'notification' => $notification,
+                ],
+            ]);
+        }
+
+        return back();
     }
 
     /**
@@ -90,10 +97,14 @@ class NotificationController extends Controller
                 'read_at' => now(),
             ]);
 
-        return response()->json([
-            'data' => [
-                'message' => 'All notifications marked as read',
-            ],
-        ]);
+        if ($request->wantsJson()) {
+            return response()->json([
+                'data' => [
+                    'message' => 'All notifications marked as read',
+                ],
+            ]);
+        }
+
+        return back();
     }
 }

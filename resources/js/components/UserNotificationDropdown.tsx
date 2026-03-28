@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Badge, IconButton, Menu, MenuItem, Typography, Box, Divider } from '@mui/material';
+import { Badge, IconButton, Menu, MenuItem, Typography, Box, Divider, Snackbar, Alert } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { router, usePage } from '@inertiajs/react';
 
@@ -19,6 +19,8 @@ export default function UserNotificationDropdown() {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
     const { auth } = usePage().props as any;
 
     const fetchNotifications = async () => {
@@ -73,10 +75,33 @@ export default function UserNotificationDropdown() {
                         )
                     );
                     setUnreadCount(prev => Math.max(0, prev - 1));
+                    setToastMessage('Notification marked as read');
+                    setShowToast(true);
                 },
             });
         } catch (error) {
             console.error('Failed to mark notification as read:', error);
+        }
+    };
+
+    const markAllAsRead = async () => {
+        try {
+            router.patch('/notifications/mark-all-as-read', {}, {
+                preserveState: true,
+                preserveScroll: true,
+                onSuccess: () => {
+                    setNotifications(prev =>
+                        prev.map(notif => ({ ...notif, read_at: new Date().toISOString() }))
+                    );
+                    setUnreadCount(0);
+                    setToastMessage('All notifications marked as read');
+                    setShowToast(true);
+                },
+            });
+        } catch (error) {
+            console.error('Failed to mark all notifications as read:', error);
+            setToastMessage('Failed to mark notifications as read');
+            setShowToast(true);
         }
     };
 
@@ -179,6 +204,20 @@ export default function UserNotificationDropdown() {
                     <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '1.125rem' }}>
                         Notifications
                     </Typography>
+                    {unreadCount > 0 && (
+                        <Typography
+                            onClick={markAllAsRead}
+                            sx={{
+                                fontSize: '0.875rem',
+                                color: '#AD542D',
+                                cursor: 'pointer',
+                                fontWeight: 600,
+                                '&:hover': { textDecoration: 'underline' }
+                            }}
+                        >
+                            Mark all as read
+                        </Typography>
+                    )}
                 </Box>
                 <Divider />
                 <Box sx={{ maxHeight: 400, overflowY: 'auto' }}>
@@ -235,6 +274,21 @@ export default function UserNotificationDropdown() {
                     </Typography>
                 </Box>
             </Menu>
+            
+            <Snackbar
+                open={showToast}
+                autoHideDuration={3000}
+                onClose={() => setShowToast(false)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            >
+                <Alert 
+                    onClose={() => setShowToast(false)} 
+                    severity="success" 
+                    sx={{ width: '100%' }}
+                >
+                    {toastMessage}
+                </Alert>
+            </Snackbar>
         </>
     );
 }
