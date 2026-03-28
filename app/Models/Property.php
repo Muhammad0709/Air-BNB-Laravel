@@ -128,5 +128,4 @@ class Property extends Model
             '{host_name}' => $this->user->name ?? 'Host',
         ];
     }
-
 }
