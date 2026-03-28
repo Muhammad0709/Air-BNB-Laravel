@@ -68,6 +68,9 @@ return [
         'view_property' => 'Mülkü Görüntüle',
         'approve' => 'Onayla',
         'reject' => 'Reddet',
+        'reject_property' => 'Mülkü Reddet',
+        'rejection_reason_prompt' => 'Lütfen bu mülkü reddetme nedeninizi belirtin:',
+        'rejection_reason_placeholder' => 'Reddetme nedenini girin...',
     ],
     'bookings' => [
         'title' => 'Rezervasyonlar',

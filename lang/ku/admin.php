@@ -68,6 +68,9 @@ return [
         'view_property' => 'خانووبەر ببینە',
         'approve' => 'پەسەند بکە',
         'reject' => 'ڕەت بکەرەوە',
+        'reject_property' => 'خانووبەر ڕەت بکەرەوە',
+        'rejection_reason_prompt' => 'تکایە هۆکاری ڕەتکردنەوەی ئەم خانووبەرە دابین بکە:',
+        'rejection_reason_placeholder' => 'هۆکاری ڕەتکردنەوە بنووسە...',
     ],
     'bookings' => [
         'title' => 'حجزەکان',

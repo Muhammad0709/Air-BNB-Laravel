@@ -121,8 +121,10 @@ class PropertyController extends Controller
     /**
      * Reject a property.
      */
-    public function reject(Property $property)
+    public function reject(Request $request, Property $property)
     {
+        $rejectionReason = $request->input('rejection_reason', 'Property does not meet our standards');
+        
         $property->update([
             'approval_status' => PropertyStatus::REJECTED->value
         ]);
@@ -134,7 +136,7 @@ class PropertyController extends Controller
                 $property,
                 'property_rejected',
                 ['host' => $host],
-                ['rejection_reason' => 'Property does not meet our standards'] // You can make this dynamic later
+                ['rejection_reason' => $rejectionReason]
             ));
         }
 

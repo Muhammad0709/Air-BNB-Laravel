@@ -107,7 +107,7 @@ class NotificationEventListener
                     $bodyTemplate = Arr::get($recipientTemplateSet, 'body', '');
                     $imagePath = Arr::get($recipientTemplateSet, 'image', '');
 
-                    $placeholders = $this->getPlaceholders($model, $recipient, $normalizedRecipientType);
+                    $placeholders = $this->getPlaceholders($model, $recipient, $normalizedRecipientType, $additionalData);
 
                     // Generate content in all languages
                     $multilingualContent = $this->generateMultilingualContent($modelClass, $notificationType, $normalizedRecipientType, $placeholders);
@@ -157,11 +157,16 @@ class NotificationEventListener
         }
     }
 
-    private function getPlaceholders(Model $model, User $recipient, string $recipientType): array
+    private function getPlaceholders(Model $model, User $recipient, string $recipientType, array $additionalData = []): array
     {
         $placeholders = [
             '{recipient_name}' => $recipient->name ?? '',
         ];
+        
+        // Add rejection reason if present
+        if (isset($additionalData['rejection_reason'])) {
+            $placeholders['{rejection_reason}'] = $additionalData['rejection_reason'];
+        }
 
         if (method_exists($model, 'getNotificationPlaceholders')) {
             try {

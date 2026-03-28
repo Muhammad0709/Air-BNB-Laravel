@@ -68,6 +68,9 @@ return [
         'view_property' => 'پراپرٹی دیکھیں',
         'approve' => 'منظور',
         'reject' => 'مسترد',
+        'reject_property' => 'پراپرٹی مسترد کریں',
+        'rejection_reason_prompt' => 'براہ کرم اس پراپرٹی کو مسترد کرنے کی وجہ فراہم کریں:',
+        'rejection_reason_placeholder' => 'مسترد کرنے کی وجہ درج کریں...',
     ],
     'bookings' => [
         'title' => 'بکنگز',

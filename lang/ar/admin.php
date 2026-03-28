@@ -68,6 +68,9 @@ return [
         'view_property' => 'عرض العقار',
         'approve' => 'موافقة',
         'reject' => 'رفض',
+        'reject_property' => 'رفض العقار',
+        'rejection_reason_prompt' => 'يرجى تقديم سبب رفض هذا العقار:',
+        'rejection_reason_placeholder' => 'أدخل سبب الرفض...',
     ],
     'bookings' => [
         'title' => 'الحجوزات',

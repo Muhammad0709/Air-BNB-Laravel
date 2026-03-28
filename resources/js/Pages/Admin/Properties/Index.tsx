@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Card, CardContent, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, InputAdornment, Chip } from '@mui/material'
+import { Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, InputAdornment, Chip } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import ActionsMenu from '../../../Components/Admin/ActionsMenu'
@@ -14,6 +14,9 @@ export default function AdminProperties() {
   const { t } = useLanguage()
   const { properties, filters } = usePage().props as any
   const [search, setSearch] = useState(filters?.search || '')
+  const [rejectDialogOpen, setRejectDialogOpen] = useState(false)
+  const [propertyToReject, setPropertyToReject] = useState<any>(null)
+  const [rejectionReason, setRejectionReason] = useState('')
 
   const handleSearchChange = (value: string) => {
     setSearch(value)
@@ -42,6 +45,26 @@ export default function AdminProperties() {
       case 'Rejected': return t('admin.properties.rejected')
       case 'Pending': return t('admin.properties.pending')
       default: return status
+    }
+  }
+
+  const handleRejectClick = (property: any) => {
+    setPropertyToReject(property)
+    setRejectionReason('')
+    setRejectDialogOpen(true)
+  }
+
+  const handleRejectConfirm = () => {
+    if (propertyToReject && rejectionReason.trim()) {
+      router.patch(`/admin/properties/${propertyToReject.id}/reject`, {
+        rejection_reason: rejectionReason
+      }, {
+        onSuccess: () => {
+          setRejectDialogOpen(false)
+          setPropertyToReject(null)
+          setRejectionReason('')
+        }
+      })
     }
   }
 
@@ -137,7 +160,7 @@ export default function AdminProperties() {
                               onView={() => router.visit(`/admin/properties/${property.id}`)}
                               onEdit={() => router.visit(`/admin/properties/${property.id}/edit`)}
                               onApprove={property.approval_status === 'Pending' ? () => router.patch(`/admin/properties/${property.id}/approve`) : undefined}
-                              onReject={property.approval_status === 'Pending' ? () => router.patch(`/admin/properties/${property.id}/reject`) : undefined}
+                              onReject={property.approval_status === 'Pending' ? () => handleRejectClick(property) : undefined}
                               viewLabel={t('admin.common.view')}
                               editLabel={t('admin.common.edit')}
                               approveLabel={t('admin.properties.approve')}
@@ -161,6 +184,52 @@ export default function AdminProperties() {
           </Card>
         </Col>
       </Row>
+
+      {/* Rejection Reason Dialog */}
+      <Dialog 
+        open={rejectDialogOpen} 
+        onClose={() => setRejectDialogOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle sx={{ fontWeight: 700, color: '#111827' }}>
+          {t('admin.properties.reject_property') || 'Reject Property'}
+        </DialogTitle>
+        <DialogContent>
+          <Typography sx={{ mb: 2, color: '#6B7280', fontSize: '0.875rem' }}>
+            {t('admin.properties.rejection_reason_prompt') || 'Please provide a reason for rejecting this property:'}
+          </Typography>
+          <TextField
+            fullWidth
+            multiline
+            rows={4}
+            value={rejectionReason}
+            onChange={(e) => setRejectionReason(e.target.value)}
+            placeholder={t('admin.properties.rejection_reason_placeholder') || 'Enter rejection reason...'}
+            sx={{ mt: 1 }}
+          />
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button 
+            onClick={() => setRejectDialogOpen(false)}
+            sx={{ color: '#6B7280' }}
+          >
+            {t('admin.common.cancel') || 'Cancel'}
+          </Button>
+          <Button 
+            onClick={handleRejectConfirm}
+            disabled={!rejectionReason.trim()}
+            variant="contained"
+            sx={{ 
+              bgcolor: '#EF4444',
+              '&:hover': { bgcolor: '#DC2626' },
+              '&:disabled': { bgcolor: '#E5E7EB', color: '#9CA3AF' }
+            }}
+          >
+            {t('admin.properties.reject') || 'Reject'}
+          </Button>
+        </DialogActions>
+      </Dialog>
 
     </AdminLayout>
   )

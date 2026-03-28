@@ -69,6 +69,9 @@ return [
         'view_property' => 'View Property',
         'approve' => 'Approve',
         'reject' => 'Reject',
+        'reject_property' => 'Reject Property',
+        'rejection_reason_prompt' => 'Please provide a reason for rejecting this property:',
+        'rejection_reason_placeholder' => 'Enter rejection reason...',
     ],
     'bookings' => [
         'title' => 'Bookings',
