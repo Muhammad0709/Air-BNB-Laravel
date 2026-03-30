@@ -207,8 +207,8 @@ export default function HostChat() {
   }, [selectedConversation, addMessageToConversation])
 
   useEffect(() => {
-    if (currentConversation) scrollToBottom()
-  }, [currentConversation?.messages, scrollToBottom, currentConversation])
+    // Scroll removed - newest messages are at top
+  }, [currentConversation?.messages, currentConversation])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -306,8 +306,9 @@ export default function HostChat() {
     try {
       await apiDelete(`/api/host/chat/conversations/${selectedConversation}/messages/${messageId}`)
       setConversations((prev) =>
-        prev.map((c) =>
-          c.id === selectedConversation ? { ...c, messages: c.messages.filter((m) => m.id !== messageId) } : c
+        prev.map((c) => c.id === selectedConversation 
+          ? { ...c, messages: c.messages.filter((m) => m.id !== messageId), lastMessage: c.messages.filter((m) => m.id !== messageId).slice(-1)[0]?.text || '' }
+          : c
         )
       )
       setMessageToDelete(null)

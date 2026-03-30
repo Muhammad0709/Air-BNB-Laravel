@@ -284,7 +284,7 @@ class HostChatController extends Controller
 
         $messages = $conversation->messages()
             ->with(['files'])
-            ->orderBy('created_at', 'asc')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return response()->json([

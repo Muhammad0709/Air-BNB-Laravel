@@ -262,8 +262,8 @@ export default function Chat() {
   }, [selectedConversation, addMessageToConversation])
 
   useEffect(() => {
-    if (currentConversation) scrollToBottom()
-  }, [currentConversation?.messages, scrollToBottom, currentConversation])
+    // Scroll removed - newest messages are at top
+  }, [currentConversation?.messages, currentConversation])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFileError('')
@@ -370,8 +370,9 @@ export default function Chat() {
     try {
       await apiDelete(`/api/messages/conversations/${selectedConversation}/messages/${messageId}`)
       setConversations((prev) =>
-        prev.map((c) =>
-          c.id === selectedConversation ? { ...c, messages: c.messages.filter((m) => m.id !== messageId) } : c
+        prev.map((c) => c.id === selectedConversation 
+          ? { ...c, messages: c.messages.filter((m) => m.id !== messageId), lastMessage: c.messages.filter((m) => m.id !== messageId).slice(-1)[0]?.text || '' }
+          : c
         )
       )
       setMessageToDelete(null)

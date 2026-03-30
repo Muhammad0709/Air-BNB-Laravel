@@ -230,7 +230,7 @@ class MessagesController extends Controller
 
         $messages = $conversation->messages()
             ->with(['files', 'conversation'])
-            ->orderBy('created_at', 'asc')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $messagesList = $messages->map(fn ($m) => (new MessageResource($m))->toArray($request))->values()->all();
