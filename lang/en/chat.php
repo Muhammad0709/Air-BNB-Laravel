@@ -16,4 +16,5 @@ return [
     'search_conversations' => 'Search conversations...',
     'no_results' => 'No conversations found.',
     'no_conversations' => 'No conversations yet.',
+    'message_deleted' => 'Message deleted successfully',
 ];

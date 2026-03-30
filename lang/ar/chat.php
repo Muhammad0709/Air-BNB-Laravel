@@ -16,4 +16,5 @@ return [
     'search_conversations' => 'البحث في المحادثات...',
     'no_results' => 'لم يتم العثور على محادثات.',
     'no_conversations' => 'لا توجد محادثات بعد.',
+    'message_deleted' => 'تم حذف الرسالة بنجاح',
 ];

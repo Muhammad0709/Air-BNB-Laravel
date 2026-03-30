@@ -16,4 +16,5 @@ return [
     'search_conversations' => 'گەڕان لە گفتوگۆکان...',
     'no_results' => 'هیچ گفتوگۆیەک نەدۆزرایەوە.',
     'no_conversations' => 'هێشتا هیچ گفتوگۆیەک نییە.',
+    'message_deleted' => 'نامە بە سەرکەوتوویی سڕایەوە',
 ];

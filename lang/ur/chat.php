@@ -16,4 +16,5 @@ return [
     'search_conversations' => 'بات چیت تلاش کریں...',
     'no_results' => 'کوئی بات چیت نہیں ملی۔',
     'no_conversations' => 'ابھی تک کوئی بات چیت نہیں۔',
+    'message_deleted' => 'پیغام کامیابی سے حذف ہو گیا',
 ];

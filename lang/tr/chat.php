@@ -16,4 +16,5 @@ return [
     'search_conversations' => 'Sohbetlerde ara...',
     'no_results' => 'Sohbet bulunamadı.',
     'no_conversations' => 'Henüz sohbet yok.',
+    'message_deleted' => 'Mesaj başarıyla silindi',
 ];

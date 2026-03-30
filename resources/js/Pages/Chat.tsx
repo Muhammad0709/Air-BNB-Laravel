@@ -10,7 +10,9 @@ import AttachFileIcon from '@mui/icons-material/AttachFile'
 import VideoFileIcon from '@mui/icons-material/VideoFile'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer'
 import { apiDelete, apiGet, apiPostForm, apiPostJson } from '../chatApi'
+import Toast from '../components/Admin/Toast'
 
 interface MessageFile {
   id: number | string
@@ -98,6 +100,8 @@ export default function Chat() {
   const [loadingMessages, setLoadingMessages] = useState(false)
   const [showLoadingDelayed, setShowLoadingDelayed] = useState(false)
   const [sending, setSending] = useState(false)
+  const [toastOpen, setToastOpen] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
   const [fileError, setFileError] = useState('')
   const conversationsRef = useRef<Conversation[]>([])
   const loadingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -372,8 +376,11 @@ export default function Chat() {
       )
       setMessageToDelete(null)
       setDeleteChatDialogOpen(false)
+      setToastMessage(t('chat.message_deleted') || 'Message deleted successfully')
+      setToastOpen(true)
     } catch {
-      // Optionally show error toast
+      setToastMessage('Failed to delete message')
+      setToastOpen(true)
     }
   }
 
@@ -1096,6 +1103,11 @@ export default function Chat() {
         </Container>
       </Box>
       <Footer />
+      <Toast 
+        open={toastOpen} 
+        message={toastMessage} 
+        onClose={() => setToastOpen(false)} 
+      />
     </Box>
   )
 }

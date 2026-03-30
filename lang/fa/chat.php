@@ -16,4 +16,5 @@ return [
     'search_conversations' => 'جستجوی گفتگوها...',
     'no_results' => 'گفتگویی یافت نشد.',
     'no_conversations' => 'هنوز گفتگویی وجود ندارد.',
+    'message_deleted' => 'پیام با موفقیت حذف شد',
 ];
