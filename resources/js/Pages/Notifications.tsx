@@ -121,7 +121,7 @@ export default function Notifications({ notifications }: NotificationsPageProps)
                                     }}
                                     onClick={() => !notification.read_at && markAsRead(notification.id)}
                                 >
-                                    <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
+                                    <Stack direction="row" justifyContent="space-between" alignItems="center">
                                         <Box sx={{ flex: 1 }}>
                                             <Typography sx={{ fontWeight: 600, fontSize: '1rem', color: '#111827', mb: 0.5 }}>
                                                 {notification.title}
