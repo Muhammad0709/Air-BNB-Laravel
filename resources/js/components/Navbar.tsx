@@ -5,7 +5,6 @@ import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import MessageIcon from '@mui/icons-material/Message'
-import UserNotificationDropdown from './UserNotificationDropdown'
 import { useLanguage } from '../hooks/use-language'
 import { useCurrency } from '../contexts/CurrencyContext'
 
@@ -181,7 +180,6 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                   >
                     <MessageIcon sx={{ fontSize: 24 }} />
                   </IconButton>
-                  <UserNotificationDropdown />
                 </>
               )}
               <Box
