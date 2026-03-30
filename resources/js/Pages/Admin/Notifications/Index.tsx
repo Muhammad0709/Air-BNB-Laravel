@@ -1,6 +1,9 @@
-import { Box, Paper, Typography, Stack, Chip } from '@mui/material';
+import { Box, Paper, Typography, Stack, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import AdminLayout from '../../../components/admin/AdminLayout';
+import Toast from '../../../Components/Admin/Toast';
 import { router } from '@inertiajs/react';
+import { useState } from 'react';
 
 interface Notification {
     id: number;
@@ -25,6 +28,11 @@ interface NotificationsPageProps {
 }
 
 export default function Index({ notifications }: NotificationsPageProps) {
+    const [selectedNotificationId, setSelectedNotificationId] = useState<number | null>(null);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+
     const formatTimeAgo = (date: string) => {
         const now = new Date();
         const notificationDate = new Date(date);
@@ -41,6 +49,35 @@ export default function Index({ notifications }: NotificationsPageProps) {
             preserveState: true,
             preserveScroll: true,
         });
+    };
+
+    const handleDeleteClick = (event: React.MouseEvent<HTMLElement>, notificationId: number) => {
+        event.stopPropagation();
+        setSelectedNotificationId(notificationId);
+        setDeleteDialogOpen(true);
+    };
+
+    const handleDeleteConfirm = () => {
+        if (selectedNotificationId) {
+            router.delete(`/admin/notifications/${selectedNotificationId}`, {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setToastMessage('Notification deleted successfully');
+                    setShowToast(true);
+                    setDeleteDialogOpen(false);
+                    setSelectedNotificationId(null);
+                },
+                onError: () => {
+                    setToastMessage('Failed to delete notification');
+                    setShowToast(true);
+                }
+            });
+        }
+    };
+
+    const handleDeleteCancel = () => {
+        setDeleteDialogOpen(false);
+        setSelectedNotificationId(null);
     };
 
     return (
@@ -70,7 +107,7 @@ export default function Index({ notifications }: NotificationsPageProps) {
                                 }}
                                 onClick={() => !notification.read_at && markAsRead(notification.id)}
                             >
-                                <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
+                                <Stack direction="row" justifyContent="space-between" alignItems="center">
                                     <Box sx={{ flex: 1 }}>
                                         <Typography sx={{ fontWeight: 600, fontSize: '1rem', color: '#111827', mb: 0.5 }}>
                                             {notification.title}
@@ -82,24 +119,48 @@ export default function Index({ notifications }: NotificationsPageProps) {
                                             {formatTimeAgo(notification.created_at)}
                                         </Typography>
                                     </Box>
-                                    {!notification.read_at && (
-                                        <Chip
-                                            label="New"
-                                            size="small"
-                                            sx={{
-                                                bgcolor: '#3B82F6',
-                                                color: '#FFFFFF',
-                                                fontWeight: 600,
-                                                fontSize: '0.75rem',
-                                            }}
-                                        />
-                                    )}
+                                    <IconButton
+                                        size="small"
+                                        onClick={(e) => handleDeleteClick(e, notification.id)}
+                                        sx={{ color: '#DC2626' }}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
                                 </Stack>
                             </Paper>
                         ))
                     )}
                 </Stack>
+
+                <Dialog
+                    open={deleteDialogOpen}
+                    onClose={handleDeleteCancel}
+                    maxWidth="xs"
+                    fullWidth
+                >
+                    <DialogTitle>Delete Notification</DialogTitle>
+                    <DialogContent>
+                        <Typography>
+                            Are you sure you want to delete this notification? This action cannot be undone.
+                        </Typography>
+                    </DialogContent>
+                    <DialogActions sx={{ p: 2, gap: 1 }}>
+                        <Button onClick={handleDeleteCancel} variant="outlined" color="inherit">
+                            Cancel
+                        </Button>
+                        <Button onClick={handleDeleteConfirm} variant="contained" color="error">
+                            Delete
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Box>
+            
+            <Toast
+                open={showToast}
+                onClose={() => setShowToast(false)}
+                message={toastMessage}
+                severity="success"
+            />
         </AdminLayout>
     );
 }
