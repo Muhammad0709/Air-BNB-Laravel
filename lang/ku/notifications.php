@@ -35,4 +35,22 @@ return [
             'body' => '{guest_name} "{property_title}" لە {check_in_date} بۆ {check_out_date} ({nights} شەو) نۆرە کرد - کۆی گشتی: ${total_amount}',
         ],
     ],
+    'booking_confirmed' => [
+        'user' => [
+            'title' => 'نۆرە پشتڕاست کرایەوە',
+            'body' => 'نۆرەکەت بۆ "{property_title}" لە {check_in_date} بۆ {check_out_date} پشتڕاست کرایەوە',
+        ],
+    ],
+    'booking_completed' => [
+        'user' => [
+            'title' => 'نۆرە تەواو بوو',
+            'body' => 'مانەوەکەت لە "{property_title}" تەواو بوو. سوپاس بۆ هەڵبژاردنمان!',
+        ],
+    ],
+    'booking_cancelled' => [
+        'user' => [
+            'title' => 'نۆرە هەڵوەشایەوە',
+            'body' => 'نۆرەکەت بۆ "{property_title}" لە {check_in_date} بۆ {check_out_date} هەڵوەشایەوە',
+        ],
+    ],
 ];

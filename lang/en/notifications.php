@@ -35,4 +35,22 @@ return [
             'body' => '{guest_name} booked "{property_title}" from {check_in_date} to {check_out_date} ({nights} nights) - Total: ${total_amount}',
         ],
     ],
+    'booking_confirmed' => [
+        'user' => [
+            'title' => 'Booking Confirmed',
+            'body' => 'Your booking for "{property_title}" from {check_in_date} to {check_out_date} has been confirmed',
+        ],
+    ],
+    'booking_completed' => [
+        'user' => [
+            'title' => 'Booking Completed',
+            'body' => 'Your stay at "{property_title}" has been completed. Thank you for choosing us!',
+        ],
+    ],
+    'booking_cancelled' => [
+        'user' => [
+            'title' => 'Booking Cancelled',
+            'body' => 'Your booking for "{property_title}" from {check_in_date} to {check_out_date} has been cancelled',
+        ],
+    ],
 ];

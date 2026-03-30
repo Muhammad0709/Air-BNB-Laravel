@@ -35,4 +35,22 @@ return [
             'body' => '{guest_name} حجز "{property_title}" من {check_in_date} إلى {check_out_date} ({nights} ليالٍ) - الإجمالي: ${total_amount}',
         ],
     ],
+    'booking_confirmed' => [
+        'user' => [
+            'title' => 'تم تأكيد الحجز',
+            'body' => 'تم تأكيد حجزك لـ "{property_title}" من {check_in_date} إلى {check_out_date}',
+        ],
+    ],
+    'booking_completed' => [
+        'user' => [
+            'title' => 'اكتمل الحجز',
+            'body' => 'اكتملت إقامتك في "{property_title}". شكرًا لاختيارك لنا!',
+        ],
+    ],
+    'booking_cancelled' => [
+        'user' => [
+            'title' => 'تم إلغاء الحجز',
+            'body' => 'تم إلغاء حجزك لـ "{property_title}" من {check_in_date} إلى {check_out_date}',
+        ],
+    ],
 ];

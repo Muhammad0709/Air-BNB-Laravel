@@ -35,4 +35,22 @@ return [
             'body' => '{guest_name}, "{property_title}" mülkünü {check_in_date} - {check_out_date} tarihleri arasında ({nights} gece) rezerve etti - Toplam: ${total_amount}',
         ],
     ],
+    'booking_confirmed' => [
+        'user' => [
+            'title' => 'Rezervasyon Onaylandı',
+            'body' => '"{property_title}" için {check_in_date} - {check_out_date} tarihleri arasındaki rezervasyonunuz onaylandı',
+        ],
+    ],
+    'booking_completed' => [
+        'user' => [
+            'title' => 'Rezervasyon Tamamlandı',
+            'body' => '"{property_title}" konaklamanız tamamlandı. Bizi seçtiğiniz için teşekkür ederiz!',
+        ],
+    ],
+    'booking_cancelled' => [
+        'user' => [
+            'title' => 'Rezervasyon İptal Edildi',
+            'body' => '"{property_title}" için {check_in_date} - {check_out_date} tarihleri arasındaki rezervasyonunuz iptal edildi',
+        ],
+    ],
 ];

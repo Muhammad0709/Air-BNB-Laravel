@@ -76,6 +76,27 @@ class Booking extends Model
                     'image' => null,
                 ],
             ],
+            'booking_confirmed' => [
+                'user' => [
+                    'title' => __('notifications.booking_confirmed.user.title'),
+                    'body' => __('notifications.booking_confirmed.user.body'),
+                    'image' => null,
+                ],
+            ],
+            'booking_completed' => [
+                'user' => [
+                    'title' => __('notifications.booking_completed.user.title'),
+                    'body' => __('notifications.booking_completed.user.body'),
+                    'image' => null,
+                ],
+            ],
+            'booking_cancelled' => [
+                'user' => [
+                    'title' => __('notifications.booking_cancelled.user.title'),
+                    'body' => __('notifications.booking_cancelled.user.body'),
+                    'image' => null,
+                ],
+            ],
         ];
     }
 

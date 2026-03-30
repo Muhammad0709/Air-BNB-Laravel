@@ -35,4 +35,22 @@ return [
             'body' => '{guest_name} ملک "{property_title}" را از {check_in_date} تا {check_out_date} ({nights} شب) رزرو کرد - مجموع: ${total_amount}',
         ],
     ],
+    'booking_confirmed' => [
+        'user' => [
+            'title' => 'رزرو تایید شد',
+            'body' => 'رزرو شما برای "{property_title}" از {check_in_date} تا {check_out_date} تایید شده است',
+        ],
+    ],
+    'booking_completed' => [
+        'user' => [
+            'title' => 'رزرو تکمیل شد',
+            'body' => 'اقامت شما در "{property_title}" تکمیل شده است. از انتخاب ما متشکریم!',
+        ],
+    ],
+    'booking_cancelled' => [
+        'user' => [
+            'title' => 'رزرو لغو شد',
+            'body' => 'رزرو شما برای "{property_title}" از {check_in_date} تا {check_out_date} لغو شده است',
+        ],
+    ],
 ];

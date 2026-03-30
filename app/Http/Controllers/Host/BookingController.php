@@ -248,13 +248,39 @@ class BookingController extends Controller
     {
         $propertyIds = Property::where('user_id', Auth::id())->pluck('id');
 
-        $booking = Booking::where('id', $id)
+        $booking = Booking::with(['user', 'property'])
+            ->where('id', $id)
             ->whereIn('property_id', $propertyIds)
             ->firstOrFail();
 
+        $newStatus = $request->validated('status');
+        $oldStatus = $booking->status->value;
+        
         $booking->update([
-            'status' => $request->validated('status'),
+            'status' => $newStatus,
         ]);
+
+        // Send notification to user based on status change
+        $guest = $booking->user;
+        if ($guest && $oldStatus !== $newStatus) {
+            $notificationType = null;
+            
+            if ($newStatus === 'confirmed') {
+                $notificationType = 'booking_confirmed';
+            } elseif ($newStatus === 'completed') {
+                $notificationType = 'booking_completed';
+            } elseif ($newStatus === 'cancelled') {
+                $notificationType = 'booking_cancelled';
+            }
+            
+            if ($notificationType) {
+                event(new \App\Events\NotificationEvent(
+                    $booking,
+                    $notificationType,
+                    ['user' => $guest]
+                ));
+            }
+        }
 
         return redirect()->back()->with('success', 'Booking status updated successfully!');
     }
