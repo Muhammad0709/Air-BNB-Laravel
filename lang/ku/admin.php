@@ -7,6 +7,8 @@ return [
         'users' => 'بەکارهێنەران',
         'properties' => 'خانووبەرەکان',
         'bookings' => 'حجزەکان',
+        'history' => 'مێژوو',
+        'notifications' => 'ئاگادارییەکان',
         'support_tickets' => 'تکێتی پشتگیری',
         'system_settings' => 'ڕێکخستنەکان',
         'settings' => 'ڕێکخستنەکان',

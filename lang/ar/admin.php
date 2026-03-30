@@ -7,6 +7,8 @@ return [
         'users' => 'المستخدمون',
         'properties' => 'العقارات',
         'bookings' => 'الحجوزات',
+        'history' => 'السجل',
+        'notifications' => 'الإشعارات',
         'support_tickets' => 'تذاكر الدعم',
         'system_settings' => 'الإعدادات',
         'settings' => 'الإعدادات',

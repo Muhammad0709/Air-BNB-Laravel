@@ -7,6 +7,8 @@ return [
         'users' => 'Kullanıcılar',
         'properties' => 'Mülkler',
         'bookings' => 'Rezervasyonlar',
+        'history' => 'Geçmiş',
+        'notifications' => 'Bildirimler',
         'support_tickets' => 'Destek Talepleri',
         'system_settings' => 'Ayarlar',
         'settings' => 'Ayarlar',

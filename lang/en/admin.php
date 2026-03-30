@@ -8,6 +8,7 @@ return [
         'properties' => 'Properties',
         'bookings' => 'Bookings',
         'history' => 'History',
+        'notifications' => 'Notifications',
         'support_tickets' => 'Support Tickets',
         'system_settings' => 'Settings',
         'settings' => 'Settings',

@@ -7,6 +7,8 @@ return [
         'users' => 'صارفین',
         'properties' => 'پراپرٹیز',
         'bookings' => 'بکنگز',
+        'history' => 'تاریخ',
+        'notifications' => 'اطلاعات',
         'support_tickets' => 'سپورٹ ٹکٹس',
         'system_settings' => 'سیٹنگز',
         'settings' => 'سیٹنگز',
