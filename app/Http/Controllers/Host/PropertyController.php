@@ -112,18 +112,6 @@ class PropertyController extends Controller
 
         $property = Property::create($validated);
         
-        // Send notification to all regular users about new property
-        $users = User::where('type', UserType::USER->value)->get();
-        
-        if ($users->isNotEmpty()) {
-            $recipients = ['users' => $users];
-            event(new NotificationEvent(
-                $property,
-                'property_created',
-                $recipients
-            ));
-        }
-        
         // Send notification to admin about new property pending approval
         $admins = User::where('type', UserType::ADMIN->value)->get();
         

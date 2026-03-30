@@ -1,16 +1,10 @@
 <?php
 
 return [
-    'property_created' => [
-        'user' => [
-            'title' => 'عقار جديد متاح',
-            'body' => 'تم إدراج عقار جديد "{property_title}" في {property_location} مقابل ${property_price}/ليلة',
-        ],
-    ],
     'property_pending_approval' => [
         'admin' => [
-            'title' => 'عقار جديد في انتظار الموافقة',
-            'body' => 'قدم المضيف {host_name} عقارًا جديدًا "{property_title}" في {property_location} للموافقة عليه',
+            'title' => 'عقار معلق',
+            'body' => '{host_name} قدم عقارًا جديدًا "{property_title}" في {property_location} للموافقة عليه',
         ],
     ],
     'property_approved' => [
@@ -27,11 +21,11 @@ return [
     ],
     'booking_created' => [
         'host' => [
-            'title' => 'حجز جديد مستلم',
+            'title' => 'حجز مستلم',
             'body' => '{guest_name} حجز عقارك "{property_title}" من {check_in_date} إلى {check_out_date} ({nights} ليالٍ) مقابل ${total_amount}',
         ],
         'admin' => [
-            'title' => 'تم إنشاء حجز جديد',
+            'title' => 'تم إنشاء حجز',
             'body' => '{guest_name} حجز "{property_title}" من {check_in_date} إلى {check_out_date} ({nights} ليالٍ) - الإجمالي: ${total_amount}',
         ],
     ],

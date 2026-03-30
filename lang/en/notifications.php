@@ -1,16 +1,10 @@
 <?php
 
 return [
-    'property_created' => [
-        'user' => [
-            'title' => 'New Property Available',
-            'body' => 'A new property "{property_title}" has been listed in {property_location} for ${property_price}/night',
-        ],
-    ],
     'property_pending_approval' => [
         'admin' => [
-            'title' => 'New Property Pending Approval',
-            'body' => 'Host {host_name} has submitted a new property "{property_title}" in {property_location} for approval',
+            'title' => 'Pending Property',
+            'body' => '{host_name} has submitted a new property "{property_title}" in {property_location} for approval',
         ],
     ],
     'property_approved' => [
@@ -27,11 +21,11 @@ return [
     ],
     'booking_created' => [
         'host' => [
-            'title' => 'New Booking Received',
+            'title' => 'Booking Received',
             'body' => '{guest_name} has booked your property "{property_title}" from {check_in_date} to {check_out_date} ({nights} nights) for ${total_amount}',
         ],
         'admin' => [
-            'title' => 'New Booking Created',
+            'title' => 'Booking Created',
             'body' => '{guest_name} booked "{property_title}" from {check_in_date} to {check_out_date} ({nights} nights) - Total: ${total_amount}',
         ],
     ],

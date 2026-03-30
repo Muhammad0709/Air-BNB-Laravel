@@ -92,13 +92,6 @@ class Property extends Model
     public static function getNotificationTemplates(): array
     {
         return [
-            'property_created' => [
-                'user' => [
-                    'title' => __('notifications.property_created.user.title'),
-                    'body' => __('notifications.property_created.user.body'),
-                    'image' => null,
-                ],
-            ],
             'property_pending_approval' => [
                 'admin' => [
                     'title' => __('notifications.property_pending_approval.admin.title'),
