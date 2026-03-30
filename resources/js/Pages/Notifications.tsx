@@ -2,6 +2,7 @@ import { Box, Container, Paper, Typography, Stack, IconButton, Dialog, DialogTit
 import DeleteIcon from '@mui/icons-material/Delete';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import Pagination from '../components/Pagination';
 import Toast from '../Components/Admin/Toast';
 import { router } from '@inertiajs/react';
 import { useState } from 'react';
@@ -33,6 +34,13 @@ export default function Notifications({ notifications }: NotificationsPageProps)
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
+
+    const currentPage = notifications.current_page;
+    const lastPage = notifications.last_page;
+
+    const handlePageChange = (page: number) => {
+        router.get('/notifications', { page }, { preserveState: true });
+    };
 
     const formatTimeAgo = (date: string) => {
         const now = new Date();
@@ -134,6 +142,14 @@ export default function Notifications({ notifications }: NotificationsPageProps)
                             ))
                         )}
                     </Stack>
+
+                    {lastPage > 1 && (
+                        <Pagination
+                            currentPage={currentPage}
+                            lastPage={lastPage}
+                            onPageChange={handlePageChange}
+                        />
+                    )}
 
                     <Dialog
                         open={deleteDialogOpen}

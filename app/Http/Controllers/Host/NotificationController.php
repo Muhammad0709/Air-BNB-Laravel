@@ -16,7 +16,7 @@ class NotificationController extends Controller
     {
         $notifications = Notification::where('user_id', $request->user()->id)
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate(10);
 
         return Inertia::render('Host/Notifications/Index', [
             'notifications' => $notifications,
@@ -106,5 +106,20 @@ class NotificationController extends Controller
         }
 
         return back();
+    }
+
+    /**
+     * Delete a notification
+     */
+    public function destroy(Request $request, Notification $notification)
+    {
+        // Ensure the notification belongs to the authenticated user
+        if ($notification->user_id !== $request->user()->id) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $notification->delete();
+
+        return back()->with('success', 'Notification deleted successfully');
     }
 }

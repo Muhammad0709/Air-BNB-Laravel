@@ -175,4 +175,5 @@ Route::prefix('host')->name('host.')->middleware('host')->group(function () {
     Route::get('/notifications/unread-count', [App\Http\Controllers\Host\NotificationController::class, 'unreadCount'])->name('notifications.unread-count');
     Route::patch('/notifications/{notification}/mark-as-read', [App\Http\Controllers\Host\NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
     Route::patch('/notifications/mark-all-as-read', [App\Http\Controllers\Host\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-as-read');
+    Route::delete('/notifications/{notification}', [App\Http\Controllers\Host\NotificationController::class, 'destroy'])->name('notifications.destroy');
 });
