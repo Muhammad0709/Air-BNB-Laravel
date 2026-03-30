@@ -1,7 +1,11 @@
-import { Box, Container, Paper, Typography, Stack, Chip } from '@mui/material';
+import { Box, Container, Paper, Typography, Stack, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import Toast from '../Components/Admin/Toast';
 import { router } from '@inertiajs/react';
+import { useState } from 'react';
 
 interface Notification {
     id: number;
@@ -26,6 +30,12 @@ interface NotificationsPageProps {
 }
 
 export default function Notifications({ notifications }: NotificationsPageProps) {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [selectedNotificationId, setSelectedNotificationId] = useState<number | null>(null);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState('');
+
     const formatTimeAgo = (date: string) => {
         const now = new Date();
         const notificationDate = new Date(date);
@@ -42,6 +52,44 @@ export default function Notifications({ notifications }: NotificationsPageProps)
             preserveState: true,
             preserveScroll: true,
         });
+    };
+
+    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, notificationId: number) => {
+        event.stopPropagation();
+        setAnchorEl(event.currentTarget);
+        setSelectedNotificationId(notificationId);
+    };
+
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleDeleteClick = () => {
+        handleMenuClose();
+        setDeleteDialogOpen(true);
+    };
+
+    const handleDeleteConfirm = () => {
+        if (selectedNotificationId) {
+            router.delete(`/notifications/${selectedNotificationId}`, {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setToastMessage('Notification deleted successfully');
+                    setShowToast(true);
+                    setDeleteDialogOpen(false);
+                    setSelectedNotificationId(null);
+                },
+                onError: () => {
+                    setToastMessage('Failed to delete notification');
+                    setShowToast(true);
+                }
+            });
+        }
+    };
+
+    const handleDeleteCancel = () => {
+        setDeleteDialogOpen(false);
+        setSelectedNotificationId(null);
     };
 
     return (
@@ -85,26 +133,64 @@ export default function Notifications({ notifications }: NotificationsPageProps)
                                                 {formatTimeAgo(notification.created_at)}
                                             </Typography>
                                         </Box>
-                                        {!notification.read_at && (
-                                            <Chip
-                                                label="New"
-                                                size="small"
-                                                sx={{
-                                                    bgcolor: '#AD542D',
-                                                    color: '#FFFFFF',
-                                                    fontWeight: 600,
-                                                    fontSize: '0.75rem',
-                                                }}
-                                            />
-                                        )}
+                                        <IconButton
+                                            size="small"
+                                            onClick={(e) => handleMenuOpen(e, notification.id)}
+                                            sx={{ color: '#6B7280' }}
+                                        >
+                                            <MoreVertIcon />
+                                        </IconButton>
                                     </Stack>
                                 </Paper>
                             ))
                         )}
                     </Stack>
+
+                    <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={handleMenuClose}
+                        PaperProps={{
+                            sx: { boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }
+                        }}
+                    >
+                        <MenuItem onClick={handleDeleteClick} sx={{ color: '#DC2626', gap: 1 }}>
+                            <DeleteIcon fontSize="small" />
+                            Delete
+                        </MenuItem>
+                    </Menu>
+
+                    <Dialog
+                        open={deleteDialogOpen}
+                        onClose={handleDeleteCancel}
+                        maxWidth="xs"
+                        fullWidth
+                    >
+                        <DialogTitle>Delete Notification</DialogTitle>
+                        <DialogContent>
+                            <Typography>
+                                Are you sure you want to delete this notification? This action cannot be undone.
+                            </Typography>
+                        </DialogContent>
+                        <DialogActions sx={{ p: 2, gap: 1 }}>
+                            <Button onClick={handleDeleteCancel} variant="outlined" color="inherit">
+                                Cancel
+                            </Button>
+                            <Button onClick={handleDeleteConfirm} variant="contained" color="error">
+                                Delete
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </Container>
             </Box>
             <Footer />
+            
+            <Toast
+                open={showToast}
+                onClose={() => setShowToast(false)}
+                message={toastMessage}
+                severity="success"
+            />
         </>
     );
 }

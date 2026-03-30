@@ -63,4 +63,19 @@ class NotificationController extends Controller
         return back();
     }
 
+    /**
+     * Delete a notification
+     */
+    public function destroy(Request $request, Notification $notification)
+    {
+        // Ensure the notification belongs to the authenticated user
+        if ($notification->user_id !== $request->user()->id) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $notification->delete();
+
+        return back()->with('success', 'Notification deleted successfully');
+    }
+
 }
