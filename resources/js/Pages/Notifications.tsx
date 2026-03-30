@@ -1,5 +1,4 @@
-import { Box, Container, Paper, Typography, Stack, IconButton, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Box, Container, Paper, Typography, Stack, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -30,7 +29,6 @@ interface NotificationsPageProps {
 }
 
 export default function Notifications({ notifications }: NotificationsPageProps) {
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedNotificationId, setSelectedNotificationId] = useState<number | null>(null);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [showToast, setShowToast] = useState(false);
@@ -56,16 +54,7 @@ export default function Notifications({ notifications }: NotificationsPageProps)
 
     const handleMenuOpen = (event: React.MouseEvent<HTMLElement>, notificationId: number) => {
         event.stopPropagation();
-        setAnchorEl(event.currentTarget);
         setSelectedNotificationId(notificationId);
-    };
-
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-    };
-
-    const handleDeleteClick = () => {
-        handleMenuClose();
         setDeleteDialogOpen(true);
     };
 
@@ -136,29 +125,15 @@ export default function Notifications({ notifications }: NotificationsPageProps)
                                         <IconButton
                                             size="small"
                                             onClick={(e) => handleMenuOpen(e, notification.id)}
-                                            sx={{ color: '#6B7280' }}
+                                            sx={{ color: '#DC2626' }}
                                         >
-                                            <MoreVertIcon />
+                                            <DeleteIcon />
                                         </IconButton>
                                     </Stack>
                                 </Paper>
                             ))
                         )}
                     </Stack>
-
-                    <Menu
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={handleMenuClose}
-                        PaperProps={{
-                            sx: { boxShadow: '0 2px 8px rgba(0,0,0,0.15)' }
-                        }}
-                    >
-                        <MenuItem onClick={handleDeleteClick} sx={{ color: '#DC2626', gap: 1 }}>
-                            <DeleteIcon fontSize="small" />
-                            Delete
-                        </MenuItem>
-                    </Menu>
 
                     <Dialog
                         open={deleteDialogOpen}
