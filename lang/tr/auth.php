@@ -42,7 +42,7 @@ return [
     'admin_login' => [
         'title' => 'Giriş',
         'heading' => 'Giriş',
-        'subtitle' => 'Yönetici paneline erişmek için giriş yapın',
+        'subtitle' => 'Ev sahibi panelinize erişmek için giriş yapın',
         'email' => 'E-posta',
         'password' => 'Şifre',
         'submit' => 'Giriş yap',

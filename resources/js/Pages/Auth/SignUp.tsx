@@ -135,7 +135,7 @@ export default function SignUp() {
                           <InputError message={Array.isArray(errors.password_confirmation) ? errors.password_confirmation[0] : errors.password_confirmation} />
                         </Box>
                         <Button type="submit" variant="contained" size="large" disabled={processing} sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: 999, textTransform: 'none', fontWeight: 700, fontSize: 16, bgcolor: '#AD542D', boxShadow: 'none', '&:hover': { bgcolor: '#78381C', boxShadow: 'none' } }}>{processing ? t('auth.signup.creating') : t('auth.signup.submit')}</Button>
-                        <Button component="a" href="/auth/google" variant="outlined" size="large" {...(isRtl ? { endIcon: googleIconEl } : { startIcon: googleIconEl })} sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: 999, borderColor: '#D0D5DD', color: '#344054', gap: 1, textDecoration: 'none', '& .MuiButton-startIcon, & .MuiButton-endIcon': { margin: 0 } }}>{t('auth.signup.sign_up_google')}</Button>
+                        <Button component="a" href="/auth/google?intent=customer" variant="outlined" size="large" {...(isRtl ? { endIcon: googleIconEl } : { startIcon: googleIconEl })} sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: 999, borderColor: '#D0D5DD', color: '#344054', gap: 1, textDecoration: 'none', '& .MuiButton-startIcon, & .MuiButton-endIcon': { margin: 0 } }}>{t('auth.signup.sign_up_google')}</Button>
                       </Stack>
                     </form>
                   </Paper>

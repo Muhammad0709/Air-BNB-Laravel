@@ -162,9 +162,9 @@ export default function AdminLogin() {
                       {processing ? t('auth.admin_login.signing_in') : t('auth.admin_login.submit')}
                     </Button>
 
-                    {/* <Button
+                    <Button
                       component="a"
-                      href="/auth/google"
+                      href="/auth/google?intent=host"
                       fullWidth
                       variant="outlined"
                       {...(isRtl ? { endIcon: googleIconEl } : { startIcon: googleIconEl })}
@@ -184,7 +184,7 @@ export default function AdminLogin() {
                       }}
                     >
                       {t('auth.admin_login.sign_in_google')}
-                    </Button> */}
+                    </Button>
 
                     <Box sx={{ textAlign: 'center', mt: 2 }}>
                       <Typography variant="body2" sx={{ color: '#717171' }}>

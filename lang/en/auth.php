@@ -42,7 +42,7 @@ return [
     'admin_login' => [
         'title' => 'Login',
         'heading' => 'Login',
-        'subtitle' => 'Sign in to access the admin dashboard',
+        'subtitle' => 'Sign in to access your host dashboard',
         'email' => 'Email',
         'password' => 'Password',
         'submit' => 'Sign In',
