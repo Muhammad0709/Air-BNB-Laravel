@@ -4,7 +4,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { Container, Row, Col } from 'react-bootstrap'
-import { Head, Link as InertiaLink, useForm } from '@inertiajs/react'
+import { Head, Link as InertiaLink, useForm, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 import InputError from '../../../components/InputError'
 
@@ -24,12 +24,22 @@ const inputSx = {
   '& .MuiOutlinedInput-root fieldset': { borderRadius: '24px' },
 }
 
+type PageErrors = Record<string, string | string[] | undefined>
+
+function firstErr(v: string | string[] | undefined): string | undefined {
+  if (v == null) return undefined
+  return Array.isArray(v) ? v[0] : v
+}
+
 export default function AdminLogin() {
   const { t, language, switchLanguage, isRtl } = useLanguage()
   const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null)
   const [showPassword, setShowPassword] = useState(false)
   const currentLanguage = languages.find((l) => l.code === language) || languages[0]
-  const { data, setData, post, processing, errors } = useForm({ email: '', password: '' })
+  const { data, setData, post, processing, errors: formErrors } = useForm({ email: '', password: '' })
+  const pageErrors = (usePage<{ errors?: PageErrors }>().props.errors ?? {}) as PageErrors
+  const emailError = firstErr(formErrors.email) ?? firstErr(pageErrors.email)
+  const passwordError = firstErr(formErrors.password) ?? firstErr(pageErrors.password)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -107,12 +117,12 @@ export default function AdminLogin() {
                       type="email"
                       value={data.email}
                       onChange={(e) => setData('email', e.target.value)}
-                      error={!!errors.email}
+                      error={!!emailError}
                       required
                       variant="outlined"
                       sx={inputSx}
                     />
-                    <InputError message={Array.isArray(errors.email) ? errors.email[0] : errors.email} />
+                    <InputError message={emailError} />
 
                     <TextField
                       fullWidth
@@ -121,7 +131,7 @@ export default function AdminLogin() {
                       type={showPassword ? 'text' : 'password'}
                       value={data.password}
                       onChange={(e) => setData('password', e.target.value)}
-                      error={!!errors.password}
+                      error={!!passwordError}
                       required
                       variant="outlined"
                       sx={inputSx}
@@ -142,7 +152,7 @@ export default function AdminLogin() {
                         ),
                       }}
                     />
-                    <InputError message={Array.isArray(errors.password) ? errors.password[0] : errors.password} />
+                    <InputError message={passwordError} />
 
                     <Button
                       type="submit"

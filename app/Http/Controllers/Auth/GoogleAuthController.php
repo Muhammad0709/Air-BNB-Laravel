@@ -98,7 +98,8 @@ class GoogleAuthController extends Controller
                     'email' => 'Please use the host login page to sign in as a host.',
                 ])->onlyInput('email');
             }
-            return redirect()->intended('/');
+            // Do not use intended() — avoid sending users to a stale url.intended from session
+            return redirect('/');
         }
 
         // intent === host: hosts only — admins must use email/password
@@ -112,18 +113,19 @@ class GoogleAuthController extends Controller
         }
 
         if ($user->type === UserType::HOST) {
-            return redirect()->intended('/host/dashboard');
+            // Never use intended() here: session often keeps url.intended=/register from guest flow and breaks OAuth
+            return redirect()->route('host.dashboard');
         }
 
         if ($user->type === UserType::USER && !$isNewUser) {
             Auth::logout();
             request()->session()->invalidate();
             request()->session()->regenerateToken();
-            return redirect()->route('host.register')->withErrors([
-                'email' => 'You already have a customer account. Please use the main site to sign in as a customer.',
+            return redirect()->route('admin.login')->withErrors([
+                'email' => 'This email is already registered as a customer. Please sign in on the main site (customer login), or use a different Google account to become a host.',
             ])->onlyInput('email');
         }
 
-        return redirect()->intended('/host/dashboard');
+        return redirect()->route('host.dashboard');
     }
 }

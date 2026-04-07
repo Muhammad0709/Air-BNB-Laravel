@@ -4,7 +4,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { Container, Row, Col } from 'react-bootstrap'
-import { Head, Link as InertiaLink, useForm } from '@inertiajs/react'
+import { Head, Link as InertiaLink, useForm, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 import InputError from '../../../components/InputError'
 
@@ -24,13 +24,20 @@ const inputSx = {
   '& .MuiOutlinedInput-root fieldset': { borderRadius: '24px' },
 }
 
+type PageErrors = Record<string, string | string[] | undefined>
+
+function firstErr(v: string | string[] | undefined): string | undefined {
+  if (v == null) return undefined
+  return Array.isArray(v) ? v[0] : v
+}
+
 export default function HostSignup() {
   const { t, language, switchLanguage, isRtl } = useLanguage()
   const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const currentLanguage = languages.find((l) => l.code === language) || languages[0]
-  const { data, setData, post, processing, errors } = useForm({
+  const { data, setData, post, processing, errors: formErrors } = useForm({
     firstName: '',
     lastName: '',
     email: '',
@@ -38,6 +45,10 @@ export default function HostSignup() {
     password: '',
     password_confirmation: ''
   })
+
+  const pageErrors = (usePage<{ errors?: PageErrors }>().props.errors ?? {}) as PageErrors
+  const fieldErr = (key: keyof typeof formErrors) =>
+    firstErr(formErrors[key] as string | string[] | undefined) ?? firstErr(pageErrors[key as string])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -113,10 +124,10 @@ export default function HostSignup() {
                           onChange={handleChange}
                           required
                           variant="outlined"
-                          error={!!errors.firstName}
+                          error={!!fieldErr('firstName')}
                           sx={inputSx}
                         />
-                        <InputError message={Array.isArray(errors.firstName) ? errors.firstName[0] : errors.firstName} />
+                        <InputError message={fieldErr('firstName')} />
                       </Box>
                       <Box sx={{ flex: 1, minWidth: 0 }}>
                         <TextField
@@ -127,10 +138,10 @@ export default function HostSignup() {
                           onChange={handleChange}
                           required
                           variant="outlined"
-                          error={!!errors.lastName}
+                          error={!!fieldErr('lastName')}
                           sx={inputSx}
                         />
-                        <InputError message={Array.isArray(errors.lastName) ? errors.lastName[0] : errors.lastName} />
+                        <InputError message={fieldErr('lastName')} />
                       </Box>
                     </Stack>
 
@@ -143,10 +154,10 @@ export default function HostSignup() {
                       onChange={handleChange}
                       required
                       variant="outlined"
-                      error={!!errors.email}
+                      error={!!fieldErr('email')}
                       sx={inputSx}
                     />
-                    <InputError message={Array.isArray(errors.email) ? errors.email[0] : errors.email} />
+                    <InputError message={fieldErr('email')} />
 
                     <TextField
                       fullWidth
@@ -157,10 +168,10 @@ export default function HostSignup() {
                       onChange={handleChange}
                       required
                       variant="outlined"
-                      error={!!errors.phone}
+                      error={!!fieldErr('phone')}
                       sx={inputSx}
                     />
-                    <InputError message={Array.isArray(errors.phone) ? errors.phone[0] : errors.phone} />
+                    <InputError message={fieldErr('phone')} />
 
                     <TextField
                       fullWidth
@@ -171,7 +182,7 @@ export default function HostSignup() {
                       onChange={handleChange}
                       required
                       variant="outlined"
-                      error={!!errors.password}
+                      error={!!fieldErr('password')}
                       sx={inputSx}
                       InputProps={{
                         endAdornment: (
@@ -190,7 +201,7 @@ export default function HostSignup() {
                         ),
                       }}
                     />
-                    <InputError message={Array.isArray(errors.password) ? errors.password[0] : errors.password} />
+                    <InputError message={fieldErr('password')} />
 
                     <TextField
                       fullWidth
@@ -201,7 +212,7 @@ export default function HostSignup() {
                       onChange={handleChange}
                       required
                       variant="outlined"
-                      error={!!errors.password_confirmation}
+                      error={!!fieldErr('password_confirmation')}
                       sx={inputSx}
                       InputProps={{
                         endAdornment: (
@@ -220,7 +231,7 @@ export default function HostSignup() {
                         ),
                       }}
                     />
-                    <InputError message={Array.isArray(errors.password_confirmation) ? errors.password_confirmation[0] : errors.password_confirmation} />
+                    <InputError message={fieldErr('password_confirmation')} />
 
                     <Button
                       type="submit"
