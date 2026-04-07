@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Box, Button, Paper, Stack, TextField, Typography, Avatar } from '@mui/material'
+import PhoneCountrySelect from '../components/PhoneCountrySelect'
+import { combinePhoneE164, splitStoredPhone } from '../utils/phone'
 import { Container, Row, Col } from 'react-bootstrap'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -14,13 +16,35 @@ export default function ProfileSettings() {
   const { t } = useLanguage()
   const { props } = usePage()
   const user = (props as any).user
-  
-  const { data: profileData, setData: setProfileData, patch: patchProfile, processing: profileProcessing, errors: profileErrors } = useForm({
+  const initialPhone = splitStoredPhone(user?.phone ?? '')
+
+  const { data: profileData, setData: setProfileData, patch: patchProfile, processing: profileProcessing, errors: profileErrors, transform } = useForm({
     name: user?.name || '',
     email: user?.email || '',
-    phone: user?.phone || '',
-    bio: user?.bio || ''
+    phone: initialPhone.phone,
+    phone_code: initialPhone.phoneCode,
+    bio: user?.bio || '',
   })
+
+  // Register once: on submit Inertia passes current form `data` into this callback (not a stale closure).
+  useEffect(() => {
+    transform((data) => ({
+      name: data.name,
+      email: data.email,
+      bio: data.bio,
+      // Single field for DB: users.phone (E.164-style). Do not send phone_code to the server.
+      phone: combinePhoneE164(data.phone_code, data.phone),
+    }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- transform must be registered once
+  }, [])
+
+  useEffect(() => {
+    const u = (props as any).user
+    if (!u) return
+    const p = splitStoredPhone(u.phone ?? '')
+    setProfileData('phone', p.phone)
+    setProfileData('phone_code', p.phoneCode)
+  }, [(props as any).user?.phone])
 
   const { data: passwordData, setData: setPasswordData, patch: patchPassword, processing: passwordProcessing, errors: passwordErrors, reset: resetPassword } = useForm({
     current_password: '',
@@ -267,29 +291,40 @@ export default function ProfileSettings() {
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: { xs: '0.8125rem', sm: '0.875rem' } }}>
                           {t('profile_settings.phone_number')}
                         </Typography>
-                        <TextField
-                          name="phone"
-                          value={profileData.phone}
-                          onChange={handleProfileChange}
-                          placeholder={t('profile_settings.phone_placeholder')}
-                          fullWidth
-                          size="small"
-                          error={!!profileErrors.phone}
-                          sx={{
-                            '& .MuiOutlinedInput-root': {
-                              borderRadius: '12px',
-                              '& fieldset': {
-                                borderColor: profileErrors.phone ? '#EF4444' : '#D0D5DD'
-                              },
-                              '&:hover fieldset': {
-                                borderColor: profileErrors.phone ? '#EF4444' : '#D0D5DD'
-                              },
-                              '&.Mui-focused fieldset': {
-                                borderColor: profileErrors.phone ? '#EF4444' : '#AD542D'
+                        <Stack direction="row" spacing={1.5} useFlexGap>
+                          <PhoneCountrySelect
+                            value={profileData.phone_code}
+                            onChange={(code) => setProfileData('phone_code', code)}
+                          />
+                          <TextField
+                            name="phone"
+                            value={profileData.phone}
+                            onChange={handleProfileChange}
+                            placeholder={t('profile_settings.phone_national_placeholder')}
+                            fullWidth
+                            size="small"
+                            inputProps={{ inputMode: 'tel', autoComplete: 'tel-national' }}
+                            error={!!profileErrors.phone}
+                            sx={{
+                              flex: 1,
+                              '& .MuiOutlinedInput-root': {
+                                borderRadius: '12px',
+                                '& fieldset': {
+                                  borderColor: profileErrors.phone ? '#EF4444' : '#D0D5DD'
+                                },
+                                '&:hover fieldset': {
+                                  borderColor: profileErrors.phone ? '#EF4444' : '#D0D5DD'
+                                },
+                                '&.Mui-focused fieldset': {
+                                  borderColor: profileErrors.phone ? '#EF4444' : '#AD542D'
+                                }
                               }
-                            }
-                          }}
-                        />
+                            }}
+                          />
+                        </Stack>
+                        <Typography variant="caption" sx={{ display: 'block', color: '#6B7280', mt: 0.75 }}>
+                          {t('profile_settings.phone_save_hint')}
+                        </Typography>
                         <InputError message={Array.isArray(profileErrors.phone) ? profileErrors.phone[0] : profileErrors.phone} />
                       </Box>
 

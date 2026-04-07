@@ -29,6 +29,9 @@ class ProfileSettingsController extends Controller
         ]);
     }
 
+    /**
+     * Profile phone is stored in users.phone as a single string (E.164-style, e.g. +31612345678).
+     */
     public function updateProfile(UpdateProfileRequest $request)
     {
         $user = Auth::user();

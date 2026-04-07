@@ -17,6 +17,8 @@ return [
     'phone' => 'Telefon',
     'phone_number' => 'Telefon Numarası',
     'phone_placeholder' => '+1 (555) 123-4567',
+    'phone_national_placeholder' => '612345678',
+    'phone_save_hint' => 'Hesabınızda tek uluslararası numara olarak kaydedilir (örn. +31612345678).',
     'bio' => 'Biyografi',
     'bio_placeholder' => 'Kendinizden bahsedin...',
     'file_hint' => 'JPG, PNG veya GIF. En fazla 2MB',

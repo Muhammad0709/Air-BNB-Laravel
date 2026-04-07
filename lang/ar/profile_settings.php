@@ -17,6 +17,8 @@ return [
     'phone' => 'الهاتف',
     'phone_number' => 'رقم الهاتف',
     'phone_placeholder' => '+1 (555) 123-4567',
+    'phone_national_placeholder' => '612345678',
+    'phone_save_hint' => 'يُحفظ كرقم دولي واحد (مثل +31612345678).',
     'bio' => 'نبذة',
     'bio_placeholder' => 'أخبرنا عن نفسك...',
     'file_hint' => 'JPG أو PNG أو GIF. الحد الأقصى 2 ميجا',

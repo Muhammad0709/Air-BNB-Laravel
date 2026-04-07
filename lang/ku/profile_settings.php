@@ -17,6 +17,8 @@ return [
     'phone' => 'Telefon',
     'phone_number' => 'Jimareya telefonê',
     'phone_placeholder' => '+1 (555) 123-4567',
+    'phone_national_placeholder' => '612345678',
+    'phone_save_hint' => 'وەک یەک ژمارەی نێودەوڵەتی لە هەژمارەکەتدا پاشەکەوت دەکرێت (نموونە +31612345678).',
     'bio' => 'Biyografî',
     'bio_placeholder' => 'Ji me re ji xwe re bêje...',
     'file_hint' => 'JPG, PNG an GIF. Maks 2MB',

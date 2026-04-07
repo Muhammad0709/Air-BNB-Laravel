@@ -12,7 +12,7 @@ import { useCurrency } from '../contexts/CurrencyContext'
 import { formatPrice } from '../utils/currency'
 import PhoneCountrySelect from '../components/PhoneCountrySelect'
 import InputError from '../components/InputError'
-import { parsePhoneNumber } from 'react-phone-number-input'
+import { splitStoredPhone } from '../utils/phone'
 
 const PLACEHOLDER_IMAGE = '/images/popular-stay-1.svg'
 
@@ -45,26 +45,6 @@ type BookingPageProps = {
   totalAmount: number
   rules: string[]
   auth?: { user: AuthUser | null }
-}
-
-function splitPhoneForForm(raw: string | null | undefined): { phoneCode: string; phone: string } {
-  const fallback = { phoneCode: '+31', phone: '' }
-  if (!raw?.trim()) return fallback
-  const s = raw.trim()
-  try {
-    const parsed = parsePhoneNumber(s)
-    if (parsed) {
-      return {
-        phoneCode: `+${parsed.countryCallingCode}`,
-        phone: String(parsed.nationalNumber).replace(/\D/g, ''),
-      }
-    }
-  } catch {
-    // ignore
-  }
-  const digits = s.replace(/\D/g, '')
-  if (digits.length >= 7) return { ...fallback, phone: digits }
-  return fallback
 }
 
 export default function Booking() {
@@ -124,7 +104,7 @@ export default function Booking() {
     const u = auth?.user
     if (!u) return
     setFormData(prev => {
-      const fromAuth = splitPhoneForForm(u.phone ?? undefined)
+      const fromAuth = splitStoredPhone(u.phone ?? undefined)
       const untouched = !prev.name.trim() && !prev.email.trim() && !prev.phone.trim()
       if (!untouched) return prev
       return {

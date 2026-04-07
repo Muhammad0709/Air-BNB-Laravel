@@ -17,6 +17,8 @@ return [
     'phone' => 'Phone',
     'phone_number' => 'Phone Number',
     'phone_placeholder' => '+1 (555) 123-4567',
+    'phone_national_placeholder' => '612345678',
+    'phone_save_hint' => 'Saved as one international number on your account (e.g. +31612345678).',
     'bio' => 'Bio',
     'bio_placeholder' => 'Tell us about yourself...',
     'file_hint' => 'JPG, PNG or GIF. Max size 2MB',

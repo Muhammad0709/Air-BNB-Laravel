@@ -17,6 +17,8 @@ return [
     'phone' => 'تلفن',
     'phone_number' => 'شماره تلفن',
     'phone_placeholder' => '+1 (555) 123-4567',
+    'phone_national_placeholder' => '612345678',
+    'phone_save_hint' => 'به‌صورت یک شماره بین‌المللی ذخیره می‌شود (مثلاً +31612345678).',
     'bio' => 'بیو',
     'bio_placeholder' => 'درباره خودتان بگویید...',
     'file_hint' => 'JPG, PNG یا GIF. حداکثر ۲ مگابایت',

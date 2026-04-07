@@ -22,7 +22,8 @@ class UpdateProfileRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:20',
+            // Stored as E.164-style string (e.g. +31612345678) in users.phone
+            'phone' => 'nullable|string|max:32',
             'bio' => 'nullable|string|max:500',
         ];
     }
