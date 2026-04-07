@@ -12,6 +12,7 @@ import { useCurrency } from '../contexts/CurrencyContext'
 import { formatPrice } from '../utils/currency'
 import PhoneCountrySelect from '../components/PhoneCountrySelect'
 import InputError from '../components/InputError'
+import { parsePhoneNumber } from 'react-phone-number-input'
 
 const PLACEHOLDER_IMAGE = '/images/popular-stay-1.svg'
 
@@ -28,6 +29,13 @@ type BookingProperty = {
   rating: number
 }
 
+type AuthUser = {
+  id: number
+  name: string
+  email: string
+  phone?: string | null
+}
+
 type BookingPageProps = {
   property: BookingProperty | null
   nights: number
@@ -36,12 +44,33 @@ type BookingPageProps = {
   costs: Array<{ label: string; amount: number }>
   totalAmount: number
   rules: string[]
+  auth?: { user: AuthUser | null }
+}
+
+function splitPhoneForForm(raw: string | null | undefined): { phoneCode: string; phone: string } {
+  const fallback = { phoneCode: '+31', phone: '' }
+  if (!raw?.trim()) return fallback
+  const s = raw.trim()
+  try {
+    const parsed = parsePhoneNumber(s)
+    if (parsed) {
+      return {
+        phoneCode: `+${parsed.countryCallingCode}`,
+        phone: String(parsed.nationalNumber).replace(/\D/g, ''),
+      }
+    }
+  } catch {
+    // ignore
+  }
+  const digits = s.replace(/\D/g, '')
+  if (digits.length >= 7) return { ...fallback, phone: digits }
+  return fallback
 }
 
 export default function Booking() {
   const { t } = useLanguage()
   const { currency } = useCurrency()
-  const { property, nights, checkin, checkout, costs, totalAmount, rules } = usePage<BookingPageProps>().props
+  const { property, nights, checkin, checkout, costs, totalAmount, rules, auth } = usePage<BookingPageProps>().props
 
   const updateDates = (newCheckin: string, newCheckout: string) => {
     const params: Record<string, string> = {}
@@ -90,6 +119,23 @@ export default function Booking() {
       }))
     }
   }, [property?.id, property?.bedrooms, property?.guests])
+
+  useEffect(() => {
+    const u = auth?.user
+    if (!u) return
+    setFormData(prev => {
+      const fromAuth = splitPhoneForForm(u.phone ?? undefined)
+      const untouched = !prev.name.trim() && !prev.email.trim() && !prev.phone.trim()
+      if (!untouched) return prev
+      return {
+        ...prev,
+        name: u.name || '',
+        email: u.email || '',
+        phoneCode: fromAuth.phoneCode,
+        phone: fromAuth.phone,
+      }
+    })
+  }, [auth?.user?.id])
 
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })

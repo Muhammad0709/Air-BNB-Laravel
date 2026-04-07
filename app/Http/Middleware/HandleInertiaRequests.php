@@ -51,6 +51,7 @@ class HandleInertiaRequests extends Middleware
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
+                    'phone' => $user->phone,
                     'currency' => $user->currency ?? 'USD',
                     'profile_picture' => $user->profile_picture
                         ? (filter_var($user->profile_picture, FILTER_VALIDATE_URL)
