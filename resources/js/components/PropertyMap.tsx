@@ -161,27 +161,6 @@ export default function PropertyMap({ properties, center = [34.0522, -118.2437],
             return null
           }
 
-          const getLocationPrefix = () => {
-            if (property.title.toLowerCase().includes('home')) return 'Home'
-            if (property.title.toLowerCase().includes('apartment')) return 'Apartment'
-            if (property.title.toLowerCase().includes('condo')) return 'Condo'
-            if (property.title.toLowerCase().includes('hotel')) return 'Hotel'
-            return 'Place to stay'
-          }
-
-          const formatTitle = () => {
-            const baseTitle = property.title.includes(' in ') ? property.title : `${getLocationPrefix()} in ${property.location.split(',')[0]}`
-            if (baseTitle.includes(' in ')) {
-              const parts = baseTitle.split(' in ')
-              return (
-                <>
-                  {parts[0]} <span style={{ color: '#AD542D' }}>in</span> {parts[1]}
-                </>
-              )
-            }
-            return baseTitle
-          }
-
           return (
             <Marker key={property.id} position={[lat, lng]} icon={priceIcon}>
               <Popup maxWidth={320} className="custom-popup">
@@ -236,7 +215,7 @@ export default function PropertyMap({ properties, center = [34.0522, -118.2437],
                   <Box sx={{ p: 1.5, pt: 1.25 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 0.5 }}>
                       <Typography component="div" sx={{ fontSize: '1rem', fontWeight: 600, color: '#222222', flex: 1, paddingInlineEnd: 1, lineHeight: 1.2 }}>
-                        {formatTitle()}
+                        {property.title}
                       </Typography>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0 }}>
                         <StarIcon sx={{ fontSize: 14, color: '#222222' }} />

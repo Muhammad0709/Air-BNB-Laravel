@@ -6,6 +6,7 @@ use App\Enums\BookingStatus;
 use App\Enums\PropertyStatus;
 use App\Http\Resources\BookingHistoryResource;
 use App\Http\Resources\ConversationResource;
+use App\Http\Resources\ListingResource;
 use App\Models\Booking;
 use App\Models\Conversation;
 use App\Models\Property;
@@ -98,9 +99,86 @@ class PageController extends Controller
         return Inertia::render('TermsOfService');
     }
 
-    public function search()
+    public function search(Request $request)
     {
-        return Inertia::render('SearchResults');
+        $perPage = 12;
+        $query = Property::with(['reviews'])
+            ->where('status', 'Active')
+            ->where('approval_status', PropertyStatus::APPROVED);
+
+        if ($request->filled('location')) {
+            $location = $request->input('location');
+            $query->where(function ($q) use ($location) {
+                $q->where('title', 'like', "%{$location}%")
+                    ->orWhere('location', 'like', "%{$location}%")
+                    ->orWhere('description', 'like', "%{$location}%");
+            });
+        }
+
+        if ($request->filled('min_price')) {
+            $query->where('price', '>=', $request->input('min_price'));
+        }
+        if ($request->filled('max_price')) {
+            $query->where('price', '<=', $request->input('max_price'));
+        }
+
+        $guests = $request->input('guests');
+        if ($request->filled('adults') || $request->filled('children')) {
+            $adults = (int) $request->input('adults', 0);
+            $children = (int) $request->input('children', 0);
+            $guests = max(1, $adults + $children);
+        }
+        if ($guests !== null && $guests !== '' && (int) $guests >= 1) {
+            $query->where('guests', '>=', (int) $guests);
+        }
+
+        $sortBy = $request->input('sort_by', 'featured');
+        switch ($sortBy) {
+            case 'price_low':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_high':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'rating_high':
+                $query->orderByRaw('(SELECT COALESCE(AVG(rating), 0) FROM reviews WHERE reviews.property_id = properties.id) DESC');
+                break;
+            case 'newest':
+                $query->orderBy('created_at', 'desc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
+        }
+
+        $properties = $query->paginate($perPage)->withQueryString();
+        $properties->getCollection()->transform(fn ($p) => (new ListingResource($p))->toArray($request));
+
+        $checkin = $request->input('checkin');
+        $checkout = $request->input('checkout');
+        $nights = null;
+        if ($checkin && $checkout) {
+            $start = \Carbon\Carbon::parse($checkin);
+            $end = \Carbon\Carbon::parse($checkout);
+            $nights = max(1, (int) $start->diffInDays($end));
+        }
+
+        return Inertia::render('SearchResults', [
+            'properties' => $properties,
+            'filters' => $request->only([
+                'location',
+                'checkin',
+                'checkout',
+                'adults',
+                'children',
+                'rooms',
+                'guests',
+                'sort_by',
+                'min_price',
+                'max_price',
+            ]),
+            'nights' => $nights,
+        ]);
     }
 
     public function welcome()

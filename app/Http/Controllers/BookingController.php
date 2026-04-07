@@ -50,6 +50,12 @@ class BookingController extends Controller
             'checkout' => $checkout,
         ]);
 
+        foreach (['adults', 'children', 'rooms'] as $key) {
+            if ($request->has($key) && $request->query($key) !== null && $request->query($key) !== '') {
+                $params[$key] = $request->query($key);
+            }
+        }
+
         return redirect()->route('booking', $params);
     }
 
@@ -74,6 +80,7 @@ class BookingController extends Controller
         }
 
         $propertyData = null;
+        $property = null;
         $nights = 7;
         $costs = [];
         $totalAmount = 0;
@@ -141,6 +148,8 @@ class BookingController extends Controller
             $totalAmount = 631;
         }
 
+        $guestPrefill = $this->resolveGuestPrefillForBooking($property, $request);
+
         return Inertia::render('Booking', [
             'property' => $propertyData,
             'nights' => $nights,
@@ -149,7 +158,58 @@ class BookingController extends Controller
             'costs' => $costs,
             'totalAmount' => $totalAmount,
             'rules' => $rules,
+            'guestPrefill' => $guestPrefill,
         ]);
+    }
+
+    /**
+     * When adults/children/rooms appear on the booking URL (e.g. from search → listing → book),
+     * return validated numbers for the form. Otherwise leave null so the UI keeps empty placeholders.
+     *
+     * @return array{prefill: bool, adults: int|null, children: int|null, rooms: int|null}
+     */
+    private function resolveGuestPrefillForBooking(?Property $property, Request $request): array
+    {
+        $hasGuestQuery = $request->has('adults') || $request->has('children') || $request->has('rooms');
+
+        if (! $hasGuestQuery) {
+            return [
+                'prefill' => false,
+                'adults' => null,
+                'children' => null,
+                'rooms' => null,
+            ];
+        }
+
+        $maxGuestCap = $property ? max(1, (int) $property->guests) : 10;
+        $bedrooms = $property ? max(1, (int) ($property->bedrooms ?: 1)) : 1;
+        $maxRooms = min(20, max($bedrooms, 1));
+
+        $adults = $request->has('adults') ? (int) $request->query('adults') : 1;
+        $children = $request->has('children') ? (int) $request->query('children') : 0;
+        $rooms = $request->has('rooms') ? (int) $request->query('rooms') : $bedrooms;
+
+        $adults = max(1, min(10, $adults));
+        $children = max(0, min(10, $children));
+        $rooms = max(1, min($maxRooms, $rooms));
+
+        if ($property) {
+            if ($adults + $children > $maxGuestCap) {
+                $children = max(0, min($children, $maxGuestCap - $adults));
+                if ($adults + $children > $maxGuestCap) {
+                    $adults = max(1, min($adults, $maxGuestCap));
+                    $children = max(0, $maxGuestCap - $adults);
+                }
+            }
+            $rooms = min($rooms, $bedrooms);
+        }
+
+        return [
+            'prefill' => true,
+            'adults' => $adults,
+            'children' => $children,
+            'rooms' => $rooms,
+        ];
     }
 
     /**

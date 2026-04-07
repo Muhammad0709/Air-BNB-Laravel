@@ -36,6 +36,13 @@ type AuthUser = {
   phone?: string | null
 }
 
+type GuestPrefill = {
+  prefill: boolean
+  adults: number | null
+  children: number | null
+  rooms: number | null
+}
+
 type BookingPageProps = {
   property: BookingProperty | null
   nights: number
@@ -45,26 +52,13 @@ type BookingPageProps = {
   totalAmount: number
   rules: string[]
   auth?: { user: AuthUser | null }
+  guestPrefill?: GuestPrefill
 }
 
 export default function Booking() {
   const { t } = useLanguage()
   const { currency } = useCurrency()
-  const { property, nights, checkin, checkout, costs, totalAmount, rules, auth } = usePage<BookingPageProps>().props
-
-  const updateDates = (newCheckin: string, newCheckout: string) => {
-    const params: Record<string, string> = {}
-    if (property?.id) params.property_id = String(property.id)
-    params.checkin = newCheckin
-    params.checkout = newCheckout
-    const url = `/booking?${new URLSearchParams(params).toString()}`
-    // Partial reload: only refresh price-related props so they update; form state is preserved
-    router.visit(url, {
-      method: 'get',
-      preserveState: true,
-      only: ['costs', 'totalAmount', 'nights', 'checkin', 'checkout'],
-    })
-  }
+  const { property, nights, checkin, checkout, costs, totalAmount, rules, auth, guestPrefill } = usePage<BookingPageProps>().props
 
   const [formData, setFormData] = useState<{
     name: string
@@ -75,30 +69,51 @@ export default function Booking() {
     rooms: number | ''
     adults: number | ''
     children: number
-  }>({
-    name: '',
-    email: '',
-    phone: '',
-    phoneCode: '+31',
-    guests: 1,
-    rooms: '',
-    adults: '',
-    children: 0,
+  }>(() => {
+    const gp = guestPrefill
+    const prefill = gp?.prefill === true
+    return {
+      name: '',
+      email: '',
+      phone: '',
+      phoneCode: '+31',
+      guests: 1,
+      rooms: prefill && gp?.rooms != null ? gp.rooms : '',
+      adults: prefill && gp?.adults != null ? gp.adults : '',
+      children: prefill && gp?.children != null ? gp.children : 0,
+    }
   })
+
+  const updateDates = (newCheckin: string, newCheckout: string) => {
+    const params: Record<string, string> = {}
+    if (property?.id) params.property_id = String(property.id)
+    params.checkin = newCheckin
+    params.checkout = newCheckout
+    if (formData.adults !== '') params.adults = String(formData.adults)
+    params.children = String(formData.children ?? 0)
+    if (formData.rooms !== '') params.rooms = String(formData.rooms)
+    const url = `/booking?${new URLSearchParams(params).toString()}`
+    // Partial reload: only refresh price-related props so they update; form state is preserved
+    router.visit(url, {
+      method: 'get',
+      preserveState: true,
+      only: ['costs', 'totalAmount', 'nights', 'checkin', 'checkout'],
+    })
+  }
 
   const maxRooms = property ? Math.max(10, Math.min(20, property.bedrooms || 1)) : 10
   const roomOptions = Array.from({ length: maxRooms }, (_, i) => i + 1)
 
   useEffect(() => {
-    if (property) {
-      setFormData(prev => ({
-        ...prev,
-        guests: Math.max(1, property.guests || 1),
-        adults: prev.adults === '' ? '' : Math.max(1, property.guests ? Math.min(property.guests, 10) : 1),
-        children: 0,
-      }))
-    }
-  }, [property?.id, property?.bedrooms, property?.guests])
+    if (!property) return
+    if (guestPrefill?.prefill) return
+    setFormData(prev => ({
+      ...prev,
+      guests: Math.max(1, property.guests || 1),
+      adults: prev.adults === '' ? '' : Math.max(1, property.guests ? Math.min(property.guests, 10) : 1),
+      children: 0,
+    }))
+  }, [property?.id, property?.bedrooms, property?.guests, guestPrefill?.prefill])
 
   useEffect(() => {
     const u = auth?.user

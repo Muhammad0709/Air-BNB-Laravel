@@ -91,6 +91,11 @@ type ListingDetailProps = {
   ratingStats: RatingStats
   defaultCheckin?: string
   defaultCheckout?: string
+  searchGuests?: {
+    adults?: string | null
+    children?: string | null
+    rooms?: string | null
+  }
 }
 
 function parseDateFromBackend(dateStr: string): { year: number; month: number; day: number } {
@@ -101,7 +106,7 @@ function parseDateFromBackend(dateStr: string): { year: number; month: number; d
 export default function ListingDetail() {
   const { t } = useLanguage()
   const page = usePage<ListingDetailProps>().props
-  const { property, relatedProperties, reviews, ratingStats, defaultCheckin, defaultCheckout } = page
+  const { property, relatedProperties, reviews, ratingStats, defaultCheckin, defaultCheckout, searchGuests } = page
   const authUser = (page as { auth?: { user?: { id: number; name: string } | null } }).auth?.user
 
   const today = new Date()
@@ -206,6 +211,10 @@ export default function ListingDetail() {
   const bookingUrl = () => {
     const { checkin, checkout } = getCalendarCheckinCheckout()
     const params = new URLSearchParams({ property_id: String(property.id), checkin, checkout })
+    const sg = searchGuests
+    if (sg?.adults != null && String(sg.adults) !== '') params.set('adults', String(sg.adults))
+    if (sg?.children != null && String(sg.children) !== '') params.set('children', String(sg.children))
+    if (sg?.rooms != null && String(sg.rooms) !== '') params.set('rooms', String(sg.rooms))
     return `/booking/redirect?${params.toString()}`
   }
 

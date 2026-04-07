@@ -14,7 +14,7 @@ class PropertyDetailController extends Controller
     /**
      * Display the specified property detail page.
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $property = Property::with(['user', 'reviews.user'])
             ->where('status', 'Active')
@@ -173,6 +173,11 @@ class PropertyDetailController extends Controller
             ],
             'defaultCheckin' => $defaultCheckin,
             'defaultCheckout' => $defaultCheckout,
+            'searchGuests' => [
+                'adults' => $request->query('adults'),
+                'children' => $request->query('children'),
+                'rooms' => $request->query('rooms'),
+            ],
         ]);
     }
 }

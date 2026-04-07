@@ -22,6 +22,8 @@ type SearchResultCardProps = {
   reviews?: number
   isNew?: boolean
   isGuestFavorite?: boolean
+  /** Query string (no leading ?) e.g. adults=2&rooms=1 — passed to /detail/:id so booking can pre-fill guests */
+  detailQuery?: string
 }
 
 export default function SearchResultCard({
@@ -41,6 +43,7 @@ export default function SearchResultCard({
   reviews,
   isNew = false,
   isGuestFavorite = false,
+  detailQuery,
 }: SearchResultCardProps) {
   const { t } = useLanguage()
   const [isFavorited, setIsFavorited] = useState(isGuestFavorite)
@@ -50,7 +53,8 @@ export default function SearchResultCard({
   }, [isGuestFavorite])
 
   const handleClick = () => {
-    router.visit(`/detail/${id}`)
+    const suffix = detailQuery ? `?${detailQuery}` : ''
+    router.visit(`/detail/${id}${suffix}`)
   }
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
@@ -76,17 +80,6 @@ export default function SearchResultCard({
     }
     return null
   }
-
-  const getLocationPrefix = () => {
-    if (title.toLowerCase().includes('home')) return 'Home'
-    if (title.toLowerCase().includes('apartment')) return 'Apartment'
-    if (title.toLowerCase().includes('condo')) return 'Condo'
-    if (title.toLowerCase().includes('hotel')) return 'Hotel'
-    if (title.toLowerCase().includes('guesthouse')) return 'Guesthouse'
-    return 'Place to stay'
-  }
-
-  const displayTitle = title.includes(' in ') ? title : `${getLocationPrefix()} in ${location.split(',')[0]}`
 
   return (
     <Paper
@@ -124,7 +117,7 @@ export default function SearchResultCard({
       </Box>
       <Box>
         <Typography sx={{ fontSize: '0.9375rem', fontWeight: 600, color: '#222222', mb: 0.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {displayTitle}
+          {title}
         </Typography>
         {description && (
           <Typography sx={{ fontSize: '0.9375rem', color: '#222222', mb: 0.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
