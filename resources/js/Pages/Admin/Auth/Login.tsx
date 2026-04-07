@@ -108,7 +108,7 @@ export default function AdminLogin() {
                   </Typography>
                 </Box>
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} autoComplete="off">
                   <Stack spacing={3}>
                     <TextField
                       fullWidth
@@ -121,6 +121,8 @@ export default function AdminLogin() {
                       required
                       variant="outlined"
                       sx={inputSx}
+                      autoComplete="off"
+                      inputProps={{ autoComplete: 'off' }}
                     />
                     <InputError message={emailError} />
 
@@ -135,6 +137,8 @@ export default function AdminLogin() {
                       required
                       variant="outlined"
                       sx={inputSx}
+                      autoComplete="off"
+                      inputProps={{ autoComplete: 'off' }}
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="end">

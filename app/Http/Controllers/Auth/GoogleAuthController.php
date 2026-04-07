@@ -122,7 +122,7 @@ class GoogleAuthController extends Controller
             request()->session()->invalidate();
             request()->session()->regenerateToken();
             return redirect()->route('admin.login')->withErrors([
-                'email' => 'This email is already registered as a customer. Please sign in on the main site (customer login), or use a different Google account to become a host.',
+                'email' => 'This email is already registered as a customer. Please is email se customer login karein; host ke liye koi aur account use karein.',
             ])->onlyInput('email');
         }
 
