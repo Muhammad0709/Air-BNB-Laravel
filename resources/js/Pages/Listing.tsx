@@ -416,6 +416,7 @@ export default function Listing() {
                         image: p.image || undefined,
                         rating: p.rating ?? undefined,
                         reviews: p.reviews ?? undefined,
+                        isGuestFavorite: p.is_guest_favorite,
                       }))}
                     />
                   </Box>

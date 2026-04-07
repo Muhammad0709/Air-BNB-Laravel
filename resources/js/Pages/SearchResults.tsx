@@ -19,6 +19,7 @@ type SearchResultItem = {
   rating?: number
   reviews?: number
   image: string | null
+  /** Matches ListingResource / wishlist */
   isGuestFavorite?: boolean
 }
 
@@ -223,7 +224,8 @@ export default function SearchResults() {
                       reviews: item.reviews,
                       nights,
                       checkin: checkin || undefined,
-                      checkout: checkout || undefined
+                      checkout: checkout || undefined,
+                      isGuestFavorite: item.isGuestFavorite,
                     }))}
                     center={getMapCenter()}
                     zoom={searchLabel ? 12 : 10}

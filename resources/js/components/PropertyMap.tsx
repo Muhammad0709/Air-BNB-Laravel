@@ -1,11 +1,13 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { Box, Typography, IconButton } from '@mui/material'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import CloseIcon from '@mui/icons-material/Close'
 import StarIcon from '@mui/icons-material/Star'
+import { router } from '@inertiajs/react'
+import CardFavoriteIcon from './CardFavoriteIcon'
+import { useLanguage } from '../hooks/use-language'
 
 type Property = {
   id: number | string
@@ -25,6 +27,55 @@ type Property = {
   checkout?: string
   originalPrice?: number
   isNew?: boolean
+  /** Sync with list cards / wishlist */
+  isGuestFavorite?: boolean
+}
+
+function PropertyMapFavoriteButton({
+  propertyId,
+  isGuestFavorite,
+}: {
+  propertyId: number | string
+  isGuestFavorite?: boolean
+}) {
+  const { t } = useLanguage()
+  const [fav, setFav] = useState(!!isGuestFavorite)
+  useEffect(() => {
+    setFav(!!isGuestFavorite)
+  }, [propertyId, isGuestFavorite])
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    e.preventDefault()
+    const id = String(propertyId)
+    if (fav) {
+      router.delete(`/wishlist/${id}`, { preserveScroll: true })
+      setFav(false)
+    } else {
+      router.post(`/wishlist/${id}`, {}, { preserveScroll: true })
+      setFav(true)
+    }
+  }
+
+  return (
+    <IconButton
+      size="small"
+      onClick={handleClick}
+      aria-label={fav ? t('wishlist.remove_from_wishlist') : t('wishlist.add_to_wishlist')}
+      sx={{
+        bgcolor: '#FFFFFF',
+        border: '1px solid rgba(0,0,0,0.1)',
+        width: 32,
+        height: 32,
+        padding: '4px',
+        '&:hover': { bgcolor: '#F7F7F7' },
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 0, transform: 'scale(0.92)' }}>
+        <CardFavoriteIcon isFavorited={fav} />
+      </Box>
+    </IconButton>
+  )
 }
 
 type PropertyMapProps = {
@@ -182,9 +233,7 @@ export default function PropertyMap({ properties, center = [34.0522, -118.2437],
                       </Box>
                     )}
                     <Box sx={{ position: 'absolute', top: 12, right: 12, display: 'flex', gap: 0.5, zIndex: 10 }}>
-                      <IconButton size="small" sx={{ bgcolor: '#FFFFFF', border: '1px solid rgba(0,0,0,0.1)', width: 32, height: 32, '&:hover': { bgcolor: '#F7F7F7' } }}>
-                        <FavoriteBorderIcon sx={{ fontSize: 16, color: '#222222' }} />
-                      </IconButton>
+                      <PropertyMapFavoriteButton propertyId={property.id} isGuestFavorite={property.isGuestFavorite} />
                       <IconButton
                         size="small"
                         onClick={(e) => {
