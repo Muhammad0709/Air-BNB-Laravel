@@ -71,14 +71,12 @@ export default function SearchResultCard({
   }
 
   const formatDates = () => {
-    if (checkin && checkout) {
-      const checkinDate = new Date(checkin)
-      const checkoutDate = new Date(checkout)
-      const checkinStr = checkinDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-      const checkoutStr = checkoutDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-      return `${checkinStr}-${checkoutStr}`
-    }
-    return null
+    if (!checkin || !checkout) return null
+    const a = new Date(`${checkin}T12:00:00`)
+    const b = new Date(`${checkout}T12:00:00`)
+    if (Number.isNaN(a.getTime()) || Number.isNaN(b.getTime())) return null
+    const o: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' }
+    return `${a.toLocaleDateString('en-US', o)} – ${b.toLocaleDateString('en-US', o)}`
   }
 
   return (
@@ -116,24 +114,23 @@ export default function SearchResultCard({
         </IconButton>
       </Box>
       <Box>
-        <Typography sx={{ fontSize: '0.9375rem', fontWeight: 600, color: '#222222', mb: 0.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {title}
-        </Typography>
-        {description && (
-          <Typography sx={{ fontSize: '0.9375rem', color: '#222222', mb: 0.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            {description}
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1, mb: 0.5 }}>
+          <Typography
+            component="span"
+            sx={{
+              flex: 1,
+              minWidth: 0,
+              fontSize: '0.9375rem',
+              fontWeight: 600,
+              color: '#222222',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {title}
           </Typography>
-        )}
-        <Typography sx={{ fontSize: '0.9375rem', color: '#717171', mb: 0.5 }}>
-          {bedrooms && beds ? `${bedrooms} bedroom${bedrooms > 1 ? 's' : ''} · ${beds} bed${beds > 1 ? 's' : ''}` : ''}
-        </Typography>
-        {formatDates() && (
-          <Typography sx={{ fontSize: '0.9375rem', color: '#222222', mb: 1, textDecoration: 'underline' }}>
-            {formatDates()}
-          </Typography>
-        )}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0, pt: '1px' }}>
             {isNew ? (
               <Typography sx={{ fontSize: '0.9375rem', fontWeight: 600, color: '#222222' }}>★ New</Typography>
             ) : (
@@ -148,15 +145,28 @@ export default function SearchResultCard({
               </>
             )}
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 0.5 }}>
-            {originalPrice && originalPrice > price && (
-              <Typography sx={{ fontSize: '0.9375rem', color: '#717171', textDecoration: 'line-through' }}>
-                ${originalPrice}
-              </Typography>
-            )}
-            <Typography sx={{ fontSize: '0.9375rem', fontWeight: 600, color: '#222222' }}>${price}</Typography>
-            <Typography sx={{ fontSize: '0.9375rem', color: '#717171' }}>for {nights} nights</Typography>
-          </Box>
+        </Box>
+        {description && (
+          <Typography sx={{ fontSize: '0.9375rem', color: '#222222', mb: 0.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {description}
+          </Typography>
+        )}
+        <Typography sx={{ fontSize: '0.9375rem', color: '#717171', mb: 0.5 }}>
+          {bedrooms && beds ? `${bedrooms} bedroom${bedrooms > 1 ? 's' : ''} · ${beds} bed${beds > 1 ? 's' : ''}` : ''}
+        </Typography>
+        {formatDates() && (
+          <Typography sx={{ fontSize: '0.9375rem', color: '#222222', mb: 1, textDecoration: 'underline' }}>
+            {formatDates()}
+          </Typography>
+        )}
+        <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'baseline', gap: 0.5, flexWrap: 'wrap' }}>
+          {originalPrice && originalPrice > price && (
+            <Typography sx={{ fontSize: '0.9375rem', color: '#717171', textDecoration: 'line-through' }}>
+              ${originalPrice}
+            </Typography>
+          )}
+          <Typography sx={{ fontSize: '0.9375rem', fontWeight: 600, color: '#222222' }}>${price}</Typography>
+          <Typography sx={{ fontSize: '0.9375rem', color: '#717171' }}>for {nights} nights</Typography>
         </Box>
       </Box>
     </Paper>

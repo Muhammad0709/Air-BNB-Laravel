@@ -145,20 +145,14 @@ export default function PropertyMap({ properties, center = [34.0522, -118.2437],
           })
 
           const formatDates = () => {
-            if (property.checkin && property.checkout) {
-              try {
-                const checkinDate = new Date(property.checkin)
-                const checkoutDate = new Date(property.checkout)
-                if (!isNaN(checkinDate.getTime()) && !isNaN(checkoutDate.getTime())) {
-                  const checkinStr = checkinDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-                  const checkoutStr = checkoutDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-                  return `${checkinStr} – ${checkoutStr}`
-                }
-              } catch (e) {
-                return null
-              }
-            }
-            return null
+            const ci = property.checkin
+            const co = property.checkout
+            if (!ci || !co) return null
+            const a = new Date(`${ci}T12:00:00`)
+            const b = new Date(`${co}T12:00:00`)
+            if (Number.isNaN(a.getTime()) || Number.isNaN(b.getTime())) return null
+            const o: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' }
+            return `${a.toLocaleDateString('en-US', o)} – ${b.toLocaleDateString('en-US', o)}`
           }
 
           return (
@@ -212,32 +206,74 @@ export default function PropertyMap({ properties, center = [34.0522, -118.2437],
                       ))}
                     </Box>
                   </Box>
-                  <Box sx={{ p: 1.5, pt: 1.25 }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 0.5 }}>
-                      <Typography component="div" sx={{ fontSize: '1rem', fontWeight: 600, color: '#222222', flex: 1, paddingInlineEnd: 1, lineHeight: 1.2 }}>
+                  <Box
+                    sx={{
+                      p: 1.5,
+                      pt: 1.25,
+                      minWidth: 0,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 0.5,
+                      '& .MuiTypography-root': { margin: 0 },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexWrap: 'nowrap',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: 1,
+                        width: '100%',
+                      }}
+                    >
+                      <Typography
+                        component="div"
+                        sx={{
+                          flex: '1 1 auto',
+                          minWidth: 0,
+                          fontSize: '1rem',
+                          fontWeight: 600,
+                          color: '#222222',
+                          lineHeight: 1.25,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
                         {property.title}
                       </Typography>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flexShrink: 0 }}>
                         <StarIcon sx={{ fontSize: 14, color: '#222222' }} />
-                        <Typography sx={{ fontSize: '0.875rem', fontWeight: 600, color: '#222222' }}>
+                        <Typography component="div" sx={{ fontSize: '0.875rem', fontWeight: 600, color: '#222222', whiteSpace: 'nowrap' }}>
                           {property.rating?.toFixed(1) || '4.8'}
                         </Typography>
                         {property.reviews !== undefined && (
-                          <Typography sx={{ fontSize: '0.875rem', color: '#222222' }}>({property.reviews})</Typography>
+                          <Typography component="div" sx={{ fontSize: '0.875rem', color: '#717171', whiteSpace: 'nowrap' }}>
+                            ({property.reviews})
+                          </Typography>
                         )}
                       </Box>
                     </Box>
                     {property.description && (
-                      <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.75, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <Typography component="div" sx={{ fontSize: '0.875rem', color: '#717171', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {property.description}
                       </Typography>
                     )}
-                    <Typography sx={{ fontSize: '1rem', fontWeight: 600, color: '#222222', mb: 0.25 }}>
-                      ${property.price}
-                      {property.nights && <span style={{ fontWeight: 600 }}> for {property.nights} nights</span>}
-                    </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 0.5, flexWrap: 'wrap' }}>
+                      <Typography component="span" sx={{ fontSize: '1rem', fontWeight: 600, color: '#222222' }}>
+                        ${property.price}
+                      </Typography>
+                      {property.nights !== undefined && property.nights > 0 && (
+                        <Typography component="span" sx={{ fontSize: '1rem', fontWeight: 400, color: '#717171' }}>
+                          for {property.nights} nights
+                        </Typography>
+                      )}
+                    </Box>
                     {formatDates() && (
-                      <Typography sx={{ fontSize: '0.875rem', color: '#717171' }}>{formatDates()}</Typography>
+                      <Typography component="div" sx={{ fontSize: '0.875rem', color: '#717171' }}>
+                        {formatDates()}
+                      </Typography>
                     )}
                   </Box>
                 </Box>

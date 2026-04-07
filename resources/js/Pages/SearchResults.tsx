@@ -46,7 +46,7 @@ type SearchResultsPageProps = {
 }
 
 export default function SearchResults() {
-  const { t, isRtl } = useLanguage()
+  const { t } = useLanguage()
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'))
   const { props } = usePage<SearchResultsPageProps>()
@@ -127,7 +127,7 @@ export default function SearchResults() {
             className="hide-scrollbar"
           >
             <RBContainer fluid className="px-0">
-              <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <Box sx={{ mb: 2 }}>
                 <Typography sx={{ fontWeight: 600, color: '#222222', fontSize: '1.375rem', mb: 0.5 }}>
                   {(paginator?.total ?? 0) > 0
                     ? searchLabel
@@ -136,9 +136,6 @@ export default function SearchResults() {
                           .replace(':location', filters?.location ?? '')
                       : (t('search_results.over_homes') as string).replace(':count', String(paginator.total))
                     : t('search_results.no_homes_found')}
-                </Typography>
-                <Typography sx={{ color: '#717171', fontSize: '0.875rem', flexShrink: 0, ...(isRtl ? { mr: 2 } : { ml: 2 }) }}>
-                  {t('search_results.prices_include_fees')}
                 </Typography>
               </Box>
               {items.length === 0 ? (
