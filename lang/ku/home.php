@@ -26,5 +26,6 @@ return [
     'no_favorites' => 'هێشتا دڵخواز نییە',
     'no_favorites_sub' => 'بە کرتە کردنی ئایکۆنی دڵ لە هەر لیستێک شوێنەکان هەڵبگرە.',
     'search_destinations_placeholder' => 'گەڕان بۆ شوێنەکان',
+    'search_no_suggestions' => 'هیچ پێشنیارێک لەگەڵ نییە. بۆ بەکارهێنانی دەقەکەت وەک شوێن، گەڕان دابگرە.',
     'add_guests_placeholder' => 'میوان زیاد بکە',
 ];

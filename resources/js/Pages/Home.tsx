@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useMemo, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import PopularStays from '../components/PopularStays'
 import HorizontalScrollSection from '../components/HorizontalScrollSection'
 import { useLanguage } from '../hooks/use-language'
-import { Box, Button, TextField, Popover, Stack, Typography, IconButton, Paper } from '@mui/material'
+import { Box, Button, TextField, Popover, Stack, Typography, IconButton, Paper, InputAdornment } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
@@ -41,6 +41,9 @@ export default function Home() {
   const popularDestinations = pageProps.popularDestinations || []
   const guestsAnchorRef = useRef<HTMLDivElement>(null)
   const destinationAnchorRef = useRef<HTMLDivElement>(null)
+  const destinationPopoverPaperRef = useRef<HTMLElement | null>(null)
+  /** After closing popover, Modal restores focus to the anchor — that re-fires onFocus and reopens. */
+  const ignoreDestinationFocusOpenRef = useRef(false)
   const [destination, setDestination] = useState('')
   const [checkin, setCheckin] = useState('')
   const [checkout, setCheckout] = useState('')
@@ -74,6 +77,16 @@ export default function Home() {
   
   const displayDestinations = popularDestinations.length > 0 ? popularDestinations : defaultDestinations
 
+  const filteredDestinations = useMemo(() => {
+    const q = destination.trim().toLowerCase()
+    if (!q) return displayDestinations
+    return displayDestinations.filter(
+      (d) =>
+        d.name.toLowerCase().includes(q) ||
+        d.location.toLowerCase().includes(q)
+    )
+  }, [displayDestinations, destination])
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     const params = new URLSearchParams()
@@ -94,13 +107,36 @@ export default function Home() {
     setGuestsOpen(false)
   }
 
-  const handleDestinationClick = () => {
-    setDestinationOpen(!destinationOpen)
-  }
-
   const handleDestinationClose = () => {
     setDestinationOpen(false)
   }
+
+
+  useEffect(() => {
+    if (!destinationOpen) return
+
+    const isInsideDestinationUi = (target: Node) =>
+      Boolean(
+        destinationAnchorRef.current?.contains(target) ||
+          destinationPopoverPaperRef.current?.contains(target)
+      )
+
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target
+      if (!target || !(target instanceof Node)) return
+      if (isInsideDestinationUi(target)) return
+      ignoreDestinationFocusOpenRef.current = true
+      setDestinationOpen(false)
+      window.setTimeout(() => {
+        ignoreDestinationFocusOpenRef.current = false
+      }, 200)
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown, true)
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown, true)
+    }
+  }, [destinationOpen])
 
   const handleDestinationSelect = (name: string) => {
     setDestination(name)
@@ -176,23 +212,32 @@ export default function Home() {
                 <Box className="hero-search-form">
                   <form className="search-form" onSubmit={handleSearch}>
                     <Box className="search-input-group">
-                      <Box className={`search-field${destination ? ' has-value' : ''}`} ref={destinationAnchorRef} onClick={handleDestinationClick}>
-                        <label htmlFor="destination">{t('home.destination')}</label>
+                      <Box className={`search-field${destination ? ' has-value' : ''}`} ref={destinationAnchorRef}>
+                        <label htmlFor="destination">{t('home.where_to')}</label>
                         <TextField
                           id="destination"
                           name="destination"
                           value={destination}
                           onChange={(e) => setDestination(e.target.value)}
+                          onFocus={() => {
+                            if (ignoreDestinationFocusOpenRef.current) return
+                            setDestinationOpen(true)
+                          }}
                           placeholder={t('home.search_destinations_placeholder')}
                           variant="standard"
-                          InputProps={{ 
+                          autoComplete="off"
+                          InputProps={{
                             disableUnderline: true,
-                            readOnly: true
                           }}
-                          sx={{ 
-                            '& .MuiInput-input': { border: 'none', padding: 0, cursor: 'pointer', fontWeight: 400, color: destination ? '#222222' : '#717171' },
+                          sx={{
+                            '& .MuiInput-input': {
+                              border: 'none',
+                              padding: 0,
+                              cursor: 'text',
+                              fontWeight: 400,
+                              color: destination ? '#222222' : '#717171',
+                            },
                             '& .MuiInput-input::placeholder': { color: '#717171', opacity: 1 },
-                            cursor: 'pointer'
                           }}
                         />
                       </Box>
@@ -200,6 +245,22 @@ export default function Home() {
                         open={destinationOpen}
                         anchorEl={destinationAnchorRef.current}
                         onClose={handleDestinationClose}
+                        disableRestoreFocus
+                        slotProps={{
+                          root: {
+                            sx: { zIndex: (theme) => (theme.vars || theme).zIndex.modal },
+                          },
+                          paper: {
+                            ref: destinationPopoverPaperRef,
+                            sx: {
+                              mt: 1,
+                              borderRadius: 3,
+                              boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
+                              width: { xs: 'calc(100vw - 32px)', sm: 400 },
+                              maxWidth: 600,
+                            },
+                          },
+                        }}
                         anchorOrigin={{
                           vertical: 'bottom',
                           horizontal: 'left',
@@ -208,25 +269,40 @@ export default function Home() {
                           vertical: 'top',
                           horizontal: 'left',
                         }}
-                        PaperProps={{
-                          sx: {
-                            mt: 1,
-                            borderRadius: 3,
-                            boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
-                            width: { xs: 'calc(100vw - 32px)', sm: 400 },
-                            maxWidth: 600
-                          }
-                        }}
                       >
                         <Paper elevation={0} sx={{ p: 3, overflow: 'hidden' }}>
-                          <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 3, wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                          <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 2, wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                             {t('home.where_to')}
                           </Typography>
-                          <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222', mb: 2, fontSize: '0.875rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                          <TextField
+                            fullWidth
+                            size="small"
+                            placeholder={t('home.search_destinations_placeholder')}
+                            value={destination}
+                            onChange={(e) => setDestination(e.target.value)}
+                            autoComplete="off"
+                            InputProps={{
+                              startAdornment: (
+                                <InputAdornment position="start">
+                                  <SearchIcon sx={{ color: '#717171', fontSize: 20 }} />
+                                </InputAdornment>
+                              ),
+                            }}
+                            sx={{
+                              mb: 2,
+                              '& .MuiOutlinedInput-root': { borderRadius: 2 },
+                            }}
+                          />
+                          <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222', mb: 1.5, fontSize: '0.875rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                             {t('home.popular_destinations_label')}
                           </Typography>
-                          <Stack spacing={0}>
-                            {displayDestinations.map((dest, index) => (
+                          <Stack spacing={0} sx={{ maxHeight: 320, overflow: 'auto' }}>
+                            {filteredDestinations.length === 0 && destination.trim() ? (
+                              <Typography variant="body2" sx={{ color: '#717171', py: 1.5, px: 0.5 }}>
+                                {t('home.search_no_suggestions')}
+                              </Typography>
+                            ) : null}
+                            {filteredDestinations.map((dest, index) => (
                               <Box
                                 key={index}
                                 onClick={() => handleDestinationSelect(dest.name)}

@@ -26,6 +26,7 @@ return [
     'no_favorites' => 'ابھی کوئی پسندیدہ نہیں',
     'no_favorites_sub' => 'کسی لسٹنگ پر دل کے آئیکون پر کلک کر کے پراپرٹیز محفوظ کریں۔',
     'search_destinations_placeholder' => 'مقامات تلاش کریں',
+    'search_no_suggestions' => 'کوئی مماثل تجاویز نہیں۔ اپنے متن کو مقام کے طور پر استعمال کرنے کے لیے تلاش دبائیں۔',
     'add_guests_placeholder' => 'مہمان شامل کریں',
     'guest_favorite' => 'مہمان کی پسند',
 ];

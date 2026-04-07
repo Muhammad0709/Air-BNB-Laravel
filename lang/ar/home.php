@@ -26,6 +26,7 @@ return [
     'no_favorites' => 'لا مفضلات بعد',
     'no_favorites_sub' => 'احفظ العقارات التي تعجبك بالنقر على أيقونة القلب في أي قائمة.',
     'search_destinations_placeholder' => 'البحث عن الوجهات',
+    'search_no_suggestions' => 'لا توجد اقتراحات مطابقة. اضغط بحث لاستخدام نصك كموقع.',
     'add_guests_placeholder' => 'إضافة ضيوف',
     'guest_favorite' => 'مفضل الضيوف',
 ];

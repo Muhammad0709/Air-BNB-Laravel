@@ -26,5 +26,6 @@ return [
     'no_favorites' => 'Henüz favori yok',
     'no_favorites_sub' => 'Beğendiğiniz ilanlarda kalp simgesine tıklayarak kaydedin.',
     'search_destinations_placeholder' => 'Destinasyon ara',
+    'search_no_suggestions' => 'Eşleşen öneri yok. Konum olarak metninizi kullanmak için Ara\'ya basın.',
     'add_guests_placeholder' => 'Misafir ekle',
 ];

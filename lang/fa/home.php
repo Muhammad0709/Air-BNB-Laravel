@@ -26,6 +26,7 @@ return [
     'no_favorites' => 'هنوز علاقه‌مندی نیست',
     'no_favorites_sub' => 'با کلیک روی آیکون قلب در هر لیست، اقامت را ذخیره کنید.',
     'search_destinations_placeholder' => 'جستجوی مقاصد',
+    'search_no_suggestions' => 'پیشنهادی مطابق نیست. برای استفاده از متن به‌عنوان مقصد، جستجو را بزنید.',
     'add_guests_placeholder' => 'افزودن مهمان',
     'guest_favorite' => 'محبوب مهمان',
 ];
