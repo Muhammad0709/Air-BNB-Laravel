@@ -50,6 +50,7 @@ return [
         'sign_in_google' => 'Sign in with Google',
         'no_account' => "Don't have an account?",
         'sign_up_link' => 'Sign Up',
+        'error_customer_email_for_host_google' => 'This email is already registered as a customer. Please log in as a customer using this email, or use a different account for the host.',
     ],
     'admin_signup' => [
         'title' => 'Sign Up',

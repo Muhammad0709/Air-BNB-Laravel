@@ -50,6 +50,7 @@ return [
         'sign_in_google' => 'Google ile giriş yap',
         'no_account' => 'Hesabınız yok mu?',
         'sign_up_link' => 'Kayıt ol',
+        'error_customer_email_for_host_google' => 'Bu e-posta adresi zaten müşteri olarak kayıtlı. Lütfen bu e-posta ile müşteri olarak giriş yapın veya ev sahibi için farklı bir hesap kullanın.',
     ],
     'admin_signup' => [
         'title' => 'Kayıt ol',
