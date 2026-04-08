@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Head, Link, useForm } from '@inertiajs/react'
-import { Box, Button, IconButton, InputAdornment, Link as MUILink, Menu, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Link as MUILink, Menu, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
@@ -24,6 +24,7 @@ export default function SignUp() {
   const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [googleDialogOpen, setGoogleDialogOpen] = useState(false)
   const currentLanguage = languages.find((l) => l.code === language) || languages[0]
   const { data, setData, post, processing, errors } = useForm({
     type: 'user' as 'user' | 'host',
@@ -166,7 +167,7 @@ export default function SignUp() {
                           <InputError message={Array.isArray(errors.password_confirmation) ? errors.password_confirmation[0] : errors.password_confirmation} />
                         </Box>
                         <Button type="submit" variant="contained" size="large" disabled={processing} sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: 999, textTransform: 'none', fontWeight: 700, fontSize: 16, bgcolor: '#AD542D', boxShadow: 'none', '&:hover': { bgcolor: '#78381C', boxShadow: 'none' } }}>{processing ? t('auth.signup.creating') : t('auth.signup.submit')}</Button>
-                        <Button component="a" href="/auth/google?intent=customer" variant="outlined" size="large" {...(isRtl ? { endIcon: googleIconEl } : { startIcon: googleIconEl })} sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: 999, borderColor: '#D0D5DD', color: '#344054', gap: 1, textDecoration: 'none', '& .MuiButton-startIcon, & .MuiButton-endIcon': { margin: 0 } }}>{t('auth.signup.sign_up_google')}</Button>
+                        <Button type="button" variant="outlined" size="large" onClick={() => setGoogleDialogOpen(true)} {...(isRtl ? { endIcon: googleIconEl } : { startIcon: googleIconEl })} sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: 999, borderColor: '#D0D5DD', color: '#344054', gap: 1, '& .MuiButton-startIcon, & .MuiButton-endIcon': { margin: 0 } }}>{t('auth.signup.sign_up_google')}</Button>
                       </Stack>
                     </form>
                   </Paper>
@@ -179,6 +180,50 @@ export default function SignUp() {
             </Box>
           </Box>
         </Container>
+        <Dialog
+          open={googleDialogOpen}
+          onClose={() => setGoogleDialogOpen(false)}
+          fullWidth
+          maxWidth={false}
+          PaperProps={{
+            sx: {
+              borderRadius: 3,
+              width: '100%',
+              maxWidth: 400,
+              mx: 2,
+            },
+          }}
+        >
+          <DialogTitle sx={{ fontWeight: 700, pr: 6 }}>{t('auth.signin.google_intent_title')}</DialogTitle>
+          <DialogContent>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              {t('auth.signin.google_intent_subtitle')}
+            </Typography>
+            <Stack spacing={1.5}>
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={() => { window.location.href = '/auth/google?intent=customer' }}
+                sx={{ py: 1.25, borderRadius: 999, textTransform: 'none', fontWeight: 600, bgcolor: '#AD542D', boxShadow: 'none', '&:hover': { bgcolor: '#78381C', boxShadow: 'none' } }}
+              >
+                {t('auth.signin.google_intent_customer')}
+              </Button>
+              <Button
+                fullWidth
+                variant="outlined"
+                onClick={() => { window.location.href = '/auth/google?intent=host' }}
+                sx={{ py: 1.25, borderRadius: 999, textTransform: 'none', fontWeight: 600, borderColor: '#D0D5DD', color: '#344054' }}
+              >
+                {t('auth.signin.google_intent_host')}
+              </Button>
+            </Stack>
+          </DialogContent>
+          <DialogActions sx={{ px: 3, pb: 2 }}>
+            <Button onClick={() => setGoogleDialogOpen(false)} sx={{ textTransform: 'none', color: '#667085', fontWeight: 600 }}>
+              {t('auth.signin.google_intent_cancel')}
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </>
   )
