@@ -17,7 +17,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->statefulApi();
 
         $middleware->validateCsrfTokens(except: [
-            'auth/login',
             'auth/register',
             'login',
             'register',

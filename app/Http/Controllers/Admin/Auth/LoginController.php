@@ -28,7 +28,7 @@ class LoginController extends Controller
 
         if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             $user = Auth::user();
-            // Only allow Admin or Host to log in here; customers must use /auth/login
+            // Only allow Admin or Host to log in here; customers must use /login
             if ($user->type === UserType::USER) {
                 Auth::logout();
                 $request->session()->invalidate();

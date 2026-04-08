@@ -77,7 +77,7 @@ export default function SignIn() {
                   <Typography variant="h4" fontWeight={700} sx={{ mb: { xs: 1.5, md: 2 }, fontSize: { xs: 28, sm: 32, md: 44 }, lineHeight: 1.15 }}>{t('auth.signin.welcome')}</Typography>
                   <Typography variant="body1" color="text.secondary" sx={{ mb: { xs: 4, md: 5 } }}>{t('auth.signin.subtitle')}</Typography>
                   <Paper elevation={0} sx={{ bgcolor: 'transparent' }}>
-                    <form onSubmit={(e) => { e.preventDefault(); post('/auth/login'); }}>
+                    <form onSubmit={(e) => { e.preventDefault(); post('/login'); }}>
                       <Stack spacing={2.5}>
                         <Box>
                           <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signin.email')}</Typography>

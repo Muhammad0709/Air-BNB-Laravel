@@ -37,12 +37,12 @@ Route::get('locale/{locale}', [LocaleController::class, 'switch'])->name('locale
 // Public authentication routes (only accessible to guests)
 Route::middleware('guest')->group(function () {
     // User authentication routes
-    Route::prefix('auth')->group(function () {
-        Route::get('/login', [LoginController::class, 'create'])->name('login');
-        Route::post('/login', [LoginController::class, 'store']);
-        // Avoid 405 when a redirect lands here with DELETE (e.g. session expired during a delete request)
-        Route::delete('/login', fn () => redirect()->route('login'));
+    Route::get('/login', [LoginController::class, 'create'])->name('login');
+    Route::post('/login', [LoginController::class, 'store']);
+    // Avoid 405 when a redirect lands here with DELETE (e.g. session expired during a delete request)
+    Route::delete('/login', fn () => redirect()->route('login'));
 
+    Route::prefix('auth')->group(function () {
         Route::get('/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
         Route::get('/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
 
@@ -51,8 +51,8 @@ Route::middleware('guest')->group(function () {
     });
     
     // Admin login (admin can only login, not register)
-    Route::get('/login', [AdminLoginController::class, 'create'])->name('admin.login');
-    Route::post('/login', [AdminLoginController::class, 'store']);
+    // Route::get('/login', [AdminLoginController::class, 'create'])->name('admin.login');
+    // Route::post('/login', [AdminLoginController::class, 'store']);
     
     // Host registration (creates Host users)
     Route::get('/register', [AdminRegisterController::class, 'create'])->name('host.register');

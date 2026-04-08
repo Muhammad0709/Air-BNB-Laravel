@@ -371,7 +371,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                   </Menu>
                 </>
               ) : (
-                <Typography component={Link} href="/auth/login" sx={{ textDecoration: 'none', color: '#222222', fontWeight: 700 }}>{t('nav.log_in')}</Typography>
+                <Typography component={Link} href="/login" sx={{ textDecoration: 'none', color: '#222222', fontWeight: 700 }}>{t('nav.log_in')}</Typography>
               )}
             </Stack>
           )}
@@ -569,7 +569,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                       </Button>
                     </>
                   ) : (
-                    <Button component={Link} href="/auth/login" variant="text" onClick={() => setOpen(false)} sx={{ textTransform: 'none', fontWeight: 700 }}>{t('nav.log_in')}</Button>
+                    <Button component={Link} href="/login" variant="text" onClick={() => setOpen(false)} sx={{ textTransform: 'none', fontWeight: 700 }}>{t('nav.log_in')}</Button>
                   )}
                 </Stack>
               </Stack>
