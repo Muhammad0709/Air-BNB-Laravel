@@ -20,13 +20,13 @@ class HostMiddleware
     {
         // Check if user is authenticated
         if (!Auth::check()) {
-            return redirect()->route('admin.login')->with('error', 'Please login to access host panel.');
+            return redirect()->route('login')->with('error', 'Please login to access host panel.');
         }
 
         // Check if authenticated user is a host
         if (Auth::user()->type !== UserType::HOST) {
             Auth::logout();
-            return redirect()->route('admin.login')->with('error', 'Access denied. Host privileges required.');
+            return redirect()->route('login')->with('error', 'Access denied. Host privileges required.');
         }
 
         return $next($request);

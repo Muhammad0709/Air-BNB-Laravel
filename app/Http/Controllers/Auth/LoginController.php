@@ -20,7 +20,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Handle an incoming authentication request (customers only).
+     * Handle an incoming authentication request (customer, host, and admin).
      */
     public function store(LoginRequest $request)
     {
@@ -28,17 +28,13 @@ class LoginController extends Controller
 
         if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             $user = Auth::user();
-            // Only allow customer (User) type to log in here
-            if ($user->type !== UserType::USER) {
-                Auth::logout();
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
-                return redirect()->route('admin.login')->withErrors([
-                    'email' => 'Please use the host/admin login page to sign in.',
-                ])->onlyInput('email');
-            }
             $request->session()->regenerate();
-            return redirect()->intended('/');
+
+            return match ($user->type) {
+                UserType::ADMIN => redirect()->intended(route('admin.dashboard')),
+                UserType::HOST => redirect()->intended(route('host.dashboard')),
+                UserType::USER => redirect()->intended('/'),
+            };
         }
 
         return back()->withErrors([
