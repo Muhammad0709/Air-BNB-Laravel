@@ -25,7 +25,13 @@ export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const currentLanguage = languages.find((l) => l.code === language) || languages[0]
-  const { data, setData, post, processing, errors } = useForm({ name: '', email: '', password: '', password_confirmation: '' })
+  const { data, setData, post, processing, errors } = useForm({
+    type: 'user' as 'user' | 'host',
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
+  })
   const formWidth = 600
 
   const googleIconEl = <Box component="img" src={socialIcon} alt="Google" sx={{ width: 24, height: 24 }} />
@@ -77,7 +83,7 @@ export default function SignUp() {
                   </Stack>
                   <Typography variant="h4" fontWeight={700} sx={{ mb: 2, fontSize: { xs: 32, md: 30 }, lineHeight: 1.15 }}>{t('auth.signup.heading')}</Typography>
                   <Paper elevation={0} sx={{ bgcolor: 'transparent' }}>
-                    <form onSubmit={(e) => { e.preventDefault(); post('/auth/register'); }}>
+                    <form onSubmit={(e) => { e.preventDefault(); post('/register'); }}>
                       <Stack spacing={2.5}>
                         <Box>
                           <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signup.name')}</Typography>
@@ -88,6 +94,31 @@ export default function SignUp() {
                           <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signup.email')}</Typography>
                           <TextField name="email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} error={!!errors.email} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signup.email_placeholder')} />
                           <InputError message={Array.isArray(errors.email) ? errors.email[0] : errors.email} />
+                        </Box>
+                        <Box>
+                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signup.type_label')}</Typography>
+                          <TextField
+                            select
+                            name="type"
+                            value={data.type}
+                            onChange={(e) => setData('type', e.target.value as 'user' | 'host')}
+                            error={!!errors.type}
+                            sx={{
+                              width: { xs: '100%', md: formWidth },
+                              '& .MuiOutlinedInput-root': {
+                                height: 52,
+                                bgcolor: '#FFFFFF',
+                                borderRadius: '8px',
+                                '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' },
+                                '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' },
+                                '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' },
+                              },
+                            }}
+                          >
+                            <MenuItem value="user">{t('auth.signup.type_user')}</MenuItem>
+                            <MenuItem value="host">{t('auth.signup.type_host')}</MenuItem>
+                          </TextField>
+                          <InputError message={Array.isArray(errors.type) ? errors.type[0] : errors.type} />
                         </Box>
                         <Box>
                           <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signup.password')}</Typography>

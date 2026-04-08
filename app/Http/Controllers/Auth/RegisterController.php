@@ -26,16 +26,19 @@ class RegisterController extends Controller
     public function store(RegisterRequest $request)
     {
         $validated = $request->validated();
+        $type = $validated['type'] === 'host' ? UserType::HOST : UserType::USER;
+
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'type' => UserType::USER,
+            'type' => $type,
         ]);
 
-        // Log the user in after registration
         auth()->login($user);
 
-        return redirect()->intended('/');
+        return $type === UserType::HOST
+            ? redirect()->intended(route('host.dashboard'))
+            : redirect()->intended('/');
     }
 }

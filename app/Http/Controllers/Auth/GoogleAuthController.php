@@ -19,7 +19,7 @@ class GoogleAuthController extends Controller
 
     /**
      * ?intent=host — /login & /register (hosts only; admins cannot use Google here).
-     * ?intent=customer — /login & /auth/register (customers only).
+     * ?intent=customer — /login & /register (customers only).
      */
     public function redirect()
     {
