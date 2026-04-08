@@ -31,6 +31,9 @@ return [
     'signup' => [
         'title' => 'تۆمارکردن',
         'heading' => 'حیساب دروست بکە',
+        'type_label' => 'جۆر',
+        'type_user' => 'کڕیار',
+        'type_host' => 'خانەخوێ',
         'name' => 'ناو*',
         'name_placeholder' => 'ناوەکەت بنووسە',
         'email' => 'ئیمەیڵ*',

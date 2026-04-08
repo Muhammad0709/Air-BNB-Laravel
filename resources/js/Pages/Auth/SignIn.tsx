@@ -134,7 +134,7 @@ export default function SignIn() {
                   </Paper>
                   <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center', mt: 4 }}>
                     {t('auth.signin.no_account')}{' '}
-                    <MUILink component={Link} href="/auth/register" underline="none" sx={{ color: '#AD542D', fontWeight: 600 }}>{t('auth.signin.sign_up_link')}</MUILink>
+                    <MUILink component={Link} href="/register" underline="none" sx={{ color: '#AD542D', fontWeight: 600 }}>{t('auth.signin.sign_up_link')}</MUILink>
                   </Typography>
                 </Box>
               </Box>

@@ -31,6 +31,9 @@ return [
     'signup' => [
         'title' => 'ثبت‌نام',
         'heading' => 'ایجاد حساب کاربری',
+        'type_label' => 'نوع',
+        'type_user' => 'مشتری',
+        'type_host' => 'میزبان',
         'name' => 'نام*',
         'name_placeholder' => 'نام خود را وارد کنید',
         'email' => 'ایمیل*',

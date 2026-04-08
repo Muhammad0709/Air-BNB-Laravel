@@ -31,6 +31,9 @@ return [
     'signup' => [
         'title' => 'Kayıt Ol',
         'heading' => 'Hesap oluştur',
+        'type_label' => 'Tür',
+        'type_user' => 'Müşteri',
+        'type_host' => 'Ev sahibi',
         'name' => 'Ad*',
         'name_placeholder' => 'Adınızı girin',
         'email' => 'E-posta*',

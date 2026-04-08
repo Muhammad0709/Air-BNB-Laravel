@@ -31,6 +31,9 @@ return [
     'signup' => [
         'title' => 'Sign Up',
         'heading' => 'Create an account',
+        'type_label' => 'Type',
+        'type_user' => 'Customer',
+        'type_host' => 'Host',
         'name' => 'Name*',
         'name_placeholder' => 'Enter your name',
         'email' => 'Email*',

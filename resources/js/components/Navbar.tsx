@@ -348,7 +348,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                     </MenuItem>
                     {/* <MenuItem
                       component={Link}
-                      href="/auth/register"
+                      href="/register"
                       onClick={handleProfileClose}
                       sx={{ py: 1.5, px: 2, '&:hover': { bgcolor: '#F7F7F7' } }}
                     >

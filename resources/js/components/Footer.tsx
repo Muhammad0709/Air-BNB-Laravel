@@ -18,7 +18,7 @@ export default function Footer() {
             <Stack spacing={1.5} useFlexGap>
               <Box component={Link} href="/contact" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.contact_us')}</Box>
               <Box component={Link} href="/login" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.log_in')}</Box>
-              <Box component={Link} href="/auth/register" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.sign_up')}</Box>
+              <Box component={Link} href="/register" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.sign_up')}</Box>
             </Stack>
           </Box>
           <Box>

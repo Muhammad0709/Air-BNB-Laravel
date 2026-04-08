@@ -14,7 +14,6 @@ use App\Http\Controllers\Admin\HistoryController as AdminHistoryController;
 use App\Http\Controllers\Admin\SupportTicketController;
 use App\Http\Controllers\Admin\SettingsController as AdminSettingsController;
 use App\Http\Controllers\Admin\Auth\LoginController as AdminLoginController;
-use App\Http\Controllers\Admin\Auth\RegisterController as AdminRegisterController;
 use App\Http\Controllers\Host\DashboardController as HostDashboardController;
 use App\Http\Controllers\Host\PropertyController as HostPropertyController;
 use App\Http\Controllers\Host\BookingController as HostBookingController;
@@ -42,21 +41,21 @@ Route::middleware('guest')->group(function () {
     // Avoid 405 when a redirect lands here with DELETE (e.g. session expired during a delete request)
     Route::delete('/login', fn () => redirect()->route('login'));
 
+    Route::get('/register', [RegisterController::class, 'create'])->name('register');
+    Route::post('/register', [RegisterController::class, 'store']);
+
     Route::prefix('auth')->group(function () {
         Route::get('/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
         Route::get('/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
-
-        Route::get('/register', [RegisterController::class, 'create'])->name('register');
-        Route::post('/register', [RegisterController::class, 'store']);
     });
     
     // Admin login (admin can only login, not register)
     // Route::get('/login', [AdminLoginController::class, 'create'])->name('admin.login');
     // Route::post('/login', [AdminLoginController::class, 'store']);
     
-    // Host registration (creates Host users)
-    Route::get('/register', [AdminRegisterController::class, 'create'])->name('host.register');
-    Route::post('/register', [AdminRegisterController::class, 'store']);
+    // Host-only registration (replaced by unified /register with type=host; Admin/Auth/SignUp unused)
+    // Route::get('/register', [AdminRegisterController::class, 'create'])->name('host.register');
+    // Route::post('/register', [AdminRegisterController::class, 'store']);
 });
 
 // Public routes (accessible to all users)

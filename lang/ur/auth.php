@@ -31,6 +31,9 @@ return [
     'signup' => [
         'title' => 'سائن اپ',
         'heading' => 'اکاؤنٹ بنائیں',
+        'type_label' => 'قسم',
+        'type_user' => 'کسٹمر',
+        'type_host' => 'میزبان',
         'name' => 'نام*',
         'name_placeholder' => 'اپنا نام درج کریں',
         'email' => 'ای میل*',

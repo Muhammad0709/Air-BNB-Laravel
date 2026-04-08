@@ -31,6 +31,9 @@ return [
     'signup' => [
         'title' => 'إنشاء حساب',
         'heading' => 'إنشاء حساب جديد',
+        'type_label' => 'النوع',
+        'type_user' => 'عميل',
+        'type_host' => 'مضيف',
         'name' => 'الاسم*',
         'name_placeholder' => 'أدخل اسمك',
         'email' => 'البريد الإلكتروني*',
