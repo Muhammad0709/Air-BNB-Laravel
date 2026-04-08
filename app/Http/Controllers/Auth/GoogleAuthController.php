@@ -19,7 +19,7 @@ class GoogleAuthController extends Controller
 
     /**
      * ?intent=host — /login & /register (hosts only; admins cannot use Google here).
-     * ?intent=customer — /auth/login & /auth/register (customers only).
+     * ?intent=customer — /login & /auth/register (customers only).
      */
     public function redirect()
     {
@@ -47,7 +47,7 @@ class GoogleAuthController extends Controller
                 ->user();
         } catch (\Throwable $e) {
             report($e);
-            return redirect()->route($intentForError === 'customer' ? 'login' : 'admin.login')
+            return redirect()->route('login')
                 ->withErrors(['email' => 'Google sign-in failed. Please try again or use email/password.']);
         }
 
@@ -86,7 +86,7 @@ class GoogleAuthController extends Controller
                 Auth::logout();
                 request()->session()->invalidate();
                 request()->session()->regenerateToken();
-                return redirect()->route('admin.login')->withErrors([
+                return redirect()->route('login')->withErrors([
                     'email' => 'Please sign in with email and password to access the admin panel.',
                 ])->onlyInput('email');
             }
@@ -94,8 +94,8 @@ class GoogleAuthController extends Controller
                 Auth::logout();
                 request()->session()->invalidate();
                 request()->session()->regenerateToken();
-                return redirect()->route('admin.login')->withErrors([
-                    'email' => 'Please use the host login page to sign in as a host.',
+                return redirect()->route('login')->withErrors([
+                    'email' => 'This Google account is registered as a host. Use “Sign in with Google” and choose Continue as host.',
                 ])->onlyInput('email');
             }
             // Do not use intended() — avoid sending users to a stale url.intended from session
@@ -107,7 +107,7 @@ class GoogleAuthController extends Controller
             Auth::logout();
             request()->session()->invalidate();
             request()->session()->regenerateToken();
-            return redirect()->route('admin.login')->withErrors([
+            return redirect()->route('login')->withErrors([
                 'email' => 'Administrators must sign in with email and password.',
             ])->onlyInput('email');
         }
@@ -121,7 +121,7 @@ class GoogleAuthController extends Controller
             Auth::logout();
             request()->session()->invalidate();
             request()->session()->regenerateToken();
-            return redirect()->route('admin.login')->withErrors([
+            return redirect()->route('login')->withErrors([
                 'email' => __('auth.admin_login.error_customer_email_for_host_google'),
             ])->onlyInput('email');
         }
