@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Head, Link, useForm } from '@inertiajs/react'
+import React, { useEffect, useState } from 'react'
+import { Head, Link, useForm, usePage } from '@inertiajs/react'
 import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, IconButton, InputAdornment, Link as MUILink, Menu, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import Visibility from '@mui/icons-material/Visibility'
@@ -7,6 +7,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { Container } from 'react-bootstrap'
 import { useLanguage } from '../../hooks/use-language'
 import InputError from '../../components/InputError'
+import Toast from '../../components/shared/Toast'
 
 const logoUrl = '/images/Logo.png'
 const socialIcon = '/images/Social-icon.svg'
@@ -19,14 +20,29 @@ const languages = [
   { code: 'ku', name: 'Kurdish', flag: '🇮🇶' },
 ]
 
+/** Laravel / Inertia may return a string or string[] per field */
+function line(v: string | string[] | undefined): string | undefined {
+  if (v == null) return undefined
+  return Array.isArray(v) ? v[0] : v
+}
+
 export default function SignIn() {
   const { t, language, switchLanguage, isRtl } = useLanguage()
   const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null)
   const [showPassword, setShowPassword] = useState(false)
   const [googleDialogOpen, setGoogleDialogOpen] = useState(false)
   const currentLanguage = languages.find((l) => l.code === language) || languages[0]
-  const { data, setData, post, processing, errors } = useForm({ email: '', password: '', remember: false })
+  const { data, setData, post, processing, errors: formErrors } = useForm({ email: '', password: '', remember: false })
+  const shared = usePage().props.errors as Record<string, string | string[]> | undefined
+  const emailError = line(formErrors.email) ?? line(shared?.email)
+  const passwordError = line(formErrors.password) ?? line(shared?.password)
+  const loginErrorMessage = emailError || passwordError
+  const [toastOpen, setToastOpen] = useState(false)
   const formWidth = 600
+
+  useEffect(() => {
+    if (loginErrorMessage) setToastOpen(true)
+  }, [loginErrorMessage])
 
   const googleIconEl = <Box component="img" src={socialIcon} alt="Google" sx={{ width: 24, height: 24 }} />
 
@@ -82,8 +98,8 @@ export default function SignIn() {
                       <Stack spacing={2.5}>
                         <Box>
                           <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signin.email')}</Typography>
-                          <TextField name="email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} error={!!errors.email} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '24px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '24px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '24px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '24px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signin.email_placeholder')} />
-                          <InputError message={Array.isArray(errors.email) ? errors.email[0] : errors.email} />
+                          <TextField name="email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} error={!!emailError} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '24px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '24px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '24px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '24px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signin.email_placeholder')} />
+                          <InputError message={loginErrorMessage ? undefined : emailError} />
                         </Box>
                         <Box>
                           <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signin.password')}</Typography>
@@ -92,7 +108,7 @@ export default function SignIn() {
                             type={showPassword ? 'text' : 'password'}
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
-                            error={!!errors.password}
+                            error={!!passwordError}
                             placeholder={t('auth.signin.password_placeholder')}
                             sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '24px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '24px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '24px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '24px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }}
                             InputProps={{
@@ -105,7 +121,7 @@ export default function SignIn() {
                               ),
                             }}
                           />
-                          <InputError message={Array.isArray(errors.password) ? errors.password[0] : errors.password} />
+                          <InputError message={loginErrorMessage ? undefined : passwordError} />
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                           <FormControlLabel control={<Checkbox size="small" checked={data.remember} onChange={(e) => setData('remember', e.target.checked)} />} label={t('auth.signin.remember_me')} sx={{ color: '#151515' }} />
@@ -125,7 +141,20 @@ export default function SignIn() {
             </Box>
           </Box>
         </Container>
-        <Dialog open={googleDialogOpen} onClose={() => setGoogleDialogOpen(false)} fullWidth maxWidth="sm" PaperProps={{ sx: { borderRadius: 3 } }}>
+        <Dialog
+          open={googleDialogOpen}
+          onClose={() => setGoogleDialogOpen(false)}
+          fullWidth
+          maxWidth={false}
+          PaperProps={{
+            sx: {
+              borderRadius: 3,
+              width: '100%',
+              maxWidth: 400,
+              mx: 2,
+            },
+          }}
+        >
           <DialogTitle sx={{ fontWeight: 700, pr: 6 }}>{t('auth.signin.google_intent_title')}</DialogTitle>
           <DialogContent>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
@@ -156,6 +185,13 @@ export default function SignIn() {
             </Button>
           </DialogActions>
         </Dialog>
+        <Toast
+          open={toastOpen && !!loginErrorMessage}
+          onClose={() => setToastOpen(false)}
+          message={loginErrorMessage ?? ''}
+          severity="error"
+          autoHideDuration={9000}
+        />
       </Box>
     </>
   )

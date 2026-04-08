@@ -23,6 +23,8 @@ return [
         'google_intent_customer' => 'کسٹمر کے طور پر جاری رکھیں',
         'google_intent_host' => 'میزبان کے طور پر جاری رکھیں',
         'google_intent_cancel' => 'منسوخ',
+        'google_error_customer_cannot_use_host' => 'یہ ای میل پہلے سے کسٹمر کے طور پر رجسٹرڈ ہے۔ آپ اسی Google اکاؤنٹ سے میزبان کے طور پر لاگ ان نہیں کر سکتے۔',
+        'google_error_host_cannot_use_customer' => 'یہ ای میل پہلے سے میزبان کے طور پر رجسٹرڈ ہے۔ آپ اسی Google اکاؤنٹ سے کسٹمر کے طور پر لاگ ان نہیں کر سکتے۔',
         'no_account' => 'اکاؤنٹ نہیں ہے؟',
         'sign_up_link' => 'سائن اپ',
     ],

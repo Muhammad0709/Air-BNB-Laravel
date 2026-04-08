@@ -23,6 +23,8 @@ return [
         'google_intent_customer' => 'Continue as customer',
         'google_intent_host' => 'Continue as host',
         'google_intent_cancel' => 'Cancel',
+        'google_error_customer_cannot_use_host' => 'This email is already registered as a customer. You cannot sign in as a host with the same Google account.',
+        'google_error_host_cannot_use_customer' => 'This email is already registered as a host. You cannot sign in as a customer with the same Google account.',
         'no_account' => "Don't have an account?",
         'sign_up_link' => 'Sign up',
     ],

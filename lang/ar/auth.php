@@ -23,6 +23,8 @@ return [
         'google_intent_customer' => 'المتابعة كعميل',
         'google_intent_host' => 'المتابعة كمضيف',
         'google_intent_cancel' => 'إلغاء',
+        'google_error_customer_cannot_use_host' => 'هذا البريد الإلكتروني مسجل كعميل. لا يمكنك تسجيل الدخول كمضيف بنفس حساب Google.',
+        'google_error_host_cannot_use_customer' => 'هذا البريد الإلكتروني مسجل كمضيف. لا يمكنك تسجيل الدخول كعميل بنفس حساب Google.',
         'no_account' => 'ليس لديك حساب؟',
         'sign_up_link' => 'إنشاء حساب',
     ],

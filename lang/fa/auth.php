@@ -23,6 +23,8 @@ return [
         'google_intent_customer' => 'ادامه به‌عنوان مشتری',
         'google_intent_host' => 'ادامه به‌عنوان میزبان',
         'google_intent_cancel' => 'انصراف',
+        'google_error_customer_cannot_use_host' => 'این ایمیل قبلاً به‌عنوان مشتری ثبت شده است. با همان حساب Google نمی‌توانید به‌عنوان میزبان وارد شوید.',
+        'google_error_host_cannot_use_customer' => 'این ایمیل قبلاً به‌عنوان میزبان ثبت شده است. با همان حساب Google نمی‌توانید به‌عنوان مشتری وارد شوید.',
         'no_account' => 'حساب کاربری ندارید؟',
         'sign_up_link' => 'ثبت‌نام',
     ],

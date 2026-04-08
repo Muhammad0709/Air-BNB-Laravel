@@ -95,7 +95,7 @@ class GoogleAuthController extends Controller
                 request()->session()->invalidate();
                 request()->session()->regenerateToken();
                 return redirect()->route('login')->withErrors([
-                    'email' => 'This Google account is registered as a host. Use “Sign in with Google” and choose Continue as host.',
+                    'email' => __('auth.signin.google_error_host_cannot_use_customer'),
                 ])->onlyInput('email');
             }
             // Do not use intended() — avoid sending users to a stale url.intended from session
@@ -122,7 +122,7 @@ class GoogleAuthController extends Controller
             request()->session()->invalidate();
             request()->session()->regenerateToken();
             return redirect()->route('login')->withErrors([
-                'email' => __('auth.admin_login.error_customer_email_for_host_google'),
+                'email' => __('auth.signin.google_error_customer_cannot_use_host'),
             ])->onlyInput('email');
         }
 

@@ -23,6 +23,8 @@ return [
         'google_intent_customer' => 'وەک کڕیار بەردەوام بە',
         'google_intent_host' => 'وەک خانەخوێ بەردەوام بە',
         'google_intent_cancel' => 'هەڵوەشاندنەوە',
+        'google_error_customer_cannot_use_host' => 'ئەم ئیمەیڵە پێشتر وەک کڕیار تۆمارکراوە. ناتوانیت بە هەمان هەژماری Google وەک خانەخوێ بچیتەژوورەوە.',
+        'google_error_host_cannot_use_customer' => 'ئەم ئیمەیڵە پێشتر وەک خانەخوێ تۆمارکراوە. ناتوانیت بە هەمان هەژماری Google وەک کڕیار بچیتەژوورەوە.',
         'no_account' => 'حیسابەوەت نییە؟',
         'sign_up_link' => 'تۆمارکردن',
     ],

@@ -23,6 +23,8 @@ return [
         'google_intent_customer' => 'Müşteri olarak devam et',
         'google_intent_host' => 'Ev sahibi olarak devam et',
         'google_intent_cancel' => 'İptal',
+        'google_error_customer_cannot_use_host' => 'Bu e-posta zaten müşteri olarak kayıtlı. Aynı Google hesabıyla ev sahibi olarak giriş yapamazsınız.',
+        'google_error_host_cannot_use_customer' => 'Bu e-posta zaten ev sahibi olarak kayıtlı. Aynı Google hesabıyla müşteri olarak giriş yapamazsınız.',
         'no_account' => 'Hesabınız yok mu?',
         'sign_up_link' => 'Kayıt ol',
     ],
