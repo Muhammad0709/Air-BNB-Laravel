@@ -29,6 +29,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ConfirmationController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\SwitchToHostController;
 
 // Locale switch (session) - available to all
 Route::get('locale/{locale}', [LocaleController::class, 'switch'])->name('locale.switch');
@@ -84,6 +85,8 @@ Route::middleware('auth')->group(function () {
 // Protected routes (require authentication; admin/host are redirected to their panel)
 Route::middleware(['auth', 'redirect.admin.host'])->group(function () {
     Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
+    Route::post('/switch-to-host', [SwitchToHostController::class, 'store'])->name('switch-to-host');
+    Route::post('/switch-to-customer-view', [SwitchToHostController::class, 'destroy'])->name('switch-to-customer-view');
     
     Route::get('/chat', [PageController::class, 'chat'])->name('chat');
     Route::delete('/chat/conversations/{conversation}', [PageController::class, 'deleteConversation'])->name('chat.conversations.destroy');

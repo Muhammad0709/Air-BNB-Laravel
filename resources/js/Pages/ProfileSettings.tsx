@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Button, Paper, Stack, TextField, Typography, Avatar } from '@mui/material'
+import { Box, Button, FormControlLabel, Paper, Stack, Switch, TextField, Typography, Avatar } from '@mui/material'
 import PhoneCountrySelect from '../components/PhoneCountrySelect'
 import { combinePhoneE164, splitStoredPhone } from '../utils/phone'
 import { Container, Row, Col } from 'react-bootstrap'
@@ -12,10 +12,19 @@ import { Head, useForm, usePage, router } from '@inertiajs/react'
 import { useLanguage } from '../hooks/use-language'
 import InputError from '../components/InputError'
 
+type ProfilePageProps = {
+  user?: Record<string, unknown>
+  auth?: { user?: { type?: string } | null }
+  host_panel_preview?: boolean
+  flash?: { success?: string; error?: string }
+}
+
 export default function ProfileSettings() {
   const { t } = useLanguage()
-  const { props } = usePage()
-  const user = (props as any).user
+  const { props } = usePage<ProfilePageProps>()
+  const user = props.user
+  const isCustomer = props.auth?.user?.type === 'User'
+  const hostPanelPreview = !!props.host_panel_preview
   const initialPhone = splitStoredPhone(user?.phone ?? '')
 
   const { data: profileData, setData: setProfileData, patch: patchProfile, processing: profileProcessing, errors: profileErrors, transform } = useForm({
@@ -39,12 +48,12 @@ export default function ProfileSettings() {
   }, [])
 
   useEffect(() => {
-    const u = (props as any).user
+    const u = props.user
     if (!u) return
     const p = splitStoredPhone(u.phone ?? '')
     setProfileData('phone', p.phone)
     setProfileData('phone_code', p.phoneCode)
-  }, [(props as any).user?.phone])
+  }, [props.user?.phone])
 
   const { data: passwordData, setData: setPasswordData, patch: patchPassword, processing: passwordProcessing, errors: passwordErrors, reset: resetPassword } = useForm({
     current_password: '',
@@ -57,7 +66,7 @@ export default function ProfileSettings() {
 
   // Show success/error message from backend
   useEffect(() => {
-    const flash = (props as any)?.flash
+    const flash = props.flash
     if (flash?.success) {
       setToast({ open: true, message: flash.success, severity: 'success' })
       setUploading(false)
@@ -67,7 +76,7 @@ export default function ProfileSettings() {
       setToast({ open: true, message: flash.error, severity: 'error' })
       setUploading(false)
     }
-  }, [(props as any)?.flash])
+  }, [props.flash])
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -212,6 +221,39 @@ export default function ProfileSettings() {
                       <Typography variant="body2" sx={{ color: '#6B7280' }}>
                         {t('profile_settings.file_hint')}
                       </Typography>
+                      {isCustomer && (
+                        <FormControlLabel
+                          control={(
+                            <Switch
+                              checked={hostPanelPreview}
+                              onChange={(_, checked) => {
+                                if (checked) {
+                                  router.post('/switch-to-host')
+                                } else {
+                                  router.post('/switch-to-customer-view')
+                                }
+                              }}
+                              sx={{
+                                '& .MuiSwitch-switchBase.Mui-checked': { color: '#AD542D' },
+                                '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { backgroundColor: '#AD542D' },
+                              }}
+                            />
+                          )}
+                          label={t('profile_settings.switch_to_customer')}
+                          sx={{
+                            m: 0,
+                            mt: 0.5,
+                            alignItems: 'center',
+                            alignSelf: 'flex-start',
+                            '& .MuiFormControlLabel-label': { fontSize: '0.9375rem', color: '#374151' },
+                          }}
+                        />
+                      )}
+                      {isCustomer && (
+                        <Typography variant="body2" sx={{ color: '#9CA3AF', mt: 0.25, alignSelf: 'flex-start', maxWidth: 360 }}>
+                          {t('profile_settings.switch_to_customer_hint')}
+                        </Typography>
+                      )}
                     </Stack>
                   </Stack>
                 </Paper>

@@ -1,29 +1,39 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Button, Card, CardContent, Stack, TextField, Typography, Avatar } from '@mui/material'
+import { Box, Button, Card, CardContent, FormControlLabel, Stack, Switch, TextField, Typography, Avatar } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import Toast from '../../../Components/Admin/Toast'
+import { useLanguage } from '../../../hooks/use-language'
 import SaveIcon from '@mui/icons-material/Save'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { Head, router, usePage } from '@inertiajs/react'
 
 type UserProp = { id: number; name: string; email: string; profile_picture?: string | null }
-type PageProps = { user?: UserProp; flash?: { success?: string; error?: string } }
+type PageProps = {
+  user?: UserProp
+  flash?: { success?: string; error?: string }
+  auth?: { user?: { type?: string } | null }
+  host_panel_preview?: boolean
+}
 
-function nameToFirstLast(name: string) {
-  const parts = (name || '').trim().split(/\s+/)
-  return { first: parts[0] || '', last: parts.slice(1).join(' ') || '' }
+function initialsFromName(name: string) {
+  const parts = (name || '').trim().split(/\s+/).filter(Boolean)
+  if (parts.length >= 2) return `${parts[0].charAt(0)}${parts[1].charAt(0)}`.toUpperCase()
+  if (parts.length === 1 && parts[0].length >= 2) return parts[0].slice(0, 2).toUpperCase()
+  if (parts.length === 1 && parts[0].length === 1) return `${parts[0].toUpperCase()}`
+  return 'HU'
 }
 
 export default function HostProfileSettings() {
+  const { t } = useLanguage()
   const { url, props } = usePage<PageProps>()
   const user = props.user
+  const isGuestPreview = props.auth?.user?.type === 'User'
+  const hostPanelPreview = !!props.host_panel_preview
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
 
-  const { first: initialFirst, last: initialLast } = nameToFirstLast(user?.name ?? '')
   const [profileData, setProfileData] = useState({
-    firstName: initialFirst || 'Host',
-    lastName: initialLast || 'User',
+    name: user?.name ?? '',
     email: user?.email ?? '',
     profileImage: (user?.profile_picture ?? null) as string | null
   })
@@ -36,11 +46,9 @@ export default function HostProfileSettings() {
 
   useEffect(() => {
     if (user) {
-      const { first, last } = nameToFirstLast(user.name ?? '')
       setProfileData(prev => ({
         ...prev,
-        firstName: first || prev.firstName,
-        lastName: last || prev.lastName,
+        name: user.name ?? '',
         email: user.email ?? '',
         profileImage: user.profile_picture ?? null
       }))
@@ -66,7 +74,7 @@ export default function HostProfileSettings() {
     const file = e.target.files?.[0]
     if (!file) return
     if (file.size > 2 * 1024 * 1024) {
-      setToast({ open: true, message: 'Image must be 2MB or less.', severity: 'error' })
+      setToast({ open: true, message: t('host.settings.image_size_error'), severity: 'error' })
       e.target.value = ''
       return
     }
@@ -79,9 +87,8 @@ export default function HostProfileSettings() {
   const handleProfileSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     router.put('/host/settings/profile', {
-      name: `${profileData.firstName} ${profileData.lastName}`.trim(),
+      name: profileData.name.trim(),
       email: profileData.email,
-      phone: profileData.phone || null
     }, { preserveScroll: true })
   }
 
@@ -97,281 +104,248 @@ export default function HostProfileSettings() {
     })
   }
 
-  const getInitials = (firstName: string, lastName: string) =>
-    `${(firstName || '').charAt(0)}${(lastName || '').charAt(0)}`.toUpperCase() || 'HU'
   const profilePictureUrl = profileData.profileImage || user?.profile_picture || null
-
-  const settingsTabs = [
-    { id: 'profile', label: 'Profile', path: '/host/settings/profile' },
-    { id: 'password', label: 'Password', path: '/host/settings/password' },
-  ]
-
-  // Determine active tab from URL
-  const currentPath = url
-  const currentActiveTab = settingsTabs.find(tab => currentPath.includes(tab.id))?.id || 'profile'
-
-  // Get page title based on active tab
-  const getPageTitle = () => {
-    switch (currentActiveTab) {
-      case 'profile':
-        return 'Profile settings'
-      case 'password':
-        return 'Password settings'
-      default:
-        return 'Settings'
-    }
-  }
 
   return (
     <>
-      <Head title={getPageTitle()} />
-      <HostLayout title={getPageTitle()}>
+      <Head title={t('host.settings.profile_settings')} />
+      <HostLayout title={t('host.settings.profile_settings')}>
       <Box sx={{ mb: 4 }}>
         <Typography variant="h4" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>
-          Settings
+          {t('host.settings.title')}
         </Typography>
         <Typography variant="body1" sx={{ color: '#717171' }}>
-          Manage your profile and account settings
+          {t('host.settings.manage_profile_desc')}
         </Typography>
       </Box>
 
       <Row>
-        {/* Settings Navigation */}
-        <Col xs={12} md={3}>
-          <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, mb: 3 }}>
-            <CardContent sx={{ p: 0 }}>
-              <Stack spacing={0}>
-                {settingsTabs.map((tab) => {
-                  const isActive = currentActiveTab === tab.id
-                  return (
+        {/* Settings Content */}
+        <Col xs={12} md={10} lg={8} xl={7} className="mx-auto">
+          {isGuestPreview && (
+            <Box
+              sx={{
+                mb: 3,
+                p: 2,
+                borderRadius: 2,
+                border: '1px solid #E5E7EB',
+                bgcolor: '#FFFBF8',
+              }}
+            >
+              <FormControlLabel
+                control={(
+                  <Switch
+                    checked={hostPanelPreview}
+                    onChange={(_, checked) => {
+                      if (checked) {
+                        router.post('/switch-to-host')
+                      } else {
+                        router.post('/switch-to-customer-view')
+                      }
+                    }}
+                    sx={{
+                      '& .MuiSwitch-switchBase.Mui-checked': { color: '#AD542D' },
+                      '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { backgroundColor: '#AD542D' },
+                    }}
+                  />
+                )}
+                label={t('profile_settings.switch_to_customer')}
+                sx={{
+                  m: 0,
+                  alignItems: 'center',
+                  '& .MuiFormControlLabel-label': { fontSize: '0.9375rem', color: '#374151' },
+                }}
+              />
+              <Typography variant="body2" sx={{ color: '#717171', mt: 0.5, pl: { xs: 0, sm: 7 } }}>
+                {t('profile_settings.switch_to_customer_hint')}
+              </Typography>
+            </Box>
+          )}
+          
+          {/* Profile Section */}
+          <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '20px', width: '100%', mb: 3 }}>
+            <CardContent sx={{ p: 4 }}>
+              <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>
+                {t('host.settings.profile')}
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#717171', mb: 4 }}>
+                {t('host.settings.update_profile_desc')}
+              </Typography>
+
+              <form onSubmit={handleProfileSubmit}>
+                <Stack spacing={4}>
+                  {/* Profile Picture */}
+                  <Box>
+                    <Stack direction="row" spacing={3} useFlexGap alignItems="center">
+                      <Box sx={{ position: 'relative' }}>
+                        <Avatar
+                          src={profilePictureUrl || undefined}
+                          sx={{
+                            width: 100,
+                            height: 100,
+                            bgcolor: '#AD542D',
+                            fontSize: '2rem',
+                            fontWeight: 700
+                          }}
+                        >
+                          {!profilePictureUrl && initialsFromName(profileData.name)}
+                        </Avatar>
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            bottom: 0,
+                            right: 0,
+                            bgcolor: '#AD542D',
+                            borderRadius: '50%',
+                            p: 1,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <input
+                            type="file"
+                            accept="image/*"
+                            hidden
+                            id="profile-image-upload"
+                            onChange={handleImageChange}
+                          />
+                          <label htmlFor="profile-image-upload">
+                            <PhotoCameraIcon sx={{ fontSize: 20, color: '#FFFFFF' }} />
+                          </label>
+                        </Box>
+                      </Box>
+                      <Box>
+                        <Button
+                          variant="outlined"
+                          component="label"
+                          htmlFor="profile-image-upload"
+                          sx={{
+                            borderColor: '#D0D5DD',
+                            color: '#344054',
+                            textTransform: 'none',
+                            borderRadius: 2,
+                            py: 1,
+                            px: 2,
+                            '&:hover': { borderColor: '#D0D5DD', bgcolor: '#F9FAFB' }
+                          }}
+                        >
+                          {t('host.settings.upload_picture')}
+                        </Button>
+                        <Typography variant="body2" sx={{ color: '#717171', mt: 1 }}>
+                          {t('host.settings.image_formats_note')}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  </Box>
+
+                  <TextField
+                    fullWidth
+                    label={t('host.settings.name')}
+                    name="name"
+                    value={profileData.name}
+                    onChange={handleProfileChange}
+                    placeholder={t('host.settings.name_placeholder')}
+                    required
+                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+                  />
+
+                  <TextField
+                    fullWidth
+                    label={t('host.settings.email_address')}
+                    name="email"
+                    type="email"
+                    value={profileData.email}
+                    onChange={handleProfileChange}
+                    required
+                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+                  />
+
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button
-                      key={tab.id}
-                      fullWidth
-                      onClick={() => router.visit(tab.path)}
+                      type="submit"
+                      variant="contained"
+                      startIcon={<SaveIcon />}
                       sx={{
-                        justifyContent: 'flex-start',
-                        px: 3,
-                        py: 2,
+                        bgcolor: '#AD542D',
                         textTransform: 'none',
-                        color: isActive ? '#AD542D' : '#717171',
-                        fontWeight: isActive ? 700 : 500,
-                        bgcolor: isActive ? '#FFF5F5' : 'transparent',
-                        borderRadius: 0,
-                        borderLeft: isActive ? '3px solid #AD542D' : '3px solid transparent',
-                        '&:hover': {
-                          bgcolor: isActive ? '#FFF5F5' : '#F9FAFB'
-                        }
+                        fontWeight: 700,
+                        py: 1,
+                        '&:hover': { bgcolor: '#78381C' }
                       }}
                     >
-                      {tab.label}
+                      {t('host.settings.save')}
                     </Button>
-                  )
-                })}
-              </Stack>
+                  </Box>
+                </Stack>
+              </form>
             </CardContent>
           </Card>
-        </Col>
 
-        {/* Settings Content */}
-        <Col xs={12} md={9}>
-          {currentActiveTab === 'profile' && (
-            <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '20px', width: '100%', maxWidth: '800px' }}>
-              <CardContent sx={{ p: 4 }}>
-                <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>
-                  Profile
-                </Typography>
-                <Typography variant="body2" sx={{ color: '#717171', mb: 4 }}>
-                  Update your profile details
-                </Typography>
+          {/* Password Section */}
+          <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '20px', width: '100%' }}>
+            <CardContent sx={{ p: 4 }}>
+              <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>
+                {t('host.settings.update_password')}
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#717171', mb: 4 }}>
+                {t('host.settings.password_description')}
+              </Typography>
 
-                <form onSubmit={handleProfileSubmit}>
-                  <Stack spacing={4}>
-                    {/* Profile Picture */}
-                    <Box>
-                      <Stack direction="row" spacing={3} useFlexGap alignItems="center">
-                        <Box sx={{ position: 'relative' }}>
-                          <Avatar
-                            src={profilePictureUrl || undefined}
-                            sx={{
-                              width: 100,
-                              height: 100,
-                              bgcolor: '#AD542D',
-                              fontSize: '2rem',
-                              fontWeight: 700
-                            }}
-                          >
-                            {!profilePictureUrl && getInitials(profileData.firstName, profileData.lastName)}
-                          </Avatar>
-                          <Box
-                            sx={{
-                              position: 'absolute',
-                              bottom: 0,
-                              right: 0,
-                              bgcolor: '#AD542D',
-                              borderRadius: '50%',
-                              p: 1,
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              cursor: 'pointer'
-                            }}
-                          >
-                            <input
-                              type="file"
-                              accept="image/*"
-                              hidden
-                              id="profile-image-upload"
-                              onChange={handleImageChange}
-                            />
-                            <label htmlFor="profile-image-upload">
-                              <PhotoCameraIcon sx={{ fontSize: 20, color: '#FFFFFF' }} />
-                            </label>
-                          </Box>
-                        </Box>
-                        <Box>
-                          <Button
-                            variant="outlined"
-                            component="label"
-                            htmlFor="profile-image-upload"
-                            sx={{
-                              borderColor: '#D0D5DD',
-                              color: '#344054',
-                              textTransform: 'none',
-                              borderRadius: 2,
-                              py: 1,
-                              px: 2,
-                              '&:hover': { borderColor: '#D0D5DD', bgcolor: '#F9FAFB' }
-                            }}
-                          >
-                            Upload picture
-                          </Button>
-                          <Typography variant="body2" sx={{ color: '#717171', mt: 1 }}>
-                            JPG, PNG or GIF. 2MB max.
-                          </Typography>
-                        </Box>
-                      </Stack>
-                    </Box>
+              <form onSubmit={handlePasswordSubmit}>
+                <Stack spacing={3}>
+                  <TextField
+                    fullWidth
+                    label={t('host.settings.current_password')}
+                    type="password"
+                    name="currentPassword"
+                    value={passwordData.currentPassword}
+                    onChange={handlePasswordChange}
+                    required
+                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+                  />
+                  <TextField
+                    fullWidth
+                    label={t('host.settings.new_password')}
+                    type="password"
+                    name="newPassword"
+                    value={passwordData.newPassword}
+                    onChange={handlePasswordChange}
+                    required
+                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+                  />
+                  <TextField
+                    fullWidth
+                    label={t('host.settings.confirm_password')}
+                    type="password"
+                    name="confirmPassword"
+                    value={passwordData.confirmPassword}
+                    onChange={handlePasswordChange}
+                    required
+                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+                  />
 
-                    {/* Name Fields */}
-                    <Stack direction="row" spacing={2} useFlexGap>
-                      <TextField
-                        fullWidth
-                        label="First Name"
-                        name="firstName"
-                        value={profileData.firstName}
-                        onChange={handleProfileChange}
-                        required
-                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
-                      />
-                      <TextField
-                        fullWidth
-                        label="Last Name"
-                        name="lastName"
-                        value={profileData.lastName}
-                        onChange={handleProfileChange}
-                        required
-                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
-                      />
-                    </Stack>
-
-                    {/* Email Field */}
-                    <TextField
-                      fullWidth
-                      label="Email address"
-                      name="email"
-                      type="email"
-                      value={profileData.email}
-                      onChange={handleProfileChange}
-                      required
-                      sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
-                    />
-
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        startIcon={<SaveIcon />}
-                        sx={{
-                          bgcolor: '#AD542D',
-                          textTransform: 'none',
-                          fontWeight: 700,
-                          py: 1,
-                          '&:hover': { bgcolor: '#78381C' }
-                        }}
-                      >
-                        Save
-                      </Button>
-                    </Box>
-                  </Stack>
-                </form>
-              </CardContent>
-            </Card>
-          )}
-
-          {currentActiveTab === 'password' && (
-            <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '20px', width: '100%', maxWidth: '800px' }}>
-              <CardContent sx={{ p: 4 }}>
-                <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>
-                  Update password
-                </Typography>
-                <Typography variant="body2" sx={{ color: '#717171', mb: 4 }}>
-                  Ensure your account is using a long, random password to stay secure
-                </Typography>
-
-                <form onSubmit={handlePasswordSubmit}>
-                  <Stack spacing={3}>
-                    <TextField
-                      fullWidth
-                      label="Current password"
-                      type="password"
-                      name="currentPassword"
-                      value={passwordData.currentPassword}
-                      onChange={handlePasswordChange}
-                      required
-                      sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
-                    />
-                    <TextField
-                      fullWidth
-                      label="New password"
-                      type="password"
-                      name="newPassword"
-                      value={passwordData.newPassword}
-                      onChange={handlePasswordChange}
-                      required
-                      sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
-                    />
-                    <TextField
-                      fullWidth
-                      label="Confirm password"
-                      type="password"
-                      name="confirmPassword"
-                      value={passwordData.confirmPassword}
-                      onChange={handlePasswordChange}
-                      required
-                      sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
-                    />
-
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        startIcon={<SaveIcon />}
-                        sx={{
-                          bgcolor: '#AD542D',
-                          textTransform: 'none',
-                          fontWeight: 700,
-                          py: 1,
-                          '&:hover': { bgcolor: '#78381C' }
-                        }}
-                      >
-                        Save password
-                      </Button>
-                    </Box>
-                  </Stack>
-                </form>
-              </CardContent>
-            </Card>
-          )}
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      startIcon={<SaveIcon />}
+                      sx={{
+                        bgcolor: '#AD542D',
+                        textTransform: 'none',
+                        fontWeight: 700,
+                        py: 1,
+                        '&:hover': { bgcolor: '#78381C' }
+                      }}
+                    >
+                      {t('host.settings.save_password')}
+                    </Button>
+                  </Box>
+                </Stack>
+              </form>
+            </CardContent>
+          </Card>
         </Col>
       </Row>
 
