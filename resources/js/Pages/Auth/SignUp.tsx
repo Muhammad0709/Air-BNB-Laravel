@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Head, Link, useForm } from '@inertiajs/react'
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Link as MUILink, Menu, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
@@ -34,6 +34,14 @@ export default function SignUp() {
     password_confirmation: '',
   })
   const formWidth = 600
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const typeParam = params.get('type')
+    if (typeParam === 'host' || typeParam === 'user') {
+      setData('type', typeParam)
+    }
+  }, [setData])
 
   const googleIconEl = <Box component="img" src={socialIcon} alt="Google" sx={{ width: 24, height: 24 }} />
 
