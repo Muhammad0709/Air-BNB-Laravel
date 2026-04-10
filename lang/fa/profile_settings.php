@@ -37,4 +37,6 @@ return [
     'host_preview_on' => 'به پنل میزبان خوش آمدید.',
     'switch_to_customer' => 'تبدیل به میزبان',
     'switch_to_customer_hint' => 'برای بازگشت به نمای مشتری خاموش کنید.',
+    'switch_to_customer_host' => 'تبدیل به مشتری',
+    'switch_to_customer_host_hint' => 'برای بازگشت به نمای مشتری خاموش کنید.',
 ];

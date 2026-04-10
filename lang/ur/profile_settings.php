@@ -37,4 +37,6 @@ return [
     'host_preview_on' => 'میزبان پینل میں خوش آمدید۔',
     'switch_to_customer' => 'میزبان پر سوئچ کریں',
     'switch_to_customer_hint' => 'کسٹمر ویو پر واپس جانے کے لیے بند کریں۔',
+    'switch_to_customer_host' => 'کسٹمر پر سوئچ کریں',
+    'switch_to_customer_host_hint' => 'کسٹمر ویو پر واپس جانے کے لیے بند کریں۔',
 ];

@@ -37,4 +37,6 @@ return [
     'host_preview_on' => 'Ev sahibi paneline hoş geldiniz.',
     'switch_to_customer' => 'Ev Sahibine Geç',
     'switch_to_customer_hint' => 'Müşteri görünümüne dönmek için kapatın.',
+    'switch_to_customer_host' => 'Müşteriye Geç',
+    'switch_to_customer_host_hint' => 'Müşteri görünümüne dönmek için kapatın.',
 ];

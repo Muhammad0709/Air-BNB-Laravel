@@ -37,4 +37,6 @@ return [
     'host_preview_on' => 'Welcome to the host panel.',
     'switch_to_customer' => 'Switch to Host',
     'switch_to_customer_hint' => 'Turn off to go back to Customer view.',
+    'switch_to_customer_host' => 'Switch to Customer',
+    'switch_to_customer_host_hint' => 'Turn off to go back to Customer view.',
 ];

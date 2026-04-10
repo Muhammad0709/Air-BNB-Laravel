@@ -37,4 +37,6 @@ return [
     'host_preview_on' => 'مرحباً بك في لوحة المضيف.',
     'switch_to_customer' => 'التبديل إلى مضيف',
     'switch_to_customer_hint' => 'أطفئ للعودة إلى عرض العميل.',
+    'switch_to_customer_host' => 'التبديل إلى عميل',
+    'switch_to_customer_host_hint' => 'أطفئ للعودة إلى عرض العميل.',
 ];

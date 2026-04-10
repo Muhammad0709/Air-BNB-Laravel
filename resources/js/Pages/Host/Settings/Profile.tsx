@@ -149,7 +149,7 @@ export default function HostProfileSettings() {
                     }}
                   />
                 )}
-                label={t('profile_settings.switch_to_customer')}
+                label={t('profile_settings.switch_to_customer_host')}
                 sx={{
                   m: 0,
                   alignItems: 'center',
@@ -157,7 +157,7 @@ export default function HostProfileSettings() {
                 }}
               />
               <Typography variant="body2" sx={{ color: '#717171', mt: 0.5, pl: { xs: 0, sm: 7 } }}>
-                {t('profile_settings.switch_to_customer_hint')}
+                {t('profile_settings.switch_to_customer_host_hint')}
               </Typography>
             </Box>
           )}

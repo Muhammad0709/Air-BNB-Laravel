@@ -37,4 +37,6 @@ return [
     'host_preview_on' => 'Bi xêr hatî panelê mêvandar.',
     'switch_to_customer' => 'گۆڕین بۆ مێوانdar',
     'switch_to_customer_hint' => 'کۆ بکەرەوە بۆ گەڕانەوە بۆ دیدی کڕیار.',
+    'switch_to_customer_host' => 'گۆڕین بۆ کڕیار',
+    'switch_to_customer_host_hint' => 'کۆ بکەرەوە بۆ گەڕانەوە بۆ دیدی کڕیار.',
 ];
