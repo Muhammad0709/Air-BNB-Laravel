@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, Stack, Typography, useTheme, useMediaQuery } from '@mui/material'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import { useLanguage } from '../hooks/use-language'
 
 export type PaginationProps = {
   currentPage: number
@@ -28,6 +29,7 @@ function getPageNumbersNarrow(current: number, last: number): (number | 'ellipsi
 }
 
 export default function Pagination({ currentPage, lastPage, onPageChange, sx }: PaginationProps) {
+  const { t } = useLanguage()
   const theme = useTheme()
   const isNarrow = useMediaQuery(theme.breakpoints.down('sm'))
   if (lastPage <= 1) return null
@@ -51,7 +53,7 @@ export default function Pagination({ currentPage, lastPage, onPageChange, sx }: 
           '&.Mui-disabled': { color: '#9CA3AF' },
         }}
       >
-        Previous
+        {t('common.previous')}
       </Button>
       <Stack direction="row" alignItems="center" spacing={0.5} useFlexGap>
         {pages.map((p, idx) =>
@@ -97,7 +99,7 @@ export default function Pagination({ currentPage, lastPage, onPageChange, sx }: 
           '&.Mui-disabled': { color: '#9CA3AF' },
         }}
       >
-        Next
+        {t('common.next')}
       </Button>
     </Stack>
   )
