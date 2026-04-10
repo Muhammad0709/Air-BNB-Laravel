@@ -33,8 +33,8 @@ return [
     'confirm_password_placeholder' => 'نیا پاس ورڈ تصدیق کریں',
     'update_password' => 'پاس ورڈ اپڈیٹ کریں',
     'updating' => 'اپڈیٹ ہو رہا ہے...',
-    'host_preview_off' => 'آپ واپس یوزر موڈ میں ہیں۔',
-    'host_preview_on' => 'میزبان پینل میں خوش آمدید۔ آپ کا اکاؤنٹ اب بھی مہمان ہے۔',
+    'host_preview_off' => 'آپ واپس کسٹمر ویو میں ہیں۔',
+    'host_preview_on' => 'میزبان پینل میں خوش آمدید۔',
     'switch_to_customer' => 'کسٹمر پر جائیں',
     'switch_to_customer_hint' => 'کسٹمر ویو پر واپس جانے کے لیے بند کریں۔',
 ];

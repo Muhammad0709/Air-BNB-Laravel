@@ -33,8 +33,8 @@ return [
     'confirm_password_placeholder' => 'Şîfreya nû piştrast bikin',
     'update_password' => 'Şîfreyê nûve bikin',
     'updating' => 'Tê nûve kirin...',
-    'host_preview_off' => 'Tu vegerîyî bo moda bikarhêner.',
-    'host_preview_on' => 'Bi xêr hatî panelê mêvandar. hesabê te hîn jî mêvane.',
+    'host_preview_off' => 'Tu vegerîyî bo dîtina kirîyar.',
+    'host_preview_on' => 'Bi xêr hatî panelê mêvandar.',
     'switch_to_customer' => 'گۆڕین بۆ کڕیار',
     'switch_to_customer_hint' => 'کۆ بکەرەوە بۆ گەڕانەوە بۆ دیدی کڕیار.',
 ];

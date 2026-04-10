@@ -33,8 +33,8 @@ return [
     'confirm_password_placeholder' => 'Confirm new password',
     'update_password' => 'Update Password',
     'updating' => 'Updating...',
-    'host_preview_off' => 'You are back in User Mode.',
-    'host_preview_on' => 'Welcome to the host panel. Your account is still a guest account.',
+    'host_preview_off' => 'You are back in Customer View.',
+    'host_preview_on' => 'Welcome to the host panel.',
     'switch_to_customer' => 'Switch to Customer',
     'switch_to_customer_hint' => 'Turn off to go back to Customer view.',
 ];
