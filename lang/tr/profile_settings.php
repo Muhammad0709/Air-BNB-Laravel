@@ -33,4 +33,8 @@ return [
     'confirm_password_placeholder' => 'Yeni şifrenizi onaylayın',
     'update_password' => 'Şifreyi Güncelle',
     'updating' => 'Güncelleniyor...',
+    'host_preview_off' => 'Kullanıcı moduna döndünüz.',
+    'host_preview_on' => 'Ev sahibi paneline hoş geldiniz. Hesabınız hâlâ misafir.',
+    'switch_to_customer' => 'Müşteriye geç',
+    'switch_to_customer_hint' => 'Müşteri görünümüne dönmek için kapatın.',
 ];

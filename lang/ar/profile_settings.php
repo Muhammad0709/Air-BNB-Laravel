@@ -33,4 +33,8 @@ return [
     'confirm_password_placeholder' => 'أكد كلمة المرور الجديدة',
     'update_password' => 'تحديث كلمة المرور',
     'updating' => 'جاري التحديث...',
+    'host_preview_off' => 'عدتَ إلى وضع المستخدم.',
+    'host_preview_on' => 'مرحباً بك في لوحة المضيف. حسابك لا يزال حساب ضيف.',
+    'switch_to_customer' => 'التبديل إلى عميل',
+    'switch_to_customer_hint' => 'أطفئ للعودة إلى عرض العميل.',
 ];

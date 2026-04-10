@@ -33,4 +33,8 @@ return [
     'confirm_password_placeholder' => 'رمز عبور جدید را تأیید کنید',
     'update_password' => 'به‌روزرسانی رمز عبور',
     'updating' => 'در حال به‌روزرسانی...',
+    'host_preview_off' => 'به حالت کاربر برگشتید.',
+    'host_preview_on' => 'به پنل میزبان خوش آمدید. حساب شما همچنان مهمان است.',
+    'switch_to_customer' => 'رفتن به مشتری',
+    'switch_to_customer_hint' => 'برای بازگشت به نمای مشتری خاموش کنید.',
 ];
