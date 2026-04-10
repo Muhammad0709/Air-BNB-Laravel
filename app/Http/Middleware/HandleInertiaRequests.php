@@ -51,6 +51,7 @@ class HandleInertiaRequests extends Middleware
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
+                    'type' => $user->type->value,
                     'phone' => $user->phone,
                     'currency' => $user->currency ?? 'USD',
                     'profile_picture' => $user->profile_picture
@@ -61,6 +62,10 @@ class HandleInertiaRequests extends Middleware
                 ] : null,
             ],
             'locale' => fn () => $request->session()->get('locale', config('app.locale', 'en')),
+            /** Session-only host UI preview for customers (account type stays User). */
+            'host_panel_preview' => fn () => $user
+                ? (bool) $request->session()->get('host_panel_preview', false)
+                : false,
         ];
     }
 }

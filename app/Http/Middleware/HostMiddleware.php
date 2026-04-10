@@ -23,13 +23,20 @@ class HostMiddleware
             return redirect()->route('login')->with('error', 'Please login to access host panel.');
         }
 
-        // Check if authenticated user is a host
-        if (Auth::user()->type !== UserType::HOST) {
-            Auth::logout();
-            return redirect()->route('login')->with('error', 'Access denied. Host privileges required.');
+        $user = Auth::user();
+
+        if ($user->type === UserType::HOST) {
+            return $next($request);
         }
 
-        return $next($request);
+        // Customer previewing host UI (session flag; account type stays User)
+        if ($user->type === UserType::USER && $request->session()->get('host_panel_preview')) {
+            return $next($request);
+        }
+
+        Auth::logout();
+
+        return redirect()->route('login')->with('error', 'Access denied. Host privileges required.');
     }
 }
 
