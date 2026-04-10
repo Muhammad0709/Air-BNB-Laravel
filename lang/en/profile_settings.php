@@ -35,6 +35,6 @@ return [
     'updating' => 'Updating...',
     'host_preview_off' => 'You are back in Customer View.',
     'host_preview_on' => 'Welcome to the host panel.',
-    'switch_to_customer' => 'Switch to Customer',
+    'switch_to_customer' => 'Switch to Host',
     'switch_to_customer_hint' => 'Turn off to go back to Customer view.',
 ];

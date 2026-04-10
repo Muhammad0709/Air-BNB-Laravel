@@ -35,6 +35,6 @@ return [
     'updating' => 'در حال به‌روزرسانی...',
     'host_preview_off' => 'به نمای مشتری برگشتید.',
     'host_preview_on' => 'به پنل میزبان خوش آمدید.',
-    'switch_to_customer' => 'رفتن به مشتری',
+    'switch_to_customer' => 'تبدیل به میزبان',
     'switch_to_customer_hint' => 'برای بازگشت به نمای مشتری خاموش کنید.',
 ];

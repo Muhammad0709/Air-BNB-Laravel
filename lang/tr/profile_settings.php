@@ -35,6 +35,6 @@ return [
     'updating' => 'Güncelleniyor...',
     'host_preview_off' => 'Müşteri görünümüne döndünüz.',
     'host_preview_on' => 'Ev sahibi paneline hoş geldiniz.',
-    'switch_to_customer' => 'Müşteriye geç',
+    'switch_to_customer' => 'Ev Sahibine Geç',
     'switch_to_customer_hint' => 'Müşteri görünümüne dönmek için kapatın.',
 ];

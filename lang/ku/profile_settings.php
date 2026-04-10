@@ -35,6 +35,6 @@ return [
     'updating' => 'Tê nûve kirin...',
     'host_preview_off' => 'Tu vegerîyî bo dîtina kirîyar.',
     'host_preview_on' => 'Bi xêr hatî panelê mêvandar.',
-    'switch_to_customer' => 'گۆڕین بۆ کڕیار',
+    'switch_to_customer' => 'گۆڕین بۆ مێوانdar',
     'switch_to_customer_hint' => 'کۆ بکەرەوە بۆ گەڕانەوە بۆ دیدی کڕیار.',
 ];

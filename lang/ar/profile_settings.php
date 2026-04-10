@@ -35,6 +35,6 @@ return [
     'updating' => 'جاري التحديث...',
     'host_preview_off' => 'عدتَ إلى عرض العميل.',
     'host_preview_on' => 'مرحباً بك في لوحة المضيف.',
-    'switch_to_customer' => 'التبديل إلى عميل',
+    'switch_to_customer' => 'التبديل إلى مضيف',
     'switch_to_customer_hint' => 'أطفئ للعودة إلى عرض العميل.',
 ];
