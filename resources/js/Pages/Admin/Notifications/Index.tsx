@@ -5,6 +5,7 @@ import Pagination from '../../../components/Pagination';
 import Toast from '../../../Components/Admin/Toast';
 import { router } from '@inertiajs/react';
 import { useState } from 'react';
+import { useLanguage } from '../../../hooks/use-language';
 
 interface Notification {
     id: number;
@@ -29,6 +30,7 @@ interface NotificationsPageProps {
 }
 
 export default function Index({ notifications }: NotificationsPageProps) {
+    const { t } = useLanguage();
     const [selectedNotificationId, setSelectedNotificationId] = useState<number | null>(null);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [showToast, setShowToast] = useState(false);
@@ -70,13 +72,13 @@ export default function Index({ notifications }: NotificationsPageProps) {
             router.delete(`/admin/notifications/${selectedNotificationId}`, {
                 preserveScroll: true,
                 onSuccess: () => {
-                    setToastMessage('Notification deleted successfully');
+                    setToastMessage(t('notifications.delete_success'));
                     setShowToast(true);
                     setDeleteDialogOpen(false);
                     setSelectedNotificationId(null);
                 },
                 onError: () => {
-                    setToastMessage('Failed to delete notification');
+                    setToastMessage(t('notifications.delete_failed'));
                     setShowToast(true);
                 }
             });
@@ -154,18 +156,18 @@ export default function Index({ notifications }: NotificationsPageProps) {
                     maxWidth="xs"
                     fullWidth
                 >
-                    <DialogTitle>Delete Notification</DialogTitle>
+                    <DialogTitle>{t('notifications.delete_dialog_title')}</DialogTitle>
                     <DialogContent>
                         <Typography>
-                            Are you sure you want to delete this notification? This action cannot be undone.
+                            {t('notifications.delete_dialog_message')}
                         </Typography>
                     </DialogContent>
                     <DialogActions sx={{ p: 2, gap: 1 }}>
                         <Button onClick={handleDeleteCancel} variant="outlined" color="inherit">
-                            Cancel
+                            {t('common.cancel')}
                         </Button>
                         <Button onClick={handleDeleteConfirm} variant="contained" color="error">
-                            Delete
+                            {t('common.delete')}
                         </Button>
                     </DialogActions>
                 </Dialog>
