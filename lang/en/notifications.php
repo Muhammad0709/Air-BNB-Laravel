@@ -47,4 +47,8 @@ return [
             'body' => 'Your booking for "{property_title}" from {check_in_date} to {check_out_date} has been cancelled',
         ],
     ],
+    'delete_dialog_title' => 'Delete Notification',
+    'delete_dialog_message' => 'Are you sure you want to delete this notification? This action cannot be undone.',
+    'delete_success' => 'Notification deleted successfully',
+    'delete_failed' => 'Failed to delete notification',
 ];

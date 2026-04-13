@@ -47,4 +47,8 @@ return [
             'body' => 'آپ کی "{property_title}" کے لیے {check_in_date} سے {check_out_date} تک کی بکنگ منسوخ کر دی گئی ہے',
         ],
     ],
+    'delete_dialog_title' => 'اطلاع حذف کریں',
+    'delete_dialog_message' => 'کیا آپ واقعی یہ اطلاع حذف کرنا چاہتے ہیں؟ یہ عمل واپس نہیں کیا جا سکتا۔',
+    'delete_success' => 'اطلاع کامیابی سے حذف ہو گئی',
+    'delete_failed' => 'اطلاع حذف کرنے میں ناکامی',
 ];

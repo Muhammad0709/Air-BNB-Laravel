@@ -47,4 +47,8 @@ return [
             'body' => 'تم إلغاء حجزك لـ "{property_title}" من {check_in_date} إلى {check_out_date}',
         ],
     ],
+    'delete_dialog_title' => 'حذف الإشعار',
+    'delete_dialog_message' => 'هل أنت متأكد من حذف هذا الإشعار؟ لا يمكن التراجع عن هذا الإجراء.',
+    'delete_success' => 'تم حذف الإشعار بنجاح',
+    'delete_failed' => 'فشل حذف الإشعار',
 ];

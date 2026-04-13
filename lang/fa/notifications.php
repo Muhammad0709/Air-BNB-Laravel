@@ -47,4 +47,8 @@ return [
             'body' => 'رزرو شما برای "{property_title}" از {check_in_date} تا {check_out_date} لغو شده است',
         ],
     ],
+    'delete_dialog_title' => 'حذف اعلان',
+    'delete_dialog_message' => 'آیا مطمئن هستید که می‌خواهید این اعلان را حذف کنید؟ این عمل قابل بازگشت نیست.',
+    'delete_success' => 'اعلان با موفقیت حذف شد',
+    'delete_failed' => 'حذف اعلان ناموفق بود',
 ];
