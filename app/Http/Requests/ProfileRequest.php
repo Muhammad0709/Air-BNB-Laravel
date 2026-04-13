@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Support\SupportedCurrencies;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class ProfileRequest extends FormRequest
 {
@@ -29,7 +31,7 @@ class ProfileRequest extends FormRequest
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
             'phone' => 'nullable|string|max:20',
             'bio' => 'nullable|string|max:500',
-            'currency' => 'sometimes|string|in:USD,PKR',
+            'currency' => ['sometimes', 'string', Rule::in(SupportedCurrencies::CODES)],
         ];
     }
 }

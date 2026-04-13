@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Resources\ProfileResource;
 use App\Models\User;
+use App\Support\SupportedCurrencies;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 /**
  * @OA\Tag(
@@ -47,7 +49,7 @@ class ProfileController extends Controller
      *                     @OA\Property(property="bio", type="string", nullable=true, example="Travel enthusiast and adventure seeker."),
      *                     @OA\Property(property="profile_picture", type="string", nullable=true, format="uri", example="http://localhost:8000/storage/profile-pictures/avatar.jpg"),
      *                     @OA\Property(property="type", type="string", example="User"),
-     *                     @OA\Property(property="currency", type="string", example="USD", description="User's preferred currency (USD or PKR)")
+     *                     @OA\Property(property="currency", type="string", example="USD", description="User's preferred currency (IQD, TRY, PKR, EUR, USD, GBP)")
      *                 )
      *             )
      *         )
@@ -316,7 +318,7 @@ class ProfileController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             required={"currency"},
-     *             @OA\Property(property="currency", type="string", enum={"USD", "PKR"}, example="USD", description="Currency code (USD or PKR)")
+     *             @OA\Property(property="currency", type="string", enum={"IQD", "TRY", "PKR", "EUR", "USD", "GBP"}, example="USD", description="Currency code")
      *         )
      *     ),
      *     @OA\Response(
@@ -356,7 +358,7 @@ class ProfileController extends Controller
     public function updateCurrency(Request $request): JsonResponse
     {
         $request->validate([
-            'currency' => 'required|string|in:USD,PKR',
+            'currency' => ['required', 'string', Rule::in(SupportedCurrencies::CODES)],
         ]);
 
         $user = Auth::user();

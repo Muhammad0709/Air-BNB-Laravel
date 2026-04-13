@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Profile;
 
+use App\Support\SupportedCurrencies;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCurrencyRequest extends FormRequest
 {
@@ -17,7 +19,7 @@ class UpdateCurrencyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'currency' => 'required|string|in:USD,PKR',
+            'currency' => ['required', 'string', Rule::in(SupportedCurrencies::CODES)],
         ];
     }
 }
