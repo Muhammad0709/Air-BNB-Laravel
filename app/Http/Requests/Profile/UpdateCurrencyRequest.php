@@ -19,7 +19,7 @@ class UpdateCurrencyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'currency' => ['required', 'string', Rule::in(SupportedCurrencies::CODES)],
+            'currency' => ['required', 'string', Rule::in(SupportedCurrencies::codes())],
         ];
     }
 }

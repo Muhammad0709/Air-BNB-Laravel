@@ -28,10 +28,10 @@ class ProfileRequest extends FormRequest
 
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'email' => 'required|email|max:255|unique:users,email,'.$user->id,
             'phone' => 'nullable|string|max:20',
             'bio' => 'nullable|string|max:500',
-            'currency' => ['sometimes', 'string', Rule::in(SupportedCurrencies::CODES)],
+            'currency' => ['sometimes', 'string', Rule::in(SupportedCurrencies::codes())],
         ];
     }
 }

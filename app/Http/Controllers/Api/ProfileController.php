@@ -8,12 +8,12 @@ use App\Http\Resources\ProfileResource;
 use App\Models\User;
 use App\Support\SupportedCurrencies;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rules\Password;
-use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 /**
  * @OA\Tag(
@@ -30,10 +30,13 @@ class ProfileController extends Controller
      *     description="Returns the authenticated user's profile information",
      *     tags={"Profile"},
      *     security={{"apiAuth": {}}},
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Profile retrieved successfully",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Profile retrieved successfully"),
      *             @OA\Property(
@@ -54,10 +57,13 @@ class ProfileController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         description="Unauthenticated",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Unauthenticated.")
      *         )
      *     )
@@ -83,20 +89,26 @@ class ProfileController extends Controller
      *     description="Updates the authenticated user's profile information",
      *     tags={"Profile"},
      *     security={{"apiAuth": {}}},
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             required={"name", "email"},
+     *
      *             @OA\Property(property="name", type="string", example="John Doe"),
      *             @OA\Property(property="email", type="string", format="email", example="john.doe@example.com"),
      *             @OA\Property(property="phone", type="string", nullable=true, example="+1 (555) 123-4567"),
      *             @OA\Property(property="bio", type="string", nullable=true, example="Travel enthusiast and adventure seeker.")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Profile updated successfully",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Profile updated successfully"),
      *             @OA\Property(
@@ -116,18 +128,24 @@ class ProfileController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Validation error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="The given data was invalid."),
      *             @OA\Property(property="errors", type="object")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         description="Unauthenticated",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Unauthenticated.")
      *         )
      *     )
@@ -161,35 +179,47 @@ class ProfileController extends Controller
      *     description="Updates the authenticated user's password",
      *     tags={"Profile"},
      *     security={{"apiAuth": {}}},
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             required={"current_password", "new_password", "new_password_confirmation"},
+     *
      *             @OA\Property(property="current_password", type="string", format="password", example="oldpassword123"),
      *             @OA\Property(property="new_password", type="string", format="password", example="newpassword123"),
      *             @OA\Property(property="new_password_confirmation", type="string", format="password", example="newpassword123")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Password updated successfully",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Password updated successfully")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Validation error or invalid current password",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="status", type="string", example="error"),
      *             @OA\Property(property="message", type="string", example="Current password is incorrect")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         description="Unauthenticated",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Unauthenticated.")
      *         )
      *     )
@@ -204,7 +234,7 @@ class ProfileController extends Controller
 
         $user = Auth::user();
 
-        if (!Hash::check($request->input('current_password'), $user->password)) {
+        if (! Hash::check($request->input('current_password'), $user->password)) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Current password is incorrect',
@@ -228,11 +258,15 @@ class ProfileController extends Controller
      *     description="Uploads and updates the authenticated user's profile picture",
      *     tags={"Profile"},
      *     security={{"apiAuth": {}}},
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
+     *
      *             @OA\Schema(
+     *
      *                 @OA\Property(
      *                     property="profile_picture",
      *                     type="string",
@@ -242,10 +276,13 @@ class ProfileController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Profile picture uploaded successfully",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Profile picture uploaded successfully"),
      *             @OA\Property(
@@ -259,18 +296,24 @@ class ProfileController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Validation error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="The given data was invalid."),
      *             @OA\Property(property="errors", type="object")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         description="Unauthenticated",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Unauthenticated.")
      *         )
      *     )
@@ -314,17 +357,23 @@ class ProfileController extends Controller
      *     description="Updates the authenticated user's currency preference",
      *     tags={"Profile"},
      *     security={{"apiAuth": {}}},
+     *
      *     @OA\RequestBody(
      *         required=true,
+     *
      *         @OA\JsonContent(
      *             required={"currency"},
+     *
      *             @OA\Property(property="currency", type="string", enum={"IQD", "TRY", "PKR", "EUR", "USD", "GBP"}, example="USD", description="Currency code")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=200,
      *         description="Currency updated successfully",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="status", type="string", example="success"),
      *             @OA\Property(property="message", type="string", example="Currency updated successfully"),
      *             @OA\Property(
@@ -338,18 +387,24 @@ class ProfileController extends Controller
      *             )
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=422,
      *         description="Validation error",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="The given data was invalid."),
      *             @OA\Property(property="errors", type="object")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=401,
      *         description="Unauthenticated",
+     *
      *         @OA\JsonContent(
+     *
      *             @OA\Property(property="message", type="string", example="Unauthenticated.")
      *         )
      *     )
@@ -358,7 +413,7 @@ class ProfileController extends Controller
     public function updateCurrency(Request $request): JsonResponse
     {
         $request->validate([
-            'currency' => ['required', 'string', Rule::in(SupportedCurrencies::CODES)],
+            'currency' => ['required', 'string', Rule::in(SupportedCurrencies::codes())],
         ]);
 
         $user = Auth::user();
@@ -378,4 +433,3 @@ class ProfileController extends Controller
         ], 200);
     }
 }
-

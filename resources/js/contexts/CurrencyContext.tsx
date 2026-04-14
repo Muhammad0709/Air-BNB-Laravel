@@ -1,7 +1,10 @@
-import React, { createContext, useCallback, useContext, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { router } from '@inertiajs/react'
-
-type CurrencyCode = 'USD' | 'PKR'
+import {
+  type CurrencyCode,
+  defaultCurrencyFallback,
+  isCurrencyCode,
+} from '../utils/currency'
 
 const STORAGE_KEY = 'currency'
 
@@ -21,24 +24,37 @@ export function useCurrency() {
 type CurrencyProviderProps = {
   children: React.ReactNode
   /** Pass from initial Inertia page props (e.g. auth.user.currency). Provider runs outside Inertia so cannot use usePage(). */
-  initialCurrency?: CurrencyCode | null
+  initialCurrency?: string | null
+}
+
+function normalizeCurrency(value: string | null | undefined): CurrencyCode {
+  if (isCurrencyCode(value)) return value!.toUpperCase()
+  return defaultCurrencyFallback()
 }
 
 export function CurrencyProvider({ children, initialCurrency }: CurrencyProviderProps) {
   const [currency, setCurrencyState] = useState<CurrencyCode>(() => {
-    if (typeof window === 'undefined') return initialCurrency === 'PKR' ? 'PKR' : 'USD'
-    const stored = localStorage.getItem(STORAGE_KEY) as CurrencyCode | null
-    if (stored === 'USD' || stored === 'PKR') return stored
-    return initialCurrency === 'PKR' || initialCurrency === 'USD' ? initialCurrency : 'USD'
+    if (typeof window === 'undefined') return normalizeCurrency(initialCurrency)
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (isCurrencyCode(stored)) return stored.toUpperCase()
+    return normalizeCurrency(initialCurrency)
   })
 
+  useEffect(() => {
+    const fixIfInvalid = () => {
+      setCurrencyState((prev) => (isCurrencyCode(prev) ? prev : normalizeCurrency(null)))
+    }
+    document.addEventListener('currencies:updated', fixIfInvalid)
+    return () => document.removeEventListener('currencies:updated', fixIfInvalid)
+  }, [])
+
   const setCurrency = useCallback((code: CurrencyCode) => {
-    setCurrencyState(code)
+    const upper = code.toUpperCase()
+    setCurrencyState(upper)
     try {
-      localStorage.setItem(STORAGE_KEY, code)
+      localStorage.setItem(STORAGE_KEY, upper)
     } catch (_) {}
-    // Persist to profile when logged in; server ignores if unauthenticated
-    router.patch('/profile/currency', { currency: code }, { preserveState: true })
+    router.patch('/profile/currency', { currency: upper }, { preserveState: true })
   }, [])
 
   return (
@@ -47,3 +63,6 @@ export function CurrencyProvider({ children, initialCurrency }: CurrencyProvider
     </CurrencyContext.Provider>
   )
 }
+
+export type { CurrencyCode }
+export { isCurrencyCode }

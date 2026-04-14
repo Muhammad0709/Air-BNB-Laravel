@@ -3,10 +3,27 @@
 namespace App\Support;
 
 /**
- * Allowed user profile / display currency codes (3-letter ISO).
- * Keep in sync with resources/js/utils/currency.ts (CurrencyCode).
+ * Supported display / profile currency codes (ISO 4217).
+ *
+ * @see config/currencies.php and env SUPPORTED_CURRENCIES
  */
 final class SupportedCurrencies
 {
-    public const CODES = ['IQD', 'TRY', 'PKR', 'EUR', 'USD', 'GBP'];
+    /**
+     * @return list<string>
+     */
+    public static function codes(): array
+    {
+        $raw = config('currencies.supported', ['USD']);
+        if (! is_array($raw) || $raw === []) {
+            return ['USD'];
+        }
+
+        $normalized = array_values(array_unique(array_filter(array_map(
+            static fn (mixed $c): string => strtoupper(trim((string) $c)),
+            $raw
+        ))));
+
+        return $normalized !== [] ? $normalized : ['USD'];
+    }
 }

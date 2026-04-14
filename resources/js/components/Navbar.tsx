@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Link, usePage, router } from '@inertiajs/react'
 import { AppBar, Avatar, Box, Button, Container, IconButton, Stack, Toolbar, Typography, Menu, MenuItem } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -7,6 +7,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import MessageIcon from '@mui/icons-material/Message'
 import { useLanguage } from '../hooks/use-language'
 import { useCurrency } from '../contexts/CurrencyContext'
+import { getSupportedCurrencies } from '../utils/currency'
 
 const logoUrl = '/images/Logo.png'
 
@@ -23,11 +24,6 @@ const linkKeys: { key: string; href: string }[] = [
   { key: 'stays', href: '/listing' },
 ]
 
-const currencies = [
-  { code: 'USD', name: 'US Dollar' },
-  { code: 'PKR', name: 'Pakistani Rupee' },
-]
-
 const languages = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
   { code: 'ar', name: 'Arabic', flag: '🇸🇦' },
@@ -40,7 +36,18 @@ const languages = [
 export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/' }: NavbarProps) {
   const { t, language, switchLanguage, isRtl } = useLanguage()
   const { currency, setCurrency } = useCurrency()
-  const { url, props } = usePage()
+
+  const { url, props } = usePage<{ supportedCurrencies?: string[] }>()
+  const supportedList = props.supportedCurrencies ?? [...getSupportedCurrencies()]
+
+  const currencies = useMemo(
+    () =>
+      supportedList.map((code) => ({
+        code,
+        name: t(`nav.currency_${code.toLowerCase()}` as never),
+      })),
+    [t, supportedList]
+  )
   const pathname = url.split('?')[0]
   const [open, setOpen] = useState(false)
   const [currencyAnchor, setCurrencyAnchor] = useState<null | HTMLElement>(null)
@@ -69,7 +76,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
   }
 
   const handleCurrencySelect = (code: string) => {
-    setCurrency(code as 'USD' | 'PKR')
+    setCurrency(code)
     handleCurrencyClose()
   }
 

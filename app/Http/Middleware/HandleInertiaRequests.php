@@ -2,9 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\ExchangeRateService;
+use App\Support\SupportedCurrencies;
 use Illuminate\Http\Request;
-use Inertia\Middleware;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -37,6 +39,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $user = $request->user();
+
         return [
             ...parent::share($request),
             'flash' => [
@@ -62,6 +65,10 @@ class HandleInertiaRequests extends Middleware
                 ] : null,
             ],
             'locale' => fn () => $request->session()->get('locale', config('app.locale', 'en')),
+            /** ISO 4217 codes allowed in UI / profile (from config / env). */
+            'supportedCurrencies' => fn () => SupportedCurrencies::codes(),
+            /** Units of each currency per 1 USD (for display; storage stays USD). */
+            'exchangeRates' => fn () => app(ExchangeRateService::class)->getRates(),
             /** Session-only host UI preview for customers (account type stays User). */
             'host_panel_preview' => fn () => $user
                 ? (bool) $request->session()->get('host_panel_preview', false)
