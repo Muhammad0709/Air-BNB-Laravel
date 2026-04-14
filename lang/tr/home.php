@@ -28,4 +28,5 @@ return [
     'search_destinations_placeholder' => 'Destinasyon ara',
     'search_no_suggestions' => 'Eşleşen öneri yok. Konum olarak metninizi kullanmak için Ara\'ya basın.',
     'add_guests_placeholder' => 'Misafir ekle',
+    'guest_favorite' => 'Misafir favorisi',
 ];
