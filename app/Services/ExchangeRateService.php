@@ -105,10 +105,14 @@ final class ExchangeRateService
      */
     private function hasAnyLiveFx(array $out): bool
     {
-        foreach (SupportedCurrencies::codes() as $code) {
-            if ($code === 'USD') {
-                continue;
-            }
+        $codes = SupportedCurrencies::codes();
+        $nonUsd = array_values(array_filter($codes, static fn (string $c): bool => $c !== 'USD'));
+
+        if ($nonUsd === []) {
+            return isset($out['USD']) && $out['USD'] > 0;
+        }
+
+        foreach ($nonUsd as $code) {
             if (isset($out[$code]) && $out[$code] > 0) {
                 return true;
             }

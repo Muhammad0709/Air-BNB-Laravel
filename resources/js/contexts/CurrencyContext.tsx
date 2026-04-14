@@ -50,6 +50,7 @@ export function CurrencyProvider({ children, initialCurrency }: CurrencyProvider
 
   const setCurrency = useCallback((code: CurrencyCode) => {
     const upper = code.toUpperCase()
+    if (!isCurrencyCode(upper)) return
     setCurrencyState(upper)
     try {
       localStorage.setItem(STORAGE_KEY, upper)

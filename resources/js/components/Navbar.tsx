@@ -42,10 +42,12 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
 
   const currencies = useMemo(
     () =>
-      supportedList.map((code) => ({
-        code,
-        name: t(`nav.currency_${code.toLowerCase()}` as never),
-      })),
+      supportedList.map((code) => {
+        const key = `nav.currency_${code.toLowerCase()}`
+        const translated = t(key as never) as string
+        const name = translated === key ? code : translated
+        return { code, name }
+      }),
     [t, supportedList]
   )
   const pathname = url.split('?')[0]

@@ -52,7 +52,7 @@ class ProfileController extends Controller
      *                     @OA\Property(property="bio", type="string", nullable=true, example="Travel enthusiast and adventure seeker."),
      *                     @OA\Property(property="profile_picture", type="string", nullable=true, format="uri", example="http://localhost:8000/storage/profile-pictures/avatar.jpg"),
      *                     @OA\Property(property="type", type="string", example="User"),
-     *                     @OA\Property(property="currency", type="string", example="USD", description="User's preferred currency (IQD, TRY, PKR, EUR, USD, GBP)")
+     *                     @OA\Property(property="currency", type="string", example="USD", description="ISO 4217 code; allowed values from config currencies.supported / env SUPPORTED_CURRENCIES")
      *                 )
      *             )
      *         )
@@ -364,7 +364,7 @@ class ProfileController extends Controller
      *         @OA\JsonContent(
      *             required={"currency"},
      *
-     *             @OA\Property(property="currency", type="string", enum={"IQD", "TRY", "PKR", "EUR", "USD", "GBP"}, example="USD", description="Currency code")
+     *             @OA\Property(property="currency", type="string", example="USD", description="ISO 4217 code; must be in config currencies.supported (see env SUPPORTED_CURRENCIES)")
      *         )
      *     ),
      *

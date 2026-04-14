@@ -9,7 +9,10 @@ let supportedCodes: readonly string[] = ['USD']
 
 /** Sync from Inertia shared prop `supportedCurrencies` (see app bootstrap + events). */
 export function setSupportedCurrencies(codes: string[] | null | undefined): void {
-  if (!codes?.length) return
+  if (!codes?.length) {
+    supportedCodes = ['USD']
+    return
+  }
   const next = [...new Set(codes.map((c) => c.toUpperCase().trim()).filter(Boolean))]
   supportedCodes = next.length ? next : ['USD']
 }
@@ -71,10 +74,19 @@ export function formatPrice(amountUsd: number, currency: CurrencyCode): string {
 
   const local = safe * rate
 
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: code,
-  }).format(local)
+  try {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: code,
+    }).format(local)
+  } catch {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(safe)
+  }
 }
 
 export { defaultCurrencyFallback }
