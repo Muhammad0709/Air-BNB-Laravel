@@ -1,1 +1,0 @@
-import{j as o}from"./app-zNA1nB7d.js";import{c as s}from"./ArrowDropDown-PJ_yI64E.js";const c=s(o.jsx("path",{d:"M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2m0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2m0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2"}));export{c as M};
