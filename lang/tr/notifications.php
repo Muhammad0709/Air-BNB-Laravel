@@ -47,4 +47,8 @@ return [
             'body' => '"{property_title}" için {check_in_date} - {check_out_date} tarihleri arasındaki rezervasyonunuz iptal edildi',
         ],
     ],
+    'delete_dialog_title' => 'Bildirimi Sil',
+    'delete_dialog_message' => 'Bu bildirimi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.',
+    'delete_success' => 'Bildirim başarıyla silindi',
+    'delete_failed' => 'Bildirim silinemedi',
 ];

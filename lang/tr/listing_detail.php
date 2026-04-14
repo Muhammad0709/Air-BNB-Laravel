@@ -22,5 +22,13 @@ return [
     'show_all_photos' => 'Tüm fotoğrafları göster',
     'average_rating' => 'Ortalama puan',
     'reviews' => 'değerlendirme',
+    'write_review' => 'Değerlendirme yaz',
+    'your_rating' => 'Puanınız',
+    'click_star_hint' => '1-5 arası seçmek için yıldıza tıklayın',
+    'your_comment' => 'Yorumunuz (isteğe bağlı)',
+    'submit_review' => 'Değerlendirmeyi gönder',
+    'login_to_review' => 'Değerlendirme yapmak için giriş yapın',
     'login_to_book' => 'Giriş yapmadınız. Rezervasyon yapmak için giriş yapın.',
+    'explore_more' => 'Daha fazla keşfet',
+    'show_less' => 'Daha az göster',
 ];

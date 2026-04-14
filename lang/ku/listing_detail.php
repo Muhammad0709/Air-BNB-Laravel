@@ -22,5 +22,13 @@ return [
     'show_all_photos' => 'هەموو وێنەکان پیشان بدە',
     'average_rating' => 'Navîn nêrîn',
     'reviews' => 'nêrîn',
+    'write_review' => 'نێرینێک بنووسە',
+    'your_rating' => 'نێرینی تۆ',
+    'click_star_hint' => 'کرتە لە ئەستێرەیەک بکە بۆ هەڵبژاردنی ۱-۵',
+    'your_comment' => 'لێدوانی تۆ (دڵخواز)',
+    'submit_review' => 'نێرین بنێرە',
+    'login_to_review' => 'بۆ نووسینی نێرین چوونەژوورەوە بکە',
     'login_to_book' => 'تۆ چوونەژوورەوە نیت. بۆ حجز چوونەژوورەوە بکە.',
+    'explore_more' => 'زیاتر بگەڕێ',
+    'show_less' => 'کەمتر پیشان بدە',
 ];
