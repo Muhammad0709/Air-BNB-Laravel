@@ -76,7 +76,7 @@ return [
         'bank_name' => 'اسم البنك',
         'account_number' => 'رقم الحساب',
         'routing_number' => 'رقم التوجيه',
-        'paypal_email' => 'البريد الإلكتروني لـ PayPal',
+        'paypal_email' => 'البريد الإلكتروني لباي بال',
         'notes' => 'ملاحظات',
         'guest' => 'اسم الضيف',
         'limit' => 'الحد',
@@ -86,11 +86,11 @@ return [
     ],
 
     'files_max_message' => 'يجب ألا يتجاوز كل ملف 10 ميجابايت.',
-    'files_mimes_message' => 'يجب أن يكون كل ملف صورة (JPEG, PNG, GIF, WebP) أو فيديو (MP4, MOV, AVI, WebM).',
+    'files_mimes_message' => 'يجب أن يكون كل ملف صورة أو فيديو بصيغة مدعومة.',
 
     'contact' => [
         'files_max' => 'يجب ألا يتجاوز كل ملف تواصل 10 ميجابايت.',
-        'files_mimes' => 'يجب أن تكون ملفات التواصل PDF أو DOC أو DOCX أو JPG أو JPEG أو PNG.',
+        'files_mimes' => 'يجب أن تكون ملفات التواصل مستندات أو صوراً بصيغ مدعومة.',
     ],
 
     'custom' => [
@@ -111,7 +111,7 @@ return [
         ],
         'files.*' => [
             'max' => 'يجب ألا يتجاوز كل ملف 10 ميجابايت.',
-            'mimes' => 'يجب أن يكون كل ملف صورة (JPEG, PNG, GIF, WebP) أو فيديو (MP4, MOV, AVI, WebM).',
+            'mimes' => 'يجب أن يكون كل ملف صورة أو فيديو بصيغة مدعومة.',
         ],
     ],
 

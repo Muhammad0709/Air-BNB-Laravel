@@ -3,30 +3,30 @@
 return [
     'property_pending_approval' => [
         'admin' => [
-            'title' => 'زیر التواء پراپرٹی',
-            'body' => '{host_name} نے ایک نئی پراپرٹی "{property_title}" {property_location} میں منظوری کے لیے جمع کرائی ہے',
+            'title' => 'زیر التواء جائیداد',
+            'body' => '{host_name} نے ایک نئی جائیداد "{property_title}" {property_location} میں منظوری کے لیے جمع کرائی ہے',
         ],
     ],
     'property_approved' => [
         'host' => [
             'title' => 'پراپرٹی منظور ہو گئی',
-            'body' => 'آپ کی پراپرٹی "{property_title}" منظور ہو گئی ہے اور اب دستیاب ہے',
+            'body' => 'آپ کی جائیداد "{property_title}" منظور ہو گئی ہے اور اب دستیاب ہے',
         ],
     ],
     'property_rejected' => [
         'host' => [
             'title' => 'پراپرٹی مسترد کر دی گئی',
-            'body' => 'آپ کی پراپرٹی "{property_title}" مسترد کر دی گئی ہے۔ وجہ: {rejection_reason}',
+            'body' => 'آپ کی جائیداد "{property_title}" مسترد کر دی گئی ہے۔ وجہ: {rejection_reason}',
         ],
     ],
     'booking_created' => [
         'host' => [
             'title' => 'بکنگ موصول ہوئی',
-            'body' => '{guest_name} نے آپ کی پراپرٹی "{property_title}" کو {check_in_date} سے {check_out_date} تک ({nights} راتیں) ${total_amount} میں بک کیا ہے',
+            'body' => '{guest_name} نے آپ کی جائیداد "{property_title}" کو {check_in_date} سے {check_out_date} تک ({nights} راتیں) {total_amount} ڈالر میں بک کیا ہے',
         ],
         'admin' => [
             'title' => 'بکنگ بنائی گئی',
-            'body' => '{guest_name} نے "{property_title}" کو {check_in_date} سے {check_out_date} تک ({nights} راتیں) بک کیا - کل: ${total_amount}',
+            'body' => '{guest_name} نے "{property_title}" کو {check_in_date} سے {check_out_date} تک ({nights} راتیں) بک کیا — کل: {total_amount} ڈالر',
         ],
     ],
     'booking_confirmed' => [

@@ -31,7 +31,7 @@ return [
     'required_if' => ':attribute درکار ہے جب :other :value ہو۔',
     'exists' => 'منتخب :attribute درست نہیں۔',
     'regex' => ':attribute کی شکل درست نہیں۔',
-    'string' => ':attribute متن (string) ہونا چاہیے۔',
+    'string' => ':attribute متن ہونا چاہیے۔',
 
     'attributes' => [
         'name' => 'نام',
@@ -76,7 +76,7 @@ return [
         'bank_name' => 'بینک کا نام',
         'account_number' => 'اکاؤنٹ نمبر',
         'routing_number' => 'روٹنگ نمبر',
-        'paypal_email' => 'PayPal ای میل',
+        'paypal_email' => 'پے پال ای میل',
         'notes' => 'نوٹس',
         'guest' => 'مہمان کا نام',
         'limit' => 'حد',
@@ -86,11 +86,11 @@ return [
     ],
 
     'files_max_message' => 'ہر فائل 10 MB سے زیادہ نہیں ہونی چاہیے۔',
-    'files_mimes_message' => 'ہر فائل تصویر (JPEG, PNG, GIF, WebP) یا ویڈیو (MP4, MOV, AVI, WebM) ہونی چاہیے۔',
+    'files_mimes_message' => 'ہر فائل اجازت یافتہ قسم کی تصویر یا ویڈیو ہونی چاہیے۔',
 
     'contact' => [
         'files_max' => 'ہر رابطہ فائل 10 MB سے زیادہ نہیں ہونی چاہیے۔',
-        'files_mimes' => 'رابطہ فائلیں PDF، DOC، DOCX، JPG، JPEG یا PNG ہونی چاہئیں۔',
+        'files_mimes' => 'رابطہ فائلیں دستاویز یا تصویر کی اجازت یافتہ صیغوں میں ہونی چاہئیں۔',
     ],
 
     'custom' => [
@@ -111,7 +111,7 @@ return [
         ],
         'files.*' => [
             'max' => 'ہر فائل 10 MB سے زیادہ نہیں ہونی چاہیے۔',
-            'mimes' => 'ہر فائل تصویر (JPEG, PNG, GIF, WebP) یا ویڈیو (MP4, MOV, AVI, WebM) ہونی چاہیے۔',
+            'mimes' => 'ہر فائل اجازت یافتہ قسم کی تصویر یا ویڈیو ہونی چاہیے۔',
         ],
     ],
 

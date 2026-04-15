@@ -6,8 +6,8 @@ use OpenApi\Attributes as OA;
 
 #[OA\Info(
     version: "1.0.0",
-    title: "LipaBnb API",
-    description: "API documentation for LipaBnb application"
+    title: "Bondoqi API",
+    description: "API documentation for Bondoqi application"
 )]
 #[OA\Server(
     url: "http://127.0.0.1:8000",

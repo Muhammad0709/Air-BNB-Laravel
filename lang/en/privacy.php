@@ -4,7 +4,7 @@ return [
     'title' => 'Privacy Policy',
     'last_updated' => 'Last updated',
     'intro_title' => '1. Introduction',
-    'intro_text' => 'Welcome to LipaBnb. We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform.',
+    'intro_text' => 'Welcome to Bondoqi. We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our platform.',
     'collect_title' => '2. Information We Collect',
     'collect_intro' => 'We collect information that you provide directly to us, including:',
     'collect_1' => 'Name, email address, phone number, and other contact information',
@@ -31,7 +31,7 @@ return [
     'security_title' => '5. Data Security',
     'security_text' => 'We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.',
     'rights_title' => '6. Your Rights and Choices',
-    'rights_text' => 'You have the right to access, update, and request deletion of your personal information. To exercise these rights, please contact us at privacy@lipabnb.com.',
+    'rights_text' => 'You have the right to access, update, and request deletion of your personal information. To exercise these rights, please contact us at privacy@bondoqi.com.',
     'contact_title' => '7. Contact Us',
-    'contact_text' => 'If you have any questions about this Privacy Policy, please contact us at privacy@lipabnb.com.',
+    'contact_text' => 'If you have any questions about this Privacy Policy, please contact us at privacy@bondoqi.com.',
 ];

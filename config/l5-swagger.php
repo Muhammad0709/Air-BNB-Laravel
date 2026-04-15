@@ -5,7 +5,7 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'LipaBnb API Documentation',
+                'title' => 'Bondoqi API Documentation',
             ],
 
             'routes' => [

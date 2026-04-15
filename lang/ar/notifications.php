@@ -22,11 +22,11 @@ return [
     'booking_created' => [
         'host' => [
             'title' => 'حجز مستلم',
-            'body' => '{guest_name} حجز عقارك "{property_title}" من {check_in_date} إلى {check_out_date} ({nights} ليالٍ) مقابل ${total_amount}',
+            'body' => '{guest_name} حجز عقارك "{property_title}" من {check_in_date} إلى {check_out_date} ({nights} ليالٍ) مقابل {total_amount} دولار',
         ],
         'admin' => [
             'title' => 'تم إنشاء حجز',
-            'body' => '{guest_name} حجز "{property_title}" من {check_in_date} إلى {check_out_date} ({nights} ليالٍ) - الإجمالي: ${total_amount}',
+            'body' => '{guest_name} حجز "{property_title}" من {check_in_date} إلى {check_out_date} ({nights} ليالٍ) - الإجمالي: {total_amount} دولار',
         ],
     ],
     'booking_confirmed' => [

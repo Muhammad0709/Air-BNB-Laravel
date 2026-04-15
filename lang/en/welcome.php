@@ -2,6 +2,6 @@
 
 return [
     'title' => 'Welcome',
-    'heading' => 'Welcome to LipaBnb',
+    'heading' => 'Welcome to Bondoqi',
     'subtitle' => 'Laravel 12 + Inertia.js + React is working!',
 ];

@@ -12,7 +12,7 @@ return [
     'subject_placeholder' => 'ما هو موضوع رسالتك؟',
     'attach_files' => 'إرفاق ملفات (اختياري)',
     'click_to_upload' => 'انقر للتحميل أو اسحب وأفلت',
-    'file_types' => 'PDF, DOC, DOCX, JPG, PNG (الحد الأقصى 10 ميجا لكل ملف)',
+    'file_types' => 'مستندات أو صور بصيغ مدعومة (الحد الأقصى 10 ميجا لكل ملف)',
     'message' => 'الرسالة',
     'message_placeholder' => 'أخبرنا المزيد عن استفسارك...',
     'sending' => 'جاري الإرسال...',

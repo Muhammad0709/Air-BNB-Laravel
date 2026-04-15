@@ -22,11 +22,11 @@ return [
     'booking_created' => [
         'host' => [
             'title' => 'Booking Received',
-            'body' => '{guest_name} has booked your property "{property_title}" from {check_in_date} to {check_out_date} ({nights} nights) for ${total_amount}',
+            'body' => '{guest_name} has booked your property "{property_title}" from {check_in_date} to {check_out_date} ({nights} nights) for {total_amount}',
         ],
         'admin' => [
             'title' => 'Booking Created',
-            'body' => '{guest_name} booked "{property_title}" from {check_in_date} to {check_out_date} ({nights} nights) - Total: ${total_amount}',
+            'body' => '{guest_name} booked "{property_title}" from {check_in_date} to {check_out_date} ({nights} nights) - Total: {total_amount}',
         ],
     ],
     'booking_confirmed' => [
