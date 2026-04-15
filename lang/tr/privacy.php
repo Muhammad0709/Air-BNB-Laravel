@@ -4,7 +4,7 @@ return [
     'title' => 'Gizlilik Politikası',
     'last_updated' => 'Son güncelleme',
     'intro_title' => '1. Giriş',
-    'intro_text' => 'LipaBnb\'ye hoş geldiniz. Gizliliğinizi korumaya ve kişisel bilgilerinizin güvenliğini sağlamaya kararlıyız. Bu Gizlilik Politikası, platformumuzu kullandığınızda bilgilerinizi nasıl topladığımızı, kullandığımızı, ifşa ettiğimizi ve koruduğumuzu açıklar.',
+    'intro_text' => 'Bondoqi\'ye hoş geldiniz. Gizliliğinizi korumaya ve kişisel bilgilerinizin güvenliğini sağlamaya kararlıyız. Bu Gizlilik Politikası, platformumuzu kullandığınızda bilgilerinizi nasıl topladığımızı, kullandığımızı, ifşa ettiğimizi ve koruduğumuzu açıklar.',
     'collect_title' => '2. Topladığımız Bilgiler',
     'collect_intro' => 'Doğrudan bize sağladığınız bilgileri topluyoruz, şunlar dahil:',
     'collect_1' => 'Ad, e-posta, telefon ve diğer iletişim bilgileri',
@@ -31,7 +31,7 @@ return [
     'security_title' => '5. Veri Güvenliği',
     'security_text' => 'Kişisel bilgilerinizi yetkisiz erişim, değişiklik, ifşa veya tahribata karşı korumak için uygun teknik ve örgütsel önlemler uyguluyoruz.',
     'rights_title' => '6. Haklarınız ve Seçimleriniz',
-    'rights_text' => 'Kişisel bilgilerinize erişme, güncelleme ve silme talep etme hakkınız vardır. Bu hakları kullanmak için privacy@lipabnb.com adresinden bizimle iletişime geçin.',
+    'rights_text' => 'Kişisel bilgilerinize erişme, güncelleme ve silme talep etme hakkınız vardır. Bu hakları kullanmak için privacy@bondoqi.com adresinden bizimle iletişime geçin.',
     'contact_title' => '7. İletişim',
-    'contact_text' => 'Bu Gizlilik Politikası hakkında sorularınız varsa privacy@lipabnb.com adresinden bizimle iletişime geçin.',
+    'contact_text' => 'Bu Gizlilik Politikası hakkında sorularınız varsa privacy@bondoqi.com adresinden bizimle iletişime geçin.',
 ];
