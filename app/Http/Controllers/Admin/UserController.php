@@ -68,7 +68,7 @@ class UserController extends Controller
         $user->update($request->validated());
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'User updated successfully!');
+            ->with('success', __('admin.users.flash_updated'));
     }
 
     /**
@@ -79,7 +79,7 @@ class UserController extends Controller
         $user->update($request->validated());
 
         return redirect()->back()
-            ->with('success', 'User status updated successfully!');
+            ->with('success', __('admin.users.flash_status_updated'));
     }
 
     /**
@@ -88,6 +88,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully!');
+        return redirect()->route('admin.users.index')->with('success', __('admin.users.flash_deleted'));
     }
 }

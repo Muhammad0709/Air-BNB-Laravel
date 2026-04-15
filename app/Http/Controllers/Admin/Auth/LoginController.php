@@ -34,7 +34,7 @@ class LoginController extends Controller
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();
                 return back()->withErrors([
-                    'email' => 'Please use the main site to sign in as a customer.',
+                    'email' => __('admin.auth.customer_sign_in_required'),
                 ])->onlyInput('email');
             }
             $request->session()->regenerate();
@@ -45,7 +45,7 @@ class LoginController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
+            'email' => __('admin.auth.invalid_credentials'),
         ])->onlyInput('email');
     }
 

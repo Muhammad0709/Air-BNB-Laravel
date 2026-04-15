@@ -88,13 +88,13 @@ class SettingsController extends Controller
     public function updateProfile(UpdateProfileRequest $request)
     {
         Auth::user()->update($request->validated());
-        return redirect()->back()->with('success', 'Profile updated successfully!');
+        return redirect()->back()->with('success', __('admin.settings.profile_update_success'));
     }
 
     public function updatePassword(UpdatePasswordRequest $request)
     {
         Auth::user()->update(['password' => Hash::make($request->validated('new_password'))]);
-        return redirect()->back()->with('success', 'Password changed successfully!');
+        return redirect()->back()->with('success', __('admin.settings.password_update_success'));
     }
 
     public function uploadProfilePicture(UploadProfilePictureRequest $request)
@@ -105,6 +105,6 @@ class SettingsController extends Controller
         }
         $path = $request->file('profile_picture')->store('profile-pictures', 'public');
         $user->update(['profile_picture' => $path]);
-        return redirect()->back()->with('success', 'Profile picture updated successfully!');
+        return redirect()->back()->with('success', __('admin.settings.profile_picture_update_success'));
     }
 }

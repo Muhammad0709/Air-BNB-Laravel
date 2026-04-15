@@ -56,7 +56,7 @@ class EarningsController extends Controller
         
         // Check if this booking belongs to host's property
         if ($booking->property->user_id !== auth()->id()) {
-            abort(403);
+            abort(403, __('messages.unauthorized'));
         }
         
         $payout = Payout::where('booking_id', $id)->first();

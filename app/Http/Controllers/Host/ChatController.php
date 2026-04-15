@@ -45,7 +45,7 @@ class ChatController extends Controller
     {
         $propertyIds = \App\Models\Property::where('user_id', Auth::id())->pluck('id');
         if (! $propertyIds->contains($conversation->property_id)) {
-            abort(403);
+            abort(403, __('messages.unauthorized'));
         }
         $conversation->delete();
         return response()->noContent();

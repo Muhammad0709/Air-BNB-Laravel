@@ -123,7 +123,7 @@ class BookingController extends Controller
             'children' => 0,
         ]);
 
-        return redirect()->route('host.bookings.index')->with('success', 'Booking created successfully!');
+        return redirect()->route('host.bookings.index')->with('success', __('host.bookings.created_success'));
     }
 
     public function show(string $id)
@@ -241,7 +241,7 @@ class BookingController extends Controller
 
         $booking->update($data);
 
-        return redirect()->route('host.bookings.index')->with('success', 'Booking updated successfully!');
+        return redirect()->route('host.bookings.index')->with('success', __('host.bookings.updated_success'));
     }
 
     public function updateStatus(UpdateBookingStatusRequest $request, string $id)
@@ -282,6 +282,6 @@ class BookingController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Booking status updated successfully!');
+        return redirect()->back()->with('success', __('host.bookings.status_updated_success'));
     }
 }

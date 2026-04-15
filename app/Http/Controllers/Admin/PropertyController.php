@@ -92,7 +92,7 @@ class PropertyController extends Controller
         $property->update($validated);
 
         return redirect()->route('admin.properties.index')
-            ->with('success', 'Property updated successfully!');
+            ->with('success', __('admin.properties.flash_updated'));
     }
 
     /**
@@ -115,7 +115,7 @@ class PropertyController extends Controller
         }
 
         return redirect()->route('admin.properties.index')
-            ->with('success', 'Property approved successfully!');
+            ->with('success', __('admin.properties.flash_approved'));
     }
 
     /**
@@ -123,7 +123,7 @@ class PropertyController extends Controller
      */
     public function reject(Request $request, Property $property)
     {
-        $rejectionReason = $request->input('rejection_reason', 'Property does not meet our standards');
+        $rejectionReason = $request->input('rejection_reason', __('admin.properties.default_rejection_reason'));
         
         $property->update([
             'approval_status' => PropertyStatus::REJECTED->value
@@ -141,7 +141,7 @@ class PropertyController extends Controller
         }
 
         return redirect()->route('admin.properties.index')
-            ->with('success', 'Property rejected successfully!');
+            ->with('success', __('admin.properties.flash_rejected'));
     }
 
 }

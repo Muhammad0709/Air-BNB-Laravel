@@ -64,9 +64,9 @@ class NotificationController extends Controller
         // Ensure the notification belongs to the authenticated user
         if ($notification->user_id !== $request->user()->id) {
             if ($request->wantsJson()) {
-                return response()->json(['error' => 'Unauthorized'], 403);
+                return response()->json(['error' => __('messages.unauthorized')], 403);
             }
-            abort(403);
+            abort(403, __('messages.unauthorized'));
         }
 
         $notification->update([
@@ -100,7 +100,7 @@ class NotificationController extends Controller
         if ($request->wantsJson()) {
             return response()->json([
                 'data' => [
-                    'message' => 'All notifications marked as read',
+                    'message' => __('messages.all_notifications_marked_read'),
                 ],
             ]);
         }
@@ -115,11 +115,11 @@ class NotificationController extends Controller
     {
         // Ensure the notification belongs to the authenticated user
         if ($notification->user_id !== $request->user()->id) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json(['error' => __('messages.unauthorized')], 403);
         }
 
         $notification->delete();
 
-        return back()->with('success', 'Notification deleted successfully');
+        return back()->with('success', __('messages.notification_deleted'));
     }
 }
