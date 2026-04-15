@@ -9,5 +9,5 @@ return [
     'return_to_home' => 'ہوم پر واپس جائیں',
     'booking_confirmed_toast' => 'بکنگ تصدیق ہو گئی!',
     'no_booking_data' => 'بکنگ کا کوئی ڈیٹا نہیں۔ پہلے بکنگ مکمل کریں۔',
-    'property_not_found' => 'پراپرٹی نہیں ملی۔',
+    'property_not_found' => 'جائیداد نہیں ملی۔',
 ];

@@ -11,7 +11,7 @@ return [
     'payment' => 'ادائیگی',
     'reserve' => 'بک کریں',
     'processing' => 'پروسیس ہو رہا ہے...',
-    'select_property' => 'پراپرٹی منتخب کریں',
+    'select_property' => 'جائیداد منتخب کریں',
     'house_rules' => 'گھر کے اصول',
     'price_details' => 'قیمت کی تفصیلات',
     'number_of_rooms' => 'کمروں کی تعداد',

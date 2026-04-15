@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'destination' => 'منزل',
+    'destination' => 'مقصد',
     'checkin' => 'چیک ان',
     'checkout' => 'چیک آؤٹ',
     'guests' => 'مہمان',

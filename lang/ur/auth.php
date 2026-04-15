@@ -7,7 +7,7 @@ return [
 
     'signin' => [
         'title' => 'سائن ان',
-        'welcome' => 'لیپابنب میں خوش آمدید',
+        'welcome' => 'بوندوقی میں خوش آمدید',
         'subtitle' => 'براہ کرم اپنی تفصیلات درج کریں۔',
         'email' => 'ای میل',
         'email_placeholder' => 'your.email@example.com',

@@ -9,13 +9,13 @@ return [
     ],
     'property_approved' => [
         'host' => [
-            'title' => 'پراپرٹی منظور ہو گئی',
+            'title' => 'جائیداد منظور ہو گئی',
             'body' => 'آپ کی جائیداد "{property_title}" منظور ہو گئی ہے اور اب دستیاب ہے',
         ],
     ],
     'property_rejected' => [
         'host' => [
-            'title' => 'پراپرٹی مسترد کر دی گئی',
+            'title' => 'جائیداد مسترد کر دی گئی',
             'body' => 'آپ کی جائیداد "{property_title}" مسترد کر دی گئی ہے۔ وجہ: {rejection_reason}',
         ],
     ],

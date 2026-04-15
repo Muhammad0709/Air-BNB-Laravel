@@ -11,8 +11,8 @@ export default function SystemSettings() {
   const { t } = useLanguage()
   const [toastOpen, setToastOpen] = useState(false)
   const [settings, setSettings] = useState({
-    siteName: 'LipaBnb',
-    siteEmail: 'admin@lipabnb.com',
+    siteName: 'Bondoqi',
+    siteEmail: 'admin@bondoqi.com',
     sitePhone: '+1 (555) 123-4567',
     siteAddress: '123 Main Street, City, State, ZIP',
     timezone: 'America/New_York',
