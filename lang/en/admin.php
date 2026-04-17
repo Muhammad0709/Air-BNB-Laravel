@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'auth' => [
+        'customer_sign_in_required' => 'Please use the main site to sign in as a customer.',
+        'invalid_credentials' => 'The provided credentials do not match our records.',
+    ],
     'sidebar' => [
         'panel' => 'Admin Panel',
         'dashboard' => 'Dashboard',
@@ -52,6 +56,9 @@ return [
         'profile_picture_note' => 'Profile picture is generated from user initials',
         'account_information' => 'Account Information',
         'member_since' => 'Member Since',
+        'flash_updated' => 'User updated successfully!',
+        'flash_status_updated' => 'User status updated successfully!',
+        'flash_deleted' => 'User deleted successfully!',
     ],
     'properties' => [
         'title' => 'Properties',
@@ -107,6 +114,10 @@ return [
         'property_not_found' => 'Property not found',
         'deactivate' => 'Deactivate',
         'activate' => 'Activate',
+        'flash_updated' => 'Property updated successfully!',
+        'flash_approved' => 'Property approved successfully!',
+        'flash_rejected' => 'Property rejected successfully!',
+        'default_rejection_reason' => 'Property does not meet our standards',
     ],
     'bookings' => [
         'title' => 'Bookings',
@@ -253,6 +264,9 @@ return [
         'commission_rate' => 'Commission (%)',
         'commission_rate_hint' => 'Platform commission percentage applied to host earnings.',
         'configuration_saved' => 'Configuration saved successfully!',
+        'profile_update_success' => 'Profile updated successfully!',
+        'password_update_success' => 'Password changed successfully!',
+        'profile_picture_update_success' => 'Profile picture updated successfully!',
     ],
     'common' => [
         'view' => 'View',

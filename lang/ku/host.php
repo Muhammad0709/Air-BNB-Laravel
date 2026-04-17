@@ -109,6 +109,8 @@ return [
         'update_booking_btn' => 'نوێکردنەوەی حجز',
         'status_updated' => 'بار نوێکرایەوە!',
         'update_failed' => 'نوێکردنەوە سەرکەوتوو نەبوو',
+        'updated_success' => 'حجز بە سەرکەوتوویی نوێکرایەوە!',
+        'status_updated_success' => 'دۆخی حجز بە سەرکەوتوویی نوێکرایەوە!',
     ],
     'chat' => [
         'messages' => 'نامەکان',

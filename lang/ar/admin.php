@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'auth' => [
+        'customer_sign_in_required' => 'يُرجى استخدام الموقع الرئيسي لتسجيل الدخول كعميل.',
+        'invalid_credentials' => 'بيانات الاعتماد المقدمة لا تطابق سجلاتنا.',
+    ],
     'sidebar' => [
         'panel' => 'لوحة الإدارة',
         'dashboard' => 'لوحة التحكم',
@@ -52,6 +56,9 @@ return [
         'profile_picture_note' => 'صورة الملف الشخصي من الحروف الأولى',
         'account_information' => 'معلومات الحساب',
         'member_since' => 'عضو منذ',
+        'flash_updated' => 'تم تحديث المستخدم بنجاح!',
+        'flash_status_updated' => 'تم تحديث حالة المستخدم بنجاح!',
+        'flash_deleted' => 'تم حذف المستخدم بنجاح!',
     ],
     'properties' => [
         'title' => 'العقارات',
@@ -107,6 +114,10 @@ return [
         'property_not_found' => 'العقار غير موجود',
         'deactivate' => 'إلغاء التنشيط',
         'activate' => 'تنشيط',
+        'flash_updated' => 'تم تحديث العقار بنجاح!',
+        'flash_approved' => 'تمت الموافقة على العقار بنجاح!',
+        'flash_rejected' => 'تم رفض العقار بنجاح!',
+        'default_rejection_reason' => 'العقار لا يستوفي معاييرنا',
     ],
     'bookings' => [
         'title' => 'الحجوزات',
@@ -253,6 +264,9 @@ return [
         'commission_rate' => 'العمولة (%)',
         'commission_rate_hint' => 'نسبة عمولة المنصة المطبقة على أرباح المضيف.',
         'configuration_saved' => 'تم حفظ التكوين بنجاح!',
+        'profile_update_success' => 'تم تحديث الملف الشخصي بنجاح!',
+        'password_update_success' => 'تم تغيير كلمة المرور بنجاح!',
+        'profile_picture_update_success' => 'تم تحديث صورة الملف الشخصي بنجاح!',
     ],
     'common' => [
         'view' => 'عرض',

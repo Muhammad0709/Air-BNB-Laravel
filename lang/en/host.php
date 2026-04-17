@@ -109,6 +109,8 @@ return [
         'update_booking_btn' => 'Update Booking',
         'status_updated' => 'Status updated!',
         'update_failed' => 'Update failed',
+        'updated_success' => 'Booking updated successfully!',
+        'status_updated_success' => 'Booking status updated successfully!',
     ],
     'chat' => [
         'messages' => 'Messages',

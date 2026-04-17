@@ -109,6 +109,8 @@ return [
         'update_booking_btn' => 'به‌روزرسانی رزرو',
         'status_updated' => 'وضعیت به‌روزرسانی شد!',
         'update_failed' => 'به‌روزرسانی ناموفق',
+        'updated_success' => 'رزرو با موفقیت به‌روزرسانی شد!',
+        'status_updated_success' => 'وضعیت رزرو با موفقیت به‌روزرسانی شد!',
     ],
     'chat' => [
         'messages' => 'پیام‌ها',

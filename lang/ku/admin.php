@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'auth' => [
+        'customer_sign_in_required' => 'تکایە وەک کڕیار چوونەژوورەوە لە ماڵپەڕی سەرەکی بکە.',
+        'invalid_credentials' => 'زانیارییەکان لەگەڵ تۆمارەکانمان یەک ناگرنەوە.',
+    ],
     'sidebar' => [
         'panel' => 'پانێڵی بەڕێوەبەر',
         'dashboard' => 'داشبۆرد',
@@ -52,6 +56,9 @@ return [
         'profile_picture_note' => 'وێنەی پرۆفایل لە پیتی یەکەم دروست دەبێت',
         'account_information' => 'زانیاری هەژمار',
         'member_since' => 'ئەندام لە',
+        'flash_updated' => 'بەکارهێنەر بە سەرکەوتوویی نوێکرایەوە!',
+        'flash_status_updated' => 'دۆخی بەکارهێنەر بە سەرکەوتوویی نوێکرایەوە!',
+        'flash_deleted' => 'بەکارهێنەر بە سەرکەوتوویی سڕایەوە!',
     ],
     'properties' => [
         'title' => 'خانووبەرەکان',
@@ -107,6 +114,10 @@ return [
         'property_not_found' => 'خانووبەر نەدۆزرایەوە',
         'deactivate' => 'ناچالاک بکە',
         'activate' => 'چالاک بکە',
+        'flash_updated' => 'خانووبەر بە سەرکەوتوویی نوێکرایەوە!',
+        'flash_approved' => 'خانووبەر بە سەرکەوتوویی پەسەندکرا!',
+        'flash_rejected' => 'خانووبەر بە سەرکەوتوویی ڕەتکرایەوە!',
+        'default_rejection_reason' => 'خانووبەر لەگەڵ ستانداردەکانماندا ناگونجێت',
     ],
     'bookings' => [
         'title' => 'حجزەکان',
@@ -253,6 +264,9 @@ return [
         'commission_rate' => 'کۆمیسیۆن (%)',
         'commission_rate_hint' => 'ڕێژەی کۆمیسیۆنی پلاتفۆرم کە لەسەر داهاتی مێوانdar جێبەجێ دەکرێت.',
         'configuration_saved' => 'ڕێکخستن بە سەرکەوتوویی پاشەکەوت کرا!',
+        'profile_update_success' => 'پرۆفایل بە سەرکەوتوویی نوێکرایەوە!',
+        'password_update_success' => 'وشەی نهێنی بە سەرکەوتوویی گۆڕدرا!',
+        'profile_picture_update_success' => 'وێنەی پرۆفایل بە سەرکەوتوویی نوێکرایەوە!',
     ],
     'common' => [
         'view' => 'بینین',

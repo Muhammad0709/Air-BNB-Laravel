@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'auth' => [
+        'customer_sign_in_required' => 'Müşteri olarak giriş yapmak için lütfen ana siteyi kullanın.',
+        'invalid_credentials' => 'Girilen bilgiler kayıtlarımızla eşleşmiyor.',
+    ],
     'sidebar' => [
         'panel' => 'Yönetici Paneli',
         'dashboard' => 'Kontrol Paneli',
@@ -52,6 +56,9 @@ return [
         'profile_picture_note' => 'Profil resmi baş harflerden oluşturulur',
         'account_information' => 'Hesap Bilgileri',
         'member_since' => 'Üyelik Tarihi',
+        'flash_updated' => 'Kullanıcı başarıyla güncellendi!',
+        'flash_status_updated' => 'Kullanıcı durumu başarıyla güncellendi!',
+        'flash_deleted' => 'Kullanıcı başarıyla silindi!',
     ],
     'properties' => [
         'title' => 'Mülkler',
@@ -107,6 +114,10 @@ return [
         'property_not_found' => 'Mülk bulunamadı',
         'deactivate' => 'Devre Dışı Bırak',
         'activate' => 'Etkinleştir',
+        'flash_updated' => 'İlan başarıyla güncellendi!',
+        'flash_approved' => 'İlan başarıyla onaylandı!',
+        'flash_rejected' => 'İlan başarıyla reddedildi!',
+        'default_rejection_reason' => 'İlan standartlarımızı karşılamıyor',
     ],
     'bookings' => [
         'title' => 'Rezervasyonlar',
@@ -253,6 +264,9 @@ return [
         'commission_rate' => 'Komisyon (%)',
         'commission_rate_hint' => 'Ev sahibi kazançlarına uygulanan platform komisyon yüzdesi.',
         'configuration_saved' => 'Yapılandırma başarıyla kaydedildi!',
+        'profile_update_success' => 'Profil başarıyla güncellendi!',
+        'password_update_success' => 'Şifre başarıyla değiştirildi!',
+        'profile_picture_update_success' => 'Profil fotoğrafı başarıyla güncellendi!',
     ],
     'common' => [
         'view' => 'Görüntüle',

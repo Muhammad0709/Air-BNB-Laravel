@@ -109,6 +109,8 @@ return [
         'update_booking_btn' => 'Rezervasyonu güncelle',
         'status_updated' => 'Durum güncellendi!',
         'update_failed' => 'Güncelleme başarısız',
+        'updated_success' => 'Rezervasyon başarıyla güncellendi!',
+        'status_updated_success' => 'Rezervasyon durumu başarıyla güncellendi!',
     ],
     'chat' => [
         'messages' => 'Mesajlar',

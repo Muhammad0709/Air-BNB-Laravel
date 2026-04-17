@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'auth' => [
+        'customer_sign_in_required' => 'کسٹمر کے طور پر سائن ان کرنے کے لیے براہ کرم مرکزی سائٹ استعمال کریں۔',
+        'invalid_credentials' => 'فراہم کردہ تفصیلات ہمارے ریکارڈ سے میل نہیں کھاتیں۔',
+    ],
     'sidebar' => [
         'panel' => 'ایڈمن پینل',
         'dashboard' => 'ڈیش بورڈ',
@@ -52,6 +56,9 @@ return [
         'profile_picture_note' => 'پروفائل تصویر حروف سے بنتی ہے',
         'account_information' => 'اکاؤنٹ کی معلومات',
         'member_since' => 'رکن منذ',
+        'flash_updated' => 'صارف کامیابی سے اپ ڈیٹ ہو گیا!',
+        'flash_status_updated' => 'صارف کی حیثیت کامیابی سے اپ ڈیٹ ہو گئی!',
+        'flash_deleted' => 'صارف کامیابی سے حذف ہو گیا!',
     ],
     'properties' => [
         'title' => 'پراپرٹیز',
@@ -107,6 +114,10 @@ return [
         'property_not_found' => 'پراپرٹی نہیں ملی',
         'deactivate' => 'غیر فعال کریں',
         'activate' => 'فعال کریں',
+        'flash_updated' => 'پراپرٹی کامیابی سے اپ ڈیٹ ہو گئی!',
+        'flash_approved' => 'پراپرٹی کامیابی سے منظور ہو گئی!',
+        'flash_rejected' => 'پراپرٹی کامیابی سے مسترد کر دی گئی!',
+        'default_rejection_reason' => 'پراپرٹی ہمارے معیار پر پوری نہیں اترتی',
     ],
     'bookings' => [
         'title' => 'بکنگز',
@@ -253,6 +264,9 @@ return [
         'commission_rate' => 'کمیشن (%)',
         'commission_rate_hint' => 'میزبان کی آمدنی پر لاگو پلیٹ فارم کمیشن کی فیصد۔',
         'configuration_saved' => 'کنفیگریشن کامیابی سے محفوظ ہو گئی!',
+        'profile_update_success' => 'پروفائل کامیابی سے اپ ڈیٹ ہو گئی!',
+        'password_update_success' => 'پاس ورڈ کامیابی سے تبدیل ہو گیا!',
+        'profile_picture_update_success' => 'پروفائل تصویر کامیابی سے اپ ڈیٹ ہو گئی!',
     ],
     'common' => [
         'view' => 'دیکھیں',

@@ -109,6 +109,8 @@ return [
         'update_booking_btn' => 'بکنگ اپ ڈیٹ کریں',
         'status_updated' => 'حیثیت اپ ڈیٹ ہو گئی!',
         'update_failed' => 'اپ ڈیٹ نہیں ہو سکی',
+        'updated_success' => 'بکنگ کامیابی سے اپ ڈیٹ ہو گئی!',
+        'status_updated_success' => 'بکنگ کی حیثیت کامیابی سے اپ ڈیٹ ہو گئی!',
     ],
     'chat' => [
         'messages' => 'میسجز',

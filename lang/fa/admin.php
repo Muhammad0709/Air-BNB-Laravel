@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'auth' => [
+        'customer_sign_in_required' => 'لطفاً برای ورود به‌عنوان مشتری از سایت اصلی استفاده کنید.',
+        'invalid_credentials' => 'اطلاعات واردشده با سوابق ما مطابقت ندارد.',
+    ],
     'sidebar' => [
         'panel' => 'پنل مدیریت',
         'dashboard' => 'داشبورد',
@@ -52,6 +56,9 @@ return [
         'profile_picture_note' => 'تصویر پروفایل از حروف اول نام ایجاد می‌شود',
         'account_information' => 'اطلاعات حساب',
         'member_since' => 'عضو از',
+        'flash_updated' => 'کاربر با موفقیت به‌روزرسانی شد!',
+        'flash_status_updated' => 'وضعیت کاربر با موفقیت به‌روزرسانی شد!',
+        'flash_deleted' => 'کاربر با موفقیت حذف شد!',
     ],
     'properties' => [
         'title' => 'املاک',
@@ -107,6 +114,10 @@ return [
         'property_not_found' => 'ملک یافت نشد',
         'deactivate' => 'غیرفعال کردن',
         'activate' => 'فعال کردن',
+        'flash_updated' => 'ملک با موفقیت به‌روزرسانی شد!',
+        'flash_approved' => 'ملک با موفقیت تأیید شد!',
+        'flash_rejected' => 'ملک با موفقیت رد شد!',
+        'default_rejection_reason' => 'ملک با استانداردهای ما مطابقت ندارد',
     ],
     'bookings' => [
         'title' => 'رزروها',
@@ -253,6 +264,9 @@ return [
         'commission_rate' => 'کمیسیون (%)',
         'commission_rate_hint' => 'درصد کمیسیون پلتفرم اعمال شده بر درآمد میزبان.',
         'configuration_saved' => 'پیکربندی با موفقیت ذخیره شد!',
+        'profile_update_success' => 'پروفایل با موفقیت به‌روزرسانی شد!',
+        'password_update_success' => 'رمز عبور با موفقیت تغییر کرد!',
+        'profile_picture_update_success' => 'تصویر پروفایل با موفقیت به‌روزرسانی شد!',
     ],
     'common' => [
         'view' => 'مشاهده',

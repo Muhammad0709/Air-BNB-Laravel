@@ -109,6 +109,8 @@ return [
         'update_booking_btn' => 'تحديث الحجز',
         'status_updated' => 'تم تحديث الحالة!',
         'update_failed' => 'فشل التحديث',
+        'updated_success' => 'تم تحديث الحجز بنجاح!',
+        'status_updated_success' => 'تم تحديث حالة الحجز بنجاح!',
     ],
     'chat' => [
         'messages' => 'الرسائل',
