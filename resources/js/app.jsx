@@ -36,6 +36,7 @@ createInertiaApp({
         const root = createRoot(el);
         const initialLocale = props.initialPage?.props?.locale || "en";
         const initialCurrency = props.initialPage?.props?.auth?.user?.currency || null;
+        const initialAuthenticated = Boolean(props.initialPage?.props?.auth?.user);
         syncCurrencyPropsFromPage(props.initialPage);
         if (typeof document !== "undefined") {
             const onInertiaPage = (e) => {
@@ -50,7 +51,10 @@ createInertiaApp({
                 fallbackLocale="en"
                 files={import.meta.glob("/lang/*.json")}
             >
-                <CurrencyProvider initialCurrency={initialCurrency}>
+                <CurrencyProvider
+                    initialCurrency={initialCurrency}
+                    initialAuthenticated={initialAuthenticated}
+                >
                     <App {...props} />
                 </CurrencyProvider>
             </LaravelReactI18nProvider>

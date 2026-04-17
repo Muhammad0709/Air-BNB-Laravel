@@ -23,8 +23,8 @@ export function useCurrency() {
 
 type CurrencyProviderProps = {
   children: React.ReactNode
-  /** Pass from initial Inertia page props (e.g. auth.user.currency). Provider runs outside Inertia so cannot use usePage(). */
   initialCurrency?: string | null
+  initialAuthenticated?: boolean
 }
 
 function normalizeCurrency(value: string | null | undefined): CurrencyCode {
@@ -32,7 +32,11 @@ function normalizeCurrency(value: string | null | undefined): CurrencyCode {
   return defaultCurrencyFallback()
 }
 
-export function CurrencyProvider({ children, initialCurrency }: CurrencyProviderProps) {
+export function CurrencyProvider({
+  children,
+  initialCurrency,
+  initialAuthenticated = false,
+}: CurrencyProviderProps) {
   const [currency, setCurrencyState] = useState<CurrencyCode>(() => {
     if (typeof window === 'undefined') return normalizeCurrency(initialCurrency)
     const stored = localStorage.getItem(STORAGE_KEY)
@@ -48,15 +52,20 @@ export function CurrencyProvider({ children, initialCurrency }: CurrencyProvider
     return () => document.removeEventListener('currencies:updated', fixIfInvalid)
   }, [])
 
-  const setCurrency = useCallback((code: CurrencyCode) => {
-    const upper = code.toUpperCase()
-    if (!isCurrencyCode(upper)) return
-    setCurrencyState(upper)
-    try {
-      localStorage.setItem(STORAGE_KEY, upper)
-    } catch (_) {}
-    router.patch('/profile/currency', { currency: upper }, { preserveState: true })
-  }, [])
+  const setCurrency = useCallback(
+    (code: CurrencyCode) => {
+      const upper = code.toUpperCase()
+      if (!isCurrencyCode(upper)) return
+      setCurrencyState(upper)
+      try {
+        localStorage.setItem(STORAGE_KEY, upper)
+      } catch (_) {}
+      if (initialAuthenticated) {
+        router.patch('/profile/currency', { currency: upper }, { preserveState: true })
+      }
+    },
+    [initialAuthenticated],
+  )
 
   return (
     <CurrencyContext.Provider value={{ currency, setCurrency }}>
