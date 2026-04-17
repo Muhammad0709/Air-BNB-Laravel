@@ -212,7 +212,7 @@ export default function Home() {
                 <Box className="hero-search-form">
                   <form className="search-form" onSubmit={handleSearch}>
                     <Box className="search-input-group">
-                      <Box className={`search-field${destination ? ' has-value' : ''}`} ref={destinationAnchorRef}>
+                      <Box className={`search-field search-field-destination${destination ? ' has-value' : ''}`} ref={destinationAnchorRef}>
                         <label htmlFor="destination">{t('home.where_to')}</label>
                         <TextField
                           id="destination"
@@ -241,127 +241,37 @@ export default function Home() {
                           }}
                         />
                       </Box>
-                      <Popover
-                        open={destinationOpen}
-                        anchorEl={destinationAnchorRef.current}
-                        onClose={handleDestinationClose}
-                        disableRestoreFocus
-                        slotProps={{
-                          root: {
-                            sx: { zIndex: (theme) => (theme.vars || theme).zIndex.modal },
-                          },
-                          paper: {
-                            ref: destinationPopoverPaperRef,
-                            sx: {
-                              mt: 1,
-                              borderRadius: 3,
-                              boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
-                              width: { xs: 'calc(100vw - 32px)', sm: 400 },
-                              maxWidth: 600,
-                            },
-                          },
-                        }}
-                        anchorOrigin={{
-                          vertical: 'bottom',
-                          horizontal: 'left',
-                        }}
-                        transformOrigin={{
-                          vertical: 'top',
-                          horizontal: 'left',
-                        }}
-                      >
-                        <Paper elevation={0} sx={{ p: 3, overflow: 'hidden' }}>
-                          <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 2, wordBreak: 'break-word', overflowWrap: 'break-word' }}>
-                            {t('home.where_to')}
-                          </Typography>
+                      <Box className="search-field-dates-row">
+                        <Box className={`search-field${checkin ? ' has-value' : ''}`}>
+                          <label htmlFor="checkin">{t('home.checkin')}</label>
                           <TextField
-                            fullWidth
-                            size="small"
-                            placeholder={t('home.search_destinations_placeholder')}
-                            value={destination}
-                            onChange={(e) => setDestination(e.target.value)}
-                            autoComplete="off"
-                            InputProps={{
-                              startAdornment: (
-                                <InputAdornment position="start">
-                                  <SearchIcon sx={{ color: '#717171', fontSize: 20 }} />
-                                </InputAdornment>
-                              ),
-                            }}
-                            sx={{
-                              mb: 2,
-                              '& .MuiOutlinedInput-root': { borderRadius: 2 },
-                            }}
+                            id="checkin"
+                            name="checkin"
+                            type="date"
+                            value={checkin}
+                            onChange={(e) => setCheckin(e.target.value)}
+                            variant="standard"
+                            InputProps={{ disableUnderline: true }}
+                            sx={{ '& .MuiInput-input': { border: 'none', padding: 0, fontWeight: 400, color: checkin ? '#222222' : '#717171' } }}
+                            InputLabelProps={{ shrink: true }}
                           />
-                          <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222', mb: 1.5, fontSize: '0.875rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
-                            {t('home.popular_destinations_label')}
-                          </Typography>
-                          <Stack spacing={0} sx={{ maxHeight: 320, overflow: 'auto' }}>
-                            {filteredDestinations.length === 0 && destination.trim() ? (
-                              <Typography variant="body2" sx={{ color: '#717171', py: 1.5, px: 0.5 }}>
-                                {t('home.search_no_suggestions')}
-                              </Typography>
-                            ) : null}
-                            {filteredDestinations.map((dest, index) => (
-                              <Box
-                                key={index}
-                                onClick={() => handleDestinationSelect(dest.name)}
-                                sx={{
-                                  p: 2,
-                                  cursor: 'pointer',
-                                  borderRadius: 2,
-                                  transition: 'background-color 0.2s',
-                                  minWidth: 0,
-                                  '&:hover': {
-                                    bgcolor: '#F7F7F7'
-                                  }
-                                }}
-                              >
-                                <Stack direction="row" spacing={2} useFlexGap alignItems="flex-start" sx={{ minWidth: 0 }}>
-                                  <LocationOnIcon sx={{ color: '#222222', fontSize: 20, mt: 0.5, flexShrink: 0 }} />
-                                  <Stack spacing={0.5} sx={{ minWidth: 0, overflow: 'hidden' }}>
-                                    <Typography variant="body1" sx={{ fontWeight: 600, color: '#222222', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
-                                      {dest.name}
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ color: '#717171', fontSize: '0.875rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
-                                      {dest.location}
-                                    </Typography>
-                                  </Stack>
-                                </Stack>
-                              </Box>
-                            ))}
-                          </Stack>
-                        </Paper>
-                      </Popover>
-                      <Box className={`search-field${checkin ? ' has-value' : ''}`}>
-                        <label htmlFor="checkin">{t('home.checkin')}</label>
-                        <TextField
-                          id="checkin"
-                          name="checkin"
-                          type="date"
-                          value={checkin}
-                          onChange={(e) => setCheckin(e.target.value)}
-                          variant="standard"
-                          InputProps={{ disableUnderline: true }}
-                          sx={{ '& .MuiInput-input': { border: 'none', padding: 0, fontWeight: 400, color: checkin ? '#222222' : '#717171' } }}
-                          InputLabelProps={{ shrink: true }}
-                        />
+                        </Box>
+                        <Box className={`search-field${checkout ? ' has-value' : ''}`}>
+                          <label htmlFor="checkout">{t('home.checkout')}</label>
+                          <TextField
+                            id="checkout"
+                            name="checkout"
+                            type="date"
+                            value={checkout}
+                            onChange={(e) => setCheckout(e.target.value)}
+                            variant="standard"
+                            InputProps={{ disableUnderline: true }}
+                            sx={{ '& .MuiInput-input': { border: 'none', padding: 0, fontWeight: 400, color: checkout ? '#222222' : '#717171' } }}
+                            InputLabelProps={{ shrink: true }}
+                          />
+                        </Box>
                       </Box>
-                      <Box className={`search-field${checkout ? ' has-value' : ''}`}>
-                        <label htmlFor="checkout">{t('home.checkout')}</label>
-                        <TextField
-                          id="checkout"
-                          name="checkout"
-                          type="date"
-                          value={checkout}
-                          onChange={(e) => setCheckout(e.target.value)}
-                          variant="standard"
-                          InputProps={{ disableUnderline: true }}
-                          sx={{ '& .MuiInput-input': { border: 'none', padding: 0, fontWeight: 400, color: checkout ? '#222222' : '#717171' } }}
-                          InputLabelProps={{ shrink: true }}
-                        />
-                      </Box>
-                      <Box className={`search-field${(adults > 0 || children > 0 || rooms > 0) ? ' has-value' : ''}`} ref={guestsAnchorRef}>
+                      <Box className={`search-field search-field-guests${(adults > 0 || children > 0 || rooms > 0) ? ' has-value' : ''}`} ref={guestsAnchorRef}>
                         <label htmlFor="guests">{t('home.guests')}</label>
                         <Box
                           onClick={handleGuestsClick}
@@ -378,151 +288,245 @@ export default function Home() {
                           </Typography>
                         </Box>
                       </Box>
-                      <Popover
-                        open={guestsOpen}
-                        anchorEl={guestsAnchorRef.current}
-                        onClose={handleGuestsClose}
-                        anchorOrigin={{
-                          vertical: 'bottom',
-                          horizontal: 'left',
-                        }}
-                        transformOrigin={{
-                          vertical: 'top',
-                          horizontal: 'left',
-                        }}
-                        PaperProps={{
-                          sx: {
-                            mt: 1,
-                            minWidth: 320,
-                            borderRadius: 2,
-                            boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-                            p: 3
-                          }
-                        }}
-                      >
-                        <Stack spacing={3} useFlexGap>
-                          {/* Adults */}
-                          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Typography sx={{ fontWeight: 600, color: '#222222' }}>{t('home.adults')}</Typography>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, border: '1px solid #E5E7EB', borderRadius: 2, px: 1 }}>
-                              <IconButton
-                                size="small"
-                                onClick={() => handleDecrement('adults')}
-                                disabled={adults <= 0}
-                                sx={{
-                                  color: adults <= 1 ? '#D1D5DB' : '#AD542D',
-                                  '&:hover': { bgcolor: adults <= 1 ? 'transparent' : '#FFF5F7' },
-                                  '&.Mui-disabled': { color: '#D1D5DB' }
-                                }}
-                              >
-                                <RemoveIcon fontSize="small" />
-                              </IconButton>
-                              <Typography sx={{ minWidth: 24, textAlign: 'center', fontWeight: 600, color: '#222222' }}>
-                                {adults}
-                              </Typography>
-                              <IconButton
-                                size="small"
-                                onClick={() => handleIncrement('adults')}
-                                sx={{
-                                  color: '#AD542D',
-                                  '&:hover': { bgcolor: '#FFF5F7' }
-                                }}
-                              >
-                                <AddIcon fontSize="small" />
-                              </IconButton>
-                            </Box>
-                          </Box>
-
-                          {/* Children */}
-                          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Typography sx={{ fontWeight: 600, color: '#222222' }}>{t('home.children')}</Typography>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, border: '1px solid #E5E7EB', borderRadius: 2, px: 1 }}>
-                              <IconButton
-                                size="small"
-                                onClick={() => handleDecrement('children')}
-                                disabled={children <= 0}
-                                sx={{
-                                  color: children <= 0 ? '#D1D5DB' : '#AD542D',
-                                  '&:hover': { bgcolor: children <= 0 ? 'transparent' : '#FFF5F7' },
-                                  '&.Mui-disabled': { color: '#D1D5DB' }
-                                }}
-                              >
-                                <RemoveIcon fontSize="small" />
-                              </IconButton>
-                              <Typography sx={{ minWidth: 24, textAlign: 'center', fontWeight: 600, color: '#222222' }}>
-                                {children}
-                              </Typography>
-                              <IconButton
-                                size="small"
-                                onClick={() => handleIncrement('children')}
-                                sx={{
-                                  color: '#AD542D',
-                                  '&:hover': { bgcolor: '#FFF5F7' }
-                                }}
-                              >
-                                <AddIcon fontSize="small" />
-                              </IconButton>
-                            </Box>
-                          </Box>
-
-                          {/* Rooms */}
-                          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Typography sx={{ fontWeight: 600, color: '#222222' }}>{t('home.rooms')}</Typography>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, border: '1px solid #E5E7EB', borderRadius: 2, px: 1 }}>
-                              <IconButton
-                                size="small"
-                                onClick={() => handleDecrement('rooms')}
-                                disabled={rooms <= 0}
-                                sx={{
-                                  color: rooms <= 1 ? '#D1D5DB' : '#AD542D',
-                                  '&:hover': { bgcolor: rooms <= 1 ? 'transparent' : '#FFF5F7' },
-                                  '&.Mui-disabled': { color: '#D1D5DB' }
-                                }}
-                              >
-                                <RemoveIcon fontSize="small" />
-                              </IconButton>
-                              <Typography sx={{ minWidth: 24, textAlign: 'center', fontWeight: 600, color: '#222222' }}>
-                                {rooms}
-                              </Typography>
-                              <IconButton
-                                size="small"
-                                onClick={() => handleIncrement('rooms')}
-                                sx={{
-                                  color: '#AD542D',
-                                  '&:hover': { bgcolor: '#FFF5F7' }
-                                }}
-                              >
-                                <AddIcon fontSize="small" />
-                              </IconButton>
-                            </Box>
-                          </Box>
-
-                          {/* Done Button */}
-                          <Button
-                            onClick={handleGuestsClose}
-                            variant="outlined"
-                            fullWidth
-                            sx={{
-                              borderColor: '#AD542D',
-                              color: '#AD542D',
-                              borderRadius: 2,
-                              py: 1.5,
-                              fontWeight: 600,
-                              textTransform: 'none',
-                              '&:hover': {
-                                borderColor: '#78381C',
-                                bgcolor: '#FFF5F7'
-                              }
-                            }}
-                          >
-                            {t('home.done')}
-                          </Button>
-                        </Stack>
-                      </Popover>
                       <Button type="submit" className="search-button" aria-label={t('home.search')}>
                         <SearchIcon sx={{ fontSize: '1.75rem' }} />
                       </Button>
                     </Box>
+                    <Popover
+                      open={destinationOpen}
+                      anchorEl={destinationAnchorRef.current}
+                      onClose={handleDestinationClose}
+                      disableRestoreFocus
+                      slotProps={{
+                        root: {
+                          sx: { zIndex: (theme) => (theme.vars || theme).zIndex.modal },
+                        },
+                        paper: {
+                          ref: destinationPopoverPaperRef,
+                          sx: {
+                            mt: 1,
+                            borderRadius: 3,
+                            boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
+                            width: { xs: 'calc(100vw - 32px)', sm: 400 },
+                            maxWidth: 600,
+                          },
+                        },
+                      }}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                      }}
+                    >
+                      <Paper elevation={0} sx={{ p: 3, overflow: 'hidden' }}>
+                        <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 2, wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                          {t('home.where_to')}
+                        </Typography>
+                        <TextField
+                          fullWidth
+                          size="small"
+                          placeholder={t('home.search_destinations_placeholder')}
+                          value={destination}
+                          onChange={(e) => setDestination(e.target.value)}
+                          autoComplete="off"
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon sx={{ color: '#717171', fontSize: 20 }} />
+                              </InputAdornment>
+                            ),
+                          }}
+                          sx={{
+                            mb: 2,
+                            '& .MuiOutlinedInput-root': { borderRadius: 2 },
+                          }}
+                        />
+                        <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222', mb: 1.5, fontSize: '0.875rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                          {t('home.popular_destinations_label')}
+                        </Typography>
+                        <Stack spacing={0} sx={{ maxHeight: 320, overflow: 'auto' }}>
+                          {filteredDestinations.length === 0 && destination.trim() ? (
+                            <Typography variant="body2" sx={{ color: '#717171', py: 1.5, px: 0.5 }}>
+                              {t('home.search_no_suggestions')}
+                            </Typography>
+                          ) : null}
+                          {filteredDestinations.map((dest, index) => (
+                            <Box
+                              key={index}
+                              onClick={() => handleDestinationSelect(dest.name)}
+                              sx={{
+                                p: 2,
+                                cursor: 'pointer',
+                                borderRadius: 2,
+                                transition: 'background-color 0.2s',
+                                minWidth: 0,
+                                '&:hover': {
+                                  bgcolor: '#F7F7F7'
+                                }
+                              }}
+                            >
+                              <Stack direction="row" spacing={2} useFlexGap alignItems="flex-start" sx={{ minWidth: 0 }}>
+                                <LocationOnIcon sx={{ color: '#222222', fontSize: 20, mt: 0.5, flexShrink: 0 }} />
+                                <Stack spacing={0.5} sx={{ minWidth: 0, overflow: 'hidden' }}>
+                                  <Typography variant="body1" sx={{ fontWeight: 600, color: '#222222', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                                    {dest.name}
+                                  </Typography>
+                                  <Typography variant="body2" sx={{ color: '#717171', fontSize: '0.875rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
+                                    {dest.location}
+                                  </Typography>
+                                </Stack>
+                              </Stack>
+                            </Box>
+                          ))}
+                        </Stack>
+                      </Paper>
+                    </Popover>
+                    <Popover
+                      open={guestsOpen}
+                      anchorEl={guestsAnchorRef.current}
+                      onClose={handleGuestsClose}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                      }}
+                      marginThreshold={16}
+                      slotProps={{
+                        root: {
+                          sx: { zIndex: (theme) => (theme.vars || theme).zIndex.modal },
+                        },
+                        paper: {
+                          sx: {
+                            mt: 1,
+                            boxSizing: 'border-box',
+                            width: { xs: 'min(calc(100vw - 32px), 100%)', sm: 'auto' },
+                            minWidth: { xs: 0, sm: 280 },
+                            maxWidth: { xs: 'calc(100vw - 32px)', sm: 400 },
+                            borderRadius: 2,
+                            boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                            p: 3,
+                          },
+                        },
+                      }}
+                    >
+                      <Stack spacing={3} useFlexGap>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <Typography sx={{ fontWeight: 600, color: '#222222' }}>{t('home.adults')}</Typography>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, border: '1px solid #E5E7EB', borderRadius: 2, px: 1 }}>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleDecrement('adults')}
+                              disabled={adults <= 0}
+                              sx={{
+                                color: adults <= 1 ? '#D1D5DB' : '#AD542D',
+                                '&:hover': { bgcolor: adults <= 1 ? 'transparent' : '#FFF5F7' },
+                                '&.Mui-disabled': { color: '#D1D5DB' }
+                              }}
+                            >
+                              <RemoveIcon fontSize="small" />
+                            </IconButton>
+                            <Typography sx={{ minWidth: 24, textAlign: 'center', fontWeight: 600, color: '#222222' }}>
+                              {adults}
+                            </Typography>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleIncrement('adults')}
+                              sx={{
+                                color: '#AD542D',
+                                '&:hover': { bgcolor: '#FFF5F7' }
+                              }}
+                            >
+                              <AddIcon fontSize="small" />
+                            </IconButton>
+                          </Box>
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <Typography sx={{ fontWeight: 600, color: '#222222' }}>{t('home.children')}</Typography>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, border: '1px solid #E5E7EB', borderRadius: 2, px: 1 }}>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleDecrement('children')}
+                              disabled={children <= 0}
+                              sx={{
+                                color: children <= 0 ? '#D1D5DB' : '#AD542D',
+                                '&:hover': { bgcolor: children <= 0 ? 'transparent' : '#FFF5F7' },
+                                '&.Mui-disabled': { color: '#D1D5DB' }
+                              }}
+                            >
+                              <RemoveIcon fontSize="small" />
+                            </IconButton>
+                            <Typography sx={{ minWidth: 24, textAlign: 'center', fontWeight: 600, color: '#222222' }}>
+                              {children}
+                            </Typography>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleIncrement('children')}
+                              sx={{
+                                color: '#AD542D',
+                                '&:hover': { bgcolor: '#FFF5F7' }
+                              }}
+                            >
+                              <AddIcon fontSize="small" />
+                            </IconButton>
+                          </Box>
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <Typography sx={{ fontWeight: 600, color: '#222222' }}>{t('home.rooms')}</Typography>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, border: '1px solid #E5E7EB', borderRadius: 2, px: 1 }}>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleDecrement('rooms')}
+                              disabled={rooms <= 0}
+                              sx={{
+                                color: rooms <= 1 ? '#D1D5DB' : '#AD542D',
+                                '&:hover': { bgcolor: rooms <= 1 ? 'transparent' : '#FFF5F7' },
+                                '&.Mui-disabled': { color: '#D1D5DB' }
+                              }}
+                            >
+                              <RemoveIcon fontSize="small" />
+                            </IconButton>
+                            <Typography sx={{ minWidth: 24, textAlign: 'center', fontWeight: 600, color: '#222222' }}>
+                              {rooms}
+                            </Typography>
+                            <IconButton
+                              size="small"
+                              onClick={() => handleIncrement('rooms')}
+                              sx={{
+                                color: '#AD542D',
+                                '&:hover': { bgcolor: '#FFF5F7' }
+                              }}
+                            >
+                              <AddIcon fontSize="small" />
+                            </IconButton>
+                          </Box>
+                        </Box>
+                        <Button
+                          onClick={handleGuestsClose}
+                          variant="outlined"
+                          fullWidth
+                          sx={{
+                            borderColor: '#AD542D',
+                            color: '#AD542D',
+                            borderRadius: 2,
+                            py: 1.5,
+                            fontWeight: 600,
+                            textTransform: 'none',
+                            '&:hover': {
+                              borderColor: '#78381C',
+                              bgcolor: '#FFF5F7'
+                            }
+                          }}
+                        >
+                          {t('home.done')}
+                        </Button>
+                      </Stack>
+                    </Popover>
                   </form>
                 </Box>
               </Col>

@@ -100,6 +100,10 @@ p.hero-subtitle {
   width: 100% !important;
 }
 
+.search-field-dates-row {
+  display: contents;
+}
+
 .search-field {
   display: flex;
   flex-direction: column;
@@ -1131,6 +1135,80 @@ p.hero-subtitle {
   .booking-info { text-align: left; margin-top: 20px; }
 }
 
+/* Property detail: name + location left, price + Book right (same row band on mobile) */
+@media (max-width: 767px) {
+  /* Same ellipsis pattern as Home .airbnb-card-title (single-line clamp) */
+  .property-info-card .property-info-top-row > [class*="col-"] {
+    min-width: 0;
+  }
+  .property-info-card .property-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-clamp: 1;
+    word-break: break-word;
+    margin-bottom: 8px;
+  }
+  .property-info-card .property-meta .location {
+    min-width: 0;
+    flex: 1;
+    max-width: 100%;
+  }
+  .property-info-card .property-location-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-clamp: 1;
+    min-width: 0;
+    word-break: break-word;
+  }
+  .property-info-card .property-info-top-row {
+    align-items: flex-start !important;
+  }
+  .property-info-card .booking-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    text-align: right;
+    margin-top: 0 !important;
+  }
+  .property-info-card .booking-info .price {
+    margin-bottom: 8px;
+  }
+  .property-info-card .property-info-top-row .property-meta {
+    margin-bottom: 0;
+  }
+  .property-info-rating-row .property-meta-mobile-rating {
+    margin-top: 4px;
+  }
+
+  /* Listing detail — Availability: tighter side padding, gap between stacked calendars */
+  .property-detail-page .availability-section {
+    padding: 16px 12px;
+  }
+  /* Remove Bootstrap col horizontal gutter so calendars use full card width */
+  .property-detail-page .availability-section .availability-calendars-row {
+    margin-left: 0;
+    margin-right: 0;
+    --bs-gutter-x: 0;
+  }
+  .property-detail-page .availability-section .availability-calendars-row > [class*="col-"] {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .property-detail-page .availability-section .availability-calendars-row > [class*="col-"]:first-child .calendar-widget {
+    margin-bottom: 16px;
+  }
+  .property-detail-page .availability-section .calendar-widget {
+    padding: 14px 10px;
+  }
+}
+
 @media (max-width: 768px) {
   section.hero-section { 
     min-height: 500px !important;
@@ -1213,8 +1291,54 @@ p.hero-subtitle {
     padding: 15px !important;
   }
   .search-input-group {
-    flex-direction: column !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch !important;
     gap: 12px !important;
+    height: auto !important;
+  }
+  .search-input-group > .search-field-destination {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .search-input-group > .search-field-guests {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .search-input-group > .search-field-dates-row {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .search-input-group > .search-button {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  [dir="rtl"] .search-input-group > .search-field-destination {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  [dir="rtl"] .search-input-group > .search-field-guests {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .search-field-dates-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    gap: 12px !important;
+    padding: 0 !important;
+    border-bottom: 1px solid #e5e7eb !important;
+  }
+  .search-field-dates-row .search-field {
+    flex: 1 1 50% !important;
+    min-width: 0 !important;
+    border-right: none !important;
+    border-bottom: none !important;
+    padding: 12px 15px !important;
   }
   .search-field {
     border-right: none !important;
@@ -1223,6 +1347,9 @@ p.hero-subtitle {
   }
   .search-field:last-of-type {
     border-bottom: none !important;
+  }
+  .search-input-group > .search-field.search-field-guests {
+    border-bottom: 1px solid #e5e7eb !important;
   }
   .search-button {
     border-radius: 50px !important;
@@ -1286,6 +1413,24 @@ p.hero-subtitle {
     font-size: 11px;
   }
   .calendar-days .day { padding: 6px 2px; font-size: 11px; }
+}
+
+/* Home: compact hero; pull Hotels closer (featured had margin-top + large padding for old absolute search) */
+@media (max-width: 768px) {
+  .index-page section.hero-section {
+    min-height: 0 !important;
+    padding: 22px 0 16px !important;
+  }
+  .index-page .hero-search-wrapper {
+    position: relative !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+  }
+  .index-page .featured-section {
+    margin-top: 0 !important;
+    padding: 16px 0 24px !important;
+  }
 }
 
 /* Custom Map Popup Styling */

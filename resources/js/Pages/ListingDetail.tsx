@@ -248,17 +248,24 @@ export default function ListingDetail() {
             <Row>
               <Col lg={12}>
                 <Paper className="property-info-card" elevation={0}>
-                  <Row className="align-items-center">
-                    <Col md={10}>
-                      <Typography className="property-title" component="h1" sx={{ fontWeight: 700 }}>
+                  <Row className="align-items-start property-info-top-row">
+                    <Col xs={8} md={10}>
+                      <Typography
+                        className="property-title"
+                        component="h1"
+                        sx={{ fontWeight: 700 }}
+                        title={property.title || undefined}
+                      >
                         {property.title}
                       </Typography>
                       <Box className="property-meta">
                         <Box className="location">
-                          <LocationOnIcon sx={{ fontSize: 16 }} />
-                          <span>{property.location}</span>
+                          <LocationOnIcon sx={{ fontSize: 16, flexShrink: 0 }} />
+                          <span className="property-location-text" title={property.location || undefined}>
+                            {property.location}
+                          </span>
                         </Box>
-                        <Box className="rating">
+                        <Box className="rating d-none d-md-flex">
                           <Box className="stars">
                             {[...Array(5)].map((_, i) => (
                               <StarIcon key={i} sx={{ fontSize: 14, color: i < Math.round(ratingStats.average) ? '#FFD700' : '#e9ecef' }} />
@@ -268,7 +275,7 @@ export default function ListingDetail() {
                         </Box>
                       </Box>
                     </Col>
-                    <Col md={2}>
+                    <Col xs={4} md={2}>
                       <Box className="booking-info">
                         <Box className="price">
                           <Typography component="span" className="price-amount">{formatPriceUtil(priceDisplay, currency)}</Typography>
@@ -287,6 +294,20 @@ export default function ListingDetail() {
                         >
                          {t('listing_detail.book')}
                         </Button>
+                      </Box>
+                    </Col>
+                  </Row>
+                  <Row className="d-md-none property-info-rating-row">
+                    <Col xs={12}>
+                      <Box className="property-meta property-meta-mobile-rating">
+                        <Box className="rating d-flex">
+                          <Box className="stars">
+                            {[...Array(5)].map((_, i) => (
+                              <StarIcon key={`m-${i}`} sx={{ fontSize: 14, color: i < Math.round(ratingStats.average) ? '#FFD700' : '#e9ecef' }} />
+                            ))}
+                          </Box>
+                          <Typography className="rating-text">({ratingStats.total})</Typography>
+                        </Box>
                       </Box>
                     </Col>
                   </Row>
@@ -637,7 +658,7 @@ export default function ListingDetail() {
                 {/* Availability Section */}
                 <Paper className="availability-section mt-4" elevation={0}>
                   <Typography className="section-title" component="h2">Availability</Typography>
-                  <Row>
+                  <Row className="availability-calendars-row">
                     <Col md={6}>
                       <Paper className="calendar-widget" elevation={0}>
                         <Box className="calendar-header">

@@ -27,18 +27,36 @@ export default function Footer() {
 
   return (
     <div className="footer-fix-bottom">
-      <Box component="footer" sx={{ bgcolor: '#F7F7F7', color: '#222222', mt: 8, borderTop: '1px solid #DDDDDD' }}>
-        <MUIContainer maxWidth={false} sx={{ maxWidth: { xs: '100%', md: 1160, xl: 1440 }, px: { xs: 2, md: 3 }, py: { xs: 5, md: 6 }, mx: 'auto' }}>
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }, gap: { xs: 4, md: 6 }, mb: 4 }}>
-          <Box>
-            <Typography sx={{ color: '#222222', fontWeight: 600, mb: 2.5, fontSize: '0.875rem' }}>{t('footer.support')}</Typography>
-            <Stack spacing={1.5} useFlexGap>
+      <Box component="footer" sx={{ bgcolor: '#F7F7F7', color: '#222222', mt: { xs: 4, md: 8 }, borderTop: '1px solid #DDDDDD' }}>
+        <MUIContainer
+          maxWidth={false}
+          sx={{
+            maxWidth: { xs: '100%', md: 1160, xl: 1440 },
+            px: { xs: 2, md: 3 },
+            pt: { xs: 3, md: 6 },
+            pb: { xs: 2, md: 6 },
+            mx: 'auto',
+          }}
+        >
+        <Box
+          sx={{
+            display: 'grid',
+            alignItems: 'start',
+            gridTemplateColumns: { xs: 'repeat(2, minmax(0, 1fr))', sm: 'repeat(2, minmax(0, 1fr))', md: 'repeat(3, minmax(0, 1fr))' },
+            columnGap: { xs: 2, sm: 3, md: 6 },
+            rowGap: { xs: 1.5, sm: 2, md: 4 },
+            mb: { xs: 2, md: 4 },
+          }}
+        >
+          <Box sx={{ minWidth: 0 }}>
+            <Typography sx={{ color: '#222222', fontWeight: 600, mb: { xs: 1, md: 2.5 }, fontSize: '0.875rem' }}>{t('footer.support')}</Typography>
+            <Stack spacing={1} useFlexGap>
               <Box component={Link} href="/contact" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.contact_us')}</Box>
             </Stack>
           </Box>
-          <Box>
-            <Typography sx={{ color: '#222222', fontWeight: 600, mb: 2.5, fontSize: '0.875rem' }}>{t('footer.lipabnb')}</Typography>
-            <Stack spacing={1.5} useFlexGap>
+          <Box sx={{ minWidth: 0 }}>
+            <Typography sx={{ color: '#222222', fontWeight: 600, mb: { xs: 1, md: 2.5 }, fontSize: '0.875rem' }}>{t('footer.lipabnb')}</Typography>
+            <Stack spacing={1} useFlexGap>
               <Box component={Link} href="/" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.home')}</Box>
               <Box component={Link} href="/about" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.about_us')}</Box>
               {isCustomer && (
@@ -128,24 +146,71 @@ export default function Footer() {
               )}
             </Stack>
           </Box>
-          <Box>
-            <Typography sx={{ color: '#222222', fontWeight: 600, mb: 2.5, fontSize: '0.875rem' }}>{t('footer.community')}</Typography>
-            <Stack spacing={1.5} useFlexGap>
+          <Box sx={{ gridColumn: { xs: '1 / -1', md: 'auto' }, minWidth: 0 }}>
+            <Typography sx={{ color: '#222222', fontWeight: 600, mb: { xs: 1, md: 2.5 }, fontSize: '0.875rem' }}>{t('footer.community')}</Typography>
+            <Stack spacing={1} useFlexGap>
               <Box component={Link} href="/wishlist" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.wishlist')}</Box>
               <Box component={Link} href="/bookings" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.bookings')}</Box>
             </Stack>
           </Box>
         </Box>
 
-        <Divider sx={{ my: 3, borderColor: '#DDDDDD' }} />
+        <Divider sx={{ my: { xs: 1.5, md: 3 }, borderColor: '#DDDDDD' }} />
 
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'center', alignItems: 'center', gap: 2 }}>
-          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: { xs: 1, sm: 3 }, alignItems: 'center', justifyContent: 'center', textAlign: { xs: 'center', sm: 'left' } }}>
-            <Typography sx={{ color: '#222222', fontSize: '0.875rem' }}>
-              © {new Date().getFullYear()} {'\u00A0'} {'\u00A0'}{t('footer.lipabnb')}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: { xs: 0.75, md: 1.25 },
+            textAlign: 'center',
+          }}
+        >
+          <Typography sx={{ color: '#222222', fontSize: { xs: '0.8125rem', md: '0.875rem' } }}>
+            © {new Date().getFullYear()} {t('footer.lipabnb')}
+          </Typography>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'nowrap',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 1,
+            }}
+          >
+            <Box
+              component={Link}
+              href="/privacy-policy"
+              onClick={scrollToTop}
+              sx={{
+                color: '#222222',
+                textDecoration: 'none',
+                fontSize: { xs: '0.8125rem', md: '0.875rem' },
+                whiteSpace: 'nowrap',
+                '&:hover': { textDecoration: 'underline' },
+              }}
+            >
+              {t('footer.privacy')}
+            </Box>
+            <Typography component="span" sx={{ color: '#C4C4C4', fontSize: '0.75rem', lineHeight: 1, userSelect: 'none' }} aria-hidden>
+              ·
             </Typography>
-            <Box component={Link} href="/privacy-policy" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.privacy')}</Box>
-            <Box component={Link} href="/terms" onClick={scrollToTop} sx={{ color: '#222222', textDecoration: 'none', fontSize: '0.875rem', '&:hover': { textDecoration: 'underline' } }}>{t('footer.terms')}</Box>
+            <Box
+              component={Link}
+              href="/terms"
+              onClick={scrollToTop}
+              sx={{
+                color: '#222222',
+                textDecoration: 'none',
+                fontSize: { xs: '0.8125rem', md: '0.875rem' },
+                whiteSpace: 'nowrap',
+                '&:hover': { textDecoration: 'underline' },
+              }}
+            >
+              {t('footer.terms')}
+            </Box>
           </Box>
         </Box>
       </MUIContainer>
