@@ -1,1 +1,0 @@
-import{j as t}from"./app-CdjrolRg.js";import{S as n}from"./Snackbar-C4My3FtO.js";import{A as s}from"./Alert-PyZB7560.js";function h({open:i,onClose:r,message:o,severity:a}){return t.jsx(n,{open:i,autoHideDuration:6e3,onClose:r,anchorOrigin:{vertical:"top",horizontal:"right"},children:t.jsx(s,{onClose:r,severity:a,sx:{width:"100%"},children:o})})}export{h as T};
