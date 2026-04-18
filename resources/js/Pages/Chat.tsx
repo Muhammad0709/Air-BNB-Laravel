@@ -239,7 +239,6 @@ export default function Chat() {
     }
   }, [selectedConversation])
 
-  // Refresh messages when tab becomes visible so read receipts (blue ticks) update after the host opens the chat.
   useEffect(() => {
     if (!selectedConversation) return
     const refresh = () => {
