@@ -99,7 +99,7 @@ export default function SignIn() {
                       <Stack spacing={2.5}>
                         <Box>
                           <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signin.email')}</Typography>
-                          <TextField name="email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} error={!!emailError} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '24px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '24px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '24px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '24px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signin.email_placeholder')} />
+                          <TextField name="email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} error={!!emailError} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signin.email_placeholder')} />
                           <InputError message={loginErrorMessage ? undefined : emailError} />
                         </Box>
                         <Box>
@@ -111,7 +111,7 @@ export default function SignIn() {
                             onChange={(e) => setData('password', e.target.value)}
                             error={!!passwordError}
                             placeholder={t('auth.signin.password_placeholder')}
-                            sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '24px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '24px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '24px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '24px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }}
+                            sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }}
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="end">
