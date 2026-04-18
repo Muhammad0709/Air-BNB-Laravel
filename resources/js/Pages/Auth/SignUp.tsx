@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Head, Link, useForm } from '@inertiajs/react'
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, InputAdornment, Link as MUILink, Menu, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, Dialog, DialogContent, DialogTitle, IconButton, InputAdornment, Link as MUILink, Menu, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import CloseIcon from '@mui/icons-material/Close'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { Container } from 'react-bootstrap'
@@ -195,24 +196,84 @@ export default function SignUp() {
           maxWidth={false}
           PaperProps={{
             sx: {
-              borderRadius: 3,
+              borderRadius: '16px',
+              overflow: 'hidden',
               width: '100%',
-              maxWidth: 400,
+              maxWidth: { xs: 'min(420px, calc(100% - 32px))', md: 400 },
               mx: 2,
+              border: '1px solid #ECEFF3',
+              boxShadow: '0 12px 40px rgba(17, 24, 39, 0.12)',
             },
           }}
         >
-          <DialogTitle sx={{ fontWeight: 700, pr: 6 }}>{t('auth.signin.google_intent_title')}</DialogTitle>
-          <DialogContent>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              alignItems: 'flex-start',
+              flexShrink: 0,
+              px: 1.5,
+              pt: 1.5,
+              pb: 2.5,
+            }}
+          >
+            <IconButton
+              type="button"
+              onClick={() => setGoogleDialogOpen(false)}
+              aria-label={t('auth.signin.google_intent_cancel')}
+              size="small"
+              sx={{
+                color: '#6B7280',
+                '&:hover': { bgcolor: '#F3F4F6', color: '#111827' },
+              }}
+            >
+              <CloseIcon sx={{ fontSize: 22 }} />
+            </IconButton>
+          </Box>
+          <DialogTitle
+            sx={{
+              fontWeight: 700,
+              fontSize: '1.125rem',
+              lineHeight: 1.35,
+              color: '#111827',
+              pt: 0,
+              px: 2.5,
+              pb: 2,
+              borderBottom: '1px solid #F3F4F6',
+              letterSpacing: '-0.01em',
+            }}
+          >
+            {t('auth.signin.google_intent_title')}
+          </DialogTitle>
+          <DialogContent sx={{ px: 2.5, pt: 2.5, pb: 3 }}>
+            <Typography
+              variant="body2"
+              sx={{
+                color: '#6B7280',
+                fontSize: '0.875rem',
+                lineHeight: 1.55,
+                mb: 2.5,
+              }}
+            >
               {t('auth.signin.google_intent_subtitle')}
             </Typography>
-            <Stack spacing={1.5}>
+            <Stack spacing={1.25}>
               <Button
                 fullWidth
                 variant="contained"
+                disableElevation
                 onClick={() => { window.location.href = '/auth/google?intent=customer' }}
-                sx={{ py: 1.25, borderRadius: 999, textTransform: 'none', fontWeight: 600, bgcolor: '#AD542D', boxShadow: 'none', '&:hover': { bgcolor: '#78381C', boxShadow: 'none' } }}
+                sx={{
+                  py: 1.5,
+                  minHeight: 48,
+                  borderRadius: '999px',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  fontSize: '0.9375rem',
+                  bgcolor: '#AD542D',
+                  boxShadow: 'none',
+                  '&:hover': { bgcolor: '#8a4224', boxShadow: 'none' },
+                }}
               >
                 {t('auth.signin.google_intent_customer')}
               </Button>
@@ -220,17 +281,27 @@ export default function SignUp() {
                 fullWidth
                 variant="outlined"
                 onClick={() => { window.location.href = '/auth/google?intent=host' }}
-                sx={{ py: 1.25, borderRadius: 999, textTransform: 'none', fontWeight: 600, borderColor: '#D0D5DD', color: '#344054' }}
+                sx={{
+                  py: 1.5,
+                  minHeight: 48,
+                  borderRadius: '999px',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  fontSize: '0.9375rem',
+                  borderColor: '#AD542D',
+                  borderWidth: 1.5,
+                  color: '#AD542D',
+                  bgcolor: '#fff',
+                  '&:hover': {
+                    borderColor: '#78381C',
+                    bgcolor: 'rgba(173, 84, 45, 0.06)',
+                  },
+                }}
               >
                 {t('auth.signin.google_intent_host')}
               </Button>
             </Stack>
           </DialogContent>
-          <DialogActions sx={{ px: 3, pb: 2 }}>
-            <Button onClick={() => setGoogleDialogOpen(false)} sx={{ textTransform: 'none', color: '#667085', fontWeight: 600 }}>
-              {t('auth.signin.google_intent_cancel')}
-            </Button>
-          </DialogActions>
         </Dialog>
       </Box>
     </>
