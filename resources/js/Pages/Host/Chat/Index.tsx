@@ -417,12 +417,24 @@ export default function HostChat() {
                       {conversation.customerName.charAt(0)}
                     </Avatar>
                     <Box sx={{ flex: 1, minWidth: 0 }}>
-                      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 0.5 }}>
-                        <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222' }}>
+                      <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={1} sx={{ mb: 0.5 }}>
+                        <Typography
+                          variant="subtitle2"
+                          title={conversation.customerName}
+                          sx={{
+                            fontWeight: 700,
+                            color: '#222222',
+                            flex: 1,
+                            minWidth: 0,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
                           {conversation.customerName}
                         </Typography>
-                        <Stack direction="row" spacing={1} useFlexGap alignItems="center">
-                          <Typography variant="caption" sx={{ color: '#9CA3AF' }}>
+                        <Stack direction="row" spacing={1} useFlexGap alignItems="center" sx={{ flexShrink: 0 }}>
+                          <Typography variant="caption" sx={{ color: '#9CA3AF', whiteSpace: 'nowrap' }}>
                             {formatDate(conversation.lastMessageTime)}
                           </Typography>
                           <IconButton
