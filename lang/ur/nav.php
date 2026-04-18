@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'menu' => 'مینو',
     'home' => 'مرکزی صفحہ',
     'stays' => 'قیام',
     'contact_us' => 'رابطہ کریں',

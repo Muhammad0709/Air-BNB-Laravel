@@ -615,8 +615,8 @@ export default function Chat() {
                         <Avatar src={currentConversation.hostAvatar ?? undefined} sx={{ bgcolor: '#AD542D', width: 40, height: 40, flexShrink: 0 }}>
                           {currentConversation.hostName.charAt(0)}
                         </Avatar>
-                        <Box sx={{ minWidth: 0 }}>
-                          <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#222222' }} noWrap>
+                        <Box sx={{ minWidth: 0, flex: 1 }}>
+                          <Typography variant="subtitle1" title={currentConversation.hostName} sx={{ fontWeight: 700, color: '#222222' }} noWrap>
                             {currentConversation.hostName}
                           </Typography>
                           <Typography variant="caption" sx={{ color: '#717171' }} noWrap display="block">

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'menu' => 'منو',
     'home' => 'خانه',
     'stays' => 'اقامت‌ها',
     'contact_us' => 'تماس با ما',

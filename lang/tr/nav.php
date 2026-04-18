@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'menu' => 'Menü',
     'home' => 'Ana Sayfa',
     'stays' => 'Konaklamalar',
     'contact_us' => 'İletişim',

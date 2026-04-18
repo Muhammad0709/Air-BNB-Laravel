@@ -388,200 +388,327 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
         </Toolbar>
       </Container>
 
-      {/* Mobile drawer */}
       {open && (
-        <Box sx={{ position: 'fixed', inset: 0, bgcolor: 'rgba(0,0,0,0.4)', zIndex: 1200 }} onClick={() => setOpen(false)}>
-          <Box sx={{ position: 'absolute', top: 0, ...(isRtl ? { left: 0 } : { right: 0 }), width: '80%', maxWidth: 320, height: '100%', bgcolor: '#fff', p: 3 }} onClick={(e) => e.stopPropagation()}>
-            <Stack direction="row" justifyContent="flex-end" alignItems="center" sx={{ mb: 2 }}>
-              <IconButton onClick={() => setOpen(false)}>
-                <CloseIcon />
-              </IconButton>
-            </Stack>
-            <Stack spacing={2.5} useFlexGap sx={{ mb: 3 }}>
-              {links.map((l) => (
-                <Typography key={l.label} component={Link} href={l.href} onClick={() => setOpen(false)} sx={{ textDecoration: 'none', color: isActive(l.href) ? '#AD542D' : '#222222', fontWeight: 700 }}>
-                  {l.label}
+        <Box
+          sx={{ position: 'fixed', inset: 0, bgcolor: 'rgba(0,0,0,0.45)', zIndex: 1200, backdropFilter: 'blur(2px)' }}
+          onClick={() => setOpen(false)}
+        >
+          <Box
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
+            onClick={(e) => e.stopPropagation()}
+            sx={{
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              ...(isRtl ? { left: 0 } : { right: 0 }),
+              width: { xs: 'min(76vw, 270px)', sm: 288 },
+              maxWidth: '100%',
+              height: '100%',
+              bgcolor: '#fff',
+              boxShadow: isRtl ? '4px 0 24px rgba(0,0,0,0.12)' : '-4px 0 24px rgba(0,0,0,0.12)',
+              display: 'flex',
+              flexDirection: 'column',
+              overflow: 'hidden',
+            }}
+          >
+            <Stack
+              sx={{
+                flexShrink: 0,
+                px: 2,
+                pt: 1,
+                pb: 1.25,
+                borderBottom: '1px solid #E8E8E8',
+                gap: 0.25,
+              }}
+            >
+              {/* Menu then close in DOM: LTR = title inner-left / × outer-right; RTL = title inner-right / × outer-left */}
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                sx={{ width: '100%', gap: 1 }}
+              >
+                <Typography
+                  sx={{
+                    fontWeight: 800,
+                    color: '#222',
+                    letterSpacing: '-0.02em',
+                    fontSize: '1rem',
+                    lineHeight: 1.25,
+                  }}
+                >
+                  {t('nav.menu')}
                 </Typography>
-              ))}
-              {isAuthenticated && (
-                <>
-                  <Typography component={Link} href="/chat" onClick={() => setOpen(false)} sx={{ textDecoration: 'none', color: isActive('/chat') ? '#AD542D' : '#222222', fontWeight: 700 }}>
-                    {t('nav.messages')}
-                  </Typography>
-                  <Typography component={Link} href="/wishlist" onClick={() => setOpen(false)} sx={{ textDecoration: 'none', color: isActive('/wishlist') ? '#AD542D' : '#222222', fontWeight: 700 }}>
-                    {t('nav.wishlist')}
-                  </Typography>
-                  <Typography component={Link} href="/profile/settings" onClick={() => setOpen(false)} sx={{ textDecoration: 'none', color: isActive('/profile/settings') ? '#AD542D' : '#222222', fontWeight: 700 }}>
-                    {t('nav.profile')}
-                  </Typography>
-                  <Typography component={Link} href="/bookings" onClick={() => setOpen(false)} sx={{ textDecoration: 'none', color: isActive('/bookings') ? '#AD542D' : '#222222', fontWeight: 700 }}>
-                    {t('nav.booking_history')}
-                  </Typography>
-                  <Typography component={Link} href="/notifications" onClick={() => setOpen(false)} sx={{ textDecoration: 'none', color: isActive('/notifications') ? '#AD542D' : '#222222', fontWeight: 700 }}>
-                    {t('nav.notifications')}
-                  </Typography>
-                </>
-              )}
-              {/* Become a host - commented out
+                <IconButton
+                  onClick={() => setOpen(false)}
+                  aria-label="Close menu"
+                  sx={{
+                    color: '#6B7280',
+                    width: 40,
+                    height: 40,
+                    p: 0,
+                    flexShrink: 0,
+                    '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' },
+                  }}
+                >
+                  <CloseIcon sx={{ fontSize: 22 }} />
+                </IconButton>
+              </Stack>
+            </Stack>
+
+            <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
+              <Stack component="nav" spacing={0} sx={{ px: 1.5, py: 2 }}>
+                {links.map((l) => (
+                  <Box
+                    key={l.label}
+                    component={Link}
+                    href={l.href}
+                    onClick={() => setOpen(false)}
+                    sx={{
+                      display: 'block',
+                      width: '100%',
+                      py: 1.25,
+                      px: 1.5,
+                      borderRadius: 2,
+                      textDecoration: 'none',
+                      color: isActive(l.href) ? '#AD542D' : '#222222',
+                      fontWeight: 700,
+                      fontSize: '0.9375rem',
+                      bgcolor: isActive(l.href) ? 'rgba(173, 84, 45, 0.08)' : 'transparent',
+                      transition: 'background-color 0.15s',
+                      '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' },
+                    }}
+                  >
+                    {l.label}
+                  </Box>
+                ))}
+                {isAuthenticated && (
+                  <>
+                    {[
+                      { href: '/chat', label: t('nav.messages') },
+                      { href: '/wishlist', label: t('nav.wishlist') },
+                      { href: '/profile/settings', label: t('nav.profile') },
+                      { href: '/bookings', label: t('nav.booking_history') },
+                      { href: '/notifications', label: t('nav.notifications') },
+                    ].map((item) => (
+                      <Box
+                        key={item.href}
+                        component={Link}
+                        href={item.href}
+                        onClick={() => setOpen(false)}
+                        sx={{
+                          display: 'block',
+                          width: '100%',
+                          py: 1.25,
+                          px: 1.5,
+                          borderRadius: 2,
+                          textDecoration: 'none',
+                          color: isActive(item.href) ? '#AD542D' : '#222222',
+                          fontWeight: 700,
+                          fontSize: '0.9375rem',
+                          bgcolor: isActive(item.href) ? 'rgba(173, 84, 45, 0.08)' : 'transparent',
+                          transition: 'background-color 0.15s',
+                          '&:hover': { bgcolor: 'rgba(0,0,0,0.04)' },
+                        }}
+                      >
+                        {item.label}
+                      </Box>
+                    ))}
+                  </>
+                )}
+              </Stack>
+            </Box>
+
+            {showAuth && (
               <Box
-                component={Link}
-                href="/register"
-                onClick={() => setOpen(false)}
                 sx={{
-                  textDecoration: 'none',
-                  color: '#222222',
-                  fontWeight: 700,
-                  py: 1.5,
+                  flexShrink: 0,
+                  borderTop: '1px solid #E8E8E8',
+                  bgcolor: '#FAFAFA',
                   px: 2,
-                  borderRadius: 2,
-                  bgcolor: '#F9FAFB',
-                  border: '1px solid #E5E7EB',
-                  transition: 'all 0.2s',
-                  '&:hover': { bgcolor: '#F7F7F7', borderColor: '#AD542D' }
+                  py: 2,
                 }}
               >
-                <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
-                  <Box sx={{ width: 40, height: 40, borderRadius: '50%', bgcolor: '#FFF5F7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Typography sx={{ fontSize: '1.25rem' }}>🏠</Typography>
-                  </Box>
-                  <Box>
-                    <Typography sx={{ fontWeight: 700, color: '#222222', fontSize: '0.875rem' }}>{t('nav.become_host')}</Typography>
-                    <Typography sx={{ fontSize: '0.75rem', color: '#717171', mt: 0.25 }}>{t('nav.become_host_sub')}</Typography>
-                  </Box>
-                </Stack>
-              </Box>
-              */}
-            </Stack>
-            {showAuth && (
-<Stack spacing={2} useFlexGap>
-              <Box>
-                  <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem', mb: 1.5 }}>{t('nav.language')}</Typography>
-                  <Box
-                    onClick={handleLanguageClick}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      px: 2,
-                      py: 1.25,
-                      borderRadius: 2,
-                      border: '1px solid #DDDDDD',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s',
-                      '&:hover': { borderColor: '#AD542D', bgcolor: '#F7F7F7' }
-                    }}
-                  >
-                    <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
-                      <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{currentLanguage.flag}</Typography>
-                      <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem', marginInlineStart: 0.75 }}>
-                        {currentLanguage.name}
-                      </Typography>
-                    </Stack>
-                    <ArrowDropDownIcon sx={{ fontSize: 24, color: '#222222' }} />
-                  </Box>
-                  <Menu
-                    anchorEl={languageAnchor}
-                    open={Boolean(languageAnchor)}
-                    onClose={handleLanguageClose}
-                    PaperProps={{ sx: { mt: 1, minWidth: 200, borderRadius: 2, boxShadow: '0 2px 16px rgba(0,0,0,0.12)' } }}
-                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                  >
-                    {languages.map((lang) => (
-                      <MenuItem
-                        key={lang.code}
-                        onClick={() => handleLanguageSelect(lang.code)}
-                        sx={{
-                          py: 1.5,
-                          px: 2,
-                          '&.Mui-selected': { bgcolor: '#FFF5F7', '&:hover': { bgcolor: '#FFF5F7' } },
-                          '&:hover': { bgcolor: '#F7F7F7' }
-                        }}
-                      >
-                        <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
-                          <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{lang.flag}</Typography>
-                          <Typography sx={{ fontWeight: 400, fontSize: '0.875rem', color: '#222222' }}>
-                            {lang.name}
-                          </Typography>
-                        </Stack>
-                      </MenuItem>
-                    ))}
-                  </Menu>
-                </Box>
-                <Box>
-                  <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem', mb: 1.5 }}>{t('nav.currency')}</Typography>
-                  <Box
-                    onClick={handleCurrencyClick}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      px: 2,
-                      py: 1.25,
-                      borderRadius: 2,
-                      border: '1px solid #DDDDDD',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s',
-                      '&:hover': { borderColor: '#AD542D', bgcolor: '#F7F7F7' }
-                    }}
-                  >
-                    <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem' }}>
-                      {currentCurrency.code} - {currentCurrency.name}
+                <Stack spacing={2} useFlexGap>
+                  <Box sx={{ width: '100%' }}>
+                    <Typography sx={{ color: '#374151', fontWeight: 600, fontSize: '0.75rem', mb: 1, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                      {t('nav.language')}
                     </Typography>
-                    <ArrowDropDownIcon sx={{ fontSize: 24, color: '#222222' }} />
+                    <Box
+                      onClick={handleLanguageClick}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: 1,
+                        width: '100%',
+                        px: 1.5,
+                        py: 1.25,
+                        borderRadius: 2,
+                        border: '1px solid #E5E7EB',
+                        bgcolor: '#fff',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                        '&:hover': { borderColor: '#AD542D', bgcolor: '#fff' },
+                      }}
+                    >
+                      <Stack direction="row" spacing={1} useFlexGap alignItems="center" sx={{ minWidth: 0, flex: 1 }}>
+                        <Typography sx={{ fontSize: '1.25rem', lineHeight: 1, flexShrink: 0 }}>{currentLanguage.flag}</Typography>
+                        <Typography sx={{ color: '#222222', fontWeight: 600, fontSize: '0.875rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {currentLanguage.name}
+                        </Typography>
+                      </Stack>
+                      <ArrowDropDownIcon sx={{ fontSize: 22, color: '#6B7280', flexShrink: 0 }} />
+                    </Box>
+                    <Menu
+                      anchorEl={languageAnchor}
+                      open={Boolean(languageAnchor)}
+                      onClose={handleLanguageClose}
+                      PaperProps={{ sx: { mt: 1, minWidth: 220, maxWidth: 'min(100vw - 32px, 320px)', borderRadius: 2, boxShadow: '0 8px 24px rgba(0,0,0,0.12)' } }}
+                      transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                    >
+                      {languages.map((lang) => (
+                        <MenuItem
+                          key={lang.code}
+                          onClick={() => handleLanguageSelect(lang.code)}
+                          sx={{
+                            py: 1.5,
+                            px: 2,
+                            '&.Mui-selected': { bgcolor: '#FFF5F7', '&:hover': { bgcolor: '#FFF5F7' } },
+                            '&:hover': { bgcolor: '#F7F7F7' },
+                          }}
+                        >
+                          <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
+                            <Typography sx={{ fontSize: '1.25rem', lineHeight: 1 }}>{lang.flag}</Typography>
+                            <Typography sx={{ fontWeight: 400, fontSize: '0.875rem', color: '#222222' }}>{lang.name}</Typography>
+                          </Stack>
+                        </MenuItem>
+                      ))}
+                    </Menu>
                   </Box>
-                  <Menu
-                    anchorEl={currencyAnchor}
-                    open={Boolean(currencyAnchor)}
-                    onClose={handleCurrencyClose}
-                    PaperProps={{ sx: { mt: 1, minWidth: 200, borderRadius: 2, boxShadow: '0 2px 16px rgba(0,0,0,0.12)' } }}
-                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                  >
-                    {currencies.map((curr) => (
-                      <MenuItem
-                        key={curr.code}
-                        onClick={() => handleCurrencySelect(curr.code)}
-                        selected={currency === curr.code}
+                  <Box sx={{ width: '100%' }}>
+                    <Typography sx={{ color: '#374151', fontWeight: 600, fontSize: '0.75rem', mb: 1, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                      {t('nav.currency')}
+                    </Typography>
+                    <Box
+                      onClick={handleCurrencyClick}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: 1,
+                        width: '100%',
+                        px: 1.5,
+                        py: 1.25,
+                        borderRadius: 2,
+                        border: '1px solid #E5E7EB',
+                        bgcolor: '#fff',
+                        cursor: 'pointer',
+                        transition: 'all 0.2s',
+                        '&:hover': { borderColor: '#AD542D', bgcolor: '#fff' },
+                      }}
+                    >
+                      <Typography
                         sx={{
-                          py: 1.5,
-                          px: 2,
-                          '&.Mui-selected': { bgcolor: '#FFF5F7', '&:hover': { bgcolor: '#FFF5F7' } },
-                          '&:hover': { bgcolor: '#F7F7F7' }
+                          color: '#222222',
+                          fontWeight: 600,
+                          fontSize: '0.8125rem',
+                          minWidth: 0,
+                          flex: 1,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
                         }}
                       >
-                        <Stack>
-                          <Typography sx={{ fontWeight: currency === curr.code ? 600 : 400, fontSize: '0.875rem', color: '#222222' }}>{curr.code}</Typography>
-                          <Typography sx={{ fontSize: '0.75rem', color: '#717171' }}>{curr.name}</Typography>
-                        </Stack>
-                      </MenuItem>
-                    ))}
-                  </Menu>
-                </Box>
-                <Stack direction="row" spacing={1.5} useFlexGap alignItems="center">
+                        {currentCurrency.code} — {currentCurrency.name}
+                      </Typography>
+                      <ArrowDropDownIcon sx={{ fontSize: 22, color: '#6B7280', flexShrink: 0 }} />
+                    </Box>
+                    <Menu
+                      anchorEl={currencyAnchor}
+                      open={Boolean(currencyAnchor)}
+                      onClose={handleCurrencyClose}
+                      PaperProps={{ sx: { mt: 1, minWidth: 220, maxWidth: 'min(100vw - 32px, 320px)', borderRadius: 2, boxShadow: '0 8px 24px rgba(0,0,0,0.12)' } }}
+                      transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                    >
+                      {currencies.map((curr) => (
+                        <MenuItem
+                          key={curr.code}
+                          onClick={() => handleCurrencySelect(curr.code)}
+                          selected={currency === curr.code}
+                          sx={{
+                            py: 1.5,
+                            px: 2,
+                            '&.Mui-selected': { bgcolor: '#FFF5F7', '&:hover': { bgcolor: '#FFF5F7' } },
+                            '&:hover': { bgcolor: '#F7F7F7' },
+                          }}
+                        >
+                          <Stack>
+                            <Typography sx={{ fontWeight: currency === curr.code ? 600 : 400, fontSize: '0.875rem', color: '#222222' }}>{curr.code}</Typography>
+                            <Typography sx={{ fontSize: '0.75rem', color: '#717171' }}>{curr.name}</Typography>
+                          </Stack>
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Box>
+
                   {isAuthenticated ? (
-                    <>
+                    <Stack direction="row" spacing={1.5} useFlexGap alignItems="center" sx={{ width: '100%', pt: 0.5 }}>
                       <Avatar
                         src={(user as any)?.profile_picture ?? undefined}
                         sx={{
-                          width: 40,
-                          height: 40,
+                          width: 44,
+                          height: 44,
                           bgcolor: '#AD542D',
-                          fontSize: '1rem',
-                          fontWeight: 700
+                          fontSize: '1.05rem',
+                          fontWeight: 700,
+                          flexShrink: 0,
                         }}
                       >
                         {(user as any)?.name?.charAt(0)?.toUpperCase() ?? '?'}
                       </Avatar>
-                      <Button onClick={(e) => { setOpen(false); handleLogout(e) }} variant="contained" sx={{ bgcolor: '#AD542D', borderRadius: 999, px: 3, textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>
-                        {t('nav.logout')}
-                      </Button>
-                    </>
+                      <Box sx={{ flex: 1, minWidth: 0 }}>
+                        <Typography sx={{ fontWeight: 700, fontSize: '0.875rem', color: '#111', lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {(user as any)?.name ?? ''}
+                        </Typography>
+                        <Typography sx={{ fontSize: '0.75rem', color: '#6B7280', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {(user as any)?.email ?? ''}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  ) : null}
+                  {isAuthenticated ? (
+                    <Button
+                      fullWidth
+                      onClick={(e) => {
+                        setOpen(false)
+                        handleLogout(e)
+                      }}
+                      variant="contained"
+                      sx={{
+                        bgcolor: '#AD542D',
+                        py: 1.25,
+                        borderRadius: 2,
+                        textTransform: 'none',
+                        fontWeight: 700,
+                        fontSize: '0.9375rem',
+                        boxShadow: 'none',
+                        '&:hover': { bgcolor: '#78381C', boxShadow: 'none' },
+                      }}
+                    >
+                      {t('nav.logout')}
+                    </Button>
                   ) : (
-                    <Button component={Link} href="/login" variant="text" onClick={() => setOpen(false)} sx={{ textTransform: 'none', fontWeight: 700 }}>{t('nav.log_in')}</Button>
+                    <Button component={Link} href="/login" fullWidth variant="contained" onClick={() => setOpen(false)} sx={{ bgcolor: '#AD542D', py: 1.25, borderRadius: 2, textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>
+                      {t('nav.log_in')}
+                    </Button>
                   )}
                 </Stack>
-              </Stack>
+              </Box>
             )}
           </Box>
         </Box>
