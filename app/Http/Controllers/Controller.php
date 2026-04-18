@@ -14,8 +14,8 @@ use OpenApi\Attributes as OA;
     description: "Local development server"
 )]
 #[OA\Server(
-    url: "https://airbnb.bondoqi.com",
-    description: "Production server"
+    url: SWAGGER_APP_URL,
+    description: "API server"
 )]
 #[OA\SecurityScheme(
     securityScheme: "apiAuth",

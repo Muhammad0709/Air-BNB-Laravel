@@ -16,6 +16,27 @@ html, body, #root { height: 100%; min-height: 100vh; }
   min-height: 100vh !important;
 }
 
+.chat-page-layout:has(> .footer-fix-bottom) {
+  min-height: auto !important;
+}
+.chat-page-layout > .footer-fix-bottom {
+  margin-top: 0 !important;
+}
+
+/* Chat: full horizontal width — default .container max-width + md={8} when list hidden left empty columns */
+.chat-page-layout .chat-page-container.container-fluid {
+  width: 100%;
+  max-width: 100%;
+  padding-left: max(16px, env(safe-area-inset-left));
+  padding-right: max(16px, env(safe-area-inset-right));
+}
+@media (min-width: 768px) {
+  .chat-page-layout .chat-page-container.container-fluid {
+    padding-left: max(24px, env(safe-area-inset-left));
+    padding-right: max(24px, env(safe-area-inset-right));
+  }
+}
+
 /* Smaller base font on mobile – applies to user, host and admin */
 @media (max-width: 768px) {
   html { font-size: 14px; }

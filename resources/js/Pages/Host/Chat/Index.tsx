@@ -11,6 +11,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer'
 import { apiDelete, apiGet, apiPostForm } from '../../../chatApi'
 import Toast from '../../../components/Admin/Toast'
+import { MessageStatusTicks } from '../../../components/MessageStatusTicks'
 
 interface MessageFile {
   id: number | string
@@ -182,6 +183,30 @@ export default function HostChat() {
       }
     }
   }, [selectedConversation, conversations])
+
+  useEffect(() => {
+    if (!selectedConversation) return
+    const refresh = () => {
+      if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return
+      void apiGet<{ data: { messages: unknown[] } }>(`/api/host/chat/conversations/${selectedConversation}`)
+        .then((res) => {
+          const messages = (res.data.messages ?? []).map((m: unknown) =>
+            apiMessageToMessage({
+              id: (m as Record<string, unknown>).id as number,
+              text: (m as Record<string, unknown>).text as string | undefined,
+              sender: (m as Record<string, unknown>).sender as string,
+              timestamp: (m as Record<string, unknown>).timestamp as string,
+              read: (m as Record<string, unknown>).read as boolean,
+              files: ((m as Record<string, unknown>).files as MessageFile[] | null) ?? null,
+            })
+          )
+          setConversations((prev) => prev.map((c) => (c.id === selectedConversation ? { ...c, messages } : c)))
+        })
+        .catch(() => {})
+    }
+    document.addEventListener('visibilitychange', refresh)
+    return () => document.removeEventListener('visibilitychange', refresh)
+  }, [selectedConversation])
 
   useEffect(() => {
     if (!selectedConversation || typeof window === 'undefined' || !(window as unknown as { Echo?: unknown }).Echo) return
@@ -528,14 +553,17 @@ export default function HostChat() {
                           </Typography>
                         </Box>
                       )}
-                      <Stack
-                        direction="row"
-                        justifyContent={message.sender === 'host' ? 'flex-end' : 'flex-start'}
-                        sx={{ mb: 1.5 }}
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: message.sender === 'host' ? 'flex-end' : 'flex-start',
+                          width: '100%',
+                          mb: 1.5,
+                        }}
                       >
                         {message.files && message.files.length > 0 && !message.text ? (
                               // Image/Video only - no red background
-                              <Box sx={{ maxWidth: '70%', position: 'relative' }}>
+                              <Box sx={{ maxWidth: { xs: '85%', sm: '78%' }, position: 'relative', pr: 3.5 }}>
                                 <Stack spacing={1}>
                                   {message.files.map((file) => (
                                     <Box key={file.id} sx={{ position: 'relative' }}>
@@ -576,26 +604,58 @@ export default function HostChat() {
                                     </Box>
                                   ))}
                                 </Stack>
-                                <Typography 
-                                  variant="caption" 
-                                  sx={{ 
-                                    color: '#9CA3AF', 
-                                    fontSize: '0.7rem',
-                                    display: 'block',
+                                <Box
+                                  sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: message.sender === 'host' ? 'flex-end' : 'flex-start',
+                                    gap: 0.5,
                                     mt: 0.5,
-                                    textAlign: message.sender === 'host' ? 'right' : 'left'
                                   }}
                                 >
-                                  {formatTime(message.timestamp)}
-                                </Typography>
+                                  <Typography
+                                    variant="caption"
+                                    sx={{
+                                      color: '#9CA3AF',
+                                      fontSize: '0.7rem',
+                                    }}
+                                  >
+                                    {formatTime(message.timestamp)}
+                                  </Typography>
+                                  {message.sender === 'host' && (
+                                    <MessageStatusTicks read={message.read} variant="onSurface" />
+                                  )}
+                                </Box>
+                                <IconButton
+                                  size="small"
+                                  onClick={(e) => { e.stopPropagation(); openDeleteMessageDialog(message.id) }}
+                                  aria-label="Options"
+                                  sx={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    right: 0,
+                                    transform: 'translateY(-50%)',
+                                    color: '#9CA3AF',
+                                    '&:hover': { color: '#AD542D', bgcolor: 'rgba(173,84,45,0.08)' },
+                                  }}
+                                >
+                                  <MoreVertIcon sx={{ fontSize: 18 }} />
+                                </IconButton>
                               </Box>
                             ) : (
                               // Text message or text with files - with background
+                              <Box
+                                sx={{
+                                  position: 'relative',
+                                  maxWidth: { xs: '85%', sm: '78%' },
+                                  pr: 3.5,
+                                }}
+                              >
                               <Paper
                                 elevation={0}
                                 sx={{
                                   p: 1.5,
-                                  maxWidth: '70%',
+                                  maxWidth: '100%',
                                   bgcolor: message.sender === 'host' ? '#AD542D' : '#FFFFFF',
                                   color: message.sender === 'host' ? '#FFFFFF' : '#222222',
                                   borderRadius: 2,
@@ -657,21 +717,48 @@ export default function HostChat() {
                                   </Typography>
                                 )}
 
-                                {/* Timestamp */}
-                                <Typography variant="caption" sx={{ color: message.sender === 'host' ? 'rgba(255,255,255,0.7)' : '#9CA3AF', fontSize: '0.7rem' }}>
-                                  {formatTime(message.timestamp)}
-                                </Typography>
+                                {/* Timestamp + delivery ticks (outgoing only) */}
+                                <Box
+                                  sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'flex-end',
+                                    gap: 0.5,
+                                    mt: 0.25,
+                                  }}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    sx={{
+                                      color: message.sender === 'host' ? 'rgba(255,255,255,0.75)' : '#9CA3AF',
+                                      fontSize: '0.7rem',
+                                    }}
+                                  >
+                                    {formatTime(message.timestamp)}
+                                  </Typography>
+                                  {message.sender === 'host' && (
+                                    <MessageStatusTicks read={message.read} variant="onPrimary" />
+                                  )}
+                                </Box>
                               </Paper>
+                              <IconButton
+                                size="small"
+                                onClick={(e) => { e.stopPropagation(); openDeleteMessageDialog(message.id) }}
+                                aria-label="Options"
+                                sx={{
+                                  position: 'absolute',
+                                  top: '50%',
+                                  right: 0,
+                                  transform: 'translateY(-50%)',
+                                  color: '#9CA3AF',
+                                  '&:hover': { color: '#AD542D', bgcolor: 'rgba(173,84,45,0.08)' },
+                                }}
+                              >
+                                <MoreVertIcon sx={{ fontSize: 18 }} />
+                              </IconButton>
+                              </Box>
                             )}
-                            <IconButton
-                              size="small"
-                              onClick={(e) => { e.stopPropagation(); openDeleteMessageDialog(message.id) }}
-                              aria-label="Options"
-                              sx={{ alignSelf: 'center', color: '#9CA3AF', '&:hover': { color: '#AD542D', bgcolor: 'rgba(173,84,45,0.08)' } }}
-                            >
-                              <MoreVertIcon sx={{ fontSize: 18 }} />
-                            </IconButton>
-                      </Stack>
+                      </Box>
                     </Box>
                     )
                 })}

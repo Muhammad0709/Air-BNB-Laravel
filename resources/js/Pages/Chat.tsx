@@ -13,6 +13,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer'
 import { apiDelete, apiGet, apiPostForm, apiPostJson } from '../chatApi'
 import Toast from '../components/Admin/Toast'
+import { MessageStatusTicks } from '../components/MessageStatusTicks'
 
 interface MessageFile {
   id: number | string
@@ -238,6 +239,24 @@ export default function Chat() {
     }
   }, [selectedConversation])
 
+  // Refresh messages when tab becomes visible so read receipts (blue ticks) update after the host opens the chat.
+  useEffect(() => {
+    if (!selectedConversation) return
+    const refresh = () => {
+      if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return
+      void apiGet(`/api/messages/conversations/${selectedConversation}`)
+        .then((res) => {
+          const messages = parseMessagesFromApi(res as Parameters<typeof parseMessagesFromApi>[0])
+          setConversations((prev) =>
+            prev.map((c) => (c.id === selectedConversation ? { ...c, messages } : c))
+          )
+        })
+        .catch(() => {})
+    }
+    document.addEventListener('visibilitychange', refresh)
+    return () => document.removeEventListener('visibilitychange', refresh)
+  }, [selectedConversation])
+
   useEffect(() => {
     if (!selectedConversation || typeof window === 'undefined' || !(window as unknown as { Echo?: { private: (ch: string) => { listen: (e: string, cb: (payload: unknown) => void) => void } } }).Echo) return
     const ch = `conversation.${selectedConversation}`
@@ -405,13 +424,18 @@ export default function Chat() {
   }
 
   return (
-    <Box>
+    <Box className="chat-page-layout">
       <Head title={t('chat.messages')} />
       <Navbar />
-      <Box sx={{ minHeight: '100vh', bgcolor: '#FFFFFF', py: 4 }}>
-        <Container>
-          <Box sx={{ mb: 4 }}>
-            <Typography variant="h2" sx={{ fontSize: '2.5rem', fontWeight: 800, color: '#222222', mb: 1 }}>
+      <Box
+        sx={{
+          bgcolor: '#FFFFFF',
+          py: { xs: 2, md: 4 },
+        }}
+      >
+        <Container fluid className="chat-page-container">
+          <Box sx={{ mb: { xs: 2, md: 4 } }}>
+            <Typography variant="h2" sx={{ fontSize: { xs: '1.75rem', md: '2.5rem' }, fontWeight: 800, color: '#222222', mb: 1 }}>
               {t('chat.messages')}
             </Typography>
             <Typography variant="body1" sx={{ color: '#717171', fontSize: '1rem' }}>
@@ -422,8 +446,12 @@ export default function Chat() {
           <Row>
             {/* Conversations List - on mobile hide when a chat is open */}
             {(!isMobile || !selectedConversation) && (
-            <Col xs={12} md={4} lg={3}>
-              <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, height: 'calc(100vh - 250px)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <Col
+              xs={12}
+              md={isMobile && !selectedConversation ? 12 : 4}
+              lg={isMobile && !selectedConversation ? 12 : 3}
+            >
+              <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, height: { xs: 'calc(100dvh - 200px)', md: 'calc(100vh - 250px)' }, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                 <CardContent sx={{ p: 0, flex: 1, minHeight: 0, overflowY: 'scroll', display: 'flex', flexDirection: 'column' }}>
                   <Box sx={{ p: 2, flex: '0 0 auto' }}>
                     {/* Search Conversations */}
@@ -557,9 +585,13 @@ export default function Chat() {
 
             {/* Chat Window - on mobile only show when a conversation is selected */}
             {(!isMobile || selectedConversation) && (
-            <Col xs={12} md={8} lg={9}>
+            <Col
+              xs={12}
+              md={isMobile && selectedConversation ? 12 : 8}
+              lg={isMobile && selectedConversation ? 12 : 9}
+            >
               {currentConversation ? (
-                <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, height: 'calc(100vh - 250px)', display: 'flex', flexDirection: 'column' }}>
+                <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, height: { xs: 'calc(100dvh - 200px)', md: 'calc(100vh - 250px)' }, display: 'flex', flexDirection: 'column' }}>
                   {/* Chat Header */}
                   <Box sx={{ p: 2, borderBottom: '1px solid #E5E7EB' }}>
                     <Stack direction="row" spacing={2} useFlexGap alignItems="center" justifyContent="space-between">
@@ -626,14 +658,17 @@ export default function Chat() {
                               </Typography>
                             </Box>
                           )}
-                          <Stack
-                            direction="row"
-                            justifyContent={message.sender === 'customer' ? 'flex-end' : 'flex-start'}
-                            sx={{ mb: 1.5 }}
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              justifyContent: message.sender === 'customer' ? 'flex-end' : 'flex-start',
+                              width: '100%',
+                              mb: 1.5,
+                            }}
                           >
                             {message.files && message.files.length > 0 && !message.text ? (
                               // Image/Video only - no red background
-                              <Box sx={{ maxWidth: '70%', position: 'relative' }}>
+                              <Box sx={{ maxWidth: { xs: '85%', sm: '78%' }, position: 'relative', pr: 3.5 }}>
                                 <Stack spacing={1}>
                                   {message.files.map((file) => (
                                     <Box key={file.id} sx={{ position: 'relative' }}>
@@ -674,26 +709,58 @@ export default function Chat() {
                                     </Box>
                                   ))}
                                 </Stack>
-                                <Typography 
-                                  variant="caption" 
-                                  sx={{ 
-                                    color: '#9CA3AF', 
-                                    fontSize: '0.7rem',
-                                    display: 'block',
+                                <Box
+                                  sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: message.sender === 'customer' ? 'flex-end' : 'flex-start',
+                                    gap: 0.5,
                                     mt: 0.5,
-                                    textAlign: message.sender === 'customer' ? 'right' : 'left'
                                   }}
                                 >
-                                  {formatTime(message.timestamp)}
-                                </Typography>
+                                  <Typography
+                                    variant="caption"
+                                    sx={{
+                                      color: '#9CA3AF',
+                                      fontSize: '0.7rem',
+                                    }}
+                                  >
+                                    {formatTime(message.timestamp)}
+                                  </Typography>
+                                  {message.sender === 'customer' && (
+                                    <MessageStatusTicks read={message.read} variant="onSurface" />
+                                  )}
+                                </Box>
+                                <IconButton
+                                  size="small"
+                                  onClick={(e) => { e.stopPropagation(); openDeleteMessageDialog(message.id) }}
+                                  aria-label="Options"
+                                  sx={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    right: 0,
+                                    transform: 'translateY(-50%)',
+                                    color: '#9CA3AF',
+                                    '&:hover': { color: '#AD542D', bgcolor: 'rgba(173,84,45,0.08)' },
+                                  }}
+                                >
+                                  <MoreVertIcon sx={{ fontSize: 18 }} />
+                                </IconButton>
                               </Box>
                             ) : (
                               // Text message or text with files - with background
+                              <Box
+                                sx={{
+                                  position: 'relative',
+                                  maxWidth: { xs: '85%', sm: '78%' },
+                                  pr: 3.5,
+                                }}
+                              >
                               <Paper
                                 elevation={0}
                                 sx={{
                                   p: 1.5,
-                                  maxWidth: '70%',
+                                  maxWidth: '100%',
                                   bgcolor: message.sender === 'customer' ? '#AD542D' : '#FFFFFF',
                                   color: message.sender === 'customer' ? '#FFFFFF' : '#222222',
                                   borderRadius: 2,
@@ -755,21 +822,48 @@ export default function Chat() {
                                   </Typography>
                                 )}
 
-                                {/* Timestamp */}
-                                <Typography variant="caption" sx={{ color: message.sender === 'customer' ? 'rgba(255,255,255,0.7)' : '#9CA3AF', fontSize: '0.7rem' }}>
-                                  {formatTime(message.timestamp)}
-                                </Typography>
+                                {/* Timestamp + delivery ticks (outgoing only) */}
+                                <Box
+                                  sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'flex-end',
+                                    gap: 0.5,
+                                    mt: 0.25,
+                                  }}
+                                >
+                                  <Typography
+                                    variant="caption"
+                                    sx={{
+                                      color: message.sender === 'customer' ? 'rgba(255,255,255,0.75)' : '#9CA3AF',
+                                      fontSize: '0.7rem',
+                                    }}
+                                  >
+                                    {formatTime(message.timestamp)}
+                                  </Typography>
+                                  {message.sender === 'customer' && (
+                                    <MessageStatusTicks read={message.read} variant="onPrimary" />
+                                  )}
+                                </Box>
                               </Paper>
+                              <IconButton
+                                size="small"
+                                onClick={(e) => { e.stopPropagation(); openDeleteMessageDialog(message.id) }}
+                                aria-label="Options"
+                                sx={{
+                                  position: 'absolute',
+                                  top: '50%',
+                                  right: 0,
+                                  transform: 'translateY(-50%)',
+                                  color: '#9CA3AF',
+                                  '&:hover': { color: '#AD542D', bgcolor: 'rgba(173,84,45,0.08)' },
+                                }}
+                              >
+                                <MoreVertIcon sx={{ fontSize: 18 }} />
+                              </IconButton>
+                              </Box>
                             )}
-                            <IconButton
-                              size="small"
-                              onClick={(e) => { e.stopPropagation(); openDeleteMessageDialog(message.id) }}
-                              aria-label="Options"
-                              sx={{ alignSelf: 'center', color: '#9CA3AF', '&:hover': { color: '#AD542D', bgcolor: 'rgba(173,84,45,0.08)' } }}
-                            >
-                              <MoreVertIcon sx={{ fontSize: 18 }} />
-                            </IconButton>
-                          </Stack>
+                          </Box>
                         </Box>
                       )
                     })}
@@ -1072,7 +1166,7 @@ export default function Chat() {
                   </Box>
                 </Card>
               ) : (
-                <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, height: 'calc(100vh - 250px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, height: { xs: 'calc(100dvh - 200px)', md: 'calc(100vh - 250px)' }, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Box sx={{ textAlign: 'center' }}>
                     <Box
                       sx={{
