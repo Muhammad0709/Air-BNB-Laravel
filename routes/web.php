@@ -179,3 +179,5 @@ Route::prefix('host')->name('host.')->middleware('host')->group(function () {
     Route::patch('/notifications/mark-all-as-read', [App\Http\Controllers\Host\NotificationController::class, 'markAllAsRead'])->name('notifications.mark-all-as-read');
     Route::delete('/notifications/{notification}', [App\Http\Controllers\Host\NotificationController::class, 'destroy'])->name('notifications.destroy');
 });
+
+require __DIR__.'/auth.php';

@@ -4,6 +4,7 @@ return [
     'failed' => 'این اطلاعات با سوابق ما مطابقت ندارد.',
     'password' => 'رمز عبور ارائه‌شده اشتباه است.',
     'throttle' => 'تلاش‌های ورود بیش از حد. لطفاً پس از :seconds ثانیه دوباره تلاش کنید.',
+    'reset_link_sent_if_exists' => 'در صورت وجود حساب، لینک بازنشانی ارسال می‌شود.',
 
     'signin' => [
         'title' => 'ورود',
@@ -27,6 +28,28 @@ return [
         'google_error_host_cannot_use_customer' => 'این ایمیل قبلاً به‌عنوان میزبان ثبت شده است. با همان حساب Google نمی‌توانید به‌عنوان مشتری وارد شوید.',
         'no_account' => 'حساب کاربری ندارید؟',
         'sign_up_link' => 'ثبت‌نام',
+    ],
+    'forgot_password_page' => [
+        'title' => 'فراموشی رمز عبور',
+        'heading' => 'فراموشی رمز عبور',
+        'subtitle' => 'ایمیل خود را وارد کنید تا لینک بازنشانی برایتان ارسال شود.',
+        'email' => 'ایمیل',
+        'email_placeholder' => 'ایمیل را وارد کنید',
+        'submit' => 'ارسال لینک',
+        'sending' => 'در حال ارسال...',
+        'back_to_login' => 'بازگشت به ورود',
+    ],
+    'reset_password_page' => [
+        'title' => 'بازنشانی رمز عبور',
+        'heading' => 'رمز عبور جدید',
+        'subtitle' => 'رمز جدید و تکرار آن را وارد کنید.',
+        'password' => 'رمز عبور جدید',
+        'password_placeholder' => 'رمز جدید',
+        'confirm_password' => 'تکرار رمز',
+        'confirm_password_placeholder' => 'تکرار رمز',
+        'submit' => 'بازنشانی رمز',
+        'submitting' => 'در حال ذخیره...',
+        'back_to_login' => 'بازگشت به ورود',
     ],
     'signup' => [
         'title' => 'ثبت‌نام',

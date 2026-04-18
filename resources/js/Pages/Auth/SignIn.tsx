@@ -27,23 +27,33 @@ function line(v: string | string[] | undefined): string | undefined {
   return Array.isArray(v) ? v[0] : v
 }
 
-export default function SignIn() {
+type SignInPageProps = { status?: string; flash?: { success?: string } }
+
+export default function SignIn({ status }: SignInPageProps) {
   const { t, language, switchLanguage, isRtl } = useLanguage()
   const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null)
   const [showPassword, setShowPassword] = useState(false)
   const [googleDialogOpen, setGoogleDialogOpen] = useState(false)
   const currentLanguage = languages.find((l) => l.code === language) || languages[0]
   const { data, setData, post, processing, errors: formErrors } = useForm({ email: '', password: '', remember: false })
-  const shared = usePage().props.errors as Record<string, string | string[]> | undefined
+  const page = usePage<SignInPageProps>()
+  const shared = page.props.errors as Record<string, string | string[]> | undefined
+  const flashSuccess = page.props.flash?.success
+  const statusFromPage = status ?? page.props.status
   const emailError = line(formErrors.email) ?? line(shared?.email)
   const passwordError = line(formErrors.password) ?? line(shared?.password)
   const loginErrorMessage = emailError || passwordError
   const [toastOpen, setToastOpen] = useState(false)
+  const [successToastOpen, setSuccessToastOpen] = useState(false)
   const formWidth = 600
 
   useEffect(() => {
     if (loginErrorMessage) setToastOpen(true)
   }, [loginErrorMessage])
+
+  useEffect(() => {
+    if (flashSuccess || statusFromPage) setSuccessToastOpen(true)
+  }, [flashSuccess, statusFromPage])
 
   const googleIconEl = <Box component="img" src={socialIcon} alt="Google" sx={{ width: 24, height: 24 }} />
 
@@ -262,6 +272,12 @@ export default function SignIn() {
           message={loginErrorMessage ?? ''}
           severity="error"
           autoHideDuration={9000}
+        />
+        <Toast
+          open={successToastOpen && !!(flashSuccess || statusFromPage)}
+          onClose={() => setSuccessToastOpen(false)}
+          message={flashSuccess ?? statusFromPage ?? ''}
+          severity="success"
         />
       </Box>
     </>

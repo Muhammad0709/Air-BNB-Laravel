@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\UserType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Enums\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -14,9 +14,11 @@ class LoginController extends Controller
     /**
      * Show the login form.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return Inertia::render('Auth/SignIn');
+        return Inertia::render('Auth/SignIn', [
+            'status' => $request->session()->get('status'),
+        ]);
     }
 
     /**

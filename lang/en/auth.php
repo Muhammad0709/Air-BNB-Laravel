@@ -4,6 +4,7 @@ return [
     'failed' => 'These credentials do not match our records.',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'reset_link_sent_if_exists' => 'If an account exists for that email, we sent a link to reset your password.',
 
     'signin' => [
         'title' => 'Sign In',
@@ -27,6 +28,28 @@ return [
         'google_error_host_cannot_use_customer' => 'This email is already registered as a host. You cannot sign in as a customer with the same Google account.',
         'no_account' => "Don't have an account?",
         'sign_up_link' => 'Sign up',
+    ],
+    'forgot_password_page' => [
+        'title' => 'Forgot password',
+        'heading' => 'Forgot password',
+        'subtitle' => 'Enter your email address and we will send you a link to reset your password.',
+        'email' => 'Email',
+        'email_placeholder' => 'Enter your email',
+        'submit' => 'Send reset link',
+        'sending' => 'Sending...',
+        'back_to_login' => 'Back to login',
+    ],
+    'reset_password_page' => [
+        'title' => 'Reset password',
+        'heading' => 'Choose a new password',
+        'subtitle' => 'Enter and confirm your new password below.',
+        'password' => 'New password',
+        'password_placeholder' => 'Enter new password',
+        'confirm_password' => 'Confirm new password',
+        'confirm_password_placeholder' => 'Confirm new password',
+        'submit' => 'Reset password',
+        'submitting' => 'Resetting...',
+        'back_to_login' => 'Back to login',
     ],
     'signup' => [
         'title' => 'Sign Up',

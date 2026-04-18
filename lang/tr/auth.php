@@ -4,6 +4,7 @@ return [
     'failed' => 'Bu kimlik bilgileri kayıtlarımızla eşleşmiyor.',
     'password' => 'Sağlanan şifre yanlış.',
     'throttle' => 'Çok fazla giriş denemesi. Lütfen :seconds saniye sonra tekrar deneyin.',
+    'reset_link_sent_if_exists' => 'Bu e-posta için hesap varsa sıfırlama bağlantısı gönderilir.',
 
     'signin' => [
         'title' => 'Giriş Yap',
@@ -27,6 +28,28 @@ return [
         'google_error_host_cannot_use_customer' => 'Bu e-posta zaten ev sahibi olarak kayıtlı. Aynı Google hesabıyla müşteri olarak giriş yapamazsınız.',
         'no_account' => 'Hesabınız yok mu?',
         'sign_up_link' => 'Kayıt ol',
+    ],
+    'forgot_password_page' => [
+        'title' => 'Şifremi unuttum',
+        'heading' => 'Şifremi unuttum',
+        'subtitle' => 'E-postanızı girin; size sıfırlama bağlantısı gönderelim.',
+        'email' => 'E-posta',
+        'email_placeholder' => 'E-postanızı girin',
+        'submit' => 'Sıfırlama bağlantısı gönder',
+        'sending' => 'Gönderiliyor...',
+        'back_to_login' => 'Girişe dön',
+    ],
+    'reset_password_page' => [
+        'title' => 'Şifre sıfırlama',
+        'heading' => 'Yeni şifre',
+        'subtitle' => 'Yeni şifrenizi girin ve onaylayın.',
+        'password' => 'Yeni şifre',
+        'password_placeholder' => 'Yeni şifre',
+        'confirm_password' => 'Şifre tekrar',
+        'confirm_password_placeholder' => 'Şifreyi tekrarlayın',
+        'submit' => 'Şifreyi sıfırla',
+        'submitting' => 'Kaydediliyor...',
+        'back_to_login' => 'Girişe dön',
     ],
     'signup' => [
         'title' => 'Kayıt Ol',

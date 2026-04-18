@@ -4,6 +4,7 @@ return [
     'failed' => 'یہ تفصیلات ہمارے ریکارڈ سے مماثل نہیں۔',
     'password' => 'درج کردہ پاس ورڈ غلط ہے۔',
     'throttle' => 'لاگ ان کی کوششیں بہت زیادہ۔ :seconds سیکنڈ بعد دوبارہ کوشش کریں۔',
+    'reset_link_sent_if_exists' => 'اگر اس ای میل پر اکاؤنٹ ہے تو ری سیٹ لنک بھیج دیا جائے گا۔',
 
     'signin' => [
         'title' => 'سائن ان',
@@ -27,6 +28,28 @@ return [
         'google_error_host_cannot_use_customer' => 'یہ ای میل پہلے سے میزبان کے طور پر رجسٹرڈ ہے۔ آپ اسی گوگل اکاؤنٹ سے کسٹمر کے طور پر لاگ ان نہیں کر سکتے۔',
         'no_account' => 'اکاؤنٹ نہیں ہے؟',
         'sign_up_link' => 'سائن اپ',
+    ],
+    'forgot_password_page' => [
+        'title' => 'پاس ورڈ بھول گئے',
+        'heading' => 'پاس ورڈ بھول گئے',
+        'subtitle' => 'اپنا ای میل درج کریں، ہم آپ کو ری سیٹ لنک بھیجیں گے۔',
+        'email' => 'ای میل',
+        'email_placeholder' => 'اپنا ای میل درج کریں',
+        'submit' => 'ری سیٹ لنک بھیجیں',
+        'sending' => 'بھیجا جا رہا ہے...',
+        'back_to_login' => 'لاگ ان پر واپس',
+    ],
+    'reset_password_page' => [
+        'title' => 'پاس ورڈ ری سیٹ',
+        'heading' => 'نیا پاس ورڈ',
+        'subtitle' => 'نیا پاس ورڈ درج کریں اور تصدیق کریں۔',
+        'password' => 'نیا پاس ورڈ',
+        'password_placeholder' => 'نیا پاس ورڈ',
+        'confirm_password' => 'تصدیق',
+        'confirm_password_placeholder' => 'پاس ورڈ دوبارہ',
+        'submit' => 'پاس ورڈ ری سیٹ کریں',
+        'submitting' => 'محفوظ ہو رہا ہے...',
+        'back_to_login' => 'لاگ ان پر واپس',
     ],
     'signup' => [
         'title' => 'سائن اپ',
