@@ -413,7 +413,7 @@ export default function ListingDetail() {
 
         {/* Quick Info Section */}
         <section>
-          <RBContainer className="mt-4">
+          <RBContainer className="mt-0 mt-md-4">
             <Paper className="quick-info-section" elevation={0}>
               <Typography className="section-title" component="h2">{t('listing_detail.quick_info')}</Typography>
               <Row className="g-4">
