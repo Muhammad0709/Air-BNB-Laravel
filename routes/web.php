@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\BookingController as AdminBookingController;
 use App\Http\Controllers\Admin\HistoryController as AdminHistoryController;
 use App\Http\Controllers\Admin\SupportTicketController;
+use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\SettingsController as AdminSettingsController;
 use App\Http\Controllers\Admin\Auth\LoginController as AdminLoginController;
 use App\Http\Controllers\Host\DashboardController as HostDashboardController;
@@ -126,6 +127,8 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/bookings/{id}/edit', [AdminBookingController::class, 'edit'])->name('bookings.edit');
     Route::get('/history', [AdminHistoryController::class, 'index'])->name('history.index');
     Route::get('/history/{user}', [AdminHistoryController::class, 'show'])->name('history.show');
+    Route::get('/contacts', [AdminContactController::class, 'index'])->name('contacts.index');
+    Route::get('/contacts/{contact}', [AdminContactController::class, 'show'])->name('contacts.show');
     Route::get('/support-tickets', [SupportTicketController::class, 'index'])->name('support-tickets.index');
     Route::get('/support-tickets/create', [SupportTicketController::class, 'create'])->name('support-tickets.create');
     Route::get('/support-tickets/{id}', [SupportTicketController::class, 'show'])->name('support-tickets.show');
