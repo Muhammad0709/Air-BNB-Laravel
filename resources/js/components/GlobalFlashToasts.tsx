@@ -20,7 +20,11 @@ export default function GlobalFlashToasts() {
     const success = flash?.success ?? undefined
     const error = flash?.error ?? undefined
     const text = error ?? success
-    if (!text) return
+
+    if (!text) {
+      lastKeyRef.current = null
+      return
+    }
 
     const key = `${page.url}:${error ? 'e' : 's'}:${text}`
     if (lastKeyRef.current === key) return

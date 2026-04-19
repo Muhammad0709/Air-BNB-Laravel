@@ -47,11 +47,6 @@ export default function ProfileSettings() {
   }, [user?.id, user?.name, user?.email, user?.profile_picture])
 
   useEffect(() => {
-    if (props.flash?.success) setToast({ open: true, message: props.flash.success, severity: 'success' })
-    if (props.flash?.error) setToast({ open: true, message: props.flash.error, severity: 'error' })
-  }, [props.flash?.success, props.flash?.error])
-
-  useEffect(() => {
     setConfigurationData({ commission_rate: config.commission_rate })
   }, [config.commission_rate])
 

@@ -35,23 +35,11 @@ export default function Wishlist() {
   const total = p?.total ?? list.length
 
   const [wishlistItems, setWishlistItems] = useState<Property[]>(list)
-  const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
+  const [toast, setToast] = useState({ open: false, message: '', severity: 'error' as const })
 
   useEffect(() => {
     setWishlistItems(list)
   }, [props.properties])
-
-  // Show success message from backend redirect
-  useEffect(() => {
-    if ((props as any)?.flash?.success) {
-      setToast({
-        open: true,
-        message: (props as any).flash.success,
-        severity: 'success'
-      })
-      router.reload({ only: ['properties'] })
-    }
-  }, [(props as any)?.flash?.success])
 
   const handleRemove = (id: number) => {
     router.delete(`/wishlist/${id}`, {
@@ -154,9 +142,9 @@ export default function Wishlist() {
         
         <Toast
           open={toast.open}
-          onClose={() => setToast({ ...toast, open: false })}
+          onClose={() => setToast((t) => ({ ...t, open: false }))}
           message={toast.message}
-          severity={toast.severity}
+          severity="error"
         />
       </Box>
     </>

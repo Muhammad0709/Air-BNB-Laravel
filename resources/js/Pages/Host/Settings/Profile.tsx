@@ -55,11 +55,6 @@ export default function HostProfileSettings() {
     }
   }, [user?.id, user?.name, user?.email, user?.profile_picture])
 
-  useEffect(() => {
-    if (props.flash?.success) setToast({ open: true, message: props.flash.success, severity: 'success' })
-    if (props.flash?.error) setToast({ open: true, message: props.flash.error, severity: 'error' })
-  }, [props.flash?.success, props.flash?.error])
-
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setProfileData(prev => ({ ...prev, [name]: value }))

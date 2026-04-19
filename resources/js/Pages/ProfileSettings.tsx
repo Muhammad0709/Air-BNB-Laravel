@@ -64,20 +64,6 @@ export default function ProfileSettings() {
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
   const [uploading, setUploading] = useState(false)
 
-  // Show success/error message from backend
-  useEffect(() => {
-    const flash = props.flash
-    if (flash?.success) {
-      setToast({ open: true, message: flash.success, severity: 'success' })
-      setUploading(false)
-      router.reload({ only: ['user'] })
-    }
-    if (flash?.error) {
-      setToast({ open: true, message: flash.error, severity: 'error' })
-      setUploading(false)
-    }
-  }, [props.flash])
-
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setProfileData(name as keyof typeof profileData, value)
@@ -90,11 +76,7 @@ export default function ProfileSettings() {
 
   const handleProfileSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    patchProfile('/profile/update', {
-      onSuccess: () => {
-        router.reload({ only: ['user'] })
-      }
-    })
+    patchProfile('/profile/update')
   }
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
@@ -133,7 +115,7 @@ export default function ProfileSettings() {
       forceFormData: true,
       preserveScroll: true,
       onSuccess: () => {
-        router.reload({ only: ['user'] })
+        setUploading(false)
         e.target.value = ''
       },
       onError: (errors) => {
