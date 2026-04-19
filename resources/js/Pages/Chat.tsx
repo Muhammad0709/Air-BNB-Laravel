@@ -9,7 +9,7 @@ import SendIcon from '@mui/icons-material/Send'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
 import VideoFileIcon from '@mui/icons-material/VideoFile'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import RtlBackArrowIcon from '../components/RtlBackArrowIcon'
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer'
 import { apiDelete, apiGet, apiPostForm, apiPostJson } from '../chatApi'
 import Toast from '../components/Admin/Toast';
@@ -608,7 +608,7 @@ export default function Chat() {
                     <Stack direction="row" spacing={2} useFlexGap alignItems="center" justifyContent="space-between">
                       {isMobile && (
                         <IconButton onClick={() => setSelectedConversation(null)} sx={{ mr: -1 }} aria-label={t('chat.back')}>
-                          <ArrowBackIcon sx={{ fontSize: 24, color: '#222222' }} />
+                          <RtlBackArrowIcon sx={{ fontSize: 24, color: '#222222' }} />
                         </IconButton>
                       )}
                       <Stack direction="row" spacing={2} useFlexGap alignItems="center" sx={{ minWidth: 0, flex: 1 }}>
