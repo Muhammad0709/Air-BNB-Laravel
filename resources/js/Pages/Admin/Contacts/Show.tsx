@@ -14,7 +14,7 @@ import {
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import { Head, router, usePage } from '@inertiajs/react'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
 import PersonIcon from '@mui/icons-material/Person'
 import EmailIcon from '@mui/icons-material/Email'
 import SubjectIcon from '@mui/icons-material/Subject'
@@ -24,6 +24,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import DownloadIcon from '@mui/icons-material/Download'
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined'
 import { useLanguage } from '../../../hooks/use-language'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 
 type ContactFile = {
   file_name: string
@@ -119,6 +120,7 @@ function FileRow({ file, openLabel }: { file: ContactFile; openLabel: string }) 
             borderRadius: 2,
             flexShrink: 0,
             '&:hover': { bgcolor: '#78381C' },
+            ...adminButtonStartIconSx,
           }}
         >
           {openLabel}
@@ -185,7 +187,7 @@ export default function AdminContactsShow() {
       <Head title={t('admin.contacts.view_message')} />
       <AdminLayout title={t('admin.contacts.view_message')}>
         <Button
-          startIcon={<ArrowBackIcon />}
+          startIcon={<RtlBackArrowIcon />}
           onClick={() => router.visit('/admin/contacts')}
           sx={{
             mb: 3,
@@ -193,6 +195,7 @@ export default function AdminContactsShow() {
             textTransform: 'none',
             fontWeight: 600,
             '&:hover': { bgcolor: '#F9FAFB', color: '#222222' },
+            ...adminButtonStartIconSx,
           }}
         >
           {t('admin.contacts.back_to_list')}

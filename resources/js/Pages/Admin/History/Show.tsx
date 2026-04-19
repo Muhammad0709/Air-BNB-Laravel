@@ -4,7 +4,8 @@ import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import { Head, router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 
 type BookingRow = {
   id: number
@@ -33,9 +34,9 @@ export default function AdminHistoryShow() {
       <AdminLayout title={t('admin.history.detail_title')}>
         <Box sx={{ mb: 2 }}>
           <Button
-            startIcon={<ArrowBackIcon />}
+            startIcon={<RtlBackArrowIcon />}
             onClick={() => router.visit('/admin/history')}
-            sx={{ textTransform: 'none', fontWeight: 600, color: '#717171' }}
+            sx={{ textTransform: 'none', fontWeight: 600, color: '#717171', ...adminButtonStartIconSx }}
           >
             {t('admin.history.back')}
           </Button>

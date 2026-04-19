@@ -4,8 +4,9 @@ import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import Toast from '../../../Components/Admin/Toast';
 import { Head, usePage, router } from '@inertiajs/react'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
 import { useLanguage } from '../../../hooks/use-language'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 
 export default function EditBooking() {
   const { t } = useLanguage()
@@ -55,7 +56,7 @@ export default function EditBooking() {
     <>
       <Head title={t('admin.bookings.edit_booking')} />
       <AdminLayout title={t('admin.bookings.edit_booking')}>
-        <Button startIcon={<ArrowBackIcon />} onClick={() => router.visit('/admin/bookings')} sx={{ mb: 3, color: '#717171', textTransform: 'none', '&:hover': { bgcolor: '#F9FAFB', color: '#222222' } }}>
+        <Button startIcon={<RtlBackArrowIcon />} onClick={() => router.visit('/admin/bookings')} sx={{ mb: 3, color: '#717171', textTransform: 'none', '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }, ...adminButtonStartIconSx }}>
           {t('admin.bookings.back_to_bookings')}
         </Button>
         <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2 }}>

@@ -3,7 +3,7 @@ import { Box, Button, Card, CardContent, Chip, Divider, Stack, Typography } from
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import { Head, usePage, router } from '@inertiajs/react'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
 import EditIcon from '@mui/icons-material/Edit'
 import PersonIcon from '@mui/icons-material/Person'
 import HotelIcon from '@mui/icons-material/Hotel'
@@ -11,6 +11,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import EmailIcon from '@mui/icons-material/Email'
 import PhoneIcon from '@mui/icons-material/Phone'
 import { useLanguage } from '../../../hooks/use-language'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 
 export default function ShowBooking() {
   const { t } = useLanguage()
@@ -62,10 +63,10 @@ export default function ShowBooking() {
       <Head title={t('admin.bookings.view_booking')} />
       <AdminLayout title={t('admin.bookings.view_booking')}>
         <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
-          <Button startIcon={<ArrowBackIcon />} onClick={() => router.visit('/admin/bookings')} sx={{ color: '#717171', textTransform: 'none', '&:hover': { bgcolor: '#F9FAFB', color: '#222222' } }}>
+          <Button startIcon={<RtlBackArrowIcon />} onClick={() => router.visit('/admin/bookings')} sx={{ color: '#717171', textTransform: 'none', '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }, ...adminButtonStartIconSx }}>
             {t('admin.bookings.back_to_bookings')}
           </Button>
-          <Button variant="contained" startIcon={<EditIcon />} onClick={() => router.visit(`/admin/bookings/${id}/edit`)} sx={{ bgcolor: '#AD542D', textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>
+          <Button variant="contained" startIcon={<EditIcon />} onClick={() => router.visit(`/admin/bookings/${id}/edit`)} sx={{ bgcolor: '#AD542D', textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' }, ...adminButtonStartIconSx }}>
             {t('admin.bookings.edit_booking')}
           </Button>
         </Stack>
