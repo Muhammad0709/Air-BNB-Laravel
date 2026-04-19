@@ -4,15 +4,15 @@ import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import { Head, router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import PaymentIcon from '@mui/icons-material/Payment'
 
 export default function ShowPayout() {
-  const { t, isRtl } = useLanguage()
+  const { t } = useLanguage()
   const { id } = (usePage().props as { id?: string }) || {}
   const [payout, setPayout] = useState({
     id: '',
@@ -56,15 +56,14 @@ export default function ShowPayout() {
       <Head title={t('host.earnings.payout_details')} />
       <HostLayout title={t('host.earnings.payout_details')}>
       <Button
-        startIcon={isRtl ? <ArrowForwardIcon /> : <ArrowBackIcon />}
+        startIcon={<RtlBackArrowIcon />}
         onClick={() => router.visit('/host/earnings')}
         sx={{
           mb: 3,
           color: '#717171',
           textTransform: 'none',
-          gap: 1,
-          '& .MuiButton-startIcon': { marginInlineEnd: 0, marginInlineStart: 0 },
-          '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }
+          '&:hover': { bgcolor: '#F9FAFB', color: '#222222' },
+          ...adminButtonStartIconSx,
         }}
       >
         {t('host.earnings.back_to_earnings')}

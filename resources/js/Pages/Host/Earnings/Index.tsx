@@ -7,6 +7,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import DownloadIcon from '@mui/icons-material/Download'
 import { Head, router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 
 interface Earning {
   id: number
@@ -175,7 +176,8 @@ export default function HostEarnings() {
                       color: '#344054',
                       textTransform: 'none',
                       borderRadius: 2,
-                      '&:hover': { borderColor: '#D0D5DD', bgcolor: '#F9FAFB' }
+                      '&:hover': { borderColor: '#D0D5DD', bgcolor: '#F9FAFB' },
+                      ...adminButtonStartIconSx,
                     }}
                   >
                     {t('host.earnings.export')}

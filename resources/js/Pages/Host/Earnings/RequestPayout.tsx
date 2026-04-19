@@ -6,11 +6,11 @@ import HostLayout from '../../../Components/Host/HostLayout'
 import Toast from '../../../Components/Admin/Toast';
 import { Head, router } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 
 export default function RequestPayout() {
-  const { t, isRtl } = useLanguage()
+  const { t } = useLanguage()
   const [toastOpen, setToastOpen] = useState(false)
   const [formData, setFormData] = useState({
     amount: '',
@@ -54,15 +54,14 @@ export default function RequestPayout() {
       <Head title={t('host.earnings.request_payout_title')} />
       <HostLayout title={t('host.earnings.request_payout_title')}>
       <Button
-        startIcon={isRtl ? <ArrowForwardIcon /> : <ArrowBackIcon />}
+        startIcon={<RtlBackArrowIcon />}
         onClick={() => router.visit('/host/earnings')}
         sx={{
           mb: 3,
           color: '#717171',
           textTransform: 'none',
-          gap: 1,
-          '& .MuiButton-startIcon': { marginInlineEnd: 0, marginInlineStart: 0 },
-          '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }
+          '&:hover': { bgcolor: '#F9FAFB', color: '#222222' },
+          ...adminButtonStartIconSx,
         }}
       >
         {t('host.earnings.back_to_earnings')}

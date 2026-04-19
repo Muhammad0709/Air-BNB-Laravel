@@ -6,8 +6,8 @@ import HostLayout from '../../../Components/Host/HostLayout'
 import Toast from '../../../Components/Admin/Toast';
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { AIRPORT_OPTIONS, TOUR_DURATION_OPTIONS } from '../../../constants/hostPropertyOptions'
@@ -43,7 +43,7 @@ interface Property {
 }
 
 export default function EditProperty() {
-  const { t, isRtl } = useLanguage()
+  const { t } = useLanguage()
   const { property, propertyTypes } = usePage<{ property: Property, propertyTypes: string[] }>().props
   const [toastOpen, setToastOpen] = useState(false)
   const [newFiles, setNewFiles] = useState<File[]>([])
@@ -136,15 +136,14 @@ export default function EditProperty() {
   return (
     <HostLayout title={t('host.properties.edit_property')}>
       <Button
-        startIcon={isRtl ? <ArrowForwardIcon /> : <ArrowBackIcon />}
+        startIcon={<RtlBackArrowIcon />}
         onClick={() => router.visit('/host/properties')}
         sx={{
           mb: 3,
           color: '#6B7280',
           textTransform: 'none',
-          gap: 1,
-          '& .MuiButton-startIcon': { marginInlineEnd: 0, marginInlineStart: 0 },
-          '&:hover': { bgcolor: '#F9FAFB', color: '#111827' }
+          '&:hover': { bgcolor: '#F9FAFB', color: '#111827' },
+          ...adminButtonStartIconSx,
         }}
       >
         {t('host.properties.back_to_properties')}

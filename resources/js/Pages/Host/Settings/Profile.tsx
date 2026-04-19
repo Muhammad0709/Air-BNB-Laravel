@@ -4,6 +4,7 @@ import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import Toast from '../../../Components/Admin/Toast';
 import { useLanguage } from '../../../hooks/use-language'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 import SaveIcon from '@mui/icons-material/Save'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { Head, router, usePage } from '@inertiajs/react'
@@ -267,7 +268,8 @@ export default function HostProfileSettings() {
                         textTransform: 'none',
                         fontWeight: 700,
                         py: 1,
-                        '&:hover': { bgcolor: '#78381C' }
+                        '&:hover': { bgcolor: '#78381C' },
+                        ...adminButtonStartIconSx,
                       }}
                     >
                       {t('host.settings.save')}
@@ -331,7 +333,8 @@ export default function HostProfileSettings() {
                         textTransform: 'none',
                         fontWeight: 700,
                         py: 1,
-                        '&:hover': { bgcolor: '#78381C' }
+                        '&:hover': { bgcolor: '#78381C' },
+                        ...adminButtonStartIconSx,
                       }}
                     >
                       {t('host.settings.save_password')}

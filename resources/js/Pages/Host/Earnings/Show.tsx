@@ -3,8 +3,8 @@ import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import { Head, router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 import PersonIcon from '@mui/icons-material/Person'
 import HomeIcon from '@mui/icons-material/Home'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
@@ -31,7 +31,7 @@ interface Props {
 }
 
 export default function ShowEarning() {
-  const { t, isRtl } = useLanguage()
+  const { t } = useLanguage()
   const { earning } = usePage<Props>().props
 
   const getStatusColor = (status: string) => {
@@ -50,15 +50,14 @@ export default function ShowEarning() {
       <Head title={t('host.earnings.earning_details')} />
       <HostLayout title={t('host.earnings.earning_details')}>
       <Button
-        startIcon={isRtl ? <ArrowForwardIcon /> : <ArrowBackIcon />}
+        startIcon={<RtlBackArrowIcon />}
         onClick={() => router.visit('/host/earnings')}
         sx={{
           mb: 3,
           color: '#717171',
           textTransform: 'none',
-          gap: 1,
-          '& .MuiButton-startIcon': { marginInlineEnd: 0, marginInlineStart: 0 },
-          '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }
+          '&:hover': { bgcolor: '#F9FAFB', color: '#222222' },
+          ...adminButtonStartIconSx,
         }}
       >
         {t('host.earnings.back_to_earnings')}

@@ -3,8 +3,8 @@ import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import { Head, router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 import EditIcon from '@mui/icons-material/Edit'
 import PersonIcon from '@mui/icons-material/Person'
 import HotelIcon from '@mui/icons-material/Hotel'
@@ -15,7 +15,7 @@ import { useState } from 'react'
 import Toast from '../../../components/shared/Toast'
 
 export default function ShowBooking() {
-  const { t, isRtl } = useLanguage()
+  const { t } = useLanguage()
   const { booking } = usePage().props as { booking: {
     id: string
     guest: string
@@ -60,14 +60,13 @@ export default function ShowBooking() {
       <HostLayout title={t('host.bookings.view_booking_title')}>
       <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
         <Button
-          startIcon={isRtl ? <ArrowForwardIcon /> : <ArrowBackIcon />}
+          startIcon={<RtlBackArrowIcon />}
           onClick={() => router.visit('/host/bookings')}
           sx={{
             color: '#717171',
             textTransform: 'none',
-            gap: 1,
-            '& .MuiButton-startIcon': { marginInlineEnd: 0, marginInlineStart: 0 },
-            '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }
+            '&:hover': { bgcolor: '#F9FAFB', color: '#222222' },
+            ...adminButtonStartIconSx,
           }}
         >
           {t('host.bookings.back_to_bookings')}
@@ -81,7 +80,8 @@ export default function ShowBooking() {
             bgcolor: '#AD542D',
             textTransform: 'none',
             fontWeight: 700,
-            '&:hover': { bgcolor: '#78381C' }
+            '&:hover': { bgcolor: '#78381C' },
+            ...adminButtonStartIconSx,
           }}
         >
           {t('host.bookings.edit_booking_title')}
@@ -94,7 +94,7 @@ export default function ShowBooking() {
           <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'flex-start' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
             <Box>
               <Typography variant="h4" sx={{ fontWeight: 700, color: '#222222', mb: 2 }}>
-                Booking #{booking.id}
+                {t('host.bookings.booking_ref').replace(':id', String(booking.id))}
               </Typography>
               <Typography sx={{ color: '#717171', fontSize: 14 }}>
                 Created {new Date(booking.createdAt).toLocaleDateString('en-US', {
@@ -140,7 +140,7 @@ export default function ShowBooking() {
           <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, mb: 3 }}>
             <CardContent sx={{ p: { xs: 2, md: 4 } }}>
               <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 3 }}>
-                Guest Information
+                {t('host.bookings.guest_information')}
               </Typography>
               <Stack spacing={3}>
                 <Stack direction="row" spacing={2} useFlexGap alignItems="center">
@@ -178,7 +178,7 @@ export default function ShowBooking() {
                     <EmailIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Email</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.bookings.email_address')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#222222' }}>{booking.guestEmail}</Typography>
                   </Box>
                 </Stack>
@@ -198,7 +198,7 @@ export default function ShowBooking() {
                     <PhoneIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Phone</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.bookings.phone_number')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#222222' }}>{booking.guestPhone}</Typography>
                   </Box>
                 </Stack>
@@ -210,7 +210,7 @@ export default function ShowBooking() {
           <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2 }}>
             <CardContent sx={{ p: { xs: 2, md: 4 } }}>
               <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 3 }}>
-                Booking Details
+                {t('host.bookings.booking_details')}
               </Typography>
               <Stack spacing={3}>
                 <Stack direction="row" spacing={2} useFlexGap alignItems="center">
@@ -228,7 +228,7 @@ export default function ShowBooking() {
                     <HotelIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Property</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.bookings.property_label')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#222222' }}>{booking.property}</Typography>
                     <Typography sx={{ fontSize: 12, color: '#717171' }}>{booking.propertyLocation}</Typography>
                   </Box>
@@ -249,7 +249,7 @@ export default function ShowBooking() {
                     <CalendarTodayIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Check-in</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.bookings.check_in')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#222222' }}>
                       {new Date(booking.checkin).toLocaleDateString('en-US', {
                         year: 'numeric',
@@ -275,7 +275,7 @@ export default function ShowBooking() {
                     <CalendarTodayIcon sx={{ fontSize: 20, color: '#717171' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>Check-out</Typography>
+                    <Typography sx={{ fontSize: 12, color: '#717171', mb: 0.5 }}>{t('host.bookings.check_out')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#222222' }}>
                       {new Date(booking.checkout).toLocaleDateString('en-US', {
                         year: 'numeric',
@@ -292,7 +292,8 @@ export default function ShowBooking() {
                     {booking.amount}
                   </Typography>
                   <Typography sx={{ fontSize: 12, color: '#717171', mt: 0.5 }}>
-                    {booking.nights} {booking.nights === 1 ? 'night' : 'nights'}
+                    {booking.nights}
+                    {booking.nights === 1 ? t('host.earnings.night') : t('host.earnings.nights')}
                   </Typography>
                 </Box>
               </Stack>

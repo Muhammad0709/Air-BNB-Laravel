@@ -4,8 +4,8 @@ import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 import EditIcon from '@mui/icons-material/Edit'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
@@ -32,7 +32,7 @@ interface Property {
 }
 
 export default function ViewProperty() {
-  const { t, isRtl } = useLanguage()
+  const { t } = useLanguage()
   const { property } = usePage<{ property: Property }>().props
   const [localStatus, setLocalStatus] = useState(property.status)
 
@@ -78,14 +78,13 @@ export default function ViewProperty() {
     <HostLayout title={t('host.properties.view_property')}>
       <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
         <Button
-          startIcon={isRtl ? <ArrowForwardIcon /> : <ArrowBackIcon />}
+          startIcon={<RtlBackArrowIcon />}
           onClick={() => router.visit('/host/properties')}
           sx={{
             color: '#6B7280',
             textTransform: 'none',
-            gap: 1,
-            '& .MuiButton-startIcon': { marginInlineEnd: 0, marginInlineStart: 0 },
-            '&:hover': { bgcolor: '#F9FAFB', color: '#111827' }
+            '&:hover': { bgcolor: '#F9FAFB', color: '#111827' },
+            ...adminButtonStartIconSx,
           }}
         >
           {t('host.properties.back_to_properties')}
@@ -103,10 +102,11 @@ export default function ViewProperty() {
               '&:hover': {
                 borderColor: property.status === 'Active' ? '#DC2626' : '#059669',
                 bgcolor: property.status === 'Active' ? '#FEF2F2' : '#ECFDF5'
-              }
+              },
+              ...adminButtonStartIconSx,
             }}
           >
-            {property.status === 'Active' ? 'Deactivate' : 'Activate'}
+            {property.status === 'Active' ? t('host.properties.deactivate') : t('host.properties.activate')}
           </Button>
           <Button
             variant="contained"
@@ -116,10 +116,11 @@ export default function ViewProperty() {
               bgcolor: '#AD542D',
               textTransform: 'none',
               fontWeight: 700,
-              '&:hover': { bgcolor: '#78381C' }
+              '&:hover': { bgcolor: '#78381C' },
+              ...adminButtonStartIconSx,
             }}
           >
-            Edit Property
+            {t('host.properties.edit_property')}
           </Button>
         </Stack>
       </Stack>
@@ -335,7 +336,7 @@ export default function ViewProperty() {
                 <Divider />
 
                 <Box>
-                  <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 1 }}>Total Bookings</Typography>
+                  <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 1 }}>{t('host.properties.total_bookings')}</Typography>
                   <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827' }}>
                     0
                   </Typography>
@@ -344,7 +345,7 @@ export default function ViewProperty() {
                 <Divider />
 
                 <Box>
-                  <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 1 }}>Created At</Typography>
+                  <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 1 }}>{t('host.properties.property_created_at')}</Typography>
                   <Typography sx={{ fontWeight: 600, color: '#111827' }}>
                     {new Date(property.created_at).toLocaleDateString('en-US', {
                       year: 'numeric',
