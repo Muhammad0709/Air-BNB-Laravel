@@ -3,7 +3,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Pagination from '../components/Pagination';
-import Toast from '../Components/Admin/Toast';
+import Toast from '../components/Admin/Toast';
 import { router } from '@inertiajs/react';
 import { useState } from 'react';
 import { useLanguage } from '../hooks/use-language';

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Box, Button, Card, CardContent, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
-import Toast from '../../../Components/Admin/Toast'
+import Toast from '../../../Components/Admin/Toast';
 import { router, useForm, usePage } from '@inertiajs/react'
 import InputError from '../../../components/InputError'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'

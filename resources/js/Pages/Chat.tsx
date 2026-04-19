@@ -12,7 +12,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer'
 import { apiDelete, apiGet, apiPostForm, apiPostJson } from '../chatApi'
-import Toast from '../components/Admin/Toast'
+import Toast from '../components/Admin/Toast';
 import { MessageStatusTicks } from '../components/MessageStatusTicks'
 
 interface MessageFile {

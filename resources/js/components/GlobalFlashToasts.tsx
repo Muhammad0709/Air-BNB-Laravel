@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { usePage } from '@inertiajs/react'
-import Toast from './Admin/Toast'
+import Toast from './Admin/Toast';
 
 type Flash = { success?: string | null; error?: string | null }
 

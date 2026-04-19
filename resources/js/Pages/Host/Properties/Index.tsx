@@ -5,7 +5,7 @@ import HostLayout from '../../../Components/Host/HostLayout'
 import DeleteConfirmationDialog from '../../../Components/Admin/DeleteConfirmationDialog'
 import ActionsMenu from '../../../Components/Admin/ActionsMenu'
 import Pagination from '../../../components/Pagination'
-import Toast from '../../../Components/Admin/Toast'
+import Toast from '../../../Components/Admin/Toast';
 import SearchIcon from '@mui/icons-material/Search'
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'

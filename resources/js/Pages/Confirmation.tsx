@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Box, Button, Typography } from '@mui/material'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import Toast from '../components/shared/Toast'
+import Toast from '../components/Admin/Toast';
 import { Container, Row, Col } from 'react-bootstrap'
 import ListingPreviewCard from '../components/ListingPreviewCard'
 import BookingSummaryCard from '../components/BookingSummaryCard'

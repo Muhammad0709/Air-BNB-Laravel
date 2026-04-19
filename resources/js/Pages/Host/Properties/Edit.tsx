@@ -3,7 +3,7 @@ import { Box, Button, Card, CardContent, FormControl, FormControlLabel, IconButt
 import Checkbox from '@mui/material/Checkbox'
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
-import Toast from '../../../Components/Admin/Toast'
+import Toast from '../../../Components/Admin/Toast';
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'

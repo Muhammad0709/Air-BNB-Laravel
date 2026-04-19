@@ -8,8 +8,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { Container } from 'react-bootstrap'
 import { useLanguage } from '../../hooks/use-language'
 import InputError from '../../components/InputError'
-import Toast from '../../components/Admin/Toast'
-
+import Toast from '../../components/Admin/Toast';
 const logoUrl = '/images/Logo.png'
 const socialIcon = '/images/Social-icon.svg'
 const languages = [

@@ -5,7 +5,7 @@ import { combinePhoneE164, splitStoredPhone } from '../utils/phone'
 import { Container, Row, Col } from 'react-bootstrap'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import Toast from '../components/shared/Toast'
+import Toast from '../components/Admin/Toast';
 import SaveIcon from '@mui/icons-material/Save'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { Head, useForm, usePage, router } from '@inertiajs/react'

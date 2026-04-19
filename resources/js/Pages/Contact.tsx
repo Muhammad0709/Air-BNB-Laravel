@@ -3,7 +3,7 @@ import { Box, Button, Paper, Stack, TextField, Typography, Chip } from '@mui/mat
 import { Container, Row, Col } from 'react-bootstrap'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import Toast from '../components/shared/Toast'
+import Toast from '../components/Admin/Toast';
 import SendIcon from '@mui/icons-material/Send'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
 import CloseIcon from '@mui/icons-material/Close'

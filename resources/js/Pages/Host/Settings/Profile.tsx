@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Box, Button, Card, CardContent, FormControlLabel, Stack, Switch, TextField, Typography, Avatar } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
-import Toast from '../../../Components/Admin/Toast'
+import Toast from '../../../Components/Admin/Toast';
 import { useLanguage } from '../../../hooks/use-language'
 import SaveIcon from '@mui/icons-material/Save'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'

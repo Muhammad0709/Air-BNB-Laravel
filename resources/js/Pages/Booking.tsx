@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, MenuItem, Paper, Radio, RadioGroup, FormControlLabel, Select, Stack, TextField, Typography } from '@mui/material'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import Toast from '../components/shared/Toast'
+import Toast from '../components/Admin/Toast';
 import { Container, Row, Col } from 'react-bootstrap'
 import { router, Head, usePage } from '@inertiajs/react'
 import ListingPreviewCard from '../components/ListingPreviewCard'

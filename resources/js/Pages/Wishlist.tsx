@@ -8,7 +8,7 @@ import Pagination from '../components/Pagination'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import { Head, usePage, router } from '@inertiajs/react'
-import Toast from '../components/shared/Toast'
+import Toast from '../components/Admin/Toast';
 import { useLanguage } from '../hooks/use-language'
 
 interface Property {

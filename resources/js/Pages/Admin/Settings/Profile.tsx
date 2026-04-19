@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Box, Button, Card, CardContent, Stack, TextField, Typography, Avatar } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
-import Toast from '../../../Components/Admin/Toast'
+import Toast from '../../../Components/Admin/Toast';
 import { Head, usePage, router } from '@inertiajs/react'
 import SaveIcon from '@mui/icons-material/Save'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'

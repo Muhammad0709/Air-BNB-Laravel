@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import ActionsMenu from '../../../Components/Admin/ActionsMenu'
 import Pagination from '../../../components/Pagination'
-import Toast from '../../../Components/Admin/Toast'
+import Toast from '../../../Components/Admin/Toast';
 import SearchIcon from '@mui/icons-material/Search'
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Box, Button, Card, CardContent, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
-import Toast from '../../../Components/Admin/Toast'
+import Toast from '../../../Components/Admin/Toast';
 import { Head } from '@inertiajs/react'
 import SaveIcon from '@mui/icons-material/Save'
 import { useLanguage } from '../../../hooks/use-language'

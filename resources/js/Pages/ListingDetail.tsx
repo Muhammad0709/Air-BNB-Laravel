@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react'
 import { Box, Button, Checkbox, FormControlLabel, Paper, Stack, TextField, Typography, Modal, IconButton } from '@mui/material'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import Toast from '../components/shared/Toast'
+import Toast from '../components/Admin/Toast';
 import { useLanguage } from '../hooks/use-language'
 import { useCurrency } from '../contexts/CurrencyContext'
 import { formatPrice as formatPriceUtil } from '../utils/currency'

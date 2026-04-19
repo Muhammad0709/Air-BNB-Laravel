@@ -10,7 +10,7 @@ import VideoFileIcon from '@mui/icons-material/VideoFile'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer'
 import { apiDelete, apiGet, apiPostForm } from '../../../chatApi'
-import Toast from '../../../components/Admin/Toast'
+import Toast from '../../../components/Admin/Toast';
 import { MessageStatusTicks } from '../../../components/MessageStatusTicks'
 
 interface MessageFile {
