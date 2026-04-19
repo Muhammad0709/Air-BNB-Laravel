@@ -1,17 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Box, Button, Card, CardContent, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
-import Toast from '../../../Components/Admin/Toast';
+import Toast from '../../../Components/Admin/Toast'
 import { router, useForm, usePage } from '@inertiajs/react'
 import InputError from '../../../components/InputError'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
+import { useLanguage } from '../../../hooks/use-language'
 
 export default function EditProperty() {
+  const { t } = useLanguage()
   const { property } = usePage().props as any
-  const { data, setData, put, processing, errors } = useForm({
+  const { data, setData, processing, errors } = useForm({
     title: property?.title || '',
     location: property?.location || '',
     price: property?.price?.toString() || '',
@@ -25,6 +28,7 @@ export default function EditProperty() {
   })
 
   const [mainImagePreview, setMainImagePreview] = useState<string | null>(property?.image || null)
+  const [toastOpen, setToastOpen] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -63,30 +67,34 @@ export default function EditProperty() {
       forceFormData: true,
       preserveScroll: true,
       onSuccess: () => {
-        router.visit('/admin/properties')
+        setToastOpen(true)
+        setTimeout(() => {
+          router.visit('/admin/properties')
+        }, 1500)
       }
     })
   }
 
   return (
-    <AdminLayout title="Edit Property">
+    <AdminLayout title={t('admin.properties.edit_property')}>
       <Button
-        startIcon={<ArrowBackIcon />}
+        startIcon={<RtlBackArrowIcon />}
         onClick={() => router.visit('/admin/properties')}
         sx={{
           mb: 3,
           color: '#6B7280',
           textTransform: 'none',
-          '&:hover': { bgcolor: '#F9FAFB', color: '#111827' }
+          '&:hover': { bgcolor: '#F9FAFB', color: '#111827' },
+          ...adminButtonStartIconSx,
         }}
       >
-        Back to Properties
+        {t('admin.properties.back_to_properties')}
       </Button>
 
       <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '16px' }}>
         <CardContent sx={{ p: { xs: 2, md: 4 } }}>
           <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 4 }}>
-            Edit Property Information
+            {t('admin.properties.edit_property_information')}
           </Typography>
 
           <form onSubmit={handleSubmit}>
@@ -94,7 +102,7 @@ export default function EditProperty() {
               <Col xs={12} md={6}>
                 <Stack spacing={3}>
                   <TextField
-                    label="Property Title"
+                    label={t('admin.properties.property_title')}
                     name="title"
                     value={data.title}
                     onChange={handleChange}
@@ -105,18 +113,18 @@ export default function EditProperty() {
                   />
                   <InputError message={Array.isArray(errors.title) ? errors.title[0] : errors.title} />
                   <TextField
-                    label="Location"
+                    label={t('admin.properties.location')}
                     name="location"
                     value={data.location}
                     onChange={handleChange}
                     required
                     fullWidth
-                    placeholder="e.g., Malibu, California"
+                    placeholder={t('admin.properties.location_placeholder')}
                     error={!!errors.location}
                   />
                   <InputError message={Array.isArray(errors.location) ? errors.location[0] : errors.location} />
                   <TextField
-                    label="Price per Night"
+                    label={t('admin.properties.price_per_night')}
                     name="price"
                     type="number"
                     value={data.price}
@@ -134,22 +142,22 @@ export default function EditProperty() {
               <Col xs={12} md={6}>
                 <Stack spacing={3}>
                   <FormControl fullWidth required error={!!errors.property_type}>
-                    <InputLabel>Property Type</InputLabel>
+                    <InputLabel>{t('admin.properties.property_type')}</InputLabel>
                     <Select
                       value={data.property_type}
                       onChange={(e) => handleSelectChange('property_type', e.target.value)}
-                      label="Property Type"
+                      label={t('admin.properties.property_type')}
                     >
-                      <MenuItem value="apartment">Apartment</MenuItem>
-                      <MenuItem value="house">House</MenuItem>
-                      <MenuItem value="villa">Villa</MenuItem>
-                      <MenuItem value="studio">Studio</MenuItem>
-                      <MenuItem value="condo">Condo</MenuItem>
+                      <MenuItem value="apartment">{t('admin.properties.apartment')}</MenuItem>
+                      <MenuItem value="house">{t('admin.properties.house')}</MenuItem>
+                      <MenuItem value="villa">{t('admin.properties.villa')}</MenuItem>
+                      <MenuItem value="studio">{t('admin.properties.studio')}</MenuItem>
+                      <MenuItem value="condo">{t('admin.properties.condo')}</MenuItem>
                     </Select>
                   </FormControl>
                   <InputError message={Array.isArray(errors.property_type) ? errors.property_type[0] : errors.property_type} />
                   <TextField
-                    label="Bedrooms"
+                    label={t('admin.properties.bedrooms')}
                     name="bedrooms"
                     type="number"
                     value={data.bedrooms}
@@ -160,7 +168,7 @@ export default function EditProperty() {
                   />
                   <InputError message={Array.isArray(errors.bedrooms) ? errors.bedrooms[0] : errors.bedrooms} />
                   <TextField
-                    label="Bathrooms"
+                    label={t('admin.properties.bathrooms')}
                     name="bathrooms"
                     type="number"
                     value={data.bathrooms}
@@ -171,7 +179,7 @@ export default function EditProperty() {
                   />
                   <InputError message={Array.isArray(errors.bathrooms) ? errors.bathrooms[0] : errors.bathrooms} />
                   <TextField
-                    label="Guests"
+                    label={t('admin.properties.guests')}
                     name="guests"
                     type="number"
                     value={data.guests}
@@ -188,14 +196,14 @@ export default function EditProperty() {
             <Row className="mt-3">
               <Col xs={12}>
                 <TextField
-                  label="Description"
+                  label={t('admin.properties.description')}
                   name="description"
                   value={data.description}
                   onChange={handleChange}
                   fullWidth
                   multiline
                   rows={6}
-                  placeholder="Describe the property in detail..."
+                  placeholder={t('admin.properties.description_placeholder')}
                   error={!!errors.description}
                 />
                 <InputError message={Array.isArray(errors.description) ? errors.description[0] : errors.description} />
@@ -205,15 +213,15 @@ export default function EditProperty() {
             <Row className="mt-4">
               <Col xs={12}>
                 <FormControl fullWidth>
-                  <InputLabel>Status</InputLabel>
+                  <InputLabel>{t('admin.properties.status')}</InputLabel>
                   <Select
                     value={data.status}
                     onChange={(e) => handleSelectChange('status', e.target.value)}
-                    label="Status"
+                    label={t('admin.properties.status')}
                   >
-                    <MenuItem value="Pending">Pending</MenuItem>
-                    <MenuItem value="Active">Active</MenuItem>
-                    <MenuItem value="Inactive">Inactive</MenuItem>
+                    <MenuItem value="Pending">{t('admin.properties.pending')}</MenuItem>
+                    <MenuItem value="Active">{t('admin.properties.active')}</MenuItem>
+                    <MenuItem value="Inactive">{t('admin.properties.inactive')}</MenuItem>
                   </Select>
                 </FormControl>
               </Col>
@@ -223,14 +231,14 @@ export default function EditProperty() {
             <Row className="mt-4">
               <Col xs={12}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 2 }}>
-                  Property Image
+                  {t('admin.properties.property_image')}
                 </Typography>
                 {mainImagePreview ? (
                   <Box sx={{ position: 'relative', width: '100%', maxWidth: 600 }}>
                     <Box
                       component="img"
                       src={mainImagePreview}
-                      alt="Preview"
+                      alt=""
                       sx={{
                         width: '100%',
                         height: 300,
@@ -251,10 +259,11 @@ export default function EditProperty() {
                               borderRadius: '12px',
                           borderColor: '#D1D5DD',
                           color: '#6B7280',
-                          '&:hover': { borderColor: '#9CA3AF', bgcolor: '#F9FAFB' }
+                          '&:hover': { borderColor: '#9CA3AF', bgcolor: '#F9FAFB' },
+                          ...adminButtonStartIconSx,
                         }}
                       >
-                        Change Image
+                        {t('admin.properties.change_image')}
                         <input
                           type="file"
                           hidden
@@ -271,10 +280,11 @@ export default function EditProperty() {
                               borderRadius: '12px',
                           borderColor: '#EF4444',
                           color: '#EF4444',
-                          '&:hover': { borderColor: '#DC2626', bgcolor: '#FEF2F2' }
+                          '&:hover': { borderColor: '#DC2626', bgcolor: '#FEF2F2' },
+                          ...adminButtonStartIconSx,
                         }}
                       >
-                        Remove
+                        {t('admin.properties.remove')}
                       </Button>
                     </Stack>
                   </Box>
@@ -307,10 +317,10 @@ export default function EditProperty() {
                     />
                     <CloudUploadIcon sx={{ fontSize: 48, color: '#9CA3AF', mb: 2 }} />
                     <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1 }}>
-                      Click to upload image
+                      {t('admin.properties.click_to_upload')}
                     </Typography>
                     <Typography sx={{ fontSize: 14, color: '#6B7280' }}>
-                      PNG, JPG, GIF up to 2MB
+                      {t('admin.properties.image_formats')}
                     </Typography>
                   </Box>
                 )}
@@ -332,7 +342,7 @@ export default function EditProperty() {
                       '&:hover': { borderColor: '#9CA3AF', bgcolor: '#F9FAFB' }
                     }}
                   >
-                    Cancel
+                    {t('admin.common.cancel')}
                   </Button>
                   <Button
                     type="submit"
@@ -346,7 +356,7 @@ export default function EditProperty() {
                       '&:hover': { bgcolor: '#78381C' }
                     }}
                   >
-                    {processing ? 'Updating...' : 'Update Property'}
+                    {processing ? t('admin.properties.updating') : t('admin.properties.update_property')}
                   </Button>
                 </Stack>
               </Col>
@@ -354,6 +364,12 @@ export default function EditProperty() {
           </form>
         </CardContent>
       </Card>
+      <Toast
+        open={toastOpen}
+        onClose={() => setToastOpen(false)}
+        message={t('admin.properties.flash_updated')}
+        severity="success"
+      />
     </AdminLayout>
   )
 }

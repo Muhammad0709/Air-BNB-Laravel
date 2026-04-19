@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import DeleteConfirmationDialog from '../../../Components/Admin/DeleteConfirmationDialog'
 import { Head, usePage, router } from '@inertiajs/react'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
 import EditIcon from '@mui/icons-material/Edit'
 import PersonIcon from '@mui/icons-material/Person'
 import EmailIcon from '@mui/icons-material/Email'
@@ -12,6 +12,7 @@ import CategoryIcon from '@mui/icons-material/Category'
 import PriorityIcon from '@mui/icons-material/PriorityHigh'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import { useLanguage } from '../../../hooks/use-language'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 
 export default function ShowSupportTicket() {
   const { t } = useLanguage()
@@ -45,8 +46,8 @@ export default function ShowSupportTicket() {
       <Head title={t('admin.support_tickets.view')} />
       <AdminLayout title={t('admin.support_tickets.view')}>
         <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
-          <Button startIcon={<ArrowBackIcon />} onClick={() => router.visit('/admin/support-tickets')} sx={{ color: '#717171', textTransform: 'none', '&:hover': { bgcolor: '#F9FAFB', color: '#222222' } }}>{t('admin.support_tickets.back_to_tickets')}</Button>
-          <Button variant="contained" startIcon={<EditIcon />} onClick={() => router.visit(`/admin/support-tickets/${id}/edit`)} sx={{ bgcolor: '#AD542D', textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>{t('admin.support_tickets.edit_ticket')}</Button>
+          <Button startIcon={<RtlBackArrowIcon />} onClick={() => router.visit('/admin/support-tickets')} sx={{ color: '#717171', textTransform: 'none', '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }, ...adminButtonStartIconSx }}>{t('admin.support_tickets.back_to_tickets')}</Button>
+          <Button variant="contained" startIcon={<EditIcon />} onClick={() => router.visit(`/admin/support-tickets/${id}/edit`)} sx={{ bgcolor: '#AD542D', textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' }, ...adminButtonStartIconSx }}>{t('admin.support_tickets.edit_ticket')}</Button>
         </Stack>
 
         <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, mb: 3 }}>

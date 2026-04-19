@@ -4,8 +4,9 @@ import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import Toast from '../../../Components/Admin/Toast';
 import { Head, usePage, router } from '@inertiajs/react'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
 import { useLanguage } from '../../../hooks/use-language'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 
 export default function EditSupportTicket() {
   const { t } = useLanguage()
@@ -45,7 +46,7 @@ export default function EditSupportTicket() {
     <>
       <Head title={t('admin.support_tickets.edit')} />
       <AdminLayout title={t('admin.support_tickets.edit')}>
-        <Button startIcon={<ArrowBackIcon />} onClick={() => router.visit('/admin/support-tickets')} sx={{ mb: 3, color: '#717171', textTransform: 'none', '&:hover': { bgcolor: '#F9FAFB', color: '#222222' } }}>{t('admin.support_tickets.back_to_tickets')}</Button>
+        <Button startIcon={<RtlBackArrowIcon />} onClick={() => router.visit('/admin/support-tickets')} sx={{ mb: 3, color: '#717171', textTransform: 'none', '&:hover': { bgcolor: '#F9FAFB', color: '#222222' }, ...adminButtonStartIconSx }}>{t('admin.support_tickets.back_to_tickets')}</Button>
         <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2 }}>
           <CardContent sx={{ p: { xs: 2, md: 4 } }}>
             <Typography variant="h5" sx={{ fontWeight: 700, color: '#222222', mb: 4 }}>{t('admin.support_tickets.edit_ticket_information')}</Typography>

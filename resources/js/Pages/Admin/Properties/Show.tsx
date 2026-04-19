@@ -3,7 +3,7 @@ import { Box, Button, Card, CardContent, Chip, Divider, Stack, Typography } from
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import { router, usePage } from '@inertiajs/react'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
 import EditIcon from '@mui/icons-material/Edit'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
@@ -12,10 +12,13 @@ import BedIcon from '@mui/icons-material/Bed'
 import BathtubIcon from '@mui/icons-material/Bathtub'
 import PeopleIcon from '@mui/icons-material/People'
 import HomeIcon from '@mui/icons-material/Home'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
+import { useLanguage } from '../../../hooks/use-language'
 
 const DEFAULT_IMAGE = '/images/filter-1.svg'
 
 export default function ViewProperty() {
+  const { t, language } = useLanguage()
   const { property } = usePage().props as any
   const [currentStatus, setCurrentStatus] = useState(property?.status || 'Active')
 
@@ -51,8 +54,8 @@ export default function ViewProperty() {
 
   if (!property) {
     return (
-      <AdminLayout title="View Property">
-        <Typography>Property not found</Typography>
+      <AdminLayout title={t('admin.properties.view_property')}>
+        <Typography>{t('admin.properties.property_not_found')}</Typography>
       </AdminLayout>
     )
   }
@@ -60,18 +63,19 @@ export default function ViewProperty() {
   const propertyImage = property.image || DEFAULT_IMAGE
 
   return (
-    <AdminLayout title="View Property">
+    <AdminLayout title={t('admin.properties.view_property')}>
       <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 4, gap: 2 }}>
         <Button
-          startIcon={<ArrowBackIcon />}
+          startIcon={<RtlBackArrowIcon />}
           onClick={() => router.visit('/admin/properties')}
           sx={{
             color: '#6B7280',
             textTransform: 'none',
-            '&:hover': { bgcolor: '#F9FAFB', color: '#111827' }
+            '&:hover': { bgcolor: '#F9FAFB', color: '#111827' },
+            ...adminButtonStartIconSx,
           }}
         >
-          Back to Properties
+          {t('admin.properties.back_to_properties')}
         </Button>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: 'auto' } }}>
           <Button
@@ -87,10 +91,11 @@ export default function ViewProperty() {
               '&:hover': {
                 borderColor: currentStatus === 'Active' ? '#DC2626' : '#059669',
                 bgcolor: currentStatus === 'Active' ? '#FEF2F2' : '#ECFDF5'
-              }
+              },
+              ...adminButtonStartIconSx,
             }}
           >
-            {currentStatus === 'Active' ? 'Deactivate' : 'Activate'}
+            {currentStatus === 'Active' ? t('admin.properties.deactivate') : t('admin.properties.activate')}
           </Button>
           <Button
             variant="contained"
@@ -101,10 +106,11 @@ export default function ViewProperty() {
               textTransform: 'none',
               borderRadius: '12px',
               fontWeight: 700,
-              '&:hover': { bgcolor: '#78381C' }
+              '&:hover': { bgcolor: '#78381C' },
+              ...adminButtonStartIconSx,
             }}
           >
-            Edit Property
+            {t('admin.properties.edit_property')}
           </Button>
         </Stack>
       </Stack>
@@ -150,14 +156,14 @@ export default function ViewProperty() {
                 />
               </Stack>
               <Typography sx={{ color: '#4A5568', lineHeight: 1.8, fontSize: 16, whiteSpace: 'pre-line' }}>
-                {property.description || 'No description available.'}
+                {property.description || t('admin.properties.no_description')}
               </Typography>
             </Box>
             <Box sx={{ textAlign: { xs: 'left', md: 'right' } }}>
               <Typography variant="h3" sx={{ fontWeight: 700, color: '#111827' }}>
                 ${property.price}
                 <Typography component="span" sx={{ fontSize: 20, color: '#6B7280', fontWeight: 400, marginInlineStart: 0.5 }}>
-                  /night
+                  {t('admin.properties.per_night')}
                 </Typography>
               </Typography>
             </Box>
@@ -171,7 +177,7 @@ export default function ViewProperty() {
           <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 3, position: 'sticky', top: 20 }}>
             <CardContent sx={{ p: { xs: 3, md: 4 } }}>
               <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 3 }}>
-                Property Details
+                {t('admin.properties.property_details')}
               </Typography>
 
               <Stack spacing={2.5}>
@@ -191,7 +197,7 @@ export default function ViewProperty() {
                     <HomeIcon sx={{ fontSize: 28, color: '#6B7280' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 13, color: '#6B7280', mb: 0.5, fontWeight: 500 }}>Property Type</Typography>
+                    <Typography sx={{ fontSize: 13, color: '#6B7280', mb: 0.5, fontWeight: 500 }}>{t('admin.properties.property_type')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#111827', fontSize: 17 }}>
                       {getPropertyTypeLabel(property.property_type)}
                     </Typography>
@@ -216,7 +222,7 @@ export default function ViewProperty() {
                     <BedIcon sx={{ fontSize: 28, color: '#6B7280' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 13, color: '#6B7280', mb: 0.5, fontWeight: 500 }}>Bedrooms</Typography>
+                    <Typography sx={{ fontSize: 13, color: '#6B7280', mb: 0.5, fontWeight: 500 }}>{t('admin.properties.bedrooms')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#111827', fontSize: 17 }}>{property.bedrooms}</Typography>
                   </Box>
                 </Stack>
@@ -239,7 +245,7 @@ export default function ViewProperty() {
                     <BathtubIcon sx={{ fontSize: 28, color: '#6B7280' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 13, color: '#6B7280', mb: 0.5, fontWeight: 500 }}>Bathrooms</Typography>
+                    <Typography sx={{ fontSize: 13, color: '#6B7280', mb: 0.5, fontWeight: 500 }}>{t('admin.properties.bathrooms')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#111827', fontSize: 17 }}>{property.bathrooms}</Typography>
                   </Box>
                 </Stack>
@@ -262,7 +268,7 @@ export default function ViewProperty() {
                     <PeopleIcon sx={{ fontSize: 28, color: '#6B7280' }} />
                   </Box>
                   <Box>
-                    <Typography sx={{ fontSize: 13, color: '#6B7280', mb: 0.5, fontWeight: 500 }}>Guests</Typography>
+                    <Typography sx={{ fontSize: 13, color: '#6B7280', mb: 0.5, fontWeight: 500 }}>{t('admin.properties.guests')}</Typography>
                     <Typography sx={{ fontWeight: 600, color: '#111827', fontSize: 17 }}>{property.guests}</Typography>
                   </Box>
                 </Stack>
@@ -270,7 +276,7 @@ export default function ViewProperty() {
                 <Divider />
 
                 <Box>
-                  <Typography sx={{ fontSize: 13, color: '#6B7280', mb: 1, fontWeight: 500 }}>Created At</Typography>
+                  <Typography sx={{ fontSize: 13, color: '#6B7280', mb: 1, fontWeight: 500 }}>{t('admin.properties.created_at')}</Typography>
                   <Typography sx={{ fontWeight: 600, color: '#111827', fontSize: 15 }}>
                     {new Date(property.created_at).toLocaleDateString('en-US', {
                       year: 'numeric',

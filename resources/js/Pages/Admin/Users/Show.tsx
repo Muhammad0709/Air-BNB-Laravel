@@ -4,12 +4,13 @@ import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import DeleteConfirmationDialog from '../../../Components/Admin/DeleteConfirmationDialog'
 import { router, usePage } from '@inertiajs/react'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
 import EditIcon from '@mui/icons-material/Edit'
 import EmailIcon from '@mui/icons-material/Email'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useLanguage } from '../../../hooks/use-language'
+import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 
 export default function ViewUser() {
   const { t } = useLanguage()
@@ -48,12 +49,13 @@ export default function ViewUser() {
     <AdminLayout title={t('admin.users.view_user')}>
       <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
         <Button
-          startIcon={<ArrowBackIcon />}
+          startIcon={<RtlBackArrowIcon />}
           onClick={() => router.visit('/admin/users')}
           sx={{
             color: '#6B7280',
             textTransform: 'none',
-            '&:hover': { bgcolor: '#F9FAFB', color: '#111827' }
+            '&:hover': { bgcolor: '#F9FAFB', color: '#111827' },
+            ...adminButtonStartIconSx,
           }}
         >
           {t('admin.users.back_to_users')}
@@ -72,7 +74,8 @@ export default function ViewUser() {
               '&:hover': {
                 borderColor: '#DC2626',
                 bgcolor: '#FEF2F2'
-              }
+              },
+              ...adminButtonStartIconSx,
             }}
           >
             {t('admin.common.delete')}
@@ -86,7 +89,8 @@ export default function ViewUser() {
               textTransform: 'none',
               borderRadius: '12px',
               fontWeight: 700,
-              '&:hover': { bgcolor: '#78381C' }
+              '&:hover': { bgcolor: '#78381C' },
+              ...adminButtonStartIconSx,
             }}
           >
             {t('admin.users.edit_user')}
