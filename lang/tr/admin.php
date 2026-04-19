@@ -119,6 +119,7 @@ return [
         'flash_approved' => 'İlan başarıyla onaylandı!',
         'flash_rejected' => 'İlan başarıyla reddedildi!',
         'default_rejection_reason' => 'İlan standartlarımızı karşılamıyor',
+        'per_night' => '/gece',
     ],
     'bookings' => [
         'title' => 'Rezervasyonlar',

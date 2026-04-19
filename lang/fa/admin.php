@@ -119,6 +119,7 @@ return [
         'flash_approved' => 'ملک با موفقیت تأیید شد!',
         'flash_rejected' => 'ملک با موفقیت رد شد!',
         'default_rejection_reason' => 'ملک با استانداردهای ما مطابقت ندارد',
+        'per_night' => '/شب',
     ],
     'bookings' => [
         'title' => 'رزروها',

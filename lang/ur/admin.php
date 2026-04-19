@@ -119,6 +119,7 @@ return [
         'flash_approved' => 'پراپرٹی کامیابی سے منظور ہو گئی!',
         'flash_rejected' => 'پراپرٹی کامیابی سے مسترد کر دی گئی!',
         'default_rejection_reason' => 'پراپرٹی ہمارے معیار پر پوری نہیں اترتی',
+        'per_night' => '/رات',
     ],
     'bookings' => [
         'title' => 'بکنگز',

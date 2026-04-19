@@ -119,6 +119,7 @@ return [
         'flash_approved' => 'تمت الموافقة على العقار بنجاح!',
         'flash_rejected' => 'تم رفض العقار بنجاح!',
         'default_rejection_reason' => 'العقار لا يستوفي معاييرنا',
+        'per_night' => '/ليلة',
     ],
     'bookings' => [
         'title' => 'الحجوزات',

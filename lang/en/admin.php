@@ -119,6 +119,7 @@ return [
         'flash_approved' => 'Property approved successfully!',
         'flash_rejected' => 'Property rejected successfully!',
         'default_rejection_reason' => 'Property does not meet our standards',
+        'per_night' => '/night',
     ],
     'bookings' => [
         'title' => 'Bookings',
