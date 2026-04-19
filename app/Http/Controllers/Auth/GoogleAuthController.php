@@ -99,7 +99,7 @@ class GoogleAuthController extends Controller
                 ])->onlyInput('email');
             }
             // Do not use intended() — avoid sending users to a stale url.intended from session
-            return redirect('/');
+            return redirect('/')->with('success', __('auth.signin.toast_signed_in'));
         }
 
         // intent === host: hosts only — admins must use email/password
@@ -114,7 +114,7 @@ class GoogleAuthController extends Controller
 
         if ($user->type === UserType::HOST) {
             // Never use intended() here: session often keeps url.intended=/register from guest flow and breaks OAuth
-            return redirect()->route('host.dashboard');
+            return redirect()->route('host.dashboard')->with('success', __('auth.signin.toast_signed_in'));
         }
 
         if ($user->type === UserType::USER && !$isNewUser) {
@@ -126,6 +126,6 @@ class GoogleAuthController extends Controller
             ])->onlyInput('email');
         }
 
-        return redirect()->route('host.dashboard');
+        return redirect()->route('host.dashboard')->with('success', __('auth.signin.toast_signed_in'));
     }
 }

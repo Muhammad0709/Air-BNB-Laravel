@@ -38,10 +38,12 @@ class LoginController extends Controller
                 ])->onlyInput('email');
             }
             $request->session()->regenerate();
+            $msg = __('auth.signin.toast_signed_in');
+
             if ($user->type === UserType::ADMIN) {
-                return redirect()->intended('/admin/dashboard');
+                return redirect()->intended('/admin/dashboard')->with('success', $msg);
             }
-            return redirect()->intended('/host/dashboard');
+            return redirect()->intended('/host/dashboard')->with('success', $msg);
         }
 
         return back()->withErrors([

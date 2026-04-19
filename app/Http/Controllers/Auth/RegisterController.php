@@ -37,8 +37,10 @@ class RegisterController extends Controller
 
         auth()->login($user);
 
+        $msg = __('auth.signup.toast_registered');
+
         return $type === UserType::HOST
-            ? redirect()->intended(route('host.dashboard'))
-            : redirect()->intended('/');
+            ? redirect()->intended(route('host.dashboard'))->with('success', $msg)
+            : redirect()->intended('/')->with('success', $msg);
     }
 }

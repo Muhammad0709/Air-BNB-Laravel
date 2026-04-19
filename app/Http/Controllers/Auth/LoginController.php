@@ -32,10 +32,12 @@ class LoginController extends Controller
             $user = Auth::user();
             $request->session()->regenerate();
 
+            $msg = __('auth.signin.toast_signed_in');
+
             return match ($user->type) {
-                UserType::ADMIN => redirect()->intended(route('admin.dashboard')),
-                UserType::HOST => redirect()->intended(route('host.dashboard')),
-                UserType::USER => redirect()->intended('/'),
+                UserType::ADMIN => redirect()->intended(route('admin.dashboard'))->with('success', $msg),
+                UserType::HOST => redirect()->intended(route('host.dashboard'))->with('success', $msg),
+                UserType::USER => redirect()->intended('/')->with('success', $msg),
             };
         }
 

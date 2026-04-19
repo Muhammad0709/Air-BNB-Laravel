@@ -7,6 +7,7 @@ import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { LaravelReactI18nProvider } from "laravel-react-i18n";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
 import { setExchangeRates, setSupportedCurrencies } from "./utils/currency";
+import GlobalFlashToasts from "./components/GlobalFlashToasts";
 
 const appName = import.meta.env.VITE_APP_NAME || "LipaBnb";
 
@@ -30,7 +31,19 @@ createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => {
         const pagePath = `./Pages/${name}.tsx`;
-        return resolvePageComponent(pagePath, pages);
+        return resolvePageComponent(pagePath, pages).then((module) => {
+            const Page = module.default;
+            return {
+                default: function PageWithFlash(props) {
+                    return (
+                        <>
+                            <GlobalFlashToasts />
+                            <Page {...props} />
+                        </>
+                    );
+                },
+            };
+        });
     },
     setup({ el, App, props }) {
         const root = createRoot(el);
