@@ -644,7 +644,6 @@ p.hero-subtitle {
   margin-left: 0;
 }
 
-/* RTL: property name right, rating left, price right */
 [dir="rtl"] .airbnb-card-body {
   text-align: right;
 }
