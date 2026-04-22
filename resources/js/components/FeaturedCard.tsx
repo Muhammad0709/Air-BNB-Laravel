@@ -118,12 +118,14 @@ export default function FeaturedCard({
           {title}
         </Typography>
         <Box className="airbnb-card-price-rating">
-          <Typography component="span" className="airbnb-card-price-text">
+          <div>
+            <Typography component="span" className="airbnb-card-price-text">
             {formatPrice(Number(price), currency)}
           </Typography>
           <Typography component="span" className="airbnb-card-night-text">
             {' / '}{t('listing.night')}
           </Typography>
+            </div>
           {rating > 0 && (
             <Box className="airbnb-card-rating-inline">
               <StarIcon sx={{ fontSize: 11, color: '#717171', marginInlineStart: 1 }} />

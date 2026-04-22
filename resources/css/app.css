@@ -650,20 +650,9 @@ p.hero-subtitle {
 [dir="rtl"] .airbnb-card-title {
   text-align: right;
 }
-[dir="rtl"] .airbnb-card-price-rating {
-  flex-direction: row;
-  justify-content: space-between;
-}
-/* In RTL: rating on the left (inline-end), price on the right (inline-start). Use margin-inline-start: auto so rating stays left. */
-[dir="rtl"] .airbnb-card-rating-inline {
-  margin-inline-start: auto;
-  margin-inline-end: 0;
-  order: 1;
-}
-[dir="rtl"] .airbnb-card-price-text,
-[dir="rtl"] .airbnb-card-night-text {
-  order: -1;
-}
+/* [dir="rtl"] .airbnb-card-price-rating {
+  justify-content: flex-end;
+} */
 
 /* Legacy card styles for backward compatibility */
 .listing-card, .tiles-card { background: #fff; border-radius: 14px; overflow: hidden; border: 1px solid #ECEFF3; box-shadow: 0px 4px 19px 0px #0000000A; }
