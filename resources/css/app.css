@@ -597,6 +597,7 @@ p.hero-subtitle {
 .airbnb-card-price-rating {
   display: flex;
   align-items: baseline;
+  justify-content:space-between ;
   flex-wrap: wrap;
   gap: 4px;
   line-height: 1.2;
