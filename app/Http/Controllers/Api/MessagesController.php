@@ -302,18 +302,21 @@ class MessagesController extends Controller
             ], 404);
         }
 
-        $conversation = Conversation::firstOrCreate(
-            [
-                'user_id' => $user->id,
-                'property_id' => $propertyId,
-            ],
-            [
-                'user_id' => $user->id,
-                'property_id' => $propertyId,
-            ]
-        );
+        $hostId = $property->user_id;
 
-        $conversation->load(['property.user', 'lastMessage']);
+        $conversation = Conversation::where('user_id', $user->id)
+            ->whereHas('property', fn($q) => $q->where('user_id', $hostId))
+            ->with(['property.user', 'lastMessage'])
+            ->latest()
+            ->first();
+
+        if (!$conversation) {
+            $conversation = Conversation::create([
+                'user_id' => $user->id,
+                'property_id' => $propertyId,
+            ]);
+            $conversation->load(['property.user', 'lastMessage']);
+        }
 
         $conversationPayload = (new ConversationResource($conversation))->toArray($request);
         $conversationPayload['messages'] = [];
