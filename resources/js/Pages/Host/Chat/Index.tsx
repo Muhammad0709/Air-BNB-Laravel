@@ -72,7 +72,10 @@ export default function HostChat() {
   const [deleteChatDialogOpen, setDeleteChatDialogOpen] = useState(false)
   const [messageToDelete, setMessageToDelete] = useState<number | null>(null)
   const [deleteFileFromDevice, setDeleteFileFromDevice] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState(() => {
+    if (typeof window === 'undefined') return ''
+    return new URLSearchParams(window.location.search).get('search') ?? ''
+  })
   const [loadingMessages, setLoadingMessages] = useState(false)
   const [showLoadingDelayed, setShowLoadingDelayed] = useState(false)
   const [sending, setSending] = useState(false)
@@ -89,10 +92,24 @@ export default function HostChat() {
   const [conversations, setConversations] = useState<Conversation[]>(conversationsList)
 
   useEffect(() => {
-    setConversations(conversationsList)
+    setConversations((prev) => {
+      return conversationsList.map((item) => {
+        const existing = prev.find((c) => c.id === item.id)
+        return {
+          ...item,
+          messages: existing?.messages.length ? existing.messages : item.messages,
+        }
+      })
+    })
   }, [conversationsList])
 
+  const isInitialMount = useRef(true)
+
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return
+    }
     const timer = setTimeout(() => {
       router.get('/host/chat', searchQuery.trim() ? { search: searchQuery } : {}, { 
         preserveState: true, 
@@ -182,7 +199,7 @@ export default function HostChat() {
         loadingTimeoutRef.current = null
       }
     }
-  }, [selectedConversation, conversations])
+  }, [selectedConversation])
 
   useEffect(() => {
     if (!selectedConversation) return
@@ -230,10 +247,6 @@ export default function HostChat() {
       try { (channel as { leave?: () => void }).leave?.() } catch { /* noop */ }
     }
   }, [selectedConversation, addMessageToConversation])
-
-  useEffect(() => {
-    // Scroll removed - newest messages are at top
-  }, [currentConversation?.messages, currentConversation])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {

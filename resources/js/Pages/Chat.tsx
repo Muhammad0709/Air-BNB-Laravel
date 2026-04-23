@@ -97,14 +97,16 @@ export default function Chat() {
   const [deleteChatDialogOpen, setDeleteChatDialogOpen] = useState(false)
   const [messageToDelete, setMessageToDelete] = useState<number | null>(null)
   const [deleteFileFromDevice, setDeleteFileFromDevice] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState(() => {
+    if (typeof window === 'undefined') return ''
+    return new URLSearchParams(window.location.search).get('search') ?? ''
+  })
   const [loadingMessages, setLoadingMessages] = useState(false)
   const [showLoadingDelayed, setShowLoadingDelayed] = useState(false)
   const [sending, setSending] = useState(false)
   const [toastOpen, setToastOpen] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
   const [fileError, setFileError] = useState('')
-  const conversationsRef = useRef<Conversation[]>([])
   const loadingTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const showLoadingDelayRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -116,13 +118,18 @@ export default function Chat() {
     return arr.map((c) => ({ ...c, messages: [] as Message[] }))
   }, [props.conversations])
   const [conversations, setConversations] = useState<Conversation[]>(conversationsList)
-  conversationsRef.current = conversations
 
   const handleSearch = useCallback((value: string) => {
     setSearchQuery(value)
   }, [])
 
+  const isInitialMount = useRef(true)
+
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return
+    }
     const timer = setTimeout(() => {
       if (searchQuery.trim()) {
         router.get('/chat', { search: searchQuery }, { preserveState: true, preserveScroll: true, only: ['conversations'] })
@@ -134,7 +141,15 @@ export default function Chat() {
   }, [searchQuery])
 
   useEffect(() => {
-    setConversations(conversationsList)
+    setConversations((prev) => {
+      return conversationsList.map((item) => {
+        const existing = prev.find((c) => c.id === item.id)
+        return {
+          ...item,
+          messages: existing?.messages.length ? existing.messages : item.messages,
+        }
+      })
+    })
   }, [conversationsList])
 
   const currentConversation = conversations.find(c => c.id === selectedConversation)
@@ -171,19 +186,23 @@ export default function Chat() {
   useEffect(() => {
     const propertyIdParam = searchParams.get('property_id')
     const propertyId = propertyIdParam ? parseInt(propertyIdParam, 10) : null
-    if (!propertyId) return
+    if (!propertyId || Number.isNaN(propertyId)) return
     const existingConv = conversations.find((c) => c.propertyId === propertyId)
     if (existingConv) {
       setSelectedConversation(existingConv.id)
-      router.visit('/chat')
+      router.visit('/chat', { replace: true, preserveState: true })
       return
     }
-    startConversationWithProperty(propertyId).catch(() => {}).finally(() => router.visit('/chat'))
-  }, [searchParams, conversations, startConversationWithProperty])
+    startConversationWithProperty(propertyId)
+      .catch(() => {})
+      .finally(() => {
+        router.visit('/chat', { replace: true, preserveState: true })
+      })
+  }, [searchParams, startConversationWithProperty])
 
   useEffect(() => {
     if (!selectedConversation) return
-    const conv = conversationsRef.current.find((c) => c.id === selectedConversation)
+    const conv = conversations.find((c) => c.id === selectedConversation)
     if (conv?.messages.length) return
     const ac = new AbortController()
     const minLoadingStartedAt = Date.now()
@@ -278,10 +297,6 @@ export default function Chat() {
       try { (channel as { leave?: () => void }).leave?.() } catch { /* noop */ }
     }
   }, [selectedConversation, addMessageToConversation])
-
-  useEffect(() => {
-    // Scroll removed - newest messages are at top
-  }, [currentConversation?.messages, currentConversation])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFileError('')
