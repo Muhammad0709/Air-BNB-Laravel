@@ -41,6 +41,10 @@ class PropertyResource extends JsonResource
             'reviews' => $reviewCount,
             'image' => $image,
             'isGuestFavorite' => $this->is_guest_favorite ?? false,
+            'host' => $this->whenLoaded('user', fn() => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+            ]),
         ];
     }
 }
