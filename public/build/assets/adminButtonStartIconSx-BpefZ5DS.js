@@ -1,0 +1,1 @@
+const t={'html[dir="ltr"] &':{"& .MuiButton-startIcon":{marginRight:"8px !important",marginLeft:"-4px !important"}},'html[dir="rtl"] &':{"& .MuiButton-startIcon":{marginRight:"0 !important",marginLeft:"8px !important"}}};export{t as a};
