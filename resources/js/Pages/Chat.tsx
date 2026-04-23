@@ -190,13 +190,13 @@ export default function Chat() {
     const existingConv = conversations.find((c) => c.propertyId === propertyId)
     if (existingConv) {
       setSelectedConversation(existingConv.id)
-      router.visit('/chat', { replace: true, preserveState: true })
+      window.history.replaceState(null, '', '/chat')
       return
     }
     startConversationWithProperty(propertyId)
       .catch(() => {})
       .finally(() => {
-        router.visit('/chat', { replace: true, preserveState: true })
+        window.history.replaceState(null, '', '/chat')
       })
   }, [searchParams, startConversationWithProperty])
 
@@ -447,7 +447,7 @@ export default function Chat() {
           py: { xs: 2, md: 4 },
         }}
       >
-        <Container fluid className="chat-page-container">
+        <Container className="chat-page-container">
           <Box sx={{ mb: { xs: 2, md: 4 } }}>
             <Typography variant="h2" sx={{ fontSize: { xs: '1.75rem', md: '2.5rem' }, fontWeight: 800, color: '#222222', mb: 1 }}>
               {t('chat.messages')}
