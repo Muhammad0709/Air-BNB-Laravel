@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\HostPropertyController;
 use App\Http\Controllers\Api\HostBookingController;
 use App\Http\Controllers\Api\HostChatController;
 use App\Http\Controllers\Api\HostEarningsController;
+use App\Http\Controllers\Api\CurrencyController;
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Middleware\UserMiddleware;
 use App\Http\Middleware\HostApiMiddleware;
@@ -59,6 +60,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/profile/password', [ProfileController::class, 'updatePassword']);
     Route::post('/profile/picture', [ProfileController::class, 'uploadPicture']);
     Route::put('/profile/currency', [ProfileController::class, 'updateCurrency']);
+
+    Route::get('/currencies', [CurrencyController::class, 'index']);
     
     // Host-only routes (restricted to Host type only)
     Route::middleware([HostApiMiddleware::class])->prefix('host')->group(function () {
