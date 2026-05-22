@@ -24,7 +24,6 @@ class CurrencyController extends Controller
      *     summary="Get all supported currencies with exchange rates",
      *     description="Returns all supported currencies with their exchange rates against 1 USD",
      *     tags={"Currency"},
-     *     security={{"apiAuth": {}}},
      *
      *     @OA\Response(
      *         response=200,
@@ -47,16 +46,6 @@ class CurrencyController extends Controller
      *                     @OA\Property(property="GBP", type="number", example=0.746281)
      *                 )
      *             )
-     *         )
-     *     ),
-     *
-     *     @OA\Response(
-     *         response=401,
-     *         description="Unauthenticated",
-     *
-     *         @OA\JsonContent(
-     *
-     *             @OA\Property(property="message", type="string", example="Unauthenticated.")
      *         )
      *     )
      * )

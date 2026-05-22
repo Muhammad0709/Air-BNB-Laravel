@@ -31,6 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'api/social-login',
             // Public search (no auth, no session)
             'api/search',
+            'api/currencies',
         ]);
 
         $middleware->web(append: [

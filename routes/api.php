@@ -49,6 +49,9 @@ Route::post('/social-login', [AuthController::class, 'socialLogin']);
 Route::get('/search', [SearchController::class, 'index']);
 Route::post('/search', [SearchController::class, 'index']);
 
+// Public currency exchange rates (units of each currency per 1 USD)
+Route::get('/currencies', [CurrencyController::class, 'index']);
+
 // Protected routes (require authentication)
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -60,8 +63,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/profile/password', [ProfileController::class, 'updatePassword']);
     Route::post('/profile/picture', [ProfileController::class, 'uploadPicture']);
     Route::put('/profile/currency', [ProfileController::class, 'updateCurrency']);
-
-    Route::get('/currencies', [CurrencyController::class, 'index']);
     
     // Host-only routes (restricted to Host type only)
     Route::middleware([HostApiMiddleware::class])->prefix('host')->group(function () {
