@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import FeaturedCard from '../components/FeaturedCard'
@@ -33,9 +33,6 @@ type Property = {
   reviews?: number
   is_guest_favorite?: boolean
 }
-
-console.log('hello');
-console.log('hellos');
 
 type ListingProps = {
   properties: {
@@ -118,7 +115,12 @@ export default function Listing() {
     router.get('/listing', params, { preserveState: true })
   }, [search, localPriceRange, priceRange.min, priceRange.max, selectedCheckin, selectedCheckout, guests, sortBy, selectedLocations])
 
+  const isFirstRender = useRef(true)
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
     const timer = setTimeout(() => updateFilters(), 400)
     return () => clearTimeout(timer)
   }, [search, sortBy, guests, selectedLocations, localPriceRange, selectedCheckin, selectedCheckout])
