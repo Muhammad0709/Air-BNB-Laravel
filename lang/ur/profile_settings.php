@@ -39,4 +39,11 @@ return [
     'switch_to_customer_hint' => 'کسٹمر ویو پر واپس جانے کے لیے بند کریں۔',
     'switch_to_customer_host' => 'کسٹمر پر سوئچ کریں',
     'switch_to_customer_host_hint' => 'کسٹمر ویو پر واپس جانے کے لیے بند کریں۔',
+    'delete_account' => 'اکاؤنٹ حذف کریں',
+    'delete_account_description' => 'اپنا اکاؤنٹ اور تمام ڈیٹا مستقل طور پر حذف کریں۔ یہ عمل واپس نہیں ہو سکتا۔',
+    'delete_account_password_placeholder' => 'تصدیق کے لیے اپنا پاسورڈ درج کریں',
+    'delete_account_confirm' => 'کیا آپ واقعی اپنا اکاؤنٹ مستقل طور پر حذف کرنا چاہتے ہیں؟ یہ عمل واپس نہیں ہو سکتا۔',
+    'delete_account_button' => 'اکاؤنٹ حذف کریں',
+    'deleting' => 'حذف ہو رہا ہے...',
+    'delete_account_incorrect_password' => 'پاسورڈ غلط ہے۔ آپ کا اکاؤنٹ حذف نہیں ہوا۔',
 ];

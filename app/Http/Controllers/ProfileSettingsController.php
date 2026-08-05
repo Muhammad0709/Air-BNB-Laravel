@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Profile\DeleteAccountRequest;
 use App\Http\Requests\Profile\UpdateCurrencyRequest;
 use App\Http\Requests\Profile\UpdatePasswordRequest;
 use App\Http\Requests\Profile\UpdateProfileRequest;
@@ -59,6 +60,22 @@ class ProfileSettingsController extends Controller
         Auth::user()->update(['currency' => $request->validated('currency')]);
 
         return redirect()->back();
+    }
+
+    public function destroy(DeleteAccountRequest $request)
+    {
+        $user = Auth::user();
+
+        // No cascading foreign key on notifications.user_id, so it must be cleared explicitly.
+        $user->notifications()->delete();
+
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        $user->delete();
+
+        return redirect()->route('home')->with('success', 'Your account has been deleted.');
     }
 
     public function uploadProfilePicture(UploadProfilePictureRequest $request)

@@ -6,6 +6,7 @@ import { Container, Row, Col } from 'react-bootstrap'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import Toast from '../components/Admin/Toast';
+import DeleteConfirmationDialog from '../components/Admin/DeleteConfirmationDialog';
 import SaveIcon from '@mui/icons-material/Save'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { Head, useForm, usePage, router } from '@inertiajs/react'
@@ -17,6 +18,7 @@ type ProfilePageProps = {
   auth?: { user?: { type?: string } | null }
   host_panel_preview?: boolean
   flash?: { success?: string; error?: string }
+  errors?: Record<string, string | string[]>
 }
 
 export default function ProfileSettings() {
@@ -61,7 +63,12 @@ export default function ProfileSettings() {
     new_password_confirmation: ''
   })
 
+  const { data: deleteData, setData: setDeleteData, delete: deleteAccount, processing: deleteProcessing, errors: deleteErrors, reset: resetDelete } = useForm({
+    password: ''
+  })
+
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [uploading, setUploading] = useState(false)
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -87,6 +94,29 @@ export default function ProfileSettings() {
       }
     })
   }
+
+  const handleDeleteAccount = (e: React.FormEvent) => {
+    e.preventDefault()
+    setDeleteDialogOpen(true)
+  }
+
+  const handleDeleteAccountConfirm = () => {
+    deleteAccount('/profile/delete', {
+      preserveScroll: true,
+      onSuccess: () => setDeleteDialogOpen(false),
+      onError: () => setDeleteDialogOpen(false)
+    })
+  }
+
+  const pageDeletePasswordError = props.errors?.password
+  useEffect(() => {
+    if (pageDeletePasswordError) {
+      const message = Array.isArray(pageDeletePasswordError) ? pageDeletePasswordError[0] : pageDeletePasswordError
+      setToast({ open: true, message, severity: 'error' })
+      resetDelete()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageDeletePasswordError])
 
   const handleProfilePictureUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -542,6 +572,73 @@ export default function ProfileSettings() {
                     </Stack>
                   </form>
                 </Paper>
+
+                {/* Delete Account */}
+                <Paper elevation={0} sx={{ p: 4, border: '1px solid #FECACA', borderRadius: '16px', mt: 3 }}>
+                  <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 1 }}>
+                    {t('profile_settings.delete_account')}
+                  </Typography>
+                  <Typography sx={{ color: '#6B7280', fontSize: '0.875rem', mb: 3 }}>
+                    {t('profile_settings.delete_account_description')}
+                  </Typography>
+
+                  <form onSubmit={handleDeleteAccount}>
+                    <Stack spacing={3}>
+                      <Box>
+                        <TextField
+                          name="password"
+                          type="password"
+                          value={deleteData.password}
+                          onChange={(e) => setDeleteData('password', e.target.value)}
+                          placeholder={t('profile_settings.delete_account_password_placeholder')}
+                          fullWidth
+                          required
+                          size="small"
+                          error={!!deleteErrors.password}
+                          sx={{
+                            '& .MuiOutlinedInput-root': {
+                              borderRadius: '12px',
+                              '& fieldset': {
+                                borderColor: deleteErrors.password ? '#EF4444' : '#D0D5DD'
+                              },
+                              '&:hover fieldset': {
+                                borderColor: deleteErrors.password ? '#EF4444' : '#D0D5DD'
+                              },
+                              '&.Mui-focused fieldset': {
+                                borderColor: deleteErrors.password ? '#EF4444' : '#AD542D'
+                              }
+                            }
+                          }}
+                        />
+                        <InputError message={Array.isArray(deleteErrors.password) ? deleteErrors.password[0] : deleteErrors.password} />
+                      </Box>
+
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        disabled={deleteProcessing}
+                        sx={{
+                          bgcolor: '#AD542D',
+                          borderRadius: '999px',
+                          py: 1.5,
+                          textTransform: 'none',
+                          fontWeight: 700,
+                          fontSize: '0.875rem',
+                          alignSelf: 'flex-start',
+                          '&:hover': {
+                            bgcolor: '#78381C'
+                          },
+                          '&:disabled': {
+                            bgcolor: '#D1D5DB',
+                            color: '#9CA3AF'
+                          }
+                        }}
+                      >
+                        {deleteProcessing ? t('profile_settings.deleting') : t('profile_settings.delete_account_button')}
+                      </Button>
+                    </Stack>
+                  </form>
+                </Paper>
               </Col>
             </Row>
           </Container>
@@ -553,6 +650,17 @@ export default function ProfileSettings() {
           onClose={() => setToast({ ...toast, open: false })}
           message={toast.message}
           severity={toast.severity}
+        />
+
+        <DeleteConfirmationDialog
+          open={deleteDialogOpen}
+          onClose={() => setDeleteDialogOpen(false)}
+          onConfirm={handleDeleteAccountConfirm}
+          title={t('profile_settings.delete_account')}
+          message={t('profile_settings.delete_account_confirm')}
+          confirmLabel={t('profile_settings.delete_account_button')}
+          confirmColor="#AD542D"
+          confirmHoverColor="#78381C"
         />
       </Box>
     </>

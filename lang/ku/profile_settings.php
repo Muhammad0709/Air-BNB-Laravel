@@ -39,4 +39,11 @@ return [
     'switch_to_customer_hint' => 'کۆ بکەرەوە بۆ گەڕانەوە بۆ دیدی کڕیار.',
     'switch_to_customer_host' => 'گۆڕین بۆ کڕیار',
     'switch_to_customer_host_hint' => 'کۆ بکەرەوە بۆ گەڕانەوە بۆ دیدی کڕیار.',
+    'delete_account' => 'سڕینەوەی هەژمار',
+    'delete_account_description' => 'هەژمارەکەت و هەموو داتاکانت بۆ هەمیشە دەسڕدرێتەوە. ناتوانرێت هەڵبوەشێندرێتەوە.',
+    'delete_account_password_placeholder' => 'وشەی نهێنی بنووسە بۆ دڵنیابوونەوە',
+    'delete_account_confirm' => 'دڵنیایت دەتەوێت هەژمارەکەت بۆ هەمیشە بسڕیتەوە؟ ناتوانرێت هەڵبوەشێندرێتەوە.',
+    'delete_account_button' => 'سڕینەوەی هەژمار',
+    'deleting' => 'دەسڕدرێتەوە...',
+    'delete_account_incorrect_password' => 'وشەی نهێنی هەڵەیە. هەژمارەکەت نەسڕایەوە.',
 ];

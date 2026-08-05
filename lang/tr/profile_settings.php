@@ -39,4 +39,11 @@ return [
     'switch_to_customer_hint' => 'Müşteri görünümüne dönmek için kapatın.',
     'switch_to_customer_host' => 'Müşteriye Geç',
     'switch_to_customer_host_hint' => 'Müşteri görünümüne dönmek için kapatın.',
+    'delete_account' => 'Hesabı Sil',
+    'delete_account_description' => 'Hesabınızı ve tüm verilerinizi kalıcı olarak silin. Bu işlem geri alınamaz.',
+    'delete_account_password_placeholder' => 'Onaylamak için şifrenizi girin',
+    'delete_account_confirm' => 'Hesabınızı kalıcı olarak silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.',
+    'delete_account_button' => 'Hesabı Sil',
+    'deleting' => 'Siliniyor...',
+    'delete_account_incorrect_password' => 'Şifre yanlış. Hesabınız silinmedi.',
 ];

@@ -39,4 +39,11 @@ return [
     'switch_to_customer_hint' => 'أطفئ للعودة إلى عرض العميل.',
     'switch_to_customer_host' => 'التبديل إلى عميل',
     'switch_to_customer_host_hint' => 'أطفئ للعودة إلى عرض العميل.',
+    'delete_account' => 'حذف الحساب',
+    'delete_account_description' => 'احذف حسابك وجميع بياناتك نهائياً. لا يمكن التراجع عن هذا الإجراء.',
+    'delete_account_password_placeholder' => 'أدخل كلمة المرور للتأكيد',
+    'delete_account_confirm' => 'هل أنت متأكد أنك تريد حذف حسابك نهائياً؟ لا يمكن التراجع عن هذا الإجراء.',
+    'delete_account_button' => 'حذف الحساب',
+    'deleting' => 'جارٍ الحذف...',
+    'delete_account_incorrect_password' => 'كلمة المرور غير صحيحة. لم يتم حذف حسابك.',
 ];

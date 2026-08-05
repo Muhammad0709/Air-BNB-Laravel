@@ -39,4 +39,11 @@ return [
     'switch_to_customer_hint' => 'Turn off to go back to Customer view.',
     'switch_to_customer_host' => 'Switch to Customer',
     'switch_to_customer_host_hint' => 'Turn off to go back to Customer view.',
+    'delete_account' => 'Delete Account',
+    'delete_account_description' => 'Permanently delete your account and all of your data. This cannot be undone.',
+    'delete_account_password_placeholder' => 'Enter your password to confirm',
+    'delete_account_confirm' => 'Are you sure you want to permanently delete your account? This cannot be undone.',
+    'delete_account_button' => 'Delete Account',
+    'deleting' => 'Deleting...',
+    'delete_account_incorrect_password' => 'Incorrect password. Your account was not deleted.',
 ];

@@ -7,6 +7,9 @@ type DeleteConfirmationDialogProps = {
   title: string
   message?: string
   itemName?: string
+  confirmLabel?: string
+  confirmColor?: string
+  confirmHoverColor?: string
 }
 
 export default function DeleteConfirmationDialog({
@@ -15,7 +18,10 @@ export default function DeleteConfirmationDialog({
   onConfirm,
   title,
   message,
-  itemName = 'this item'
+  itemName = 'this item',
+  confirmLabel = 'Delete',
+  confirmColor = '#EF4444',
+  confirmHoverColor = '#DC2626'
 }: DeleteConfirmationDialogProps) {
   const defaultMessage = `This action cannot be undone. This will permanently delete ${itemName} and all their data.`
 
@@ -85,7 +91,7 @@ export default function DeleteConfirmationDialog({
           onClick={onConfirm}
           variant="contained"
           sx={{
-            bgcolor: '#EF4444',
+            bgcolor: confirmColor,
             color: '#FFFFFF',
             textTransform: 'none',
             borderRadius: 2,
@@ -93,11 +99,11 @@ export default function DeleteConfirmationDialog({
             py: 1,
             fontWeight: 600,
             '&:hover': {
-              bgcolor: '#DC2626'
+              bgcolor: confirmHoverColor
             }
           }}
         >
-          Delete
+          {confirmLabel}
         </Button>
       </DialogActions>
     </Dialog>

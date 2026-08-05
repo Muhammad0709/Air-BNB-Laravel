@@ -39,4 +39,11 @@ return [
     'switch_to_customer_hint' => 'برای بازگشت به نمای مشتری خاموش کنید.',
     'switch_to_customer_host' => 'تبدیل به مشتری',
     'switch_to_customer_host_hint' => 'برای بازگشت به نمای مشتری خاموش کنید.',
+    'delete_account' => 'حذف حساب',
+    'delete_account_description' => 'حساب شما و تمام اطلاعات شما برای همیشه حذف می‌شود. این عمل قابل بازگشت نیست.',
+    'delete_account_password_placeholder' => 'برای تأیید رمز عبور خود را وارد کنید',
+    'delete_account_confirm' => 'آیا مطمئن هستید که می‌خواهید حساب خود را برای همیشه حذف کنید؟ این عمل قابل بازگشت نیست.',
+    'delete_account_button' => 'حذف حساب',
+    'deleting' => 'در حال حذف...',
+    'delete_account_incorrect_password' => 'رمز عبور نادرست است. حساب شما حذف نشد.',
 ];

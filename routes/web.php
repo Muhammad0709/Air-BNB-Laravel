@@ -108,6 +108,7 @@ Route::middleware(['auth', 'redirect.admin.host'])->group(function () {
     Route::patch('/profile/password', [ProfileSettingsController::class, 'updatePassword'])->name('profile.password');
     Route::patch('/profile/currency', [ProfileSettingsController::class, 'updateCurrency'])->name('profile.currency');
     Route::post('/profile/picture', [ProfileSettingsController::class, 'uploadProfilePicture'])->name('profile.picture');
+    Route::delete('/profile/delete', [ProfileSettingsController::class, 'destroy'])->name('profile.destroy');
 });
 
 // Admin routes: only 'admin' middleware – unauthenticated or non-admin go to /login (admin login)
