@@ -120,6 +120,10 @@ return [
         'flash_rejected' => 'Property rejected successfully!',
         'default_rejection_reason' => 'Property does not meet our standards',
         'per_night' => '/night',
+        'reviews' => 'Reviews',
+        'no_reviews' => 'No reviews yet.',
+        'delete_review' => 'Delete review',
+        'confirm_delete_review' => 'Delete this review? This cannot be undone.',
     ],
     'bookings' => [
         'title' => 'Bookings',

@@ -12,14 +12,30 @@ import BedIcon from '@mui/icons-material/Bed'
 import BathtubIcon from '@mui/icons-material/Bathtub'
 import PeopleIcon from '@mui/icons-material/People'
 import HomeIcon from '@mui/icons-material/Home'
+import DeleteIcon from '@mui/icons-material/Delete'
+import StarIcon from '@mui/icons-material/Star'
 import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 import { useLanguage } from '../../../hooks/use-language'
 
 const DEFAULT_IMAGE = '/images/filter-1.svg'
 
+type PropertyReview = {
+  id: number
+  rating: number
+  comment: string | null
+  created_at: string
+  user?: { name: string } | null
+}
+
 export default function ViewProperty() {
   const { t, language } = useLanguage()
   const { property } = usePage().props as any
+  const reviews: PropertyReview[] = property?.reviews || []
+
+  const handleDeleteReview = (reviewId: number) => {
+    if (!window.confirm(t('admin.properties.confirm_delete_review'))) return
+    router.delete(`/admin/reviews/${reviewId}`, { preserveScroll: true })
+  }
   const [currentStatus, setCurrentStatus] = useState(property?.status || 'Active')
 
   const getStatusColor = (status: string) => {
@@ -290,6 +306,56 @@ export default function ViewProperty() {
           </Card>
         </Col>
       </Row>
+
+      {/* Reviews */}
+      <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 3, mt: 4 }}>
+        <CardContent sx={{ p: { xs: 3, md: 4 } }}>
+          <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 3 }}>
+            {t('admin.properties.reviews')}
+          </Typography>
+
+          {reviews.length === 0 ? (
+            <Typography sx={{ color: '#6B7280' }}>{t('admin.properties.no_reviews')}</Typography>
+          ) : (
+            <Stack spacing={2.5} divider={<Divider />}>
+              {reviews.map((review) => (
+                <Stack key={review.id} direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
+                  <Box sx={{ flex: 1 }}>
+                    <Stack direction="row" spacing={1} useFlexGap alignItems="center" sx={{ mb: 0.5 }}>
+                      <Typography sx={{ fontWeight: 600, color: '#111827' }}>{review.user?.name || '—'}</Typography>
+                      <Stack direction="row">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <StarIcon key={star} sx={{ fontSize: 16, color: star <= review.rating ? '#ffc107' : '#e9ecef' }} />
+                        ))}
+                      </Stack>
+                    </Stack>
+                    {review.comment && (
+                      <Typography sx={{ color: '#4A5568', fontSize: 14, mb: 0.5 }}>{review.comment}</Typography>
+                    )}
+                    <Typography sx={{ color: '#9CA3AF', fontSize: 12 }}>
+                      {new Date(review.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                    </Typography>
+                  </Box>
+                  <Button
+                    size="small"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => handleDeleteReview(review.id)}
+                    sx={{
+                      color: '#EF4444',
+                      textTransform: 'none',
+                      flexShrink: 0,
+                      '&:hover': { bgcolor: '#FEF2F2' },
+                      ...adminButtonStartIconSx,
+                    }}
+                  >
+                    {t('admin.properties.delete_review')}
+                  </Button>
+                </Stack>
+              ))}
+            </Stack>
+          )}
+        </CardContent>
+      </Card>
     </AdminLayout>
   )
 }

@@ -46,13 +46,9 @@ class ReviewController extends Controller
             ->first();
 
         if ($existingReview) {
-            // Update existing review
-            $existingReview->update([
-                'rating' => $request->rating,
-                'comment' => $request->comment,
+            return redirect()->back()->withErrors([
+                'error' => 'You have already reviewed this property. Reviews cannot be edited once submitted.',
             ]);
-
-            return redirect()->back()->with('success', 'Review updated successfully!');
         }
 
         // Create new review

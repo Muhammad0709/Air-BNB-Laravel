@@ -120,6 +120,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::put('/properties/{property}', [PropertyController::class, 'update'])->name('properties.update');
     Route::patch('/properties/{property}/approve', [PropertyController::class, 'approve'])->name('properties.approve');
     Route::patch('/properties/{property}/reject', [PropertyController::class, 'reject'])->name('properties.reject');
+    Route::delete('/reviews/{review}', [\App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('reviews.destroy');
     Route::resource('users', UserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
     Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings.index');
     Route::get('/bookings/create', [AdminBookingController::class, 'create'])->name('bookings.create');

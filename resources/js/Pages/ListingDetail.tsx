@@ -729,6 +729,9 @@ export default function ListingDetail() {
                       {authUser ? (
                         <Paper component="form" onSubmit={handleSubmitReview} elevation={0} sx={{ p: 3, mb: 3, border: '1px solid #E5E7EB', borderRadius: 2 }}>
                           <Typography sx={{ fontWeight: 700, color: '#1a1a1a', mb: 2 }}>{t('listing_detail.write_review')}</Typography>
+                          {(errors.error as string[])?.[0] && (
+                            <Typography sx={{ color: '#d32f2f', fontSize: '0.875rem', mb: 2 }}>{errors.error[0]}</Typography>
+                          )}
                           <Box sx={{ mb: 2 }}>
                             <Box sx={{ display: 'flex', gap: 0.25 }}>
                               {[1, 2, 3, 4, 5].map((star) => (

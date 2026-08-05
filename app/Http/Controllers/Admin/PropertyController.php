@@ -48,12 +48,22 @@ class PropertyController extends Controller
      */
     public function show(Property $property)
     {
-        $property->load('user');
-        
+        $property->load(['user', 'reviews.user']);
+
         if ($property->image) {
             $property->image = Storage::url($property->image);
         }
-        
+
+        $property->setRelation('reviews', $property->reviews->map(function ($review) {
+            return [
+                'id' => $review->id,
+                'rating' => $review->rating,
+                'comment' => $review->comment,
+                'created_at' => $review->created_at,
+                'user' => $review->user ? ['name' => $review->user->name] : null,
+            ];
+        }));
+
         return Inertia::render('Admin/Properties/Show', [
             'property' => $property,
         ]);

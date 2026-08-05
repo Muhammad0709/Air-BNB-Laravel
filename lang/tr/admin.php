@@ -120,6 +120,10 @@ return [
         'flash_rejected' => 'İlan başarıyla reddedildi!',
         'default_rejection_reason' => 'İlan standartlarımızı karşılamıyor',
         'per_night' => '/gece',
+        'reviews' => 'Değerlendirmeler',
+        'no_reviews' => 'Henüz değerlendirme yok.',
+        'delete_review' => 'Değerlendirmeyi sil',
+        'confirm_delete_review' => 'Bu değerlendirme silinsin mi? Bu işlem geri alınamaz.',
     ],
     'bookings' => [
         'title' => 'Rezervasyonlar',

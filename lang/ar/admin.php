@@ -120,6 +120,10 @@ return [
         'flash_rejected' => 'تم رفض العقار بنجاح!',
         'default_rejection_reason' => 'العقار لا يستوفي معاييرنا',
         'per_night' => '/ليلة',
+        'reviews' => 'التقييمات',
+        'no_reviews' => 'لا توجد تقييمات بعد.',
+        'delete_review' => 'حذف التقييم',
+        'confirm_delete_review' => 'هل تريد حذف هذا التقييم؟ لا يمكن التراجع عن هذا الإجراء.',
     ],
     'bookings' => [
         'title' => 'الحجوزات',

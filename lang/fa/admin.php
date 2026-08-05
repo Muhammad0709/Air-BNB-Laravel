@@ -120,6 +120,10 @@ return [
         'flash_rejected' => 'ملک با موفقیت رد شد!',
         'default_rejection_reason' => 'ملک با استانداردهای ما مطابقت ندارد',
         'per_night' => '/شب',
+        'reviews' => 'نظرات',
+        'no_reviews' => 'هنوز نظری ثبت نشده است.',
+        'delete_review' => 'حذف نظر',
+        'confirm_delete_review' => 'این نظر حذف شود؟ این عمل قابل بازگشت نیست.',
     ],
     'bookings' => [
         'title' => 'رزروها',

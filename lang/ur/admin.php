@@ -120,6 +120,10 @@ return [
         'flash_rejected' => 'پراپرٹی کامیابی سے مسترد کر دی گئی!',
         'default_rejection_reason' => 'پراپرٹی ہمارے معیار پر پوری نہیں اترتی',
         'per_night' => '/رات',
+        'reviews' => 'ریویوز',
+        'no_reviews' => 'ابھی تک کوئی ریویو نہیں۔',
+        'delete_review' => 'ریویو حذف کریں',
+        'confirm_delete_review' => 'کیا یہ ریویو حذف کیا جائے؟ یہ عمل واپس نہیں ہو سکتا۔',
     ],
     'bookings' => [
         'title' => 'بکنگز',
