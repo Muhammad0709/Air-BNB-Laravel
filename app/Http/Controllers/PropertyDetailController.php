@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\Property;
+use App\Models\Review;
+use App\Enums\BookingStatus;
 use App\Enums\PropertyStatus;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class PropertyDetailController extends Controller
@@ -162,6 +166,24 @@ class PropertyDetailController extends Controller
         $defaultCheckin = Carbon::today()->format('Y-m-d');
         $defaultCheckout = Carbon::today()->addDays(7)->format('Y-m-d');
 
+        $reviewEligibility = 'guest'; // not logged in; frontend already hides the form in this case
+        if (Auth::check()) {
+            $alreadyReviewed = Review::where('property_id', $property->id)
+                ->where('user_id', Auth::id())
+                ->exists();
+
+            if ($alreadyReviewed) {
+                $reviewEligibility = 'already_reviewed';
+            } else {
+                $hasCompletedStay = Booking::where('property_id', $property->id)
+                    ->where('user_id', Auth::id())
+                    ->where('status', BookingStatus::COMPLETED->value)
+                    ->exists();
+
+                $reviewEligibility = $hasCompletedStay ? 'eligible' : 'no_completed_stay';
+            }
+        }
+
         return Inertia::render('ListingDetail', [
             'property' => $propertyData,
             'relatedProperties' => $relatedProperties,
@@ -178,6 +200,7 @@ class PropertyDetailController extends Controller
                 'children' => $request->query('children'),
                 'rooms' => $request->query('rooms'),
             ],
+            'reviewEligibility' => $reviewEligibility,
         ]);
     }
 }

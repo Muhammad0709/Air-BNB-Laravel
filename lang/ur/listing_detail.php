@@ -24,6 +24,7 @@ return [
     'average_rating' => 'اوسط درجہ بندی',
     'reviews' => 'جائزے',
     'write_review' => 'جائزہ لکھیں',
+    'review_needs_completed_stay' => 'اس پراپرٹی میں اپنا قیام مکمل کرنے کے بعد آپ جائزہ لکھ سکتے ہیں۔',
     'your_rating' => 'آپ کی درجہ بندی',
     'click_star_hint' => '1 سے 5 منتخب کرنے کے لیے ستارے پر کلک کریں',
     'your_comment' => 'آپ کا تبصرہ (اختیاری)',

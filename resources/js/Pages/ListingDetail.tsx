@@ -96,6 +96,7 @@ type ListingDetailProps = {
     children?: string | null
     rooms?: string | null
   }
+  reviewEligibility?: 'guest' | 'eligible' | 'already_reviewed' | 'no_completed_stay'
 }
 
 function parseDateFromBackend(dateStr: string): { year: number; month: number; day: number } {
@@ -106,7 +107,7 @@ function parseDateFromBackend(dateStr: string): { year: number; month: number; d
 export default function ListingDetail() {
   const { t } = useLanguage()
   const page = usePage<ListingDetailProps>().props
-  const { property, relatedProperties, reviews, ratingStats, defaultCheckin, defaultCheckout, searchGuests } = page
+  const { property, relatedProperties, reviews, ratingStats, defaultCheckin, defaultCheckout, searchGuests, reviewEligibility } = page
   const authUser = (page as { auth?: { user?: { id: number; name: string } | null } }).auth?.user
 
   const today = new Date()
@@ -726,7 +727,7 @@ export default function ListingDetail() {
                   <Row>
                     <Typography className="reviews-title" component="h2">Reviews ({ratingStats.total})</Typography>
                     <Col lg={12}>
-                      {authUser ? (
+                      {authUser && reviewEligibility === 'eligible' ? (
                         <Paper component="form" onSubmit={handleSubmitReview} elevation={0} sx={{ p: 3, mb: 3, border: '1px solid #E5E7EB', borderRadius: 2 }}>
                           <Typography sx={{ fontWeight: 700, color: '#1a1a1a', mb: 2 }}>{t('listing_detail.write_review')}</Typography>
                           {(errors.error as string[])?.[0] && (
@@ -785,6 +786,12 @@ export default function ListingDetail() {
                           <Button type="submit" variant="contained" disabled={reviewSubmitting || reviewRating < 1} sx={{ bgcolor: '#AD542D', '&:hover': { bgcolor: '#78381C' }, textTransform: 'none', fontWeight: 600 }}>
                             {reviewSubmitting ? '...' : t('listing_detail.submit_review')}
                           </Button>
+                        </Paper>
+                      ) : authUser && reviewEligibility === 'no_completed_stay' ? (
+                        <Paper elevation={0} sx={{ p: 3, mb: 3, border: '1px solid #E5E7EB', borderRadius: 2, bgcolor: '#F9FAFB' }}>
+                          <Typography sx={{ color: '#4A5568', fontSize: '0.9375rem' }}>
+                            {t('listing_detail.review_needs_completed_stay')}
+                          </Typography>
                         </Paper>
                       ) : null}
                       <Box className="reviews-list">

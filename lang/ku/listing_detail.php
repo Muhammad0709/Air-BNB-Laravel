@@ -24,6 +24,7 @@ return [
     'average_rating' => 'Navîn nêrîn',
     'reviews' => 'nêrîn',
     'write_review' => 'نێرینێک بنووسە',
+    'review_needs_completed_stay' => 'دەتوانیت پاش تەواوبوونی مانەوەت لەم خانووبەرەدا هەڵسەنگاندنێک بنووسیت.',
     'your_rating' => 'نێرینی تۆ',
     'click_star_hint' => 'کرتە لە ئەستێرەیەک بکە بۆ هەڵبژاردنی ۱-۵',
     'your_comment' => 'لێدوانی تۆ (دڵخواز)',

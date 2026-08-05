@@ -23,6 +23,7 @@ return [
     'average_rating' => 'Average rating',
     'reviews' => 'reviews',
     'write_review' => 'Write a review',
+    'review_needs_completed_stay' => 'You can write a review after completing a stay at this property.',
     'your_rating' => 'Your rating',
     'click_star_hint' => 'Click a star to choose 1–5',
     'your_comment' => 'Your comment (optional)',

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BookingStatus;
+use App\Models\Booking;
 use App\Models\Review;
 use App\Models\Property;
 use Illuminate\Http\Request;
@@ -38,6 +40,18 @@ class ReviewController extends Controller
 
         if (!$property) {
             return redirect()->back()->withErrors(['error' => 'Property not found or not available for reviews.']);
+        }
+
+        // Only guests who actually completed a stay at this property can review it
+        $hasCompletedStay = Booking::where('property_id', $request->property_id)
+            ->where('user_id', Auth::id())
+            ->where('status', BookingStatus::COMPLETED->value)
+            ->exists();
+
+        if (!$hasCompletedStay) {
+            return redirect()->back()->withErrors([
+                'error' => 'You can only review a property after completing a stay there.',
+            ]);
         }
 
         // Check if user already reviewed this property

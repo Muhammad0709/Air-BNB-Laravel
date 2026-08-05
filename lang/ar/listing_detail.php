@@ -23,6 +23,7 @@ return [
     'average_rating' => 'متوسط التقييم',
     'reviews' => 'تقييمات',
     'write_review' => 'اكتب تقييماً',
+    'review_needs_completed_stay' => 'يمكنك كتابة تقييم بعد إكمال إقامتك في هذا العقار.',
     'your_rating' => 'تقييمك',
     'click_star_hint' => 'انقر على نجمة لاختيار 1–5',
     'your_comment' => 'تعليقك (اختياري)',

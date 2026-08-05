@@ -23,6 +23,7 @@ return [
     'average_rating' => 'امتیاز میانگین',
     'reviews' => 'نظر',
     'write_review' => 'نوشتن نظر',
+    'review_needs_completed_stay' => 'پس از پایان اقامت خود در این ملک می‌توانید نظر بنویسید.',
     'your_rating' => 'امتیاز شما',
     'click_star_hint' => 'برای انتخاب ۱ تا ۵ روی ستاره کلیک کنید',
     'your_comment' => 'نظر شما (اختیاری)',

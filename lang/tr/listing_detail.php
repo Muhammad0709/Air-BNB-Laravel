@@ -24,6 +24,7 @@ return [
     'average_rating' => 'Ortalama puan',
     'reviews' => 'değerlendirme',
     'write_review' => 'Değerlendirme yaz',
+    'review_needs_completed_stay' => 'Bu mülkteki konaklamanız tamamlandıktan sonra değerlendirme yazabilirsiniz.',
     'your_rating' => 'Puanınız',
     'click_star_hint' => '1-5 arası seçmek için yıldıza tıklayın',
     'your_comment' => 'Yorumunuz (isteğe bağlı)',
