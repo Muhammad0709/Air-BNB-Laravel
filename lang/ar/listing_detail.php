@@ -2,6 +2,7 @@
 
 return [
     'per_night' => '/ليلة',
+    'local_time_zone' => 'المنطقة الزمنية المحلية',
     'book' => 'احجز',
     'quick_info' => 'معلومات سريعة',
     'bedrooms' => 'غرف نوم',

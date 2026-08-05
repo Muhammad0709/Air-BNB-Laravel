@@ -2,6 +2,7 @@
 
 return [
     'per_night' => '/شب',
+    'local_time_zone' => 'منطقه زمانی محلی',
     'book' => 'رزرو',
     'quick_info' => 'اطلاعات سریع',
     'bedrooms' => 'اتاق خواب',

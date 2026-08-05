@@ -13,6 +13,7 @@ class Property extends Model
     protected $fillable = [
         'title',
         'location',
+        'timezone',
         'price',
         'bedrooms',
         'bathrooms',

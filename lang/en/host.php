@@ -212,6 +212,7 @@ return [
         'title' => 'Title',
         'property_title' => 'Property Title',
         'location' => 'Location',
+        'timezone' => 'Time zone',
         'price' => 'Price',
         'price_per_night' => 'Price per Night',
         'price_per_night_hint' => 'Price for one night stay. Total will be calculated by multiplying with number of nights.',

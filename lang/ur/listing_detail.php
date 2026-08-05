@@ -2,6 +2,7 @@
 
 return [
     'per_night' => '/رات',
+    'local_time_zone' => 'مقامی ٹائم زون',
     'book' => 'بک کریں',
     'quick_info' => 'فوری معلومات',
     'bedrooms' => 'بیڈروم',

@@ -2,6 +2,7 @@
 
 return [
     'per_night' => '/gece',
+    'local_time_zone' => 'Yerel saat dilimi',
     'book' => 'Rezervasyon',
     'quick_info' => 'Hızlı bilgi',
     'bedrooms' => 'Yatak odası',

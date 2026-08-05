@@ -35,6 +35,7 @@ class StoreHostPropertyRequest extends FormRequest
             'guests' => ['required', 'integer', 'min:1'],
             'price' => ['required', 'numeric', 'min:0'],
             'location' => ['required', 'string', 'max:255'],
+            'timezone' => ['nullable', 'timezone'],
             'amenities' => ['nullable', 'array'],
             'amenities.*' => ['string'],
             'images' => ['nullable', 'array'],

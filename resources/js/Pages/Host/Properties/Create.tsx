@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Button, Card, CardContent, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
+import { Autocomplete, Box, Button, Card, CardContent, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import Checkbox from '@mui/material/Checkbox'
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
@@ -16,14 +16,16 @@ export default function AddProperty() {
   const { t } = useLanguage()
   const page = usePage<{
     propertyTypes: string[]
+    timezones: string[]
     errors?: Record<string, string[] | string>
     validationErrors?: Record<string, string[]>
   }>()
-  const { propertyTypes } = page.props
+  const { propertyTypes, timezones } = page.props
   const pageErrors = page.props.validationErrors ?? page.props.errors ?? {}
   const [formData, setFormData] = useState({
     title: '',
     location: '',
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
     price: '',
     bedrooms: '',
     bathrooms: '',
@@ -78,6 +80,7 @@ export default function AddProperty() {
     const submitData = new FormData()
     submitData.append('title', formData.title)
     submitData.append('location', formData.location)
+    submitData.append('timezone', formData.timezone)
     submitData.append('price', formData.price)
     submitData.append('bedrooms', formData.bedrooms)
     submitData.append('bathrooms', formData.bathrooms)
@@ -156,6 +159,19 @@ export default function AddProperty() {
                     error={!!err('location')}
                   />
                   <InputError message={err('location')} />
+                  <Autocomplete
+                    options={timezones}
+                    value={formData.timezone}
+                    onChange={(_, value) => handleSelectChange('timezone', value || 'UTC')}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label={t('host.properties.timezone')}
+                        error={!!err('timezone')}
+                      />
+                    )}
+                  />
+                  <InputError message={err('timezone')} />
                   <TextField
                     label={t('host.properties.price_per_night')}
                     name="price"

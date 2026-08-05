@@ -2,6 +2,7 @@
 
 return [
     'per_night' => '/night',
+    'local_time_zone' => 'Local time zone',
     'book' => 'Book',
     'quick_info' => 'Quick Info',
     'bedrooms' => 'Bedrooms',

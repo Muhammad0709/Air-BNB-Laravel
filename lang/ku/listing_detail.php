@@ -2,6 +2,7 @@
 
 return [
     'per_night' => '/شەو',
+    'local_time_zone' => 'ناوچەی کاتی ناوخۆیی',
     'book' => 'حجز',
     'quick_info' => 'زانیاری خێرا',
     'bedrooms' => 'ژووری خەو',

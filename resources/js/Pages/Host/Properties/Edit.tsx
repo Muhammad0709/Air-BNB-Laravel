@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Button, Card, CardContent, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
+import { Autocomplete, Box, Button, Card, CardContent, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import Checkbox from '@mui/material/Checkbox'
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
@@ -22,6 +22,7 @@ interface Property {
   id: number
   title: string
   location: string
+  timezone?: string
   price: number
   bedrooms: number
   bathrooms: number
@@ -44,12 +45,13 @@ interface Property {
 
 export default function EditProperty() {
   const { t } = useLanguage()
-  const { property, propertyTypes } = usePage<{ property: Property, propertyTypes: string[] }>().props
+  const { property, propertyTypes, timezones } = usePage<{ property: Property, propertyTypes: string[], timezones: string[] }>().props
   const [toastOpen, setToastOpen] = useState(false)
   const [newFiles, setNewFiles] = useState<File[]>([])
   const [formData, setFormData] = useState({
     title: property.title,
     location: property.location,
+    timezone: property.timezone || 'UTC',
     price: property.price.toString(),
     bedrooms: property.bedrooms.toString(),
     bathrooms: property.bathrooms.toString(),
@@ -97,6 +99,7 @@ export default function EditProperty() {
     const submitData = new FormData()
     submitData.append('title', formData.title)
     submitData.append('location', formData.location)
+    submitData.append('timezone', formData.timezone)
     submitData.append('price', formData.price)
     submitData.append('bedrooms', formData.bedrooms)
     submitData.append('bathrooms', formData.bathrooms)
@@ -176,6 +179,14 @@ export default function EditProperty() {
                     required
                     fullWidth
                     placeholder={t('host.properties.location_placeholder')}
+                  />
+                  <Autocomplete
+                    options={timezones}
+                    value={formData.timezone}
+                    onChange={(_, value) => handleSelectChange('timezone', value || 'UTC')}
+                    renderInput={(params) => (
+                      <TextField {...params} label={t('host.properties.timezone')} />
+                    )}
                   />
                   <TextField
                     label={t('host.properties.price_per_night')}

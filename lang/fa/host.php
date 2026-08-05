@@ -212,6 +212,7 @@ return [
         'title' => 'عنوان',
         'property_title' => 'عنوان اقامتگاه',
         'location' => 'موقعیت',
+        'timezone' => 'منطقه زمانی',
         'price' => 'قیمت',
         'price_per_night' => 'قیمت هر شب',
         'price_per_night_hint' => 'قیمت اقامت یک شب. مبلغ کل با ضرب در تعداد شب‌ها محاسبه می‌شود.',

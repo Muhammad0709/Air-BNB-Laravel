@@ -35,6 +35,7 @@ class UpdateHostPropertyRequest extends FormRequest
             'guests' => ['required', 'integer', 'min:1'],
             'price' => ['required', 'numeric', 'min:0'],
             'location' => ['required', 'string', 'max:255'],
+            'timezone' => ['nullable', 'timezone'],
             'status' => ['required', 'in:Active,Inactive,Pending'],
             'amenities' => ['nullable', 'array'],
             'amenities.*' => ['string'],

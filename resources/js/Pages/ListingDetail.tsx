@@ -40,6 +40,7 @@ type Property = {
   id: number
   title: string
   location: string
+  timezone?: string
   price: number | string
   bedrooms: number
   bathrooms: number
@@ -264,6 +265,11 @@ export default function ListingDetail() {
                           <span className="property-location-text" title={property.location || undefined}>
                             {property.location}
                           </span>
+                          {property.timezone && (
+                            <span className="property-timezone-text" style={{ marginInlineStart: 8, opacity: 0.7 }}>
+                              · {t('listing_detail.local_time_zone')}: {property.timezone}
+                            </span>
+                          )}
                         </Box>
                         <Box className="rating d-none d-md-flex">
                           <Box className="stars">

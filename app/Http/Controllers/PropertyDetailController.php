@@ -102,6 +102,7 @@ class PropertyDetailController extends Controller
             'id' => $property->id,
             'title' => $property->title,
             'location' => $property->location,
+            'timezone' => $property->timezone ?? 'UTC',
             'price' => $property->price,
             'bedrooms' => $property->bedrooms,
             'bathrooms' => $property->bathrooms,
