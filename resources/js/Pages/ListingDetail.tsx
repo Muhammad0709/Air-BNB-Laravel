@@ -31,7 +31,6 @@ const PLACEHOLDER_IMAGE = '/images/popular-stay-1.svg'
 type PropertyHost = {
   id: number
   name: string
-  email: string
   profile_picture: string | null
   created_at: string
 }

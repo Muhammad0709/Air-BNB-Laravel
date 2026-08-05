@@ -124,7 +124,6 @@ class PropertyDetailController extends Controller
             'host' => [
                 'id' => $property->user->id,
                 'name' => $property->user->name,
-                'email' => $property->user->email,
                 'profile_picture' => $property->user->profile_picture ?? null,
                 'created_at' => $property->user->created_at->toDateTimeString(),
             ],
