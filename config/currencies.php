@@ -1,6 +1,6 @@
 <?php
 
-$default = 'IQD,TRY,PKR,EUR,USD,GBP';
+$default = 'IQD,TRY,PKR,EUR,USD,GBP,SEK,NOK,DKK,CAD';
 $parts = array_filter(array_map('trim', explode(',', (string) env('SUPPORTED_CURRENCIES', $default))));
 
 return [
