@@ -14,6 +14,7 @@ class Property extends Model
         'title',
         'location',
         'timezone',
+        'cancellation_policy',
         'price',
         'bedrooms',
         'bathrooms',

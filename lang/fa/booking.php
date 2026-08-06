@@ -13,6 +13,7 @@ return [
     'processing' => 'در حال پردازش...',
     'select_property' => 'یک ملک انتخاب کنید',
     'house_rules' => 'قوانین خانه',
+    'cancellation_policy' => 'سیاست لغو رزرو',
     'price_details' => 'جزئیات قیمت',
     'number_of_rooms' => 'تعداد اتاق‌ها',
     'room' => 'اتاق',

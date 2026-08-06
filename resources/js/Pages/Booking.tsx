@@ -51,6 +51,8 @@ type BookingPageProps = {
   costs: Array<{ label: string; amount: number }>
   totalAmount: number
   rules: string[]
+  cancellationPolicy?: string
+  cancellationPolicyDescription?: string
   auth?: { user: AuthUser | null }
   guestPrefill?: GuestPrefill
 }
@@ -58,7 +60,7 @@ type BookingPageProps = {
 export default function Booking() {
   const { t } = useLanguage()
   const { currency } = useCurrency()
-  const { property, nights, checkin, checkout, costs, totalAmount, rules, auth, guestPrefill } = usePage<BookingPageProps>().props
+  const { property, nights, checkin, checkout, costs, totalAmount, rules, cancellationPolicy, cancellationPolicyDescription, auth, guestPrefill } = usePage<BookingPageProps>().props
 
   const [formData, setFormData] = useState<{
     name: string
@@ -390,6 +392,8 @@ export default function Booking() {
                   rules={rules}
                   costs={costs.map((c) => ({ label: c.label, amount: formatPrice(c.amount, currency) }))}
                   totalAmount={formatPrice(totalAmount, currency)}
+                  cancellationPolicyLabel={cancellationPolicy ? t(`listing_detail.cancellation_policy_${cancellationPolicy}`) : undefined}
+                  cancellationPolicyDescription={cancellationPolicyDescription}
                 />
               </Col>
             </Row>

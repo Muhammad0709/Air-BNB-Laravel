@@ -40,6 +40,8 @@ type Property = {
   title: string
   location: string
   timezone?: string
+  cancellation_policy?: string
+  cancellation_policy_description?: string
   price: number | string
   bedrooms: number
   bathrooms: number
@@ -521,6 +523,17 @@ export default function ListingDetail() {
                   <Typography className="section-title" component="h2">{t('listing_detail.about_property')}</Typography>
                   <Typography className="about-text">
                     {property.description || t('listing_detail.no_description')}
+                  </Typography>
+                </Paper>
+
+                {/* Cancellation Policy Section */}
+                <Paper className="about-section mt-4" elevation={0}>
+                  <Typography className="section-title" component="h2">{t('listing_detail.cancellation_policy')}</Typography>
+                  <Typography sx={{ fontWeight: 600, color: '#1a1a1a', mb: 0.5 }}>
+                    {t(`listing_detail.cancellation_policy_${property.cancellation_policy || 'moderate'}`)}
+                  </Typography>
+                  <Typography className="about-text">
+                    {property.cancellation_policy_description}
                   </Typography>
                 </Paper>
 

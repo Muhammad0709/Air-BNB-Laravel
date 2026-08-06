@@ -35,12 +35,14 @@ type ConfirmationPageProps = {
   costs: Array<{ label: string; amount: number }>
   totalAmount: number
   rules: string[]
+  cancellationPolicy?: string
+  cancellationPolicyDescription?: string
 }
 
 export default function Confirmation() {
   const { t } = useLanguage()
   const { currency } = useCurrency()
-  const { property, costs, totalAmount, rules } = usePage<ConfirmationPageProps>().props
+  const { property, costs, totalAmount, rules, cancellationPolicy, cancellationPolicyDescription } = usePage<ConfirmationPageProps>().props
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
 
   const formattedCosts = costs.map((c) => ({ label: c.label, amount: formatPrice(c.amount, currency) }))
@@ -85,6 +87,8 @@ export default function Confirmation() {
                   costs={formattedCosts}
                   totalLabel={t('confirmation.total')}
                   totalAmount={formattedTotal}
+                  cancellationPolicyLabel={cancellationPolicy ? t(`listing_detail.cancellation_policy_${cancellationPolicy}`) : undefined}
+                  cancellationPolicyDescription={cancellationPolicyDescription}
                 />
               </Col>
             </Row>

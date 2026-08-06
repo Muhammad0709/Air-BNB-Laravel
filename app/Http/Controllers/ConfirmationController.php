@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Property;
+use App\Enums\CancellationPolicy;
 use App\Enums\PropertyStatus;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -67,6 +68,8 @@ class ConfirmationController extends Controller
             'No smoking indoors',
         ];
 
+        $cancellationPolicy = CancellationPolicy::tryFrom($property->cancellation_policy ?? '') ?? CancellationPolicy::MODERATE;
+
         $image = $property->getPrimaryImageUrl() ?? '/images/popular-stay-1.svg';
         $propertyData = [
             'id' => $property->id,
@@ -89,6 +92,8 @@ class ConfirmationController extends Controller
             'costs' => $costs,
             'totalAmount' => $totalAmount,
             'rules' => $rules,
+            'cancellationPolicy' => $cancellationPolicy->value,
+            'cancellationPolicyDescription' => $cancellationPolicy->description(),
         ]);
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Requests\StoreHostPropertyRequest;
 use App\Http\Requests\UpdateHostPropertyRequest;
 use App\Models\Property;
 use App\Models\User;
+use App\Enums\CancellationPolicy;
 use App\Enums\PropertyType;
 use App\Enums\PropertyStatus;
 use App\Enums\UserType;
@@ -75,6 +76,7 @@ class PropertyController extends Controller
         return Inertia::render('Host/Properties/Create', [
             'propertyTypes' => array_column(PropertyType::cases(), 'value'),
             'timezones' => \DateTimeZone::listIdentifiers(),
+            'cancellationPolicies' => CancellationPolicy::values(),
         ]);
     }
 
@@ -107,6 +109,7 @@ class PropertyController extends Controller
         $validated['image'] = $imagePaths[0] ?? null;
         $validated['user_id'] = $host->id;
         $validated['timezone'] = $validated['timezone'] ?? 'UTC';
+        $validated['cancellation_policy'] = $validated['cancellation_policy'] ?? CancellationPolicy::MODERATE->value;
         $validated['status'] = 'Active';
         $validated['approval_status'] = PropertyStatus::PENDING->value;
         $validated['airport_pickup_enabled'] = $validated['airport_pickup_enabled'] ?? false;
@@ -167,6 +170,7 @@ class PropertyController extends Controller
             'property' => $property,
             'propertyTypes' => array_column(PropertyType::cases(), 'value'),
             'timezones' => \DateTimeZone::listIdentifiers(),
+            'cancellationPolicies' => CancellationPolicy::values(),
         ]);
     }
 
@@ -189,6 +193,7 @@ class PropertyController extends Controller
         $validated['images'] = $imagePaths;
         $validated['image'] = $imagePaths[0] ?? null;
         $validated['timezone'] = $validated['timezone'] ?? $property->timezone ?? 'UTC';
+        $validated['cancellation_policy'] = $validated['cancellation_policy'] ?? $property->cancellation_policy ?? CancellationPolicy::MODERATE->value;
         $validated['approval_status'] = PropertyStatus::PENDING->value;
         $validated['airport_pickup_enabled'] = $validated['airport_pickup_enabled'] ?? false;
         $validated['guided_tours_enabled'] = $validated['guided_tours_enabled'] ?? false;

@@ -23,6 +23,7 @@ interface Property {
   title: string
   location: string
   timezone?: string
+  cancellation_policy?: string
   price: number
   bedrooms: number
   bathrooms: number
@@ -45,13 +46,14 @@ interface Property {
 
 export default function EditProperty() {
   const { t } = useLanguage()
-  const { property, propertyTypes, timezones } = usePage<{ property: Property, propertyTypes: string[], timezones: string[] }>().props
+  const { property, propertyTypes, timezones, cancellationPolicies } = usePage<{ property: Property, propertyTypes: string[], timezones: string[], cancellationPolicies: string[] }>().props
   const [toastOpen, setToastOpen] = useState(false)
   const [newFiles, setNewFiles] = useState<File[]>([])
   const [formData, setFormData] = useState({
     title: property.title,
     location: property.location,
     timezone: property.timezone || 'UTC',
+    cancellation_policy: property.cancellation_policy || 'moderate',
     price: property.price.toString(),
     bedrooms: property.bedrooms.toString(),
     bathrooms: property.bathrooms.toString(),
@@ -100,6 +102,7 @@ export default function EditProperty() {
     submitData.append('title', formData.title)
     submitData.append('location', formData.location)
     submitData.append('timezone', formData.timezone)
+    submitData.append('cancellation_policy', formData.cancellation_policy)
     submitData.append('price', formData.price)
     submitData.append('bedrooms', formData.bedrooms)
     submitData.append('bathrooms', formData.bathrooms)
@@ -188,6 +191,20 @@ export default function EditProperty() {
                       <TextField {...params} label={t('host.properties.timezone')} />
                     )}
                   />
+                  <FormControl fullWidth>
+                    <InputLabel>{t('host.properties.cancellation_policy')}</InputLabel>
+                    <Select
+                      value={formData.cancellation_policy}
+                      label={t('host.properties.cancellation_policy')}
+                      onChange={(e) => handleSelectChange('cancellation_policy', e.target.value)}
+                    >
+                      {cancellationPolicies.map((policy) => (
+                        <MenuItem key={policy} value={policy}>
+                          {t(`host.properties.cancellation_policy_${policy}`)}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                   <TextField
                     label={t('host.properties.price_per_night')}
                     name="price"

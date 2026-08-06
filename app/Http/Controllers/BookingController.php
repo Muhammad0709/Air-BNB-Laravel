@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBookingRequest;
 use App\Enums\BookingStatus;
+use App\Enums\CancellationPolicy;
 use App\Enums\PropertyStatus;
 use App\Enums\UserType;
 use App\Models\Booking;
@@ -84,6 +85,7 @@ class BookingController extends Controller
         $nights = 7;
         $costs = [];
         $totalAmount = 0;
+        $cancellationPolicy = CancellationPolicy::MODERATE;
         $rules = [
             'Check-in: 3:00 PM - 10:00 PM',
             'Check-out: 11:00 AM',
@@ -100,6 +102,7 @@ class BookingController extends Controller
                 ->find($propertyId);
 
             if ($property) {
+                $cancellationPolicy = CancellationPolicy::tryFrom($property->cancellation_policy ?? '') ?? CancellationPolicy::MODERATE;
                 $image = $property->getPrimaryImageUrl() ?? '/images/popular-stay-1.svg';
 
                 try {
@@ -158,6 +161,8 @@ class BookingController extends Controller
             'costs' => $costs,
             'totalAmount' => $totalAmount,
             'rules' => $rules,
+            'cancellationPolicy' => $cancellationPolicy->value,
+            'cancellationPolicyDescription' => $cancellationPolicy->description(),
             'guestPrefill' => $guestPrefill,
         ]);
     }

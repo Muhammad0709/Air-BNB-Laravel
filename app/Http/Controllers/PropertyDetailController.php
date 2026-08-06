@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Models\Property;
 use App\Models\Review;
 use App\Enums\BookingStatus;
+use App\Enums\CancellationPolicy;
 use App\Enums\PropertyStatus;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -107,6 +108,9 @@ class PropertyDetailController extends Controller
             'title' => $property->title,
             'location' => $property->location,
             'timezone' => $property->timezone ?? 'UTC',
+            'cancellation_policy' => $property->cancellation_policy ?? CancellationPolicy::MODERATE->value,
+            'cancellation_policy_description' => CancellationPolicy::tryFrom($property->cancellation_policy ?? '')?->description()
+                ?? CancellationPolicy::MODERATE->description(),
             'price' => $property->price,
             'bedrooms' => $property->bedrooms,
             'bathrooms' => $property->bathrooms,

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\CancellationPolicy;
 use App\Enums\PropertyType;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -36,6 +37,7 @@ class UpdateHostPropertyRequest extends FormRequest
             'price' => ['required', 'numeric', 'min:0'],
             'location' => ['required', 'string', 'max:255'],
             'timezone' => ['nullable', 'timezone'],
+            'cancellation_policy' => ['nullable', 'in:' . implode(',', CancellationPolicy::values())],
             'status' => ['required', 'in:Active,Inactive,Pending'],
             'amenities' => ['nullable', 'array'],
             'amenities.*' => ['string'],

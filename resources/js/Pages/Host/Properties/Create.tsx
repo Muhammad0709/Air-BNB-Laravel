@@ -17,15 +17,17 @@ export default function AddProperty() {
   const page = usePage<{
     propertyTypes: string[]
     timezones: string[]
+    cancellationPolicies: string[]
     errors?: Record<string, string[] | string>
     validationErrors?: Record<string, string[]>
   }>()
-  const { propertyTypes, timezones } = page.props
+  const { propertyTypes, timezones, cancellationPolicies } = page.props
   const pageErrors = page.props.validationErrors ?? page.props.errors ?? {}
   const [formData, setFormData] = useState({
     title: '',
     location: '',
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
+    cancellation_policy: 'moderate',
     price: '',
     bedrooms: '',
     bathrooms: '',
@@ -81,6 +83,7 @@ export default function AddProperty() {
     submitData.append('title', formData.title)
     submitData.append('location', formData.location)
     submitData.append('timezone', formData.timezone)
+    submitData.append('cancellation_policy', formData.cancellation_policy)
     submitData.append('price', formData.price)
     submitData.append('bedrooms', formData.bedrooms)
     submitData.append('bathrooms', formData.bathrooms)
@@ -172,6 +175,21 @@ export default function AddProperty() {
                     )}
                   />
                   <InputError message={err('timezone')} />
+                  <FormControl fullWidth error={!!err('cancellation_policy')}>
+                    <InputLabel>{t('host.properties.cancellation_policy')}</InputLabel>
+                    <Select
+                      value={formData.cancellation_policy}
+                      label={t('host.properties.cancellation_policy')}
+                      onChange={(e) => handleSelectChange('cancellation_policy', e.target.value)}
+                    >
+                      {cancellationPolicies.map((policy) => (
+                        <MenuItem key={policy} value={policy}>
+                          {t(`host.properties.cancellation_policy_${policy}`)}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <InputError message={err('cancellation_policy')} />
                   <TextField
                     label={t('host.properties.price_per_night')}
                     name="price"

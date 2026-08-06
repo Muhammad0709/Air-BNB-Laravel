@@ -13,6 +13,7 @@ return [
     'processing' => 'جاري المعالجة...',
     'select_property' => 'اختر عقاراً',
     'house_rules' => 'قواعد المنزل',
+    'cancellation_policy' => 'سياسة الإلغاء',
     'price_details' => 'تفاصيل السعر',
     'number_of_rooms' => 'عدد الغرف',
     'room' => 'غرفة',

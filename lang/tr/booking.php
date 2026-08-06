@@ -13,6 +13,7 @@ return [
     'processing' => 'İşleniyor...',
     'select_property' => 'Bir mülk seçin',
     'house_rules' => 'Ev kuralları',
+    'cancellation_policy' => 'İptal Politikası',
     'price_details' => 'Fiyat detayları',
     'number_of_rooms' => 'Oda sayısı',
     'room' => 'oda',

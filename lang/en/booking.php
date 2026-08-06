@@ -13,6 +13,7 @@ return [
     'processing' => 'Processing...',
     'select_property' => 'Select a property',
     'house_rules' => 'House Rules',
+    'cancellation_policy' => 'Cancellation Policy',
     'price_details' => 'Price Details',
     'number_of_rooms' => 'Number of Rooms',
     'room' => 'room',
