@@ -115,10 +115,9 @@ export default function ListingDetail() {
   const today = new Date()
   const defaultStart = defaultCheckin ? parseDateFromBackend(defaultCheckin) : { year: today.getFullYear(), month: today.getMonth(), day: today.getDate() }
   const defaultEnd = defaultCheckout ? parseDateFromBackend(defaultCheckout) : (() => { const d = new Date(today); d.setDate(d.getDate() + 7); return { year: d.getFullYear(), month: d.getMonth(), day: d.getDate() } })()
-  const [calendar1Month, setCalendar1Month] = useState(() => new Date(defaultStart.year, defaultStart.month, 1))
-  const [calendar2Month, setCalendar2Month] = useState(() => new Date(defaultEnd.year, defaultEnd.month, 1))
-  const [selectedDate1, setSelectedDate1] = useState(defaultStart.day)
-  const [selectedDate2, setSelectedDate2] = useState(defaultEnd.day)
+  const [calendarMonth, setCalendarMonth] = useState(() => new Date(defaultStart.year, defaultStart.month, 1))
+  const [selectedCheckin, setSelectedCheckin] = useState<Date | null>(() => new Date(defaultStart.year, defaultStart.month, defaultStart.day))
+  const [selectedCheckout, setSelectedCheckout] = useState<Date | null>(() => new Date(defaultEnd.year, defaultEnd.month, defaultEnd.day))
   const [bookPickupService, setBookPickupService] = useState(false)
   const [bookGuidedTour, setBookGuidedTour] = useState(false)
   const [reviewRating, setReviewRating] = useState(0)
@@ -157,20 +156,10 @@ export default function ListingDetail() {
   }, [galleryImages])
   const remainingCount = Math.max(0, galleryImages.length - 8)
 
-  const handlePrevMonth = (calendar: number) => {
-    const current = calendar === 1 ? calendar1Month : calendar2Month
-    const newDate = new Date(current)
-    newDate.setMonth(newDate.getMonth() - 1)
-    if (calendar === 1) setCalendar1Month(newDate)
-    else setCalendar2Month(newDate)
-  }
-
-  const handleNextMonth = (calendar: number) => {
-    const current = calendar === 1 ? calendar1Month : calendar2Month
-    const newDate = new Date(current)
-    newDate.setMonth(newDate.getMonth() + 1)
-    if (calendar === 1) setCalendar1Month(newDate)
-    else setCalendar2Month(newDate)
+  const changeMonth = (direction: number) => {
+    const newDate = new Date(calendarMonth)
+    newDate.setMonth(newDate.getMonth() + direction)
+    setCalendarMonth(newDate)
   }
 
   const getDaysInMonth = (date: Date) => {
@@ -180,12 +169,12 @@ export default function ListingDetail() {
     const daysInMonth = new Date(year, month + 1, 0).getDate()
     const daysInPrevMonth = new Date(year, month, 0).getDate()
 
-    const days: { day: number; isOtherMonth: boolean }[] = []
+    const days: { day: number; isOtherMonth: boolean; date?: Date }[] = []
     for (let i = firstDay - 1; i >= 0; i--) {
       days.push({ day: daysInPrevMonth - i, isOtherMonth: true })
     }
     for (let i = 1; i <= daysInMonth; i++) {
-      days.push({ day: i, isOtherMonth: false })
+      days.push({ day: i, isOtherMonth: false, date: new Date(year, month, i) })
     }
     while (days.length < 42) {
       days.push({ day: days.length - daysInMonth - firstDay + 1, isOtherMonth: true })
@@ -197,18 +186,37 @@ export default function ListingDetail() {
     return date.toLocaleString('default', { month: 'short', year: 'numeric' })
   }
 
-  const calendar1Days = getDaysInMonth(calendar1Month)
-  const calendar2Days = getDaysInMonth(calendar2Month)
+  const calendarDays = getDaysInMonth(calendarMonth)
+
+  const handleDateClick = (date: Date) => {
+    if (!selectedCheckin || selectedCheckout) {
+      setSelectedCheckin(date)
+      setSelectedCheckout(null)
+    } else if (date < selectedCheckin) {
+      setSelectedCheckin(date)
+    } else {
+      setSelectedCheckout(date)
+    }
+  }
+
+  const getDateState = (date: Date | undefined) => {
+    if (!date) return { isCheckin: false, isCheckout: false, isInRange: false, isPast: false }
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const isPast = date < today
+    const isCheckin = !!selectedCheckin && date.getTime() === selectedCheckin.getTime()
+    const isCheckout = !!selectedCheckout && date.getTime() === selectedCheckout.getTime()
+    const isInRange = !!(selectedCheckin && selectedCheckout && date > selectedCheckin && date < selectedCheckout)
+    return { isCheckin, isCheckout, isInRange, isPast }
+  }
+
+  const toIsoDate = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 
   // Build check-in/check-out from calendar for Book button; backend validates/fixes and redirects
   const getCalendarCheckinCheckout = () => {
-    const y1 = calendar1Month.getFullYear()
-    const m1 = calendar1Month.getMonth()
-    const y2 = calendar2Month.getFullYear()
-    const m2 = calendar2Month.getMonth()
-    const checkin = `${y1}-${String(m1 + 1).padStart(2, '0')}-${String(selectedDate1).padStart(2, '0')}`
-    const checkout = `${y2}-${String(m2 + 1).padStart(2, '0')}-${String(selectedDate2).padStart(2, '0')}`
-    return { checkin, checkout }
+    const checkin = selectedCheckin ?? new Date()
+    const checkout = selectedCheckout ?? (() => { const d = new Date(checkin); d.setDate(d.getDate() + 1); return d })()
+    return { checkin: toIsoDate(checkin), checkout: toIsoDate(checkout) }
   }
 
   const bookingUrl = () => {
@@ -677,13 +685,13 @@ export default function ListingDetail() {
                 {/* Availability Section */}
                 <Paper className="availability-section mt-4" elevation={0}>
                   <Typography className="section-title" component="h2">Availability</Typography>
-                  <Row className="availability-calendars-row">
-                    <Col md={6}>
+                  <Row className="availability-calendars-row justify-content-center">
+                    <Col md={7}>
                       <Paper className="calendar-widget" elevation={0}>
                         <Box className="calendar-header">
-                          <Button size="small" onClick={() => handlePrevMonth(1)}><ChevronLeftIcon /></Button>
-                          <Typography component="span" className="month-year">{formatMonthYear(calendar1Month)}</Typography>
-                          <Button size="small" onClick={() => handleNextMonth(1)}><ChevronRightIcon /></Button>
+                          <Button size="small" onClick={() => changeMonth(-1)}><ChevronLeftIcon /></Button>
+                          <Typography component="span" className="month-year">{formatMonthYear(calendarMonth)}</Typography>
+                          <Button size="small" onClick={() => changeMonth(1)}><ChevronRightIcon /></Button>
                         </Box>
                         <Box className="calendar-grid">
                           <Box className="calendar-weekdays">
@@ -692,42 +700,25 @@ export default function ListingDetail() {
                             ))}
                           </Box>
                           <Box className="calendar-days">
-                            {calendar1Days.slice(0, 35).map((d, idx) => (
-                              <Box
-                                key={idx}
-                                className={`day ${d.isOtherMonth ? 'other-month' : ''} ${!d.isOtherMonth && d.day === selectedDate1 ? 'selected start-range' : ''}`}
-                                onClick={() => !d.isOtherMonth && setSelectedDate1(d.day)}
-                              >
-                                {d.day}
-                              </Box>
-                            ))}
-                          </Box>
-                        </Box>
-                      </Paper>
-                    </Col>
-                    <Col md={6}>
-                      <Paper className="calendar-widget" elevation={0}>
-                        <Box className="calendar-header">
-                          <Button size="small" onClick={() => handlePrevMonth(2)}><ChevronLeftIcon /></Button>
-                          <Typography component="span" className="month-year">{formatMonthYear(calendar2Month)}</Typography>
-                          <Button size="small" onClick={() => handleNextMonth(2)}><ChevronRightIcon /></Button>
-                        </Box>
-                        <Box className="calendar-grid">
-                          <Box className="calendar-weekdays">
-                            {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
-                              <Box key={day}>{day}</Box>
-                            ))}
-                          </Box>
-                          <Box className="calendar-days">
-                            {calendar2Days.slice(0, 35).map((d, idx) => (
-                              <Box
-                                key={idx}
-                                className={`day ${d.isOtherMonth ? 'other-month' : ''} ${!d.isOtherMonth && d.day === selectedDate2 ? 'selected single' : ''}`}
-                                onClick={() => !d.isOtherMonth && setSelectedDate2(d.day)}
-                              >
-                                {d.day}
-                              </Box>
-                            ))}
+                            {calendarDays.map((d, idx) => {
+                              const { isCheckin, isCheckout, isInRange, isPast } = getDateState(d.date)
+                              const isDisabled = d.isOtherMonth || isPast
+                              const isSelected = isCheckin || isCheckout
+                              const rangeShapeClass = isCheckin
+                                ? (selectedCheckout ? 'start-range' : '')
+                                : isCheckout
+                                  ? 'single'
+                                  : ''
+                              return (
+                                <Box
+                                  key={idx}
+                                  className={`day ${d.isOtherMonth ? 'other-month' : ''} ${isSelected ? 'selected' : ''} ${rangeShapeClass} ${isInRange ? 'in-range' : ''} ${isDisabled && !d.isOtherMonth ? 'disabled' : ''}`}
+                                  onClick={() => !isDisabled && d.date && handleDateClick(d.date)}
+                                >
+                                  {d.day}
+                                </Box>
+                              )
+                            })}
                           </Box>
                         </Box>
                       </Paper>
