@@ -27,22 +27,28 @@ function syncCurrencyPropsFromPage(page) {
     }
 }
 
+// Wrapping each page in an inline function inside resolve() would hand Inertia a brand-new
+// component identity on every single visit, forcing React to unmount/remount the whole page
+// (and lose all of its local state) even for same-page revisits like a failed form submission.
+// Caching the wrapper per page name keeps identity stable across visits.
+const wrappedPages = new Map();
+
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => {
         const pagePath = `./Pages/${name}.tsx`;
         return resolvePageComponent(pagePath, pages).then((module) => {
-            const Page = module.default;
-            return {
-                default: function PageWithFlash(props) {
-                    return (
-                        <>
-                            <GlobalFlashToasts />
-                            <Page {...props} />
-                        </>
-                    );
-                },
-            };
+            if (!wrappedPages.has(name)) {
+                const Page = module.default;
+                const PageWithFlash = (props) => (
+                    <>
+                        <GlobalFlashToasts />
+                        <Page {...props} />
+                    </>
+                );
+                wrappedPages.set(name, PageWithFlash);
+            }
+            return { default: wrappedPages.get(name) };
         });
     },
     setup({ el, App, props }) {

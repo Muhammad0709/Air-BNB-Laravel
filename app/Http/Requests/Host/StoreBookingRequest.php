@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Host;
 
 use App\Enums\BookingStatus;
+use App\Models\Booking;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreBookingRequest extends FormRequest
@@ -29,6 +31,32 @@ class StoreBookingRequest extends FormRequest
             'amount' => 'required|numeric|min:0',
             'status' => $statusRule,
         ];
+    }
+
+    /**
+     * Reject dates that overlap an existing pending/confirmed booking for the same property.
+     */
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator) {
+            $propertyId = $this->input('property_id');
+            $checkin = $this->input('checkin');
+            $checkout = $this->input('checkout');
+
+            if (! $propertyId || ! $checkin || ! $checkout) {
+                return;
+            }
+
+            $overlaps = Booking::where('property_id', $propertyId)
+                ->whereIn('status', [BookingStatus::PENDING->value, BookingStatus::CONFIRMED->value])
+                ->where('check_in_date', '<', $checkout)
+                ->where('check_out_date', '>', $checkin)
+                ->exists();
+
+            if ($overlaps) {
+                $validator->errors()->add('checkin', __('validation.custom.checkin.unavailable'));
+            }
+        });
     }
 
     /**

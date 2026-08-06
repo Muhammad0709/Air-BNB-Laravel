@@ -109,6 +109,9 @@ return [
         'checkout' => [
             'after' => 'Çıkış tarihi giriş tarihinden sonra olmalıdır.',
         ],
+        'checkin' => [
+            'unavailable' => 'Bu mülk seçilen tarihler için zaten dolu. Lütfen başka tarihler seçin.',
+        ],
         'files.*' => [
             'max' => 'Her dosya 10 MB\'dan büyük olmamalıdır.',
             'mimes' => 'Her dosya bir resim (JPEG, PNG, GIF, WebP) veya video (MP4, MOV, AVI, WebM) olmalıdır.',

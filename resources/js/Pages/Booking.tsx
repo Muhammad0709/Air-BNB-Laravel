@@ -193,7 +193,12 @@ export default function Booking() {
       payment_method: paymentMethod,
     }, {
       onFinish: () => setSubmitting(false),
-      onError: (errors) => setErrors(errors as Record<string, string>),
+      onError: (errors) => {
+        setErrors(errors as Record<string, string>)
+        if (errors.checkin) {
+          setToast({ open: true, message: errors.checkin as string, severity: 'error' })
+        }
+      },
     })
   }
 

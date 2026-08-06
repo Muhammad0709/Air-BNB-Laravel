@@ -109,6 +109,9 @@ return [
         'checkout' => [
             'after' => 'The checkout date must be after the check-in date.',
         ],
+        'checkin' => [
+            'unavailable' => 'This property is already booked for the selected dates. Please choose different dates.',
+        ],
         'files.*' => [
             'max' => 'Each file must not be greater than 10 MB.',
             'mimes' => 'Each file must be an image (JPEG, PNG, GIF, WebP) or video (MP4, MOV, AVI, WebM).',
