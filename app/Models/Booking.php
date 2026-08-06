@@ -43,6 +43,20 @@ class Booking extends Model
     ];
 
     /**
+     * Derived from booking status since there's no payment gateway yet:
+     * pending bookings haven't been confirmed/paid, confirmed/completed ones have,
+     * cancelled ones never completed a payment.
+     */
+    public function getPaymentStatusAttribute(): string
+    {
+        if ($this->status === BookingStatus::CANCELLED) {
+            return 'unpaid';
+        }
+
+        return in_array($this->status->value, BookingStatus::paid(), true) ? 'paid' : 'pending';
+    }
+
+    /**
      * Get the property that this booking belongs to.
      */
     public function property(): BelongsTo

@@ -26,6 +26,7 @@ export default function ShowBooking() {
     checkin: string
     checkout: string
     status: string
+    paymentStatus: string
     amount: string
     nights: number
     createdAt: string
@@ -43,6 +44,18 @@ export default function ShowBooking() {
   }
 
   const statusColor = statusColors[currentStatus] || '#717171'
+
+  const paymentStatusColors: Record<string, string> = {
+    paid: '#10B981',
+    pending: '#F59E0B',
+    unpaid: '#EF4444',
+  }
+  const paymentStatusLabels: Record<string, string> = {
+    paid: t('host.bookings.payment_paid') || 'Paid',
+    pending: t('host.bookings.payment_pending') || 'Payment pending',
+    unpaid: t('host.bookings.payment_unpaid') || 'Unpaid',
+  }
+  const paymentStatusColor = paymentStatusColors[booking.paymentStatus] || '#717171'
 
   const handleStatusChange = (newStatus: string) => {
     router.patch(`/host/bookings/${id}/status`, { status: newStatus.toLowerCase() }, {
@@ -125,6 +138,14 @@ export default function ShowBooking() {
                     <MenuItem value="Cancelled">{t('host.bookings.status_cancelled')}</MenuItem>
                   </Select>
                 </FormControl>
+              </Stack>
+              <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2, justifyContent: { xs: 'flex-start', sm: 'flex-end' } }}>
+                <Typography sx={{ color: '#717171', fontSize: 14 }}>{t('host.bookings.payment_status') || 'Payment'}:</Typography>
+                <Chip
+                  label={paymentStatusLabels[booking.paymentStatus] || booking.paymentStatus}
+                  size="small"
+                  sx={{ bgcolor: `${paymentStatusColor}15`, color: paymentStatusColor, fontWeight: 600 }}
+                />
               </Stack>
               <Typography variant="h5" sx={{ fontWeight: 700, color: '#222222' }}>
                 {booking.amount}

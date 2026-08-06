@@ -34,6 +34,7 @@ class BookingController extends Controller
             'checkin' => $b->check_in_date->format('Y-m-d'),
             'checkout' => $b->check_out_date->format('Y-m-d'),
             'status' => $b->status->value,
+            'payment_status' => $b->payment_status,
             'amount' => '$' . number_format((float) $b->total_amount, 2),
         ]);
 

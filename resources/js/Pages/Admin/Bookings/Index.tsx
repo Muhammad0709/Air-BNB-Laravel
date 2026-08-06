@@ -16,6 +16,7 @@ type BookingRow = {
   checkin: string
   checkout: string
   status: string
+  payment_status: string
   amount: string
 }
 
@@ -59,6 +60,24 @@ export default function AdminBookings() {
       case 'pending': return t('admin.bookings.pending')
       case 'cancelled': return t('admin.bookings.cancelled')
       case 'completed': return t('admin.bookings.completed') || 'Completed'
+      default: return status
+    }
+  }
+
+  const getPaymentStatusColor = (status: string) => {
+    switch (String(status).toLowerCase()) {
+      case 'paid': return '#10B981'
+      case 'pending': return '#F59E0B'
+      case 'unpaid': return '#EF4444'
+      default: return '#717171'
+    }
+  }
+
+  const getPaymentStatusLabel = (status: string) => {
+    switch (String(status).toLowerCase()) {
+      case 'paid': return t('admin.bookings.payment_paid') || 'Paid'
+      case 'pending': return t('admin.bookings.payment_pending') || 'Payment pending'
+      case 'unpaid': return t('admin.bookings.payment_unpaid') || 'Unpaid'
       default: return status
     }
   }
@@ -119,6 +138,7 @@ export default function AdminBookings() {
                         <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.bookings.check_in')}</TableCell>
                         <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.bookings.check_out')}</TableCell>
                         <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.bookings.status')}</TableCell>
+                        <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.bookings.payment_status') || 'Payment'}</TableCell>
                         <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.bookings.amount')}</TableCell>
                         <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('admin.common.actions')}</TableCell>
                       </TableRow>
@@ -126,7 +146,7 @@ export default function AdminBookings() {
                     <TableBody>
                       {list.length === 0 ? (
                         <TableRow>
-                          <TableCell colSpan={7} sx={{ border: 'none', py: 8 }}>
+                          <TableCell colSpan={8} sx={{ border: 'none', py: 8 }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
                               <Typography variant="body1" sx={{ color: '#717171', fontWeight: 600 }}>{t('admin.bookings.no_bookings_found')}</Typography>
                             </Box>
@@ -144,6 +164,13 @@ export default function AdminBookings() {
                                 label={getStatusLabel(booking.status)}
                                 size="small"
                                 sx={{ bgcolor: `${getStatusColor(booking.status)}15`, color: getStatusColor(booking.status), fontWeight: 600, fontSize: 12 }}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Chip
+                                label={getPaymentStatusLabel(booking.payment_status)}
+                                size="small"
+                                sx={{ bgcolor: `${getPaymentStatusColor(booking.payment_status)}15`, color: getPaymentStatusColor(booking.payment_status), fontWeight: 600, fontSize: 12 }}
                               />
                             </TableCell>
                             <TableCell sx={{ fontWeight: 700, color: '#222222' }}>{booking.amount}</TableCell>
