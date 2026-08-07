@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Profile\DeleteAccountRequest;
+use App\Http\Requests\Profile\LogoutOtherDevicesRequest;
 use App\Http\Requests\Profile\UpdateCurrencyRequest;
 use App\Http\Requests\Profile\UpdateNotificationPreferencesRequest;
 use App\Http\Requests\Profile\UpdatePasswordRequest;
@@ -63,6 +64,13 @@ class ProfileSettingsController extends Controller
         Auth::user()->update(['currency' => $request->validated('currency')]);
 
         return redirect()->back();
+    }
+
+    public function logoutOtherDevices(LogoutOtherDevicesRequest $request)
+    {
+        Auth::logoutOtherDevices($request->validated('password'));
+
+        return redirect()->back()->with('success', 'You have been logged out of all other devices.');
     }
 
     public function updateNotificationPreferences(UpdateNotificationPreferencesRequest $request)

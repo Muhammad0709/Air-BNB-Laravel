@@ -72,6 +72,10 @@ export default function ProfileSettings() {
     password: ''
   })
 
+  const { data: logoutOtherData, setData: setLogoutOtherData, post: postLogoutOther, processing: logoutOtherProcessing, errors: logoutOtherErrors, reset: resetLogoutOther } = useForm({
+    password: ''
+  })
+
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -112,6 +116,17 @@ export default function ProfileSettings() {
     patchPassword('/profile/password', {
       onSuccess: () => {
         resetPassword()
+      }
+    })
+  }
+
+  const handleLogoutOtherDevices = (e: React.FormEvent) => {
+    e.preventDefault()
+    postLogoutOther('/profile/logout-other-devices', {
+      preserveScroll: true,
+      onSuccess: () => {
+        resetLogoutOther()
+        setToast({ open: true, message: t('profile_settings.logout_other_devices_success'), severity: 'success' })
       }
     })
   }
@@ -631,6 +646,69 @@ export default function ProfileSettings() {
                         }}
                       >
                         {passwordProcessing ? t('profile_settings.updating') : t('profile_settings.update_password')}
+                      </Button>
+                    </Stack>
+                  </form>
+                </Paper>
+
+                {/* Log Out of Other Devices */}
+                <Paper elevation={0} sx={{ p: { xs: 2, sm: 3, md: 4 }, border: '1px solid #E5E7EB', borderRadius: '16px', mb: 3 }}>
+                  <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 1, fontSize: { xs: '1.15rem', sm: '1.5rem' } }}>
+                    {t('profile_settings.logout_other_devices')}
+                  </Typography>
+                  <Typography sx={{ color: '#6B7280', fontSize: '0.875rem', mb: 3 }}>
+                    {t('profile_settings.logout_other_devices_description')}
+                  </Typography>
+
+                  <form onSubmit={handleLogoutOtherDevices}>
+                    <Stack spacing={3}>
+                      <Box>
+                        <TextField
+                          name="password"
+                          type="password"
+                          value={logoutOtherData.password}
+                          onChange={(e) => setLogoutOtherData('password', e.target.value)}
+                          placeholder={t('profile_settings.logout_other_devices_password_placeholder')}
+                          fullWidth
+                          required
+                          size="small"
+                          error={!!logoutOtherErrors.password}
+                          sx={{
+                            '& .MuiOutlinedInput-root': {
+                              borderRadius: '12px',
+                              '& fieldset': {
+                                borderColor: logoutOtherErrors.password ? '#EF4444' : '#D0D5DD'
+                              },
+                              '&:hover fieldset': {
+                                borderColor: logoutOtherErrors.password ? '#EF4444' : '#D0D5DD'
+                              },
+                              '&.Mui-focused fieldset': {
+                                borderColor: logoutOtherErrors.password ? '#EF4444' : '#AD542D'
+                              }
+                            }
+                          }}
+                        />
+                        <InputError message={Array.isArray(logoutOtherErrors.password) ? logoutOtherErrors.password[0] : logoutOtherErrors.password} />
+                      </Box>
+
+                      <Button
+                        type="submit"
+                        variant="outlined"
+                        disabled={logoutOtherProcessing}
+                        sx={{
+                          borderColor: '#D0D5DD',
+                          color: '#344054',
+                          borderRadius: '999px',
+                          py: 1.5,
+                          textTransform: 'none',
+                          fontWeight: 700,
+                          fontSize: '0.875rem',
+                          alignSelf: 'flex-start',
+                          '&:hover': { borderColor: '#D0D5DD', bgcolor: '#F9FAFB' },
+                          '&:disabled': { borderColor: '#D1D5DB', color: '#9CA3AF' }
+                        }}
+                      >
+                        {logoutOtherProcessing ? t('profile_settings.logging_out') : t('profile_settings.logout_other_devices_button')}
                       </Button>
                     </Stack>
                   </form>

@@ -109,6 +109,7 @@ Route::middleware(['auth', 'redirect.admin.host'])->group(function () {
     Route::patch('/profile/password', [ProfileSettingsController::class, 'updatePassword'])->name('profile.password');
     Route::patch('/profile/currency', [ProfileSettingsController::class, 'updateCurrency'])->name('profile.currency');
     Route::patch('/profile/notifications', [ProfileSettingsController::class, 'updateNotificationPreferences'])->name('profile.notifications');
+    Route::post('/profile/logout-other-devices', [ProfileSettingsController::class, 'logoutOtherDevices'])->name('profile.logout-other-devices');
     Route::post('/profile/picture', [ProfileSettingsController::class, 'uploadProfilePicture'])->name('profile.picture');
     Route::delete('/profile/delete', [ProfileSettingsController::class, 'destroy'])->name('profile.destroy');
 });
