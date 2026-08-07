@@ -72,11 +72,14 @@ class ConfirmationController extends Controller
         $cancellationPolicy = CancellationPolicy::tryFrom($property->cancellation_policy ?? '') ?? CancellationPolicy::MODERATE;
 
         $bookingReference = null;
+        $bookingStatus = null;
         $bookingId = $request->query('booking');
         if ($bookingId) {
-            $bookingReference = Booking::where('id', $bookingId)
+            $booking = Booking::where('id', $bookingId)
                 ->where('property_id', $propertyId)
-                ->value('reference');
+                ->first(['reference', 'status']);
+            $bookingReference = $booking?->reference;
+            $bookingStatus = $booking?->status->value;
         }
 
         $image = $property->getPrimaryImageUrl() ?? '/images/popular-stay-1.svg';
@@ -104,6 +107,7 @@ class ConfirmationController extends Controller
             'cancellationPolicy' => $cancellationPolicy->value,
             'cancellationPolicyDescription' => $cancellationPolicy->description(),
             'bookingReference' => $bookingReference,
+            'bookingStatus' => $bookingStatus,
         ]);
     }
 }

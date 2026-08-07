@@ -9,6 +9,7 @@ return [
     'total' => 'Tevahî',
     'return_to_home' => 'Vegere ser rûpelê sereke',
     'booking_confirmed_toast' => 'Rezervasyon piştrast kir!',
+    'booking_pending_toast' => 'Daxwaza rezervasyonê hat şandin — li benda pejirandina mêvandar e.',
     'no_booking_data' => 'Daneyên rezervasyonê tune. Ji kerema xwe pêşiyê rezervasyonê temam bikin.',
     'property_not_found' => 'Milk nehate dîtin.',
 ];

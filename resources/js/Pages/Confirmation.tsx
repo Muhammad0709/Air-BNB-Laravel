@@ -38,19 +38,23 @@ type ConfirmationPageProps = {
   cancellationPolicy?: string
   cancellationPolicyDescription?: string
   bookingReference?: string | null
+  bookingStatus?: string | null
 }
 
 export default function Confirmation() {
   const { t } = useLanguage()
   const { currency } = useCurrency()
-  const { property, costs, totalAmount, rules, cancellationPolicy, cancellationPolicyDescription, bookingReference } = usePage<ConfirmationPageProps>().props
+  const { property, costs, totalAmount, rules, cancellationPolicy, cancellationPolicyDescription, bookingReference, bookingStatus } = usePage<ConfirmationPageProps>().props
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
 
   const formattedCosts = costs.map((c) => ({ label: c.label, amount: formatPrice(c.amount, currency) }))
   const formattedTotal = formatPrice(totalAmount, currency)
 
   const handleReturnHome = () => {
-    setToast({ open: true, message: t('confirmation.booking_confirmed_toast'), severity: 'success' })
+    const message = bookingStatus === 'confirmed'
+      ? t('confirmation.booking_confirmed_toast')
+      : t('confirmation.booking_pending_toast')
+    setToast({ open: true, message, severity: 'success' })
     setTimeout(() => router.visit('/'), 1200)
   }
 

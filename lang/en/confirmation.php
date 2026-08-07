@@ -9,6 +9,7 @@ return [
     'total' => 'Total',
     'return_to_home' => 'Return to Home',
     'booking_confirmed_toast' => 'Booking confirmed!',
+    'booking_pending_toast' => 'Booking request sent — waiting for host approval.',
     'no_booking_data' => 'No booking data. Please complete a booking first.',
     'property_not_found' => 'Property not found.',
 ];

@@ -9,6 +9,7 @@ return [
     'total' => 'المجموع',
     'return_to_home' => 'العودة للرئيسية',
     'booking_confirmed_toast' => 'تم تأكيد الحجز!',
+    'booking_pending_toast' => 'تم إرسال طلب الحجز — بانتظار موافقة المضيف.',
     'no_booking_data' => 'لا توجد بيانات حجز. يرجى إكمال الحجز أولاً.',
     'property_not_found' => 'العقار غير موجود.',
 ];
