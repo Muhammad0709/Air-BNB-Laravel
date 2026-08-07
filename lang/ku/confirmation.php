@@ -5,6 +5,7 @@ return [
     'request_submitted' => 'Daxwaz hate şandin',
     'request_submitted_subtitle' => 'Daxwaza we bi serketî hate şandin',
     'your_booking' => 'Rezervasyona we',
+    'booking_reference' => 'Hejmara referansa rezervasyonê',
     'total' => 'Tevahî',
     'return_to_home' => 'Vegere ser rûpelê sereke',
     'booking_confirmed_toast' => 'Rezervasyon piştrast kir!',

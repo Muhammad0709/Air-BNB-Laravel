@@ -71,6 +71,7 @@ return [
         'my_bookings' => 'حجزەکانی من',
         'search_placeholder' => 'گەڕان بە حجز...',
         'add_booking' => 'زیادکردنی حجز',
+        'reference' => 'ژمارەی سەرچاوە',
         'guest' => 'میوان',
         'property' => 'خانووبەر',
         'check_in' => 'چوونەژوورەوە',

@@ -18,6 +18,10 @@ class LocaleController extends Controller
         $request->session()->put('locale', $locale);
         App::setLocale($locale);
 
+        if ($request->user()) {
+            $request->user()->update(['language' => $locale]);
+        }
+
         return redirect()->back();
     }
 }

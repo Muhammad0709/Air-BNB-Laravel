@@ -5,6 +5,7 @@ return [
     'request_submitted' => 'درخواست ثبت شد',
     'request_submitted_subtitle' => 'درخواست شما با موفقیت ثبت شد',
     'your_booking' => 'رزرو شما',
+    'booking_reference' => 'شماره مرجع رزرو',
     'total' => 'مجموع',
     'return_to_home' => 'بازگشت به صفحه اصلی',
     'booking_confirmed_toast' => 'رزرو تأیید شد!',

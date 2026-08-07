@@ -18,6 +18,7 @@ export default function ShowBooking() {
   const { t } = useLanguage()
   const { booking } = usePage().props as { booking: {
     id: string
+    reference: string
     guest: string
     guestEmail: string
     guestPhone: string
@@ -115,6 +116,9 @@ export default function ShowBooking() {
                   month: 'long',
                   day: 'numeric'
                 })}
+              </Typography>
+              <Typography sx={{ color: '#717171', fontSize: 14, fontFamily: 'monospace', mt: 0.5 }}>
+                {t('host.bookings.reference') || 'Reference'}: {booking.reference}
               </Typography>
             </Box>
             <Box sx={{ textAlign: { xs: 'left', sm: 'right' } }}>

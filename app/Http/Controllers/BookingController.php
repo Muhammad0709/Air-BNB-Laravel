@@ -299,6 +299,7 @@ class BookingController extends Controller
             'property_id' => $property->id,
             'checkin' => $validated['checkin'],
             'checkout' => $validated['checkout'],
+            'booking' => $booking->id,
         ]);
     }
 }

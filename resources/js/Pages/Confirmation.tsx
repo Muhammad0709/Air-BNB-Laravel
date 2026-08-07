@@ -37,12 +37,13 @@ type ConfirmationPageProps = {
   rules: string[]
   cancellationPolicy?: string
   cancellationPolicyDescription?: string
+  bookingReference?: string | null
 }
 
 export default function Confirmation() {
   const { t } = useLanguage()
   const { currency } = useCurrency()
-  const { property, costs, totalAmount, rules, cancellationPolicy, cancellationPolicyDescription } = usePage<ConfirmationPageProps>().props
+  const { property, costs, totalAmount, rules, cancellationPolicy, cancellationPolicyDescription, bookingReference } = usePage<ConfirmationPageProps>().props
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
 
   const formattedCosts = costs.map((c) => ({ label: c.label, amount: formatPrice(c.amount, currency) }))
@@ -66,6 +67,11 @@ export default function Confirmation() {
               </Box>
               <Typography className="confirmation-title">{t('confirmation.request_submitted')}</Typography>
               <Typography className="confirmation-subtitle">{t('confirmation.request_submitted_subtitle')}</Typography>
+              {bookingReference && (
+                <Typography className="confirmation-reference" sx={{ mt: 1, opacity: 0.75, fontFamily: 'monospace' }}>
+                  {t('confirmation.booking_reference')}: {bookingReference}
+                </Typography>
+              )}
             </Box>
 
             <Row className="justify-content-center">

@@ -71,6 +71,7 @@ return [
         'my_bookings' => 'My Bookings',
         'search_placeholder' => 'Search bookings...',
         'add_booking' => 'Add Booking',
+        'reference' => 'Reference',
         'guest' => 'Guest',
         'property' => 'Property',
         'check_in' => 'Check-in',

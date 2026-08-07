@@ -13,7 +13,15 @@ class SetLocaleFromSession
 
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = $request->session()->get('locale', config('app.locale', 'en'));
+        $locale = $request->session()->get('locale');
+
+        if (! $locale && $request->user()?->language) {
+            $locale = $request->user()->language;
+            $request->session()->put('locale', $locale);
+        }
+
+        $locale = $locale ?? config('app.locale', 'en');
+
         if (in_array($locale, self::ALLOWED_LOCALES)) {
             App::setLocale($locale);
         }

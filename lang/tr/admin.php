@@ -130,6 +130,7 @@ return [
         'all_bookings' => 'Tüm Rezervasyonlar',
         'search_placeholder' => 'Rezervasyon ara...',
         'add_booking' => 'Rezervasyon Ekle',
+        'reference' => 'Referans',
         'guest' => 'Misafir',
         'property' => 'Mülk',
         'check_in' => 'Giriş',

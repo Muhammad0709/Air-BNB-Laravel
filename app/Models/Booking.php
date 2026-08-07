@@ -5,10 +5,12 @@ namespace App\Models;
 use App\Enums\BookingStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 class Booking extends Model
 {
     protected $fillable = [
+        'reference',
         'property_id',
         'user_id',
         'name',
@@ -54,6 +56,22 @@ class Booking extends Model
         }
 
         return in_array($this->status->value, BookingStatus::paid(), true) ? 'paid' : 'pending';
+    }
+
+    /**
+     * Generate a unique booking reference before creation.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (Booking $booking) {
+            if (empty($booking->reference)) {
+                do {
+                    $reference = 'BK-' . strtoupper(Str::random(8));
+                } while (static::where('reference', $reference)->exists());
+
+                $booking->reference = $reference;
+            }
+        });
     }
 
     /**

@@ -12,6 +12,7 @@ import { useLanguage } from '../../../hooks/use-language'
 
 type BookingRow = {
   id: number
+  reference: string
   guest: string
   property: string
   checkin: string
@@ -153,6 +154,7 @@ export default function HostBookings() {
                 <Table sx={{ minWidth: 800, width: '100%' }}>
                   <TableHead>
                     <TableRow sx={{ bgcolor: '#F9FAFB' }}>
+                      <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.bookings.reference') || 'Reference'}</TableCell>
                       <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.bookings.guest')}</TableCell>
                       <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.bookings.property')}</TableCell>
                       <TableCell sx={{ fontWeight: 700, color: '#222222', whiteSpace: 'nowrap' }}>{t('host.bookings.check_in')}</TableCell>
@@ -166,13 +168,14 @@ export default function HostBookings() {
                   <TableBody>
                     {list.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={8} sx={{ textAlign: 'center', py: 4 }}>
+                        <TableCell colSpan={9} sx={{ textAlign: 'center', py: 4 }}>
                           <Typography sx={{ color: '#6B7280' }}>{t('host.bookings.no_bookings_found')}</Typography>
                         </TableCell>
                       </TableRow>
                     ) : (
                       list.map((booking) => (
                       <TableRow key={booking.id} sx={{ '&:hover': { bgcolor: '#F9FAFB' } }}>
+                        <TableCell sx={{ color: '#717171', fontFamily: 'monospace', fontSize: 13 }}>{booking.reference}</TableCell>
                         <TableCell sx={{ fontWeight: 600, color: '#222222' }}>{booking.guest}</TableCell>
                         <TableCell sx={{ color: '#717171' }}>{booking.property}</TableCell>
                         <TableCell sx={{ color: '#717171' }}>{booking.checkin}</TableCell>

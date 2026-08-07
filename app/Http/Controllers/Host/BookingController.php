@@ -39,6 +39,7 @@ class BookingController extends Controller
 
         $bookings->getCollection()->transform(fn (Booking $b) => [
             'id' => $b->id,
+            'reference' => $b->reference,
             'guest' => $b->name ?: $b->user?->name ?? '—',
             'property' => $b->property?->title ?? '—',
             'checkin' => $b->check_in_date->format('Y-m-d'),
@@ -141,6 +142,7 @@ class BookingController extends Controller
         return Inertia::render('Host/Bookings/Show', [
             'booking' => [
                 'id' => (string) $booking->id,
+                'reference' => $booking->reference,
                 'guest' => $guestName,
                 'guestEmail' => $booking->email ?? '',
                 'guestPhone' => $booking->phone ? (($booking->phone_code ?? '') . ' ' . $booking->phone) : '',

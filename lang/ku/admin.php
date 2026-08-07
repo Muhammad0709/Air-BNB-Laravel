@@ -130,6 +130,7 @@ return [
         'all_bookings' => 'هەموو حجزەکان',
         'search_placeholder' => 'گەڕان بە حجز...',
         'add_booking' => 'حجز زیاد بکە',
+        'reference' => 'ژمارەی سەرچاوە',
         'guest' => 'مێوان',
         'property' => 'خانووبەر',
         'check_in' => 'چوونەژوورەوە',

@@ -130,6 +130,7 @@ return [
         'all_bookings' => 'همه رزروها',
         'search_placeholder' => 'جستجوی رزروها...',
         'add_booking' => 'افزودن رزرو',
+        'reference' => 'شماره مرجع',
         'guest' => 'مهمان',
         'property' => 'ملک',
         'check_in' => 'ورود',

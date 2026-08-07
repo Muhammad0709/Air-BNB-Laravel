@@ -29,6 +29,7 @@ class BookingController extends Controller
 
         $bookings->getCollection()->transform(fn (Booking $b) => [
             'id' => $b->id,
+            'reference' => $b->reference,
             'guest' => $b->name ?: $b->user?->name ?? '—',
             'property' => $b->property?->title ?? '—',
             'checkin' => $b->check_in_date->format('Y-m-d'),

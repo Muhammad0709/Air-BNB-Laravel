@@ -71,6 +71,7 @@ return [
         'my_bookings' => 'Rezervasyonlarım',
         'search_placeholder' => 'Rezervasyon ara...',
         'add_booking' => 'Rezervasyon ekle',
+        'reference' => 'Referans',
         'guest' => 'Misafir',
         'property' => 'Mülk',
         'check_in' => 'Giriş',

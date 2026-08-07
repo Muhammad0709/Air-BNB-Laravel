@@ -71,6 +71,7 @@ return [
         'my_bookings' => 'حجوزاتي',
         'search_placeholder' => 'البحث في الحجوزات...',
         'add_booking' => 'إضافة حجز',
+        'reference' => 'الرقم المرجعي',
         'guest' => 'الضيف',
         'property' => 'العقار',
         'check_in' => 'تاريخ الوصول',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\Property;
 use App\Enums\CancellationPolicy;
 use App\Enums\PropertyStatus;
@@ -70,6 +71,14 @@ class ConfirmationController extends Controller
 
         $cancellationPolicy = CancellationPolicy::tryFrom($property->cancellation_policy ?? '') ?? CancellationPolicy::MODERATE;
 
+        $bookingReference = null;
+        $bookingId = $request->query('booking');
+        if ($bookingId) {
+            $bookingReference = Booking::where('id', $bookingId)
+                ->where('property_id', $propertyId)
+                ->value('reference');
+        }
+
         $image = $property->getPrimaryImageUrl() ?? '/images/popular-stay-1.svg';
         $propertyData = [
             'id' => $property->id,
@@ -94,6 +103,7 @@ class ConfirmationController extends Controller
             'rules' => $rules,
             'cancellationPolicy' => $cancellationPolicy->value,
             'cancellationPolicyDescription' => $cancellationPolicy->description(),
+            'bookingReference' => $bookingReference,
         ]);
     }
 }

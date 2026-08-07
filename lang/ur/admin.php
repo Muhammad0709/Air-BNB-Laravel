@@ -130,6 +130,7 @@ return [
         'all_bookings' => 'تمام بکنگز',
         'search_placeholder' => 'بکنگز تلاش کریں...',
         'add_booking' => 'بکنگ شامل کریں',
+        'reference' => 'حوالہ نمبر',
         'guest' => 'مہمان',
         'property' => 'پراپرٹی',
         'check_in' => 'چیک ان',

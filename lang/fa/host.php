@@ -71,6 +71,7 @@ return [
         'my_bookings' => 'رزروهای من',
         'search_placeholder' => 'جستجوی رزرو...',
         'add_booking' => 'افزودن رزرو',
+        'reference' => 'شماره مرجع',
         'guest' => 'مهمان',
         'property' => 'اقامتگاه',
         'check_in' => 'ورود',
