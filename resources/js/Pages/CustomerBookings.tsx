@@ -197,9 +197,17 @@ export default function CustomerBookings() {
                                       <Typography variant="body2" sx={{ fontWeight: 600, color: '#222222' }}>{booking.nights} {booking.nights === 1 ? t('customer_bookings.night') : t('customer_bookings.nights')}</Typography>
                                     </Box>
                                   </Stack>
-                                  <Box sx={{ pt: 1, borderTop: '1px solid #E5E7EB' }}>
+                                  <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ pt: 1, borderTop: '1px solid #E5E7EB' }}>
                                     <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>{formatPrice(booking.total_amount, currency)}</Typography>
-                                  </Box>
+                                    <Typography
+                                      component="a"
+                                      href={`/bookings/${booking.id}/receipt`}
+                                      onClick={(e) => { e.stopPropagation(); e.preventDefault(); router.visit(`/bookings/${booking.id}/receipt`) }}
+                                      sx={{ color: '#AD542D', fontWeight: 600, fontSize: '0.875rem', textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
+                                    >
+                                      {t('customer_bookings.view_receipt')}
+                                    </Typography>
+                                  </Stack>
                                 </Stack>
                               </Stack>
                             </Paper>

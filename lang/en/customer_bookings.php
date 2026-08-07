@@ -17,4 +17,5 @@ return [
     'guest' => 'guest',
     'nights' => 'Nights',
     'night' => 'night',
+    'view_receipt' => 'View Receipt',
 ];

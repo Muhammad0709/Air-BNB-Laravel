@@ -17,4 +17,5 @@ return [
     'guest' => 'ضيف',
     'nights' => 'ليالي',
     'night' => 'ليلة',
+    'view_receipt' => 'عرض الإيصال',
 ];

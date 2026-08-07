@@ -17,4 +17,5 @@ return [
     'guest' => 'misafir',
     'nights' => 'Gece',
     'night' => 'gece',
+    'view_receipt' => 'Makbuzu Görüntüle',
 ];

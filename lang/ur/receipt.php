@@ -1,0 +1,24 @@
+<?php
+
+return [
+    'title' => 'بکنگ رسید',
+    'subtitle' => 'آپ کے قیام کی رسید',
+    'booking_reference' => 'بکنگ حوالہ نمبر',
+    'guest' => 'مہمان',
+    'property' => 'پراپرٹی',
+    'check_in' => 'چیک ان',
+    'check_out' => 'چیک آؤٹ',
+    'nights' => 'راتیں',
+    'nightly_rate' => 'فی رات ریٹ',
+    'cleaning_fee' => 'صفائی فیس',
+    'service_fee' => 'سروس فیس',
+    'total' => 'کل ادا شدہ رقم',
+    'booking_status' => 'بکنگ کی صورتحال',
+    'payment_status' => 'ادائیگی کی صورتحال',
+    'booked_on' => 'بکنگ کی تاریخ',
+    'print' => 'پرنٹ / PDF کے طور پر محفوظ کریں',
+    'back_to_bookings' => 'میری بکنگز پر واپس جائیں',
+    'payment_paid' => 'ادا شدہ',
+    'payment_pending' => 'ادائیگی زیر التوا',
+    'payment_unpaid' => 'ادا نہیں ہوئی',
+];

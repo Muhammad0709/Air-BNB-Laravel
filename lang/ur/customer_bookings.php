@@ -17,4 +17,5 @@ return [
     'guest' => 'مہمان',
     'nights' => 'راتیں',
     'night' => 'رات',
+    'view_receipt' => 'رسید دیکھیں',
 ];

@@ -1566,3 +1566,10 @@ p.hero-subtitle {
     padding: 20px 0;
   }
 }
+
+/* Booking Receipt Page */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

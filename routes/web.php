@@ -92,6 +92,7 @@ Route::middleware(['auth', 'redirect.admin.host'])->group(function () {
     Route::get('/chat', [PageController::class, 'chat'])->name('chat');
     Route::delete('/chat/conversations/{conversation}', [PageController::class, 'deleteConversation'])->name('chat.conversations.destroy');
     Route::get('/bookings', [PageController::class, 'customerBookings'])->name('bookings');
+    Route::get('/bookings/{id}/receipt', [PageController::class, 'bookingReceipt'])->name('booking.receipt');
     
     // User notifications
     Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');

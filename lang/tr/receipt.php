@@ -1,0 +1,24 @@
+<?php
+
+return [
+    'title' => 'Rezervasyon Makbuzu',
+    'subtitle' => 'Konaklamanızın makbuzu',
+    'booking_reference' => 'Rezervasyon referansı',
+    'guest' => 'Misafir',
+    'property' => 'Mülk',
+    'check_in' => 'Giriş',
+    'check_out' => 'Çıkış',
+    'nights' => 'Gece',
+    'nightly_rate' => 'Gecelik ücret',
+    'cleaning_fee' => 'Temizlik ücreti',
+    'service_fee' => 'Hizmet ücreti',
+    'total' => 'Ödenen toplam',
+    'booking_status' => 'Rezervasyon durumu',
+    'payment_status' => 'Ödeme durumu',
+    'booked_on' => 'Rezervasyon tarihi',
+    'print' => 'Yazdır / PDF olarak kaydet',
+    'back_to_bookings' => 'Rezervasyonlarıma dön',
+    'payment_paid' => 'Ödendi',
+    'payment_pending' => 'Ödeme bekleniyor',
+    'payment_unpaid' => 'Ödenmedi',
+];

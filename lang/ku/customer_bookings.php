@@ -17,4 +17,5 @@ return [
     'guest' => 'mêvan',
     'nights' => 'Şev',
     'night' => 'şev',
+    'view_receipt' => 'Weslê bibîne',
 ];

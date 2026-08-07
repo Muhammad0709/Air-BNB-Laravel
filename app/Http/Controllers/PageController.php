@@ -89,6 +89,34 @@ class PageController extends Controller
         ]);
     }
 
+    public function bookingReceipt(string $id)
+    {
+        $booking = Booking::with('property:id,title,location')
+            ->where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        return Inertia::render('BookingReceipt', [
+            'receipt' => [
+                'reference' => $booking->reference,
+                'guest' => $booking->name ?: $booking->user?->name ?? '',
+                'property' => $booking->property?->title ?? '',
+                'propertyLocation' => $booking->property?->location ?? '',
+                'checkin' => $booking->check_in_date->format('Y-m-d'),
+                'checkout' => $booking->check_out_date->format('Y-m-d'),
+                'nights' => $booking->nights,
+                'nightlyRate' => (float) $booking->nightly_rate,
+                'cleaningFee' => (float) $booking->cleaning_fee,
+                'serviceFee' => (float) $booking->service_fee,
+                'total' => (float) $booking->total_amount,
+                'status' => $booking->status->value,
+                'statusLabel' => $booking->status->label(),
+                'paymentStatus' => $booking->payment_status,
+                'bookedOn' => $booking->created_at->format('Y-m-d'),
+            ],
+        ]);
+    }
+
     public function privacyPolicy()
     {
         return Inertia::render('PrivacyPolicy');
