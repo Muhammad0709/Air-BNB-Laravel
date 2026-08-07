@@ -9,6 +9,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications'
 import ContactMailIcon from '@mui/icons-material/ContactMail'
 // import SupportAgentIcon from '@mui/icons-material/SupportAgent'
 import SettingsIcon from '@mui/icons-material/Settings'
+import FactCheckIcon from '@mui/icons-material/FactCheck'
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../hooks/use-language'
 
@@ -41,6 +42,7 @@ export default function AdminSidebar({ sidebarOpen, onNavigate }: AdminSidebarPr
     { labelKey: 'admin.sidebar.history', icon: HistoryIcon, path: '/admin/history', onClick: () => handleNav('/admin/history') },
     { labelKey: 'admin.sidebar.notifications', icon: NotificationsIcon, path: '/admin/notifications', onClick: () => handleNav('/admin/notifications') },
     { labelKey: 'admin.sidebar.contact_messages', icon: ContactMailIcon, path: '/admin/contacts', onClick: () => handleNav('/admin/contacts') },
+    { labelKey: 'admin.sidebar.audit_logs', icon: FactCheckIcon, path: '/admin/audit-logs', onClick: () => handleNav('/admin/audit-logs') },
     // { labelKey: 'admin.sidebar.support_tickets', icon: SupportAgentIcon, path: '/admin/support-tickets', onClick: () => handleNav('/admin/support-tickets') },
     { labelKey: 'admin.sidebar.system_settings', icon: SettingsIcon, path: '/admin/settings', onClick: () => handleNav('/admin/settings') },
   ]

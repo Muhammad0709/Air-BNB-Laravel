@@ -132,6 +132,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/bookings/{id}/edit', [AdminBookingController::class, 'edit'])->name('bookings.edit');
     Route::get('/history', [AdminHistoryController::class, 'index'])->name('history.index');
     Route::get('/history/{user}', [AdminHistoryController::class, 'show'])->name('history.show');
+    Route::get('/audit-logs', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit-logs.index');
     Route::get('/contacts', [AdminContactController::class, 'index'])->name('contacts.index');
     Route::get('/contacts/{contact}', [AdminContactController::class, 'show'])->name('contacts.show');
     Route::get('/support-tickets', [SupportTicketController::class, 'index'])->name('support-tickets.index');

@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Http\Requests\Admin\UpdateUserStatusRequest;
+use App\Models\AuditLog;
 use App\Models\User;
 use App\Enums\UserType;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -87,7 +89,12 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $label = "{$user->name} ({$user->email})";
+
         $user->delete();
+
+        AuditLog::record(Auth::user(), 'user_deleted', $label);
+
         return redirect()->route('admin.users.index')->with('success', __('admin.users.flash_deleted'));
     }
 }

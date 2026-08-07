@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdatePropertyRequest;
+use App\Models\AuditLog;
 use App\Models\Property;
 use App\Enums\PropertyStatus;
 use Illuminate\Http\Request;
@@ -114,6 +115,8 @@ class PropertyController extends Controller
             'approval_status' => PropertyStatus::APPROVED->value
         ]);
 
+        AuditLog::record(Auth::user(), 'property_approved', $property->title);
+
         // Send notification to host
         $host = $property->user;
         if ($host) {
@@ -138,6 +141,8 @@ class PropertyController extends Controller
         $property->update([
             'approval_status' => PropertyStatus::REJECTED->value
         ]);
+
+        AuditLog::record(Auth::user(), 'property_rejected', $property->title, $rejectionReason);
 
         // Send notification to host
         $host = $property->user;
