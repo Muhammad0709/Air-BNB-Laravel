@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Enums\BookingStatus;
+use App\Enums\PropertyStatus;
 use App\Enums\UserType;
 use App\Models\Booking;
+use App\Models\Payout;
 use App\Models\Property;
+use App\Models\Review;
 use App\Models\User;
 use Inertia\Inertia;
 
@@ -22,6 +25,11 @@ class DashboardController extends Controller
             'totalUsers' => User::where('type', '!=', UserType::ADMIN)->count(),
             'totalProperties' => Property::count(),
             'revenue' => (float) Booking::whereIn('status', BookingStatus::paid())->sum('total_amount'),
+            'pendingApprovals' => Property::where('approval_status', PropertyStatus::PENDING->value)->count(),
+            'pendingBookings' => Booking::where('status', BookingStatus::PENDING->value)->count(),
+            'activeHosts' => User::where('type', UserType::HOST)->count(),
+            'averageRating' => round((float) Review::avg('rating'), 1),
+            'pendingPayouts' => (float) Payout::whereIn('status', ['pending', 'processing'])->sum('amount'),
         ];
 
         $recentBookings = Booking::query()
