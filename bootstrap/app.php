@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Exceptions\PostTooLargeException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -50,6 +51,16 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (PostTooLargeException $e, $request) {
             if ($request->header('X-Inertia')) {
                 return back()->with('error', 'File too large. Image must be 2MB or less.');
+            }
+        });
+
+        $exceptions->render(function (ThrottleRequestsException $e, $request) {
+            if ($request->header('X-Inertia') && $request->is('login')) {
+                $seconds = $e->getHeaders()['Retry-After'] ?? 60;
+
+                return back()->withErrors([
+                    'email' => __('auth.throttle', ['seconds' => $seconds]),
+                ]);
             }
         });
     })->create();

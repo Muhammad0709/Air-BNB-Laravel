@@ -39,7 +39,7 @@ Route::get('locale/{locale}', [LocaleController::class, 'switch'])->name('locale
 Route::middleware('guest')->group(function () {
     // User authentication routes
     Route::get('/login', [LoginController::class, 'create'])->name('login');
-    Route::post('/login', [LoginController::class, 'store']);
+    Route::post('/login', [LoginController::class, 'store'])->middleware('throttle:5,1');
     // Avoid 405 when a redirect lands here with DELETE (e.g. session expired during a delete request)
     Route::delete('/login', fn () => redirect()->route('login'));
 
