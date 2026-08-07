@@ -31,6 +31,8 @@ class User extends Authenticatable
         'profile_picture',
         'currency',
         'language',
+        'notify_bookings',
+        'notify_properties',
     ];
 
     /**
@@ -54,6 +56,8 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'type' => UserType::class,
+            'notify_bookings' => 'boolean',
+            'notify_properties' => 'boolean',
         ];
     }
 

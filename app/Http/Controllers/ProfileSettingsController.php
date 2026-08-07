@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Profile\DeleteAccountRequest;
 use App\Http\Requests\Profile\UpdateCurrencyRequest;
+use App\Http\Requests\Profile\UpdateNotificationPreferencesRequest;
 use App\Http\Requests\Profile\UpdatePasswordRequest;
 use App\Http\Requests\Profile\UpdateProfileRequest;
 use App\Http\Requests\Profile\UploadProfilePictureRequest;
@@ -26,6 +27,8 @@ class ProfileSettingsController extends Controller
                 'phone' => $user->phone ?? '',
                 'bio' => $user->bio ?? '',
                 'profile_picture' => $user->profile_picture ? Storage::url($user->profile_picture) : null,
+                'notify_bookings' => $user->notify_bookings,
+                'notify_properties' => $user->notify_properties,
             ]
         ]);
     }
@@ -58,6 +61,13 @@ class ProfileSettingsController extends Controller
     public function updateCurrency(UpdateCurrencyRequest $request)
     {
         Auth::user()->update(['currency' => $request->validated('currency')]);
+
+        return redirect()->back();
+    }
+
+    public function updateNotificationPreferences(UpdateNotificationPreferencesRequest $request)
+    {
+        Auth::user()->update($request->validated());
 
         return redirect()->back();
     }

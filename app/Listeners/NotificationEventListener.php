@@ -259,8 +259,14 @@ class NotificationEventListener
      */
     private function shouldSendNotification(User $user, string $notificationType): bool
     {
-        // For now, always return true
-        // You can implement notification settings later
+        if (str_starts_with($notificationType, 'booking_')) {
+            return $user->notify_bookings;
+        }
+
+        if (str_starts_with($notificationType, 'property_')) {
+            return $user->notify_properties;
+        }
+
         return true;
     }
 }

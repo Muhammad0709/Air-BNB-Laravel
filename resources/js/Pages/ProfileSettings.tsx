@@ -21,6 +21,11 @@ type ProfilePageProps = {
   errors?: Record<string, string | string[]>
 }
 
+const switchSx = {
+  '& .MuiSwitch-switchBase.Mui-checked': { color: '#AD542D' },
+  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': { backgroundColor: '#AD542D' },
+}
+
 export default function ProfileSettings() {
   const { t } = useLanguage()
   const { props } = usePage<ProfilePageProps>()
@@ -70,6 +75,22 @@ export default function ProfileSettings() {
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [uploading, setUploading] = useState(false)
+  const [notifyBookings, setNotifyBookings] = useState(user?.notify_bookings !== false)
+  const [notifyProperties, setNotifyProperties] = useState(user?.notify_properties !== false)
+
+  const handleNotificationPreferenceChange = (field: 'notify_bookings' | 'notify_properties', checked: boolean) => {
+    const setter = field === 'notify_bookings' ? setNotifyBookings : setNotifyProperties
+    const previous = field === 'notify_bookings' ? notifyBookings : notifyProperties
+    setter(checked)
+    router.patch('/profile/notifications', {
+      notify_bookings: field === 'notify_bookings' ? checked : notifyBookings,
+      notify_properties: field === 'notify_properties' ? checked : notifyProperties,
+    }, {
+      preserveScroll: true,
+      preserveState: true,
+      onError: () => setter(previous),
+    })
+  }
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -439,6 +460,48 @@ export default function ProfileSettings() {
                       </Button>
                     </Stack>
                   </form>
+                </Paper>
+
+                {/* Notification Preferences */}
+                <Paper elevation={0} sx={{ p: { xs: 2, sm: 3, md: 4 }, border: '1px solid #E5E7EB', borderRadius: '16px', mb: 3 }}>
+                  <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 1, fontSize: { xs: '1.15rem', sm: '1.5rem' } }}>
+                    {t('profile_settings.notification_preferences')}
+                  </Typography>
+                  <Typography sx={{ color: '#6B7280', fontSize: '0.875rem', mb: 3 }}>
+                    {t('profile_settings.notification_preferences_description')}
+                  </Typography>
+                  <Stack spacing={2}>
+                    <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
+                      <Box>
+                        <Typography sx={{ fontWeight: 600, color: '#111827', fontSize: '0.9375rem' }}>
+                          {t('profile_settings.notify_bookings')}
+                        </Typography>
+                        <Typography sx={{ color: '#6B7280', fontSize: '0.8125rem' }}>
+                          {t('profile_settings.notify_bookings_hint')}
+                        </Typography>
+                      </Box>
+                      <Switch
+                        checked={notifyBookings}
+                        onChange={(_, checked) => handleNotificationPreferenceChange('notify_bookings', checked)}
+                        sx={switchSx}
+                      />
+                    </Stack>
+                    <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={2}>
+                      <Box>
+                        <Typography sx={{ fontWeight: 600, color: '#111827', fontSize: '0.9375rem' }}>
+                          {t('profile_settings.notify_properties')}
+                        </Typography>
+                        <Typography sx={{ color: '#6B7280', fontSize: '0.8125rem' }}>
+                          {t('profile_settings.notify_properties_hint')}
+                        </Typography>
+                      </Box>
+                      <Switch
+                        checked={notifyProperties}
+                        onChange={(_, checked) => handleNotificationPreferenceChange('notify_properties', checked)}
+                        sx={switchSx}
+                      />
+                    </Stack>
+                  </Stack>
                 </Paper>
 
                 {/* Change Password */}
