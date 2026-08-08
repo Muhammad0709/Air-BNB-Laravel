@@ -35,6 +35,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'api/currencies',
         ]);
 
+        $middleware->web(prepend: [
+            \App\Http\Middleware\ForceHttps::class,
+        ]);
+
         $middleware->web(append: [
             \App\Http\Middleware\SetLocaleFromSession::class,
             \Illuminate\Session\Middleware\AuthenticateSession::class,

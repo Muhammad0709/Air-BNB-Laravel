@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\SettingsController as AdminSettingsController;
 use App\Http\Controllers\Admin\Auth\LoginController as AdminLoginController;
 use App\Http\Controllers\Host\DashboardController as HostDashboardController;
 use App\Http\Controllers\Host\PropertyController as HostPropertyController;
+use App\Http\Controllers\Host\PropertyAvailabilityController;
 use App\Http\Controllers\Host\BookingController as HostBookingController;
 use App\Http\Controllers\Host\EarningsController;
 use App\Http\Controllers\Host\SettingsController as HostSettingsController;
@@ -170,6 +171,8 @@ Route::prefix('host')->name('host.')->middleware('host')->group(function () {
     Route::get('/dashboard', [HostDashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AdminLoginController::class, 'destroy'])->name('logout');
     Route::resource('properties', HostPropertyController::class);
+    Route::post('/properties/{property}/blocked-dates', [PropertyAvailabilityController::class, 'store'])->name('properties.blocked-dates.store');
+    Route::delete('/properties/{property}/blocked-dates/{blockedDate}', [PropertyAvailabilityController::class, 'destroy'])->name('properties.blocked-dates.destroy');
     Route::get('/bookings', [HostBookingController::class, 'index'])->name('bookings.index');
     Route::get('/bookings/create', [HostBookingController::class, 'create'])->name('bookings.create');
     Route::post('/bookings', [HostBookingController::class, 'store'])->name('bookings.store');

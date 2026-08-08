@@ -57,8 +57,8 @@ class UpdateBookingRequest extends FormRequest
             $overlaps = Booking::where('property_id', $propertyId)
                 ->when($bookingId, fn ($q) => $q->where('id', '!=', $bookingId))
                 ->whereIn('status', [BookingStatus::PENDING->value, BookingStatus::CONFIRMED->value])
-                ->where('check_in_date', '<', $checkout)
-                ->where('check_out_date', '>', $checkin)
+                ->whereDate('check_in_date', '<', $checkout)
+                ->whereDate('check_out_date', '>', $checkin)
                 ->exists();
 
             if ($overlaps) {

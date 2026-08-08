@@ -12,6 +12,7 @@ use App\Enums\PropertyType;
 use App\Enums\PropertyStatus;
 use App\Enums\UserType;
 use App\Events\NotificationEvent;
+use App\Services\DuplicateListingDetector;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -20,6 +21,10 @@ use Inertia\Inertia;
 
 class PropertyController extends Controller
 {
+    public function __construct(private DuplicateListingDetector $duplicateDetector)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -115,9 +120,15 @@ class PropertyController extends Controller
         $validated['approval_status'] = PropertyStatus::PENDING->value;
         $validated['airport_pickup_enabled'] = $validated['airport_pickup_enabled'] ?? false;
         $validated['guided_tours_enabled'] = $validated['guided_tours_enabled'] ?? false;
+        $validated['duplicate_flag_reason'] = $this->duplicateDetector->detect(
+            $validated['title'],
+            $validated['location'],
+            $host->id,
+            $request->hasFile('images') ? $request->file('images') : []
+        );
 
         $property = Property::create($validated);
-        
+
         // Send notification to admin about new property pending approval
         $admins = User::where('type', UserType::ADMIN->value)->get();
         
@@ -150,6 +161,7 @@ class PropertyController extends Controller
         }
         return Inertia::render('Host/Properties/Show', [
             'property' => $property,
+            'blockedDates' => $property->blockedDates()->orderBy('start_date')->get(),
         ]);
     }
 
@@ -199,6 +211,13 @@ class PropertyController extends Controller
         $validated['approval_status'] = PropertyStatus::PENDING->value;
         $validated['airport_pickup_enabled'] = $validated['airport_pickup_enabled'] ?? false;
         $validated['guided_tours_enabled'] = $validated['guided_tours_enabled'] ?? false;
+        $validated['duplicate_flag_reason'] = $this->duplicateDetector->detect(
+            $validated['title'],
+            $validated['location'],
+            $property->user_id,
+            $request->hasFile('images') ? $request->file('images') : [],
+            $property->id
+        );
 
         $property->update($validated);
         

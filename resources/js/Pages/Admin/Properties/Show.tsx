@@ -14,6 +14,7 @@ import PeopleIcon from '@mui/icons-material/People'
 import HomeIcon from '@mui/icons-material/Home'
 import DeleteIcon from '@mui/icons-material/Delete'
 import StarIcon from '@mui/icons-material/Star'
+import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 import { useLanguage } from '../../../hooks/use-language'
 
@@ -145,6 +146,20 @@ export default function ViewProperty() {
           }}
         />
       </Card>
+
+      {property.duplicate_flag_reason && (
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5, bgcolor: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: 3, p: 2.5, mb: 3 }}>
+          <WarningAmberIcon sx={{ color: '#D97706', mt: 0.25 }} />
+          <Box>
+            <Typography sx={{ fontWeight: 700, color: '#92400E', fontSize: 14 }}>
+              {t('admin.properties.duplicate_flag_title')}
+            </Typography>
+            <Typography sx={{ color: '#92400E', fontSize: 14, mt: 0.25 }}>
+              {property.duplicate_flag_reason}
+            </Typography>
+          </Box>
+        </Box>
+      )}
 
       {/* Property Header */}
       <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 3, mb: 4, bgcolor: '#FAFBFC' }}>

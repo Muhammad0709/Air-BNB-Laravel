@@ -76,6 +76,7 @@ return [
         'price' => 'نرخ',
         'approval' => 'پەسەندکردن',
         'no_properties_found' => 'هیچ خانووبەرێک نەدۆزرایەوە',
+        'duplicate_flag_title' => 'ڕەنگە ڕیستێکی دووبارە بێت',
         'approved' => 'پەسەندکراو',
         'rejected' => 'ڕەتکراوە',
         'pending' => 'چاوەڕوان',

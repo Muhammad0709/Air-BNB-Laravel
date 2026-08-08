@@ -49,8 +49,8 @@ class StoreBookingRequest extends FormRequest
 
             $overlaps = Booking::where('property_id', $propertyId)
                 ->whereIn('status', [BookingStatus::PENDING->value, BookingStatus::CONFIRMED->value])
-                ->where('check_in_date', '<', $checkout)
-                ->where('check_out_date', '>', $checkin)
+                ->whereDate('check_in_date', '<', $checkout)
+                ->whereDate('check_out_date', '>', $checkin)
                 ->exists();
 
             if ($overlaps) {

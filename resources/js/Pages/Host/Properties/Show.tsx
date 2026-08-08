@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Button, Card, CardContent, Chip, Divider, Stack, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Chip, Divider, Stack, TextField, Typography, IconButton } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
-import { router, usePage } from '@inertiajs/react'
+import { router, useForm, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
 import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
@@ -14,6 +14,8 @@ import BedIcon from '@mui/icons-material/Bed'
 import BathtubIcon from '@mui/icons-material/Bathtub'
 import PeopleIcon from '@mui/icons-material/People'
 import HomeIcon from '@mui/icons-material/Home'
+import EventBusyIcon from '@mui/icons-material/EventBusy'
+import DeleteIcon from '@mui/icons-material/Delete'
 
 interface Property {
   id: number
@@ -31,10 +33,37 @@ interface Property {
   created_at: string
 }
 
+interface BlockedDate {
+  id: number
+  start_date: string
+  end_date: string
+  reason: string | null
+}
+
 export default function ViewProperty() {
   const { t } = useLanguage()
-  const { property } = usePage<{ property: Property }>().props
+  const { property, blockedDates } = usePage<{ property: Property; blockedDates: BlockedDate[] }>().props
   const [localStatus, setLocalStatus] = useState(property.status)
+
+  const { data: blockData, setData: setBlockData, post: postBlock, processing: blockProcessing, errors: blockErrors, reset: resetBlock } = useForm({
+    start_date: '',
+    end_date: '',
+    reason: '',
+  })
+
+  const handleBlockDates = (e: React.FormEvent) => {
+    e.preventDefault()
+    postBlock(`/host/properties/${property.id}/blocked-dates`, {
+      preserveScroll: true,
+      onSuccess: () => resetBlock(),
+    })
+  }
+
+  const handleRemoveBlockedDate = (blockedDateId: number) => {
+    router.delete(`/host/properties/${property.id}/blocked-dates/${blockedDateId}`, {
+      preserveScroll: true,
+    })
+  }
 
 
   const getStatusColor = (status: string) => {
@@ -233,6 +262,104 @@ export default function ViewProperty() {
                   }}
                 />
               </Stack>
+            </CardContent>
+          </Card>
+
+          {/* Availability Section */}
+          <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '16px', mt: 3 }}>
+            <CardContent sx={{ p: { xs: 2, md: 4 } }}>
+              <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 1 }}>
+                {t('host.availability.title')}
+              </Typography>
+              <Typography sx={{ color: '#6B7280', fontSize: '0.875rem', mb: 3 }}>
+                {t('host.availability.subtitle')}
+              </Typography>
+
+              <Box component="form" onSubmit={handleBlockDates} sx={{ mb: 3 }}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap alignItems={{ sm: 'flex-start' }}>
+                  <Box>
+                    <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 0.5 }}>{t('host.availability.start_date')}</Typography>
+                    <TextField
+                      type="date"
+                      size="small"
+                      value={blockData.start_date}
+                      onChange={(e) => setBlockData('start_date', e.target.value)}
+                      error={!!blockErrors.start_date}
+                      required
+                    />
+                  </Box>
+                  <Box>
+                    <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 0.5 }}>{t('host.availability.end_date')}</Typography>
+                    <TextField
+                      type="date"
+                      size="small"
+                      value={blockData.end_date}
+                      onChange={(e) => setBlockData('end_date', e.target.value)}
+                      error={!!blockErrors.end_date}
+                      required
+                    />
+                  </Box>
+                  <Box sx={{ flex: 1, minWidth: 200 }}>
+                    <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 0.5 }}>{t('host.availability.reason')}</Typography>
+                    <TextField
+                      size="small"
+                      fullWidth
+                      value={blockData.reason}
+                      onChange={(e) => setBlockData('reason', e.target.value)}
+                      placeholder={t('host.availability.reason_placeholder')}
+                    />
+                  </Box>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={blockProcessing}
+                    startIcon={<EventBusyIcon />}
+                    sx={{ bgcolor: '#AD542D', textTransform: 'none', fontWeight: 700, height: 40, mt: { xs: 0, sm: 2.5 }, '&:hover': { bgcolor: '#78381C' }, ...adminButtonStartIconSx }}
+                  >
+                    {t('host.availability.block_dates')}
+                  </Button>
+                </Stack>
+                {(blockErrors.start_date || blockErrors.end_date) && (
+                  <Typography sx={{ color: '#EF4444', fontSize: '0.8125rem', mt: 1 }}>
+                    {blockErrors.start_date || blockErrors.end_date}
+                  </Typography>
+                )}
+              </Box>
+
+              {blockedDates.length === 0 ? (
+                <Typography sx={{ color: '#6B7280', fontSize: '0.875rem' }}>
+                  {t('host.availability.no_blocked_dates')}
+                </Typography>
+              ) : (
+                <Stack spacing={1.5}>
+                  {blockedDates.map((bd) => (
+                    <Stack
+                      key={bd.id}
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                      sx={{ p: 1.5, border: '1px solid #F3F4F6', borderRadius: 2 }}
+                    >
+                      <Box>
+                        <Typography sx={{ fontWeight: 600, color: '#111827', fontSize: '0.875rem' }}>
+                          {bd.start_date} — {bd.end_date}
+                        </Typography>
+                        {bd.reason && (
+                          <Typography sx={{ color: '#6B7280', fontSize: '0.8125rem' }}>{bd.reason}</Typography>
+                        )}
+                      </Box>
+                      <IconButton
+                        size="small"
+                        aria-label={t('host.availability.remove')}
+                        onClick={() => handleRemoveBlockedDate(bd.id)}
+                        sx={{ color: '#EF4444' }}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </Stack>
+                  ))}
+                </Stack>
+              )}
             </CardContent>
           </Card>
         </Col>

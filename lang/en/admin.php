@@ -76,6 +76,7 @@ return [
         'price' => 'Price',
         'approval' => 'Approval',
         'no_properties_found' => 'No properties found',
+        'duplicate_flag_title' => 'Possible duplicate listing',
         'approved' => 'Approved',
         'rejected' => 'Rejected',
         'pending' => 'Pending',

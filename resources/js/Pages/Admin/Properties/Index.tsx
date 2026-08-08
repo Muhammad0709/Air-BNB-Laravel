@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, InputAdornment, Chip } from '@mui/material'
+import { Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, InputAdornment, Chip, Tooltip } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import ActionsMenu from '../../../Components/Admin/ActionsMenu'
 import Pagination from '../../../components/Pagination'
 import Toast from '../../../Components/Admin/Toast';
 import SearchIcon from '@mui/icons-material/Search'
+import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 
@@ -144,9 +145,16 @@ export default function AdminProperties() {
                                   borderRadius: 1
                                 }}
                               />
-                              <Typography sx={{ fontWeight: 600, color: '#111827' }}>
-                                {property.title}
-                              </Typography>
+                              <Stack direction="row" spacing={0.75} alignItems="center">
+                                <Typography sx={{ fontWeight: 600, color: '#111827' }}>
+                                  {property.title}
+                                </Typography>
+                                {property.duplicate_flag_reason && (
+                                  <Tooltip title={property.duplicate_flag_reason}>
+                                    <WarningAmberIcon sx={{ fontSize: 18, color: '#F59E0B' }} />
+                                  </Tooltip>
+                                )}
+                              </Stack>
                             </Stack>
                           </TableCell>
                           <TableCell sx={{ color: '#6B7280' }}>{property.location}</TableCell>

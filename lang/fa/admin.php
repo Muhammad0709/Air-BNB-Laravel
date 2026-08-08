@@ -76,6 +76,7 @@ return [
         'price' => 'قیمت',
         'approval' => 'تأیید',
         'no_properties_found' => 'ملکی یافت نشد',
+        'duplicate_flag_title' => 'احتمال آگهی تکراری',
         'approved' => 'تأیید شده',
         'rejected' => 'رد شده',
         'pending' => 'در انتظار',

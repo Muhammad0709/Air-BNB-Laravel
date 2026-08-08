@@ -76,6 +76,7 @@ return [
         'price' => 'Fiyat',
         'approval' => 'Onay',
         'no_properties_found' => 'Mülk bulunamadı',
+        'duplicate_flag_title' => 'Olası mükerrer ilan',
         'approved' => 'Onaylandı',
         'rejected' => 'Reddedildi',
         'pending' => 'Beklemede',

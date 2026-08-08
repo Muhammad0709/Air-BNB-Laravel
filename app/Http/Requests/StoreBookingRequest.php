@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\BookingStatus;
 use App\Models\Booking;
+use App\Models\PropertyBlockedDate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 
@@ -46,11 +47,22 @@ class StoreBookingRequest extends FormRequest
 
             $overlaps = Booking::where('property_id', $propertyId)
                 ->whereIn('status', [BookingStatus::PENDING->value, BookingStatus::CONFIRMED->value])
-                ->where('check_in_date', '<', $checkout)
-                ->where('check_out_date', '>', $checkin)
+                ->whereDate('check_in_date', '<', $checkout)
+                ->whereDate('check_out_date', '>', $checkin)
                 ->exists();
 
             if ($overlaps) {
+                $validator->errors()->add('checkin', __('validation.custom.checkin.unavailable'));
+
+                return;
+            }
+
+            $overlapsBlockedDate = PropertyBlockedDate::where('property_id', $propertyId)
+                ->whereDate('start_date', '<', $checkout)
+                ->whereDate('end_date', '>=', $checkin)
+                ->exists();
+
+            if ($overlapsBlockedDate) {
                 $validator->errors()->add('checkin', __('validation.custom.checkin.unavailable'));
             }
         });

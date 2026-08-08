@@ -76,6 +76,7 @@ return [
         'price' => 'السعر',
         'approval' => 'الموافقة',
         'no_properties_found' => 'لا توجد عقارات',
+        'duplicate_flag_title' => 'قائمة مكررة محتملة',
         'approved' => 'موافق عليه',
         'rejected' => 'مرفوض',
         'pending' => 'قيد الانتظار',

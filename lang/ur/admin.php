@@ -76,6 +76,7 @@ return [
         'price' => 'قیمت',
         'approval' => 'منظوری',
         'no_properties_found' => 'کوئی پراپرٹی نہیں ملی',
+        'duplicate_flag_title' => 'ممکنہ نقل لسٹنگ',
         'approved' => 'منظور',
         'rejected' => 'مسترد',
         'pending' => 'زیر التوا',

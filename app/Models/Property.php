@@ -23,6 +23,7 @@ class Property extends Model
         'property_type',
         'status',
         'approval_status',
+        'duplicate_flag_reason',
         'is_guest_favorite',
         'description',
         'amenities',
@@ -72,6 +73,11 @@ class Property extends Model
     public function bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function blockedDates(): HasMany
+    {
+        return $this->hasMany(PropertyBlockedDate::class);
     }
 
     /**
