@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Enums\BookingStatus;
+use App\Enums\PaymentStatus;
 use App\Enums\PropertyStatus;
 use App\Enums\UserType;
 use App\Models\Booking;
@@ -24,7 +25,7 @@ class DashboardController extends Controller
             'totalBookings' => Booking::count(),
             'totalUsers' => User::where('type', '!=', UserType::ADMIN)->count(),
             'totalProperties' => Property::count(),
-            'revenue' => (float) Booking::whereIn('status', BookingStatus::paid())->sum('total_amount'),
+            'revenue' => (float) Booking::where('payment_status', PaymentStatus::PAID->value)->sum('total_amount'),
             'pendingApprovals' => Property::where('approval_status', PropertyStatus::PENDING->value)->count(),
             'pendingBookings' => Booking::where('status', BookingStatus::PENDING->value)->count(),
             'activeHosts' => User::where('type', UserType::HOST)->count(),

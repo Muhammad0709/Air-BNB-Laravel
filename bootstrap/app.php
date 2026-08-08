@@ -33,6 +33,8 @@ return Application::configure(basePath: dirname(__DIR__))
             // Public search (no auth, no session)
             'api/search',
             'api/currencies',
+            // Stripe webhook: verified via Stripe-Signature header instead of a CSRF token
+            'stripe/webhook',
         ]);
 
         $middleware->web(prepend: [

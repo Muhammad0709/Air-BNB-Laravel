@@ -81,6 +81,8 @@ return [
         'payment_paid' => 'پارەدراوە',
         'payment_pending' => 'پارەدان چاوەڕوانە',
         'payment_unpaid' => 'پارە نەدراوە',
+        'payment_failed' => 'پارەدان سەرکەوتوو نەبوو',
+        'payment_refunded' => 'گەڕێندرایەوە',
         'amount' => 'بڕ',
         'actions' => 'کردارەکان',
         'view' => 'بینین',

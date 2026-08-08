@@ -2,6 +2,10 @@
 
 return [
     'title' => 'Rezervasyona xwe temam bikin',
+    'payment_missing_session' => 'Me hevdîtina dravdanê ya te nedît. Ji kerema xwe dîsa biceribîne.',
+    'payment_not_completed' => 'Dravdana te temam nebû. Ji kerema xwe dîsa biceribîne.',
+    'payment_dates_unavailable' => 'Dravdana te serkeftî bû, lê ev dîrok niha ji aliyê kesekî din ve hatin rezervekirin. Drav bi xweber ji te re hat vegerandin.',
+    'payment_cancelled' => 'Dravdan hate betalkirin. Tu perê nehat jê birin.',
     'your_booking' => 'Rezervasyona we',
     'total' => 'Tevahî',
     'guest_details' => 'Detayên mêvan',

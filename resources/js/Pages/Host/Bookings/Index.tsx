@@ -77,6 +77,8 @@ export default function HostBookings() {
       case 'paid': return '#10B981'
       case 'pending': return '#F59E0B'
       case 'unpaid': return '#EF4444'
+      case 'failed': return '#EF4444'
+      case 'refunded': return '#6B7280'
       default: return '#717171'
     }
   }
@@ -86,6 +88,8 @@ export default function HostBookings() {
       case 'paid': return t('host.bookings.payment_paid') || 'Paid'
       case 'pending': return t('host.bookings.payment_pending') || 'Payment pending'
       case 'unpaid': return t('host.bookings.payment_unpaid') || 'Unpaid'
+      case 'failed': return t('host.bookings.payment_failed') || 'Payment failed'
+      case 'refunded': return t('host.bookings.payment_refunded') || 'Refunded'
       default: return status
     }
   }

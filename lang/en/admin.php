@@ -147,6 +147,8 @@ return [
         'payment_paid' => 'Paid',
         'payment_pending' => 'Payment pending',
         'payment_unpaid' => 'Unpaid',
+        'payment_failed' => 'Payment failed',
+        'payment_refunded' => 'Refunded',
         'amount' => 'Amount',
         'no_bookings_found' => 'No bookings found',
         'view_booking' => 'View Booking',

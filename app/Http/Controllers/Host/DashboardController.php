@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Host;
 
 use App\Http\Controllers\Controller;
 use App\Enums\BookingStatus;
+use App\Enums\PaymentStatus;
 use App\Models\Booking;
 use App\Models\Property;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,7 @@ class DashboardController extends Controller
         $stats = [
             'total_properties' => $propertyIds->count(),
             'total_bookings' => (clone $bookingsQuery)->count(),
-            'revenue' => '$' . number_format((float) (clone $bookingsQuery)->whereIn('status', BookingStatus::paid())->sum('total_amount'), 2),
+            'revenue' => '$' . number_format((float) (clone $bookingsQuery)->where('payment_status', PaymentStatus::PAID->value)->sum('total_amount'), 2),
             'upcoming_bookings' => (clone $bookingsQuery)->where('check_in_date', '>', now()->startOfDay())->whereIn('status', BookingStatus::upcoming())->count(),
         ];
 

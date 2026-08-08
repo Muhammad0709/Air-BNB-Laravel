@@ -114,11 +114,15 @@ export default function ShowBooking() {
     paid: '#10B981',
     pending: '#F59E0B',
     unpaid: '#EF4444',
+    failed: '#EF4444',
+    refunded: '#6B7280',
   }
   const paymentStatusLabels: Record<string, string> = {
     paid: t('host.bookings.payment_paid') || 'Paid',
     pending: t('host.bookings.payment_pending') || 'Payment pending',
     unpaid: t('host.bookings.payment_unpaid') || 'Unpaid',
+    failed: t('host.bookings.payment_failed') || 'Payment failed',
+    refunded: t('host.bookings.payment_refunded') || 'Refunded',
   }
   const paymentStatusColor = paymentStatusColors[booking.paymentStatus] || '#717171'
 

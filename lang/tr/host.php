@@ -81,6 +81,8 @@ return [
         'payment_paid' => 'Ödendi',
         'payment_pending' => 'Ödeme bekleniyor',
         'payment_unpaid' => 'Ödenmedi',
+        'payment_failed' => 'Ödeme başarısız',
+        'payment_refunded' => 'İade edildi',
         'amount' => 'Tutar',
         'actions' => 'İşlemler',
         'view' => 'Görüntüle',

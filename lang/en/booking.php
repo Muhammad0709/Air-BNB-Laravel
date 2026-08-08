@@ -2,6 +2,10 @@
 
 return [
     'title' => 'Complete your booking',
+    'payment_missing_session' => 'We could not find your payment session. Please try booking again.',
+    'payment_not_completed' => 'Your payment was not completed. Please try again.',
+    'payment_dates_unavailable' => 'Your payment succeeded, but these dates were just booked by someone else. You have been automatically refunded.',
+    'payment_cancelled' => 'Payment was cancelled. You have not been charged.',
     'your_booking' => 'Your booking',
     'total' => 'Total',
     'guest_details' => 'Guest details',

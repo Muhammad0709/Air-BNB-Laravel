@@ -11,6 +11,7 @@ use App\Enums\UserType;
 use App\Models\Booking;
 use App\Models\Property;
 use App\Models\User;
+use App\Services\StripeService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -233,9 +234,12 @@ class BookingController extends Controller
     }
 
     /**
-     * Save booking to DB and redirect to confirmation (web flow).
+     * Validate the booking, then send the guest to Stripe Checkout to pay.
+     * The booking row itself is only created once payment actually succeeds
+     * (see StripePaymentController), so an abandoned checkout never blocks
+     * those dates for other guests.
      */
-    public function store(StoreBookingRequest $request)
+    public function store(StoreBookingRequest $request, StripeService $stripe)
     {
         $validated = $request->validated();
 
@@ -275,53 +279,36 @@ class BookingController extends Controller
 
         $phoneCode = $validated['phone_code'] ?? '+31';
 
-        $booking = Booking::create([
-            'property_id' => $property->id,
-            'user_id' => $user->id,
+        abort_unless($stripe->isConfigured(), 503, 'Payments are not configured yet. Please contact the site administrator.');
+
+        $metadata = [
+            'property_id' => (string) $property->id,
+            'user_id' => (string) $user->id,
             'name' => $validated['name'],
             'email' => $validated['email'],
             'phone_code' => $phoneCode,
             'phone' => $validated['phone'],
-            'rooms' => $validated['rooms'] ?? 1,
-            'adults' => $validated['adults'] ?? 1,
-            'children' => $validated['children'] ?? 0,
-            'check_in_date' => $checkin,
-            'check_out_date' => $checkout,
-            'nights' => $nights,
-            'nightly_rate' => $nightlyRate,
-            'cleaning_fee' => $cleaningFee,
-            'service_fee' => $serviceFee,
-            'total_amount' => $totalAmount,
-            'deposit_amount' => $depositAmount,
-            'deposit_status' => $depositAmount > 0 ? DepositStatus::HELD->value : null,
-            'status' => BookingStatus::PENDING,
-        ]);
+            'rooms' => (string) ($validated['rooms'] ?? 1),
+            'adults' => (string) ($validated['adults'] ?? 1),
+            'children' => (string) ($validated['children'] ?? 0),
+            'check_in_date' => $checkin->format('Y-m-d'),
+            'check_out_date' => $checkout->format('Y-m-d'),
+            'nights' => (string) $nights,
+            'nightly_rate' => (string) $nightlyRate,
+            'cleaning_fee' => (string) $cleaningFee,
+            'service_fee' => (string) $serviceFee,
+            'total_amount' => (string) $totalAmount,
+            'deposit_amount' => (string) $depositAmount,
+        ];
 
-        // Send notification to property host
-        $host = $property->user;
-        if ($host) {
-            event(new \App\Events\NotificationEvent(
-                $booking,
-                'booking_created',
-                ['host' => $host]
-            ));
-        }
-        
-        // Send notification to all admins
-        $admins = User::where('type', UserType::ADMIN->value)->get();
-        if ($admins->isNotEmpty()) {
-            event(new \App\Events\NotificationEvent(
-                $booking,
-                'booking_created',
-                ['admins' => $admins]
-            ));
-        }
+        $session = $stripe->createBookingCheckoutSession(
+            $metadata,
+            $totalAmount,
+            $property->title,
+            route('booking.payment.success'),
+            route('booking.payment.cancel', ['property_id' => $property->id, 'checkin' => $validated['checkin'], 'checkout' => $validated['checkout']])
+        );
 
-        return redirect()->route('confirmation', [
-            'property_id' => $property->id,
-            'checkin' => $validated['checkin'],
-            'checkout' => $validated['checkout'],
-            'booking' => $booking->id,
-        ]);
+        return Inertia::location($session->url);
     }
 }

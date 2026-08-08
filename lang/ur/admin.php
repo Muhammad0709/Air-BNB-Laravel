@@ -147,6 +147,8 @@ return [
         'payment_paid' => 'ادا شدہ',
         'payment_pending' => 'ادائیگی زیر التوا',
         'payment_unpaid' => 'غیر ادا شدہ',
+        'payment_failed' => 'ادائیگی ناکام',
+        'payment_refunded' => 'رقم واپس',
         'amount' => 'رقم',
         'no_bookings_found' => 'کوئی بکنگ نہیں ملی',
         'view_booking' => 'بکنگ دیکھیں',

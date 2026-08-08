@@ -81,6 +81,8 @@ return [
         'payment_paid' => 'Paid',
         'payment_pending' => 'Payment pending',
         'payment_unpaid' => 'Unpaid',
+        'payment_failed' => 'Payment failed',
+        'payment_refunded' => 'Refunded',
         'amount' => 'Amount',
         'actions' => 'Actions',
         'view' => 'View',

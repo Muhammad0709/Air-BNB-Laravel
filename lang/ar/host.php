@@ -81,6 +81,8 @@ return [
         'payment_paid' => 'مدفوع',
         'payment_pending' => 'الدفع معلق',
         'payment_unpaid' => 'غير مدفوع',
+        'payment_failed' => 'فشل الدفع',
+        'payment_refunded' => 'تم الاسترداد',
         'amount' => 'المبلغ',
         'actions' => 'إجراءات',
         'view' => 'عرض',

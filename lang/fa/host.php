@@ -81,6 +81,8 @@ return [
         'payment_paid' => 'پرداخت‌شده',
         'payment_pending' => 'در انتظار پرداخت',
         'payment_unpaid' => 'پرداخت‌نشده',
+        'payment_failed' => 'پرداخت ناموفق',
+        'payment_refunded' => 'بازپرداخت شده',
         'amount' => 'مبلغ',
         'actions' => 'عملیات',
         'view' => 'مشاهده',

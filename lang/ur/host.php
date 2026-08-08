@@ -81,6 +81,8 @@ return [
         'payment_paid' => 'ادا شدہ',
         'payment_pending' => 'ادائیگی زیر التوا',
         'payment_unpaid' => 'غیر ادا شدہ',
+        'payment_failed' => 'ادائیگی ناکام',
+        'payment_refunded' => 'رقم واپس',
         'amount' => 'رقم',
         'actions' => 'اقدامات',
         'view' => 'دیکھیں',

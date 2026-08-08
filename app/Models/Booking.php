@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\BookingStatus;
 use App\Enums\DepositStatus;
+use App\Enums\PaymentStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -33,6 +34,9 @@ class Booking extends Model
         'deposit_status',
         'deposit_dispute_reason',
         'status',
+        'payment_status',
+        'stripe_checkout_session_id',
+        'stripe_payment_intent_id',
     ];
 
     protected $casts = [
@@ -44,26 +48,13 @@ class Booking extends Model
         'total_amount' => 'decimal:2',
         'deposit_amount' => 'decimal:2',
         'deposit_status' => DepositStatus::class,
+        'payment_status' => PaymentStatus::class,
         'rooms' => 'integer',
         'adults' => 'integer',
         'children' => 'integer',
         'nights' => 'integer',
         'status' => BookingStatus::class,
     ];
-
-    /**
-     * Derived from booking status since there's no payment gateway yet:
-     * pending bookings haven't been confirmed/paid, confirmed/completed ones have,
-     * cancelled ones never completed a payment.
-     */
-    public function getPaymentStatusAttribute(): string
-    {
-        if ($this->status === BookingStatus::CANCELLED) {
-            return 'unpaid';
-        }
-
-        return in_array($this->status->value, BookingStatus::paid(), true) ? 'paid' : 'pending';
-    }
 
     /**
      * Generate a unique booking reference before creation.

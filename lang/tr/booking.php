@@ -2,6 +2,10 @@
 
 return [
     'title' => 'Rezervasyonunuzu tamamlayın',
+    'payment_missing_session' => 'Ödeme oturumunuzu bulamadık. Lütfen tekrar deneyin.',
+    'payment_not_completed' => 'Ödemeniz tamamlanmadı. Lütfen tekrar deneyin.',
+    'payment_dates_unavailable' => 'Ödemeniz başarılı oldu, ancak bu tarihler az önce başka biri tarafından rezerve edildi. Ücretiniz otomatik olarak iade edildi.',
+    'payment_cancelled' => 'Ödeme iptal edildi. Sizden herhangi bir ücret alınmadı.',
     'your_booking' => 'Rezervasyonunuz',
     'total' => 'Toplam',
     'guest_details' => 'Misafir bilgileri',

@@ -31,6 +31,7 @@ use App\Http\Controllers\ProfileSettingsController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ConfirmationController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\SwitchToHostController;
 
@@ -74,6 +75,9 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 Route::get('/booking/redirect', [BookingController::class, 'redirectToBooking'])->name('booking.redirect');
 Route::get('/booking', [BookingController::class, 'index'])->name('booking');
 Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+Route::get('/booking/payment/success', [StripePaymentController::class, 'success'])->name('booking.payment.success');
+Route::get('/booking/payment/cancel', [StripePaymentController::class, 'cancel'])->name('booking.payment.cancel');
+Route::post('/stripe/webhook', [StripePaymentController::class, 'webhook'])->name('stripe.webhook');
 Route::get('/confirmation', [ConfirmationController::class, 'index'])->name('confirmation');
 
 // Public pages (PageController)
