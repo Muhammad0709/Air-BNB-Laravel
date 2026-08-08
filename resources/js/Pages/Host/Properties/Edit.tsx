@@ -25,6 +25,7 @@ interface Property {
   timezone?: string
   cancellation_policy?: string
   price: number
+  deposit_amount?: number
   bedrooms: number
   bathrooms: number
   guests: number
@@ -55,6 +56,7 @@ export default function EditProperty() {
     timezone: property.timezone || 'UTC',
     cancellation_policy: property.cancellation_policy || 'moderate',
     price: property.price.toString(),
+    deposit_amount: property.deposit_amount != null ? String(property.deposit_amount) : '',
     bedrooms: property.bedrooms.toString(),
     bathrooms: property.bathrooms.toString(),
     guests: property.guests.toString(),
@@ -104,6 +106,7 @@ export default function EditProperty() {
     submitData.append('timezone', formData.timezone)
     submitData.append('cancellation_policy', formData.cancellation_policy)
     submitData.append('price', formData.price)
+    submitData.append('deposit_amount', formData.deposit_amount || '0')
     submitData.append('bedrooms', formData.bedrooms)
     submitData.append('bathrooms', formData.bathrooms)
     submitData.append('guests', formData.guests)
@@ -214,6 +217,18 @@ export default function EditProperty() {
                     required
                     fullWidth
                     helperText={t('host.properties.price_per_night_hint')}
+                    InputProps={{
+                      startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#6B7280' }}>$</Typography>
+                    }}
+                  />
+                  <TextField
+                    label={t('host.properties.deposit_amount')}
+                    name="deposit_amount"
+                    type="number"
+                    value={formData.deposit_amount}
+                    onChange={handleChange}
+                    fullWidth
+                    helperText={t('host.properties.deposit_amount_hint')}
                     InputProps={{
                       startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#6B7280' }}>$</Typography>
                     }}

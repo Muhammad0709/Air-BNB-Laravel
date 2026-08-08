@@ -25,6 +25,8 @@ type Receipt = {
   statusLabel: string
   paymentStatus: string
   bookedOn: string
+  depositAmount: number
+  depositStatus: string | null
 }
 
 export default function BookingReceipt() {
@@ -54,6 +56,24 @@ export default function BookingReceipt() {
   }
 
   const subtotal = receipt.nightlyRate * receipt.nights
+
+  const depositLabel = (status: string | null) => {
+    switch (status) {
+      case 'held': return t('receipt.deposit_held')
+      case 'returned': return t('receipt.deposit_returned')
+      case 'disputed': return t('receipt.deposit_disputed')
+      default: return status ?? ''
+    }
+  }
+
+  const depositColor = (status: string | null) => {
+    switch (status) {
+      case 'held': return '#F59E0B'
+      case 'returned': return '#10B981'
+      case 'disputed': return '#EF4444'
+      default: return '#717171'
+    }
+  }
 
   return (
     <>
@@ -154,6 +174,23 @@ export default function BookingReceipt() {
                     <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222' }}>{t('receipt.total')}</Typography>
                     <Typography variant="h5" sx={{ fontWeight: 700, color: '#AD542D' }}>{formatPrice(receipt.total, currency)}</Typography>
                   </Stack>
+
+                  {receipt.depositAmount > 0 && (
+                    <>
+                      <Divider sx={{ my: 3 }} />
+                      <Stack direction="row" justifyContent="space-between" alignItems="center">
+                        <Box>
+                          <Typography sx={{ fontWeight: 700, color: '#222222' }}>{t('receipt.security_deposit')}</Typography>
+                          <Typography sx={{ color: '#717171', fontSize: 12, mt: 0.25 }}>{formatPrice(receipt.depositAmount, currency)}</Typography>
+                        </Box>
+                        <Chip
+                          label={depositLabel(receipt.depositStatus)}
+                          size="small"
+                          sx={{ bgcolor: `${depositColor(receipt.depositStatus)}15`, color: depositColor(receipt.depositStatus), fontWeight: 600 }}
+                        />
+                      </Stack>
+                    </>
+                  )}
                 </Paper>
               </Col>
             </Row>

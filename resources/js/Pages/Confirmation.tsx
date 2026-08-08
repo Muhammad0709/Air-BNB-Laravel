@@ -39,12 +39,13 @@ type ConfirmationPageProps = {
   cancellationPolicyDescription?: string
   bookingReference?: string | null
   bookingStatus?: string | null
+  depositAmount?: number
 }
 
 export default function Confirmation() {
   const { t } = useLanguage()
   const { currency } = useCurrency()
-  const { property, costs, totalAmount, rules, cancellationPolicy, cancellationPolicyDescription, bookingReference, bookingStatus } = usePage<ConfirmationPageProps>().props
+  const { property, costs, totalAmount, rules, cancellationPolicy, cancellationPolicyDescription, bookingReference, bookingStatus, depositAmount } = usePage<ConfirmationPageProps>().props
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
 
   const formattedCosts = costs.map((c) => ({ label: c.label, amount: formatPrice(c.amount, currency) }))
@@ -99,6 +100,7 @@ export default function Confirmation() {
                   totalAmount={formattedTotal}
                   cancellationPolicyLabel={cancellationPolicy ? t(`listing_detail.cancellation_policy_${cancellationPolicy}`) : undefined}
                   cancellationPolicyDescription={cancellationPolicyDescription}
+                  depositAmount={depositAmount ? formatPrice(depositAmount, currency) : undefined}
                 />
               </Col>
             </Row>

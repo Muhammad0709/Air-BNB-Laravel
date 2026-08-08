@@ -21,4 +21,8 @@ return [
     'payment_paid' => 'پرداخت‌شده',
     'payment_pending' => 'در انتظار پرداخت',
     'payment_unpaid' => 'پرداخت‌نشده',
+    'security_deposit' => 'ودیعه امنیتی',
+    'deposit_held' => 'نگه‌داشته‌شده',
+    'deposit_returned' => 'بازگردانده‌شده',
+    'deposit_disputed' => 'مورد اختلاف',
 ];

@@ -21,4 +21,8 @@ return [
     'payment_paid' => 'Ödendi',
     'payment_pending' => 'Ödeme bekleniyor',
     'payment_unpaid' => 'Ödenmedi',
+    'security_deposit' => 'Güvenlik depozitosu',
+    'deposit_held' => 'Tutuluyor',
+    'deposit_returned' => 'İade edildi',
+    'deposit_disputed' => 'İtiraz edildi',
 ];

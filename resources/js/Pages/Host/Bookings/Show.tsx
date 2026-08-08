@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, Chip, Divider, FormControl, MenuItem, Select, Stack, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Chip, Divider, FormControl, MenuItem, Paper, Select, Stack, TextField, Typography } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import { Head, router, usePage } from '@inertiajs/react'
@@ -11,31 +11,95 @@ import HotelIcon from '@mui/icons-material/Hotel'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import EmailIcon from '@mui/icons-material/Email'
 import PhoneIcon from '@mui/icons-material/Phone'
+import StarIcon from '@mui/icons-material/Star'
 import { useState } from 'react'
 import Toast from '../../../components/shared/Toast'
 
 export default function ShowBooking() {
   const { t } = useLanguage()
-  const { booking } = usePage().props as { booking: {
-    id: string
-    reference: string
-    guest: string
-    guestEmail: string
-    guestPhone: string
-    property: string
-    propertyLocation: string
-    checkin: string
-    checkout: string
-    status: string
-    paymentStatus: string
-    amount: string
-    nights: number
-    createdAt: string
-  } }
+  const { booking, canReviewGuest, guestReview, canManageDeposit } = usePage().props as {
+    booking: {
+      id: string
+      reference: string
+      guest: string
+      guestEmail: string
+      guestPhone: string
+      property: string
+      propertyLocation: string
+      checkin: string
+      checkout: string
+      status: string
+      paymentStatus: string
+      amount: string
+      nights: number
+      createdAt: string
+      depositAmount: number
+      depositStatus: string | null
+      depositDisputeReason: string | null
+    }
+    canReviewGuest: boolean
+    guestReview: { rating: number; comment: string | null; createdAt: string } | null
+    canManageDeposit: boolean
+  }
   const id = booking?.id ?? ''
 
   const [currentStatus, setCurrentStatus] = useState(booking.status)
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
+  const [reviewRating, setReviewRating] = useState(0)
+  const [reviewComment, setReviewComment] = useState('')
+  const [reviewSubmitting, setReviewSubmitting] = useState(false)
+  const [reviewErrors, setReviewErrors] = useState<Record<string, string>>({})
+  const [submittedReview, setSubmittedReview] = useState(guestReview)
+  const [depositStatus, setDepositStatus] = useState(booking.depositStatus)
+  const [depositDisputeReason, setDepositDisputeReason] = useState(booking.depositDisputeReason)
+  const [showDisputeForm, setShowDisputeForm] = useState(false)
+  const [disputeReasonInput, setDisputeReasonInput] = useState('')
+  const [depositSubmitting, setDepositSubmitting] = useState(false)
+  const [depositErrors, setDepositErrors] = useState<Record<string, string>>({})
+
+  const handleMarkDepositReturned = () => {
+    setDepositSubmitting(true)
+    router.patch(`/host/bookings/${id}/deposit`, { deposit_status: 'returned' }, {
+      preserveScroll: true,
+      onSuccess: () => {
+        setDepositStatus('returned')
+        setToast({ open: true, message: t('host.bookings.deposit_status_updated'), severity: 'success' })
+      },
+      onFinish: () => setDepositSubmitting(false),
+    })
+  }
+
+  const handleSubmitDeposit = (e: React.FormEvent) => {
+    e.preventDefault()
+    setDepositSubmitting(true)
+    setDepositErrors({})
+    router.patch(`/host/bookings/${id}/deposit`, { deposit_status: 'disputed', deposit_dispute_reason: disputeReasonInput }, {
+      preserveScroll: true,
+      onSuccess: () => {
+        setDepositStatus('disputed')
+        setDepositDisputeReason(disputeReasonInput)
+        setShowDisputeForm(false)
+        setToast({ open: true, message: t('host.bookings.deposit_status_updated'), severity: 'success' })
+      },
+      onError: (errors) => setDepositErrors(errors as Record<string, string>),
+      onFinish: () => setDepositSubmitting(false),
+    })
+  }
+
+  const handleSubmitGuestReview = (e: React.FormEvent) => {
+    e.preventDefault()
+    setReviewSubmitting(true)
+    setReviewErrors({})
+    router.post(`/host/bookings/${id}/review`, { rating: reviewRating, comment: reviewComment }, {
+      preserveScroll: true,
+      onSuccess: () => {
+        setSubmittedReview({ rating: reviewRating, comment: reviewComment, createdAt: new Date().toISOString().slice(0, 10) })
+        setToast({ open: true, message: t('host.bookings.guest_review_submitted'), severity: 'success' })
+      },
+      onError: (errors) => setReviewErrors(errors as Record<string, string>),
+      onFinish: () => setReviewSubmitting(false),
+    })
+  }
 
   const statusColors = {
     Confirmed: '#10B981',
@@ -326,6 +390,179 @@ export default function ShowBooking() {
           </Card>
         </Col>
       </Row>
+
+      {booking.depositAmount > 0 && (
+        <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, mb: 3 }}>
+          <CardContent sx={{ p: { xs: 2, md: 4 } }}>
+            <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} spacing={2} sx={{ mb: depositStatus === 'disputed' && depositDisputeReason ? 2 : 0 }}>
+              <Box>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 0.5 }}>
+                  {t('host.bookings.security_deposit')}
+                </Typography>
+                <Typography sx={{ color: '#717171', fontSize: 14 }}>
+                  ${Number(booking.depositAmount).toFixed(2)}
+                </Typography>
+              </Box>
+              <Stack direction="row" spacing={1.5} alignItems="center">
+                <Chip
+                  label={
+                    depositStatus === 'returned' ? t('host.bookings.deposit_returned') :
+                    depositStatus === 'disputed' ? t('host.bookings.deposit_disputed') :
+                    t('host.bookings.deposit_held')
+                  }
+                  size="small"
+                  sx={{
+                    bgcolor: `${depositStatus === 'returned' ? '#10B981' : depositStatus === 'disputed' ? '#EF4444' : '#F59E0B'}15`,
+                    color: depositStatus === 'returned' ? '#10B981' : depositStatus === 'disputed' ? '#EF4444' : '#F59E0B',
+                    fontWeight: 600,
+                  }}
+                />
+                {canManageDeposit && depositStatus === 'held' && !showDisputeForm && (
+                  <>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      disabled={depositSubmitting}
+                      onClick={handleMarkDepositReturned}
+                      sx={{ borderColor: '#D0D5DD', color: '#344054', textTransform: 'none', '&:hover': { borderColor: '#D0D5DD', bgcolor: '#F9FAFB' } }}
+                    >
+                      {t('host.bookings.mark_deposit_returned')}
+                    </Button>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      disabled={depositSubmitting}
+                      onClick={() => setShowDisputeForm(true)}
+                      sx={{ borderColor: '#FCA5A5', color: '#EF4444', textTransform: 'none', '&:hover': { borderColor: '#FCA5A5', bgcolor: '#FEF2F2' } }}
+                    >
+                      {t('host.bookings.dispute_deposit')}
+                    </Button>
+                  </>
+                )}
+              </Stack>
+            </Stack>
+
+            {depositStatus === 'disputed' && depositDisputeReason && (
+              <Typography sx={{ color: '#991B1B', fontSize: 13, bgcolor: '#FEF2F2', p: 1.5, borderRadius: 1 }}>
+                {depositDisputeReason}
+              </Typography>
+            )}
+
+            {showDisputeForm && (
+              <Box component="form" onSubmit={handleSubmitDeposit} sx={{ mt: 2 }}>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={2}
+                  value={disputeReasonInput}
+                  onChange={(e) => setDisputeReasonInput(e.target.value)}
+                  placeholder={t('host.bookings.dispute_reason_placeholder')}
+                  size="small"
+                  error={Boolean(depositErrors.deposit_dispute_reason)}
+                  helperText={depositErrors.deposit_dispute_reason}
+                  sx={{ mb: 1.5, '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+                />
+                <Stack direction="row" spacing={1.5}>
+                  <Button
+                    type="submit"
+                    size="small"
+                    variant="contained"
+                    disabled={depositSubmitting || !disputeReasonInput.trim()}
+                    sx={{ bgcolor: '#EF4444', textTransform: 'none', fontWeight: 600, '&:hover': { bgcolor: '#DC2626' } }}
+                  >
+                    {t('host.bookings.submit_dispute')}
+                  </Button>
+                  <Button
+                    size="small"
+                    onClick={() => { setShowDisputeForm(false); setDisputeReasonInput('') }}
+                    sx={{ color: '#717171', textTransform: 'none' }}
+                  >
+                    {t('host.bookings.cancel')}
+                  </Button>
+                </Stack>
+              </Box>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {submittedReview ? (
+        <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2, mb: 3 }}>
+          <CardContent sx={{ p: { xs: 2, md: 4 } }}>
+            <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 2 }}>
+              {t('host.bookings.your_review_of_guest')}
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 0.25, mb: 1.5 }}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <StarIcon key={star} sx={{ fontSize: 24, color: star <= submittedReview.rating ? '#ffc107' : '#e9ecef' }} />
+              ))}
+            </Box>
+            {submittedReview.comment && (
+              <Typography sx={{ color: '#4A5568', fontSize: 14, mb: 1 }}>{submittedReview.comment}</Typography>
+            )}
+            <Typography sx={{ color: '#9CA3AF', fontSize: 12 }}>
+              {new Date(submittedReview.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            </Typography>
+          </CardContent>
+        </Card>
+      ) : canReviewGuest ? (
+        <Paper component="form" onSubmit={handleSubmitGuestReview} elevation={0} sx={{ p: { xs: 2, md: 4 }, border: '1px solid #E5E7EB', borderRadius: 2, mb: 3 }}>
+          <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 2 }}>
+            {t('host.bookings.review_guest')}
+          </Typography>
+          <Box sx={{ mb: 2 }}>
+            <Box sx={{ display: 'flex', gap: 0.25 }}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Box
+                  key={star}
+                  component="button"
+                  type="button"
+                  onClick={() => setReviewRating(star)}
+                  sx={{
+                    p: 0,
+                    border: 'none',
+                    background: 'none',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    '&:hover .guest-review-star': { color: '#ffdb4d' },
+                    '&:focus': { outline: 'none' },
+                  }}
+                  aria-label={`${star} ${star === 1 ? 'star' : 'stars'}`}
+                >
+                  <StarIcon
+                    className="guest-review-star"
+                    sx={{ fontSize: 32, color: star <= reviewRating ? '#ffc107' : '#e9ecef', transition: 'color 0.2s' }}
+                  />
+                </Box>
+              ))}
+            </Box>
+            {reviewErrors.rating && <Typography sx={{ color: '#d32f2f', fontSize: '0.75rem', mt: 0.5 }}>{reviewErrors.rating}</Typography>}
+          </Box>
+          <TextField
+            fullWidth
+            multiline
+            rows={3}
+            value={reviewComment}
+            onChange={(e) => setReviewComment(e.target.value)}
+            placeholder={t('host.bookings.review_guest_placeholder')}
+            variant="outlined"
+            size="small"
+            inputProps={{ maxLength: 2000 }}
+            error={Boolean(reviewErrors.comment)}
+            helperText={reviewErrors.comment}
+            sx={{ mb: 2, '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={reviewSubmitting || reviewRating < 1}
+            sx={{ bgcolor: '#AD542D', '&:hover': { bgcolor: '#78381C' }, textTransform: 'none', fontWeight: 600 }}
+          >
+            {reviewSubmitting ? '...' : t('host.bookings.submit_guest_review')}
+          </Button>
+        </Paper>
+      ) : null}
       </HostLayout>
 
       <Toast

@@ -14,6 +14,8 @@ return [
     'select_property' => 'Select a property',
     'house_rules' => 'House Rules',
     'cancellation_policy' => 'Cancellation Policy',
+    'security_deposit' => 'Security Deposit',
+    'security_deposit_description' => 'Refundable deposit, held until after checkout and returned if there\'s no damage.',
     'price_details' => 'Price Details',
     'number_of_rooms' => 'Number of Rooms',
     'room' => 'room',

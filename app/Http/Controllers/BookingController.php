@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreBookingRequest;
 use App\Enums\BookingStatus;
 use App\Enums\CancellationPolicy;
+use App\Enums\DepositStatus;
 use App\Enums\PropertyStatus;
 use App\Enums\UserType;
 use App\Models\Booking;
@@ -86,6 +87,7 @@ class BookingController extends Controller
         $costs = [];
         $totalAmount = 0;
         $cancellationPolicy = CancellationPolicy::MODERATE;
+        $depositAmount = 0;
         $rules = [
             'Check-in: 3:00 PM - 10:00 PM',
             'Check-out: 11:00 AM',
@@ -103,6 +105,7 @@ class BookingController extends Controller
 
             if ($property) {
                 $cancellationPolicy = CancellationPolicy::tryFrom($property->cancellation_policy ?? '') ?? CancellationPolicy::MODERATE;
+                $depositAmount = (float) ($property->deposit_amount ?? 0);
                 $image = $property->getPrimaryImageUrl() ?? '/images/popular-stay-1.svg';
 
                 try {
@@ -163,6 +166,7 @@ class BookingController extends Controller
             'rules' => $rules,
             'cancellationPolicy' => $cancellationPolicy->value,
             'cancellationPolicyDescription' => $cancellationPolicy->description(),
+            'depositAmount' => $depositAmount,
             'guestPrefill' => $guestPrefill,
         ]);
     }
@@ -239,6 +243,7 @@ class BookingController extends Controller
         $serviceFeePercent = 10;
         $serviceFee = round($subtotal * ($serviceFeePercent / 100), 2);
         $totalAmount = round($subtotal + $cleaningFee + $serviceFee, 2);
+        $depositAmount = (float) ($property->deposit_amount ?? 0);
 
         $user = Auth::user();
         if (! $user) {
@@ -272,9 +277,11 @@ class BookingController extends Controller
             'cleaning_fee' => $cleaningFee,
             'service_fee' => $serviceFee,
             'total_amount' => $totalAmount,
+            'deposit_amount' => $depositAmount,
+            'deposit_status' => $depositAmount > 0 ? DepositStatus::HELD->value : null,
             'status' => BookingStatus::PENDING,
         ]);
-        
+
         // Send notification to property host
         $host = $property->user;
         if ($host) {

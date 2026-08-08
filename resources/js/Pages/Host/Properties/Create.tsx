@@ -29,6 +29,7 @@ export default function AddProperty() {
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
     cancellation_policy: 'moderate',
     price: '',
+    deposit_amount: '',
     bedrooms: '',
     bathrooms: '',
     guests: '',
@@ -85,6 +86,7 @@ export default function AddProperty() {
     submitData.append('timezone', formData.timezone)
     submitData.append('cancellation_policy', formData.cancellation_policy)
     submitData.append('price', formData.price)
+    submitData.append('deposit_amount', formData.deposit_amount || '0')
     submitData.append('bedrooms', formData.bedrooms)
     submitData.append('bathrooms', formData.bathrooms)
     submitData.append('guests', formData.guests)
@@ -205,6 +207,20 @@ export default function AddProperty() {
                     }}
                   />
                   <InputError message={err('price')} />
+                  <TextField
+                    label={t('host.properties.deposit_amount')}
+                    name="deposit_amount"
+                    type="number"
+                    value={formData.deposit_amount}
+                    onChange={handleChange}
+                    fullWidth
+                    error={!!err('deposit_amount')}
+                    helperText={t('host.properties.deposit_amount_hint')}
+                    InputProps={{
+                      startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#6B7280' }}>$</Typography>
+                    }}
+                  />
+                  <InputError message={err('deposit_amount')} />
                 </Stack>
               </Col>
               <Col xs={12} md={6}>

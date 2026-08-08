@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Enums\BookingStatus;
+use App\Enums\DepositStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Str;
 
 class Booking extends Model
@@ -27,6 +29,9 @@ class Booking extends Model
         'cleaning_fee',
         'service_fee',
         'total_amount',
+        'deposit_amount',
+        'deposit_status',
+        'deposit_dispute_reason',
         'status',
     ];
 
@@ -37,6 +42,8 @@ class Booking extends Model
         'cleaning_fee' => 'decimal:2',
         'service_fee' => 'decimal:2',
         'total_amount' => 'decimal:2',
+        'deposit_amount' => 'decimal:2',
+        'deposit_status' => DepositStatus::class,
         'rooms' => 'integer',
         'adults' => 'integer',
         'children' => 'integer',
@@ -88,6 +95,14 @@ class Booking extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the host's review of the guest for this booking, if one exists.
+     */
+    public function guestReview(): HasOne
+    {
+        return $this->hasOne(GuestReview::class);
     }
 
     /**

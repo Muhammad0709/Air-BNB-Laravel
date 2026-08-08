@@ -35,6 +35,7 @@ class StoreHostPropertyRequest extends FormRequest
             'bathrooms' => ['required', 'integer', 'min:1'],
             'guests' => ['required', 'integer', 'min:1'],
             'price' => ['required', 'numeric', 'min:0'],
+            'deposit_amount' => ['nullable', 'numeric', 'min:0'],
             'location' => ['required', 'string', 'max:255'],
             'timezone' => ['nullable', 'timezone'],
             'cancellation_policy' => ['nullable', 'in:' . implode(',', CancellationPolicy::values())],

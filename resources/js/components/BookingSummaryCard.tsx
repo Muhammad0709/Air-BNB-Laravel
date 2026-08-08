@@ -10,9 +10,10 @@ interface BookingSummaryCardProps {
   totalAmount: string
   cancellationPolicyLabel?: string
   cancellationPolicyDescription?: string
+  depositAmount?: string
 }
 
-export default function BookingSummaryCard({ rules, costs, totalLabel, totalAmount, cancellationPolicyLabel, cancellationPolicyDescription }: BookingSummaryCardProps) {
+export default function BookingSummaryCard({ rules, costs, totalLabel, totalAmount, cancellationPolicyLabel, cancellationPolicyDescription, depositAmount }: BookingSummaryCardProps) {
   const { t } = useLanguage()
   const label = totalLabel ?? t('booking.total')
   return (
@@ -47,6 +48,25 @@ export default function BookingSummaryCard({ rules, costs, totalLabel, totalAmou
           <Typography variant="body2" sx={{ color: '#6B7280', lineHeight: 1.5 }}>
             {cancellationPolicyDescription}
           </Typography>
+        </>
+      )}
+
+      {depositAmount && (
+        <>
+          <Divider sx={{ my: 3 }} />
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 2 }}>
+            <Box>
+              <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 0.5 }}>
+                {t('booking.security_deposit')}
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#6B7280', lineHeight: 1.5, maxWidth: 340 }}>
+                {t('booking.security_deposit_description')}
+              </Typography>
+            </Box>
+            <Typography variant="body2" sx={{ color: '#111827', fontWeight: 600, whiteSpace: 'nowrap' }}>
+              {depositAmount}
+            </Typography>
+          </Box>
         </>
       )}
 

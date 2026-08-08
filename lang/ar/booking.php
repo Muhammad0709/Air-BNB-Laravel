@@ -14,6 +14,8 @@ return [
     'select_property' => 'اختر عقاراً',
     'house_rules' => 'قواعد المنزل',
     'cancellation_policy' => 'سياسة الإلغاء',
+    'security_deposit' => 'التأمين',
+    'security_deposit_description' => 'تأمين قابل للاسترداد، يُحتجز حتى بعد المغادرة ويُرجع في حال عدم وجود أضرار.',
     'price_details' => 'تفاصيل السعر',
     'number_of_rooms' => 'عدد الغرف',
     'room' => 'غرفة',

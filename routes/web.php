@@ -169,6 +169,8 @@ Route::prefix('host')->name('host.')->middleware('host')->group(function () {
     Route::get('/bookings/{id}/edit', [HostBookingController::class, 'edit'])->name('bookings.edit');
     Route::put('/bookings/{id}', [HostBookingController::class, 'update'])->name('bookings.update');
     Route::patch('/bookings/{id}/status', [HostBookingController::class, 'updateStatus'])->name('bookings.updateStatus');
+    Route::post('/bookings/{id}/review', [HostBookingController::class, 'storeGuestReview'])->name('bookings.review');
+    Route::patch('/bookings/{id}/deposit', [HostBookingController::class, 'updateDepositStatus'])->name('bookings.deposit');
     Route::get('/earnings', [EarningsController::class, 'index'])->name('earnings.index');
     Route::get('/earnings/show/{id}', [EarningsController::class, 'show'])->name('earnings.show');
     Route::get('/settings', [HostSettingsController::class, 'index'])->name('settings.index');

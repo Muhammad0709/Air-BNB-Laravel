@@ -14,6 +14,8 @@ return [
     'select_property' => 'یک ملک انتخاب کنید',
     'house_rules' => 'قوانین خانه',
     'cancellation_policy' => 'سیاست لغو رزرو',
+    'security_deposit' => 'ودیعه امنیتی',
+    'security_deposit_description' => 'ودیعه قابل بازگشت، تا پس از خروج نگه‌داشته می‌شود و در صورت نبود خسارت بازگردانده می‌شود.',
     'price_details' => 'جزئیات قیمت',
     'number_of_rooms' => 'تعداد اتاق‌ها',
     'room' => 'اتاق',

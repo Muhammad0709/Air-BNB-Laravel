@@ -14,6 +14,8 @@ return [
     'select_property' => 'جائیداد منتخب کریں',
     'house_rules' => 'گھر کے اصول',
     'cancellation_policy' => 'منسوخی کی پالیسی',
+    'security_deposit' => 'سیکیورٹی ڈپازٹ',
+    'security_deposit_description' => 'قابل واپسی ڈپازٹ، چیک آؤٹ کے بعد تک روکا جاتا ہے اور نقصان نہ ہونے کی صورت میں واپس کر دیا جاتا ہے۔',
     'price_details' => 'قیمت کی تفصیلات',
     'number_of_rooms' => 'کمروں کی تعداد',
     'room' => 'کمرہ',

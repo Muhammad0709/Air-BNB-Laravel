@@ -110,6 +110,7 @@ class PropertyController extends Controller
         $validated['user_id'] = $host->id;
         $validated['timezone'] = $validated['timezone'] ?? 'UTC';
         $validated['cancellation_policy'] = $validated['cancellation_policy'] ?? CancellationPolicy::MODERATE->value;
+        $validated['deposit_amount'] = $validated['deposit_amount'] ?? 0;
         $validated['status'] = 'Active';
         $validated['approval_status'] = PropertyStatus::PENDING->value;
         $validated['airport_pickup_enabled'] = $validated['airport_pickup_enabled'] ?? false;
@@ -194,6 +195,7 @@ class PropertyController extends Controller
         $validated['image'] = $imagePaths[0] ?? null;
         $validated['timezone'] = $validated['timezone'] ?? $property->timezone ?? 'UTC';
         $validated['cancellation_policy'] = $validated['cancellation_policy'] ?? $property->cancellation_policy ?? CancellationPolicy::MODERATE->value;
+        $validated['deposit_amount'] = $validated['deposit_amount'] ?? $property->deposit_amount ?? 0;
         $validated['approval_status'] = PropertyStatus::PENDING->value;
         $validated['airport_pickup_enabled'] = $validated['airport_pickup_enabled'] ?? false;
         $validated['guided_tours_enabled'] = $validated['guided_tours_enabled'] ?? false;

@@ -21,4 +21,8 @@ return [
     'payment_paid' => 'Paid',
     'payment_pending' => 'Payment pending',
     'payment_unpaid' => 'Unpaid',
+    'security_deposit' => 'Security deposit',
+    'deposit_held' => 'Held',
+    'deposit_returned' => 'Returned',
+    'deposit_disputed' => 'Disputed',
 ];

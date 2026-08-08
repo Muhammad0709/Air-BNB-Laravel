@@ -21,4 +21,8 @@ return [
     'payment_paid' => 'ادا شدہ',
     'payment_pending' => 'ادائیگی زیر التوا',
     'payment_unpaid' => 'ادا نہیں ہوئی',
+    'security_deposit' => 'سیکیورٹی ڈپازٹ',
+    'deposit_held' => 'روکا گیا',
+    'deposit_returned' => 'واپس کر دیا گیا',
+    'deposit_disputed' => 'تنازعہ',
 ];

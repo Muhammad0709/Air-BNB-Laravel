@@ -70,6 +70,7 @@ class ConfirmationController extends Controller
         ];
 
         $cancellationPolicy = CancellationPolicy::tryFrom($property->cancellation_policy ?? '') ?? CancellationPolicy::MODERATE;
+        $depositAmount = (float) ($property->deposit_amount ?? 0);
 
         $bookingReference = null;
         $bookingStatus = null;
@@ -108,6 +109,7 @@ class ConfirmationController extends Controller
             'cancellationPolicyDescription' => $cancellationPolicy->description(),
             'bookingReference' => $bookingReference,
             'bookingStatus' => $bookingStatus,
+            'depositAmount' => $depositAmount,
         ]);
     }
 }

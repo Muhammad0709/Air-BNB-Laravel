@@ -21,4 +21,8 @@ return [
     'payment_paid' => 'Dayî',
     'payment_pending' => 'Dayîn li benda',
     'payment_unpaid' => 'Nedayî',
+    'security_deposit' => 'Bareya ewlehiyê',
+    'deposit_held' => 'Hatiye girtin',
+    'deposit_returned' => 'Hatiye vegerandin',
+    'deposit_disputed' => 'Nakok e',
 ];

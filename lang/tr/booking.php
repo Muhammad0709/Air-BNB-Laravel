@@ -14,6 +14,8 @@ return [
     'select_property' => 'Bir mülk seçin',
     'house_rules' => 'Ev kuralları',
     'cancellation_policy' => 'İptal Politikası',
+    'security_deposit' => 'Güvenlik Depozitosu',
+    'security_deposit_description' => 'İade edilebilir depozito, çıkıştan sonrasına kadar tutulur ve hasar yoksa iade edilir.',
     'price_details' => 'Fiyat detayları',
     'number_of_rooms' => 'Oda sayısı',
     'room' => 'oda',

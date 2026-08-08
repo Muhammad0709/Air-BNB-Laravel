@@ -14,6 +14,8 @@ return [
     'select_property' => 'Malek hilbijêrin',
     'house_rules' => 'Rêzikên malê',
     'cancellation_policy' => 'Siyaseta betalkirinê',
+    'security_deposit' => 'Bareya ewlehiyê',
+    'security_deposit_description' => 'Bareyeke vegerandî, heta piştî derketinê tê girtin û heke zirar tune be tê vegerandin.',
     'price_details' => 'Detayên bihayê',
     'number_of_rooms' => 'Hejmara odeyan',
     'room' => 'ode',

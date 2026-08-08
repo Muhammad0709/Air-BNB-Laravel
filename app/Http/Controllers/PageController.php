@@ -113,6 +113,8 @@ class PageController extends Controller
                 'statusLabel' => $booking->status->label(),
                 'paymentStatus' => $booking->payment_status,
                 'bookedOn' => $booking->created_at->format('Y-m-d'),
+                'depositAmount' => (float) $booking->deposit_amount,
+                'depositStatus' => $booking->deposit_status?->value,
             ],
         ]);
     }

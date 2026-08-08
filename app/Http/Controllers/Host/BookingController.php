@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\Host;
 
+use App\Enums\BookingStatus;
+use App\Enums\DepositStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Host\StoreBookingRequest;
+use App\Http\Requests\Host\StoreGuestReviewRequest;
 use App\Http\Requests\Host\UpdateBookingRequest;
 use App\Http\Requests\Host\UpdateBookingStatusRequest;
+use App\Http\Requests\Host\UpdateDepositStatusRequest;
 use App\Models\Booking;
+use App\Models\GuestReview;
 use App\Models\Property;
 use App\Models\User;
 use Carbon\Carbon;
@@ -84,6 +89,7 @@ class BookingController extends Controller
         $subtotal = $nightlyRate * $nights;
         $cleaningFee = 25.00;
         $serviceFee = round($subtotal * 0.12, 2);
+        $depositAmount = (float) ($property->deposit_amount ?? 0);
 
         $phone = $v['phone'];
         $phoneCode = '+1';
@@ -119,6 +125,8 @@ class BookingController extends Controller
             'cleaning_fee' => $cleaningFee,
             'service_fee' => $serviceFee,
             'total_amount' => $totalAmount,
+            'deposit_amount' => $depositAmount,
+            'deposit_status' => $depositAmount > 0 ? DepositStatus::HELD->value : null,
             'status' => $status,
             'rooms' => 1,
             'adults' => 1,
@@ -132,7 +140,7 @@ class BookingController extends Controller
     {
         $propertyIds = Property::where('user_id', Auth::id())->pluck('id');
 
-        $booking = Booking::with('property:id,title,location')
+        $booking = Booking::with(['property:id,title,location', 'guestReview'])
             ->where('id', $id)
             ->whereIn('property_id', $propertyIds)
             ->firstOrFail();
@@ -155,8 +163,66 @@ class BookingController extends Controller
                 'amount' => '$' . number_format((float) $booking->total_amount, 2),
                 'nights' => $booking->nights,
                 'createdAt' => $booking->created_at->format('Y-m-d'),
+                'depositAmount' => (float) $booking->deposit_amount,
+                'depositStatus' => $booking->deposit_status?->value,
+                'depositDisputeReason' => $booking->deposit_dispute_reason,
             ],
+            'canReviewGuest' => $booking->status === BookingStatus::COMPLETED
+                && $booking->user_id !== null
+                && ! $booking->guestReview,
+            'guestReview' => $booking->guestReview ? [
+                'rating' => $booking->guestReview->rating,
+                'comment' => $booking->guestReview->comment,
+                'createdAt' => $booking->guestReview->created_at->format('Y-m-d'),
+            ] : null,
+            'canManageDeposit' => (float) $booking->deposit_amount > 0
+                && $booking->status === BookingStatus::COMPLETED
+                && $booking->deposit_status === DepositStatus::HELD,
         ]);
+    }
+
+    public function updateDepositStatus(UpdateDepositStatusRequest $request, string $id)
+    {
+        $propertyIds = Property::where('user_id', Auth::id())->pluck('id');
+
+        $booking = Booking::where('id', $id)
+            ->whereIn('property_id', $propertyIds)
+            ->firstOrFail();
+
+        abort_unless((float) $booking->deposit_amount > 0, 403, 'This booking has no deposit to manage.');
+        abort_unless($booking->deposit_status === DepositStatus::HELD, 403, 'This deposit has already been resolved.');
+
+        $booking->update([
+            'deposit_status' => $request->validated('deposit_status'),
+            'deposit_dispute_reason' => $request->validated('deposit_status') === DepositStatus::DISPUTED->value
+                ? $request->validated('deposit_dispute_reason')
+                : null,
+        ]);
+
+        return redirect()->back()->with('success', __('host.bookings.deposit_status_updated'));
+    }
+
+    public function storeGuestReview(StoreGuestReviewRequest $request, string $id)
+    {
+        $propertyIds = Property::where('user_id', Auth::id())->pluck('id');
+
+        $booking = Booking::where('id', $id)
+            ->whereIn('property_id', $propertyIds)
+            ->firstOrFail();
+
+        abort_unless($booking->status === BookingStatus::COMPLETED, 403, 'Only completed stays can be reviewed.');
+        abort_unless($booking->user_id, 403, 'This booking has no registered guest to review.');
+        abort_if($booking->guestReview()->exists(), 403, 'This guest has already been reviewed for this booking.');
+
+        GuestReview::create([
+            'booking_id' => $booking->id,
+            'host_id' => Auth::id(),
+            'guest_id' => $booking->user_id,
+            'rating' => $request->validated('rating'),
+            'comment' => $request->validated('comment'),
+        ]);
+
+        return redirect()->back()->with('success', __('host.bookings.guest_review_submitted'));
     }
 
     public function edit(string $id)

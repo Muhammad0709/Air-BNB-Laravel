@@ -21,4 +21,8 @@ return [
     'payment_paid' => 'مدفوع',
     'payment_pending' => 'الدفع معلق',
     'payment_unpaid' => 'غير مدفوع',
+    'security_deposit' => 'التأمين',
+    'deposit_held' => 'محتجز',
+    'deposit_returned' => 'تم الإرجاع',
+    'deposit_disputed' => 'محل نزاع',
 ];
