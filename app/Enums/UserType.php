@@ -7,4 +7,5 @@ enum UserType: string
     case USER = 'User';
     case ADMIN = 'Admin';
     case HOST = 'Host';
+    case MODERATOR = 'Moderator';
 }

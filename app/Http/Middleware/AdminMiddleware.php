@@ -23,8 +23,8 @@ class AdminMiddleware
             return redirect()->route('login')->with('error', 'Please login to access admin panel.');
         }
 
-        // Check if authenticated user is an admin
-        if (Auth::user()->type !== UserType::ADMIN) {
+        // Check if authenticated user is an admin or moderator
+        if (! in_array(Auth::user()->type, [UserType::ADMIN, UserType::MODERATOR], true)) {
             Auth::logout();
             return redirect()->route('login')->with('error', 'Access denied. Admin privileges required.');
         }

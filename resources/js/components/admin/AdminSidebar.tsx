@@ -34,15 +34,18 @@ export default function AdminSidebar({ sidebarOpen, onNavigate }: AdminSidebarPr
     router.visit(path, { onFinish: () => onNavigate?.() })
   }
 
+  const authUser = (usePage().props as any)?.auth?.user
+  const isModerator = authUser?.type === 'Moderator'
+
   const menuItems = [
     { labelKey: 'admin.sidebar.dashboard', icon: DashboardIcon, path: '/admin/dashboard', onClick: () => handleNav('/admin/dashboard') },
-    { labelKey: 'admin.sidebar.users', icon: PeopleIcon, path: '/admin/users', onClick: () => handleNav('/admin/users') },
+    ...(isModerator ? [] : [{ labelKey: 'admin.sidebar.users', icon: PeopleIcon, path: '/admin/users', onClick: () => handleNav('/admin/users') }]),
     { labelKey: 'admin.sidebar.properties', icon: HotelIcon, path: '/admin/properties', onClick: () => handleNav('/admin/properties') },
     { labelKey: 'admin.sidebar.bookings', icon: BookOnlineIcon, path: '/admin/bookings', onClick: () => handleNav('/admin/bookings') },
     { labelKey: 'admin.sidebar.history', icon: HistoryIcon, path: '/admin/history', onClick: () => handleNav('/admin/history') },
     { labelKey: 'admin.sidebar.notifications', icon: NotificationsIcon, path: '/admin/notifications', onClick: () => handleNav('/admin/notifications') },
     { labelKey: 'admin.sidebar.contact_messages', icon: ContactMailIcon, path: '/admin/contacts', onClick: () => handleNav('/admin/contacts') },
-    { labelKey: 'admin.sidebar.audit_logs', icon: FactCheckIcon, path: '/admin/audit-logs', onClick: () => handleNav('/admin/audit-logs') },
+    ...(isModerator ? [] : [{ labelKey: 'admin.sidebar.audit_logs', icon: FactCheckIcon, path: '/admin/audit-logs', onClick: () => handleNav('/admin/audit-logs') }]),
     // { labelKey: 'admin.sidebar.support_tickets', icon: SupportAgentIcon, path: '/admin/support-tickets', onClick: () => handleNav('/admin/support-tickets') },
     { labelKey: 'admin.sidebar.system_settings', icon: SettingsIcon, path: '/admin/settings', onClick: () => handleNav('/admin/settings') },
   ]

@@ -134,14 +134,21 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::patch('/properties/{property}/approve', [PropertyController::class, 'approve'])->name('properties.approve');
     Route::patch('/properties/{property}/reject', [PropertyController::class, 'reject'])->name('properties.reject');
     Route::delete('/reviews/{review}', [\App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('reviews.destroy');
-    Route::resource('users', UserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
+
+    // Full-admin-only: staff/user management, audit trail, and system configuration are off-limits to moderators.
+    Route::middleware('admin.only')->group(function () {
+        Route::resource('users', UserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
+        Route::get('/audit-logs', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit-logs.index');
+        Route::get('/settings/configuration', [AdminSettingsController::class, 'configuration'])->name('settings.configuration');
+        Route::put('/settings/configuration', [AdminSettingsController::class, 'updateConfiguration'])->name('settings.configuration.update');
+    });
+
     Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings.index');
     Route::get('/bookings/create', [AdminBookingController::class, 'create'])->name('bookings.create');
     Route::get('/bookings/{id}', [AdminBookingController::class, 'show'])->name('bookings.show');
     Route::get('/bookings/{id}/edit', [AdminBookingController::class, 'edit'])->name('bookings.edit');
     Route::get('/history', [AdminHistoryController::class, 'index'])->name('history.index');
     Route::get('/history/{user}', [AdminHistoryController::class, 'show'])->name('history.show');
-    Route::get('/audit-logs', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit-logs.index');
     Route::get('/contacts', [AdminContactController::class, 'index'])->name('contacts.index');
     Route::get('/contacts/{contact}', [AdminContactController::class, 'show'])->name('contacts.show');
     Route::get('/support-tickets', [SupportTicketController::class, 'index'])->name('support-tickets.index');
@@ -150,10 +157,8 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/support-tickets/{id}/edit', [SupportTicketController::class, 'edit'])->name('support-tickets.edit');
     Route::get('/settings', [AdminSettingsController::class, 'index'])->name('settings.index');
     Route::get('/settings/profile', [AdminSettingsController::class, 'profile'])->name('settings.profile');
-    Route::get('/settings/configuration', [AdminSettingsController::class, 'configuration'])->name('settings.configuration');
     Route::get('/settings/password', [AdminSettingsController::class, 'password'])->name('settings.password');
     Route::put('/settings/profile', [AdminSettingsController::class, 'updateProfile'])->name('settings.profile.update');
-    Route::put('/settings/configuration', [AdminSettingsController::class, 'updateConfiguration'])->name('settings.configuration.update');
     Route::put('/settings/password', [AdminSettingsController::class, 'updatePassword'])->name('settings.password.update');
     Route::post('/settings/picture', [AdminSettingsController::class, 'uploadProfilePicture'])->name('settings.picture');
     

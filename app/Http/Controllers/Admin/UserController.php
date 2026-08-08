@@ -22,8 +22,8 @@ class UserController extends Controller
     {
         $query = User::query();
 
-        // Exclude admin users from the list
-        $query->where('type', '!=', UserType::ADMIN->value);
+        // Exclude admin and moderator (staff) accounts from the list
+        $query->whereNotIn('type', [UserType::ADMIN->value, UserType::MODERATOR->value]);
 
         // Search functionality
         if ($request->has('search') && $request->search) {

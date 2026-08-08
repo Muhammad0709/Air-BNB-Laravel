@@ -104,9 +104,12 @@ export default function ProfileSettings() {
   const getInitials = (name: string) => (name || '').split(' ').map(n => n[0]).join('').slice(0, 2)
   const profilePictureUrl = profileData.profileImage || user?.profile_picture || null
 
+  const authUser = (usePage().props as any)?.auth?.user
+  const isModerator = authUser?.type === 'Moderator'
+
   const mainTabs = [
     { id: 'profile', labelKey: 'admin.settings.profile', path: '/admin/settings/profile' },
-    { id: 'settings', labelKey: 'admin.settings.settings_tab', path: '/admin/settings/configuration' },
+    ...(isModerator ? [] : [{ id: 'settings', labelKey: 'admin.settings.settings_tab', path: '/admin/settings/configuration' }]),
   ]
   const currentMainTab = url.includes('configuration') ? 'settings' : 'profile'
 
