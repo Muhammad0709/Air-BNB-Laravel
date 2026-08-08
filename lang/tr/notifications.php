@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'title' => 'Bildirimler',
+    'subtitle' => 'Rezervasyonlarınız ve hesap etkinliğinizden haberdar olun',
+    'empty_title' => 'Henüz bildirim yok',
+    'empty_sub' => 'Rezervasyonlarınız ve hesabınızla ilgili güncellemeleri burada göreceksiniz.',
+    'mark_read' => 'Okundu olarak işaretle',
+    'unread' => 'Okunmadı',
     'property_pending_approval' => [
         'admin' => [
             'title' => 'Bekleyen Mülk',

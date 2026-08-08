@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'title' => 'Notifications',
+    'subtitle' => 'Stay updated on your bookings and account activity',
+    'empty_title' => 'No notifications yet',
+    'empty_sub' => "You'll see updates about your bookings and account here.",
+    'mark_read' => 'Mark as read',
+    'unread' => 'Unread',
     'property_pending_approval' => [
         'admin' => [
             'title' => 'Pending Property',
