@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'eyebrow' => 'Yolculuğunuz burada başlıyor',
     'title' => 'Hakkımızda',
     'subtitle' => 'Tercihlerinize uygun, rahat dairelerden lüks villalara ve otellere kadar çeşitli kiralama seçenekleri sunuyoruz.',
     'how_title' => 'Nasıl Çalışır',
@@ -21,4 +22,7 @@ return [
     'choose3_desc' => 'Esnek rezervasyon seçenekleri ve uzun konaklamalarda indirimlerin keyfini çıkarın.',
     'choose4_title' => 'Güvenilir Destek',
     'choose4_desc' => 'Müşteri destek ekibimiz her türlü soru veya endişeniz için yanınızda.',
+    'cta_title' => 'Bir Sonraki Konaklamanızı Ayırtmaya Hazır mısınız?',
+    'cta_sub' => 'Bizimle mükemmel konaklamalarını bulan binlerce mutlu gezgine katılın',
+    'cta_button' => 'İlanları Keşfedin',
 ];

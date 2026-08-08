@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'eyebrow' => 'Who we are',
     'title' => 'About us',
     'subtitle' => 'We offer a diverse selection of rentals, from cozy apartments to luxurious villas and hotels, tailored to your preferences.',
     'how_title' => 'How It Works',
@@ -21,4 +22,7 @@ return [
     'choose3_desc' => 'Enjoy flexible booking options and discounts for longer stays.',
     'choose4_title' => 'Reliable Support',
     'choose4_desc' => 'Our customer support team is available to assist you with any questions or concerns.',
+    'cta_title' => 'Ready to Book Your Next Stay?',
+    'cta_sub' => 'Join thousands of happy travelers who have found their perfect accommodations with us',
+    'cta_button' => 'Explore Listings',
 ];
