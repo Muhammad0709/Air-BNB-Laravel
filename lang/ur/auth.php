@@ -103,4 +103,17 @@ return [
         'have_account' => 'پہلے سے اکاؤنٹ ہے؟',
         'sign_in_link' => 'سائن ان',
     ],
+
+    'two_factor' => [
+        'title' => 'دو مرحلہ تصدیق',
+        'subtitle' => 'اپنی authenticator ایپ سے 6 ہندسوں کا کوڈ درج کریں۔',
+        'recovery_subtitle' => 'اپنے recovery کوڈز میں سے ایک درج کریں۔',
+        'code_placeholder' => '000000',
+        'recovery_code_placeholder' => 'XXXX-XXXX',
+        'verify' => 'تصدیق کریں',
+        'verifying' => 'تصدیق ہو رہی ہے...',
+        'use_recovery_code' => 'اس کے بجائے recovery کوڈ استعمال کریں',
+        'use_code_instead' => 'اس کے بجائے ایپ کا کوڈ استعمال کریں',
+        'invalid_code' => 'یہ کوڈ غلط ہے یا میعاد ختم ہو چکی ہے۔',
+    ],
 ];

@@ -30,6 +30,16 @@ class LoginController extends Controller
 
         if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             $user = Auth::user();
+
+            if ($user->hasTwoFactorEnabled()) {
+                $remember = $request->boolean('remember');
+                Auth::logout();
+                $request->session()->put('two_factor_challenge_user_id', $user->id);
+                $request->session()->put('two_factor_challenge_remember', $remember);
+
+                return redirect()->route('two-factor.challenge');
+            }
+
             $request->session()->regenerate();
 
             $msg = __('auth.signin.toast_signed_in');

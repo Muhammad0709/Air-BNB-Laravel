@@ -103,4 +103,17 @@ return [
         'have_account' => 'Already have an account?',
         'sign_in_link' => 'Sign In',
     ],
+
+    'two_factor' => [
+        'title' => 'Two-Factor Verification',
+        'subtitle' => 'Enter the 6-digit code from your authenticator app.',
+        'recovery_subtitle' => 'Enter one of your recovery codes.',
+        'code_placeholder' => '000000',
+        'recovery_code_placeholder' => 'XXXX-XXXX',
+        'verify' => 'Verify',
+        'verifying' => 'Verifying...',
+        'use_recovery_code' => 'Use a recovery code instead',
+        'use_code_instead' => 'Use an authenticator code instead',
+        'invalid_code' => 'That code is invalid or has expired.',
+    ],
 ];

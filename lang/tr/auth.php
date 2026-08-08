@@ -103,4 +103,17 @@ return [
         'have_account' => 'Zaten hesabınız var mı?',
         'sign_in_link' => 'Giriş yap',
     ],
+
+    'two_factor' => [
+        'title' => 'İki Adımlı Doğrulama',
+        'subtitle' => 'Kimlik doğrulama uygulamanızdaki 6 haneli kodu girin.',
+        'recovery_subtitle' => 'Kurtarma kodlarınızdan birini girin.',
+        'code_placeholder' => '000000',
+        'recovery_code_placeholder' => 'XXXX-XXXX',
+        'verify' => 'Doğrula',
+        'verifying' => 'Doğrulanıyor...',
+        'use_recovery_code' => 'Bunun yerine bir kurtarma kodu kullan',
+        'use_code_instead' => 'Bunun yerine uygulama kodu kullan',
+        'invalid_code' => 'Bu kod geçersiz veya süresi dolmuş.',
+    ],
 ];

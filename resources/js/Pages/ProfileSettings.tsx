@@ -19,6 +19,8 @@ type ProfilePageProps = {
   host_panel_preview?: boolean
   flash?: { success?: string; error?: string }
   errors?: Record<string, string | string[]>
+  twoFactorSetup?: { secret: string; qrCode: string } | null
+  twoFactorRecoveryCodes?: string[] | null
 }
 
 const switchSx = {
@@ -76,6 +78,16 @@ export default function ProfileSettings() {
     password: ''
   })
 
+  const { post: postEnable2fa, processing: enable2faProcessing } = useForm({})
+  const { data: confirm2faData, setData: setConfirm2faData, post: postConfirm2fa, processing: confirm2faProcessing, errors: confirm2faErrors, reset: resetConfirm2fa } = useForm({
+    code: ''
+  })
+  const { data: disable2faData, setData: setDisable2faData, delete: deleteDisable2fa, processing: disable2faProcessing, errors: disable2faErrors, reset: resetDisable2fa } = useForm({
+    password: ''
+  })
+  const { post: postRegenerateCodes, processing: regenerateCodesProcessing } = useForm({})
+  const [recoveryCodesToShow, setRecoveryCodesToShow] = useState<string[] | null>(props.twoFactorRecoveryCodes ?? null)
+
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -131,6 +143,37 @@ export default function ProfileSettings() {
     })
   }
 
+  const handleEnable2fa = () => {
+    postEnable2fa('/profile/2fa/enable', { preserveScroll: true })
+  }
+
+  const handleConfirm2fa = (e: React.FormEvent) => {
+    e.preventDefault()
+    postConfirm2fa('/profile/2fa/confirm', {
+      preserveScroll: true,
+      onSuccess: () => {
+        resetConfirm2fa()
+        setToast({ open: true, message: t('profile_settings.two_factor_enabled_success'), severity: 'success' })
+      }
+    })
+  }
+
+  const handleDisable2fa = (e: React.FormEvent) => {
+    e.preventDefault()
+    deleteDisable2fa('/profile/2fa', {
+      preserveScroll: true,
+      onSuccess: () => {
+        resetDisable2fa()
+        setRecoveryCodesToShow(null)
+        setToast({ open: true, message: t('profile_settings.two_factor_disabled_success'), severity: 'success' })
+      }
+    })
+  }
+
+  const handleRegenerateCodes = () => {
+    postRegenerateCodes('/profile/2fa/recovery-codes', { preserveScroll: true })
+  }
+
   const handleDeleteAccount = (e: React.FormEvent) => {
     e.preventDefault()
     setDeleteDialogOpen(true)
@@ -143,6 +186,12 @@ export default function ProfileSettings() {
       onError: () => setDeleteDialogOpen(false)
     })
   }
+
+  useEffect(() => {
+    if (props.twoFactorRecoveryCodes) {
+      setRecoveryCodesToShow(props.twoFactorRecoveryCodes)
+    }
+  }, [props.twoFactorRecoveryCodes])
 
   const pageDeletePasswordError = props.errors?.password
   useEffect(() => {
@@ -712,6 +761,148 @@ export default function ProfileSettings() {
                       </Button>
                     </Stack>
                   </form>
+                </Paper>
+
+                {/* Two-Factor Authentication */}
+                <Paper elevation={0} sx={{ p: { xs: 2, sm: 3, md: 4 }, border: '1px solid #E5E7EB', borderRadius: '16px', mb: 3 }}>
+                  <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 1, fontSize: { xs: '1.15rem', sm: '1.5rem' } }}>
+                    {t('profile_settings.two_factor_authentication')}
+                  </Typography>
+                  <Typography sx={{ color: '#6B7280', fontSize: '0.875rem', mb: 3 }}>
+                    {t('profile_settings.two_factor_description')}
+                  </Typography>
+
+                  {recoveryCodesToShow && (
+                    <Box sx={{ mb: 3, p: 2.5, bgcolor: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: '12px' }}>
+                      <Typography sx={{ fontWeight: 700, color: '#92400E', fontSize: '0.9375rem', mb: 1 }}>
+                        {t('profile_settings.two_factor_recovery_codes_title')}
+                      </Typography>
+                      <Typography sx={{ color: '#92400E', fontSize: '0.8125rem', mb: 2 }}>
+                        {t('profile_settings.two_factor_recovery_codes_hint')}
+                      </Typography>
+                      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' }, gap: 1, fontFamily: 'monospace', fontSize: '0.9375rem', color: '#111827', mb: 2 }}>
+                        {recoveryCodesToShow.map((code) => (
+                          <Box key={code} sx={{ bgcolor: '#FFFFFF', px: 1.5, py: 0.75, borderRadius: 1, border: '1px solid #FDE68A' }}>
+                            {code}
+                          </Box>
+                        ))}
+                      </Box>
+                      <Button size="small" onClick={() => setRecoveryCodesToShow(null)} sx={{ textTransform: 'none', color: '#92400E', fontWeight: 700 }}>
+                        {t('profile_settings.two_factor_recovery_codes_saved')}
+                      </Button>
+                    </Box>
+                  )}
+
+                  {user?.two_factor_enabled ? (
+                    <Stack spacing={3}>
+                      <Stack direction="row" alignItems="center" spacing={1.5}>
+                        <Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: '#10B981' }} />
+                        <Typography sx={{ fontWeight: 600, color: '#111827' }}>
+                          {t('profile_settings.two_factor_enabled')}
+                        </Typography>
+                      </Stack>
+
+                      <Button
+                        variant="outlined"
+                        onClick={handleRegenerateCodes}
+                        disabled={regenerateCodesProcessing}
+                        sx={{ borderColor: '#D0D5DD', color: '#344054', textTransform: 'none', borderRadius: '12px', alignSelf: 'flex-start', '&:hover': { borderColor: '#D0D5DD', bgcolor: '#F9FAFB' } }}
+                      >
+                        {t('profile_settings.two_factor_regenerate_codes')}
+                      </Button>
+
+                      <Box sx={{ pt: 2, borderTop: '1px solid #F3F4F6' }}>
+                        <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1.5, fontSize: '0.9375rem' }}>
+                          {t('profile_settings.two_factor_disable')}
+                        </Typography>
+                        <form onSubmit={handleDisable2fa}>
+                          <Stack spacing={2}>
+                            <Box>
+                              <TextField
+                                name="password"
+                                type="password"
+                                value={disable2faData.password}
+                                onChange={(e) => setDisable2faData('password', e.target.value)}
+                                placeholder={t('profile_settings.two_factor_disable_password_placeholder')}
+                                fullWidth
+                                required
+                                size="small"
+                                error={!!disable2faErrors.password}
+                                sx={{ maxWidth: 360, '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
+                              />
+                              <InputError message={Array.isArray(disable2faErrors.password) ? disable2faErrors.password[0] : disable2faErrors.password} />
+                            </Box>
+                            <Button
+                              type="submit"
+                              variant="outlined"
+                              disabled={disable2faProcessing}
+                              sx={{ borderColor: '#FCA5A5', color: '#EF4444', textTransform: 'none', borderRadius: '999px', alignSelf: 'flex-start', '&:hover': { borderColor: '#FCA5A5', bgcolor: '#FEF2F2' } }}
+                            >
+                              {t('profile_settings.two_factor_disable_button')}
+                            </Button>
+                          </Stack>
+                        </form>
+                      </Box>
+                    </Stack>
+                  ) : props.twoFactorSetup ? (
+                    <Stack spacing={3}>
+                      <Box>
+                        <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1.5, fontSize: '0.9375rem' }}>
+                          {t('profile_settings.two_factor_scan_qr')}
+                        </Typography>
+                        <Box
+                          component="img"
+                          src={props.twoFactorSetup.qrCode}
+                          alt="Two-factor QR code"
+                          sx={{ width: 180, height: 180, border: '1px solid #E5E7EB', borderRadius: '12px', p: 1.5, mb: 1.5 }}
+                        />
+                        <Typography sx={{ color: '#6B7280', fontSize: '0.8125rem', mb: 0.5 }}>
+                          {t('profile_settings.two_factor_manual_key')}
+                        </Typography>
+                        <Typography sx={{ fontFamily: 'monospace', fontSize: '0.9375rem', color: '#111827', bgcolor: '#F9FAFB', px: 1.5, py: 0.75, borderRadius: 1, display: 'inline-block' }}>
+                          {props.twoFactorSetup.secret}
+                        </Typography>
+                      </Box>
+
+                      <form onSubmit={handleConfirm2fa}>
+                        <Stack spacing={2}>
+                          <Box>
+                            <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
+                              {t('profile_settings.two_factor_enter_code')}
+                            </Typography>
+                            <TextField
+                              name="code"
+                              value={confirm2faData.code}
+                              onChange={(e) => setConfirm2faData('code', e.target.value)}
+                              placeholder={t('profile_settings.two_factor_code_placeholder')}
+                              inputProps={{ inputMode: 'numeric', maxLength: 6, style: { letterSpacing: 4 } }}
+                              size="small"
+                              error={!!confirm2faErrors.code}
+                              sx={{ maxWidth: 200, '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
+                            />
+                            <InputError message={Array.isArray(confirm2faErrors.code) ? confirm2faErrors.code[0] : confirm2faErrors.code} />
+                          </Box>
+                          <Button
+                            type="submit"
+                            variant="contained"
+                            disabled={confirm2faProcessing || !confirm2faData.code}
+                            sx={{ bgcolor: '#AD542D', textTransform: 'none', fontWeight: 700, borderRadius: '999px', alignSelf: 'flex-start', '&:hover': { bgcolor: '#78381C' } }}
+                          >
+                            {confirm2faProcessing ? t('profile_settings.saving') : t('profile_settings.two_factor_confirm_button')}
+                          </Button>
+                        </Stack>
+                      </form>
+                    </Stack>
+                  ) : (
+                    <Button
+                      variant="outlined"
+                      onClick={handleEnable2fa}
+                      disabled={enable2faProcessing}
+                      sx={{ borderColor: '#D0D5DD', color: '#344054', textTransform: 'none', borderRadius: '12px', '&:hover': { borderColor: '#D0D5DD', bgcolor: '#F9FAFB' } }}
+                    >
+                      {t('profile_settings.two_factor_enable_button')}
+                    </Button>
+                  )}
                 </Paper>
 
                 {/* Delete Account */}

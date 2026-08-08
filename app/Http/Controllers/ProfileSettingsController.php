@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Profile\ConfirmTwoFactorRequest;
 use App\Http\Requests\Profile\DeleteAccountRequest;
+use App\Http\Requests\Profile\DisableTwoFactorRequest;
 use App\Http\Requests\Profile\LogoutOtherDevicesRequest;
 use App\Http\Requests\Profile\UpdateCurrencyRequest;
 use App\Http\Requests\Profile\UpdateNotificationPreferencesRequest;
 use App\Http\Requests\Profile\UpdatePasswordRequest;
 use App\Http\Requests\Profile\UpdateProfileRequest;
 use App\Http\Requests\Profile\UploadProfilePictureRequest;
+use App\Services\TwoFactorAuthenticationService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -16,10 +20,20 @@ use Inertia\Inertia;
 
 class ProfileSettingsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
-        
+
+        $twoFactorSetup = null;
+        $setupSecret = $request->session()->get('two_factor_setup_secret');
+        if ($setupSecret && ! $user->hasTwoFactorEnabled()) {
+            $twoFactor = new TwoFactorAuthenticationService();
+            $twoFactorSetup = [
+                'secret' => $setupSecret,
+                'qrCode' => $twoFactor->qrCodeSvgDataUri($user, $setupSecret),
+            ];
+        }
+
         return Inertia::render('ProfileSettings', [
             'user' => [
                 'id' => $user->id,
@@ -30,7 +44,10 @@ class ProfileSettingsController extends Controller
                 'profile_picture' => $user->profile_picture ? Storage::url($user->profile_picture) : null,
                 'notify_bookings' => $user->notify_bookings,
                 'notify_properties' => $user->notify_properties,
-            ]
+                'two_factor_enabled' => $user->hasTwoFactorEnabled(),
+            ],
+            'twoFactorSetup' => $twoFactorSetup,
+            'twoFactorRecoveryCodes' => $request->session()->pull('two_factor_new_recovery_codes'),
         ]);
     }
 
@@ -78,6 +95,68 @@ class ProfileSettingsController extends Controller
         Auth::user()->update($request->validated());
 
         return redirect()->back();
+    }
+
+    public function twoFactorEnable(Request $request, TwoFactorAuthenticationService $twoFactor)
+    {
+        $user = Auth::user();
+
+        abort_if($user->hasTwoFactorEnabled(), 403, 'Two-factor authentication is already enabled.');
+
+        $request->session()->put('two_factor_setup_secret', $twoFactor->generateSecretKey());
+
+        return redirect()->back();
+    }
+
+    public function twoFactorConfirm(ConfirmTwoFactorRequest $request, TwoFactorAuthenticationService $twoFactor)
+    {
+        $user = Auth::user();
+        $secret = $request->session()->get('two_factor_setup_secret');
+
+        abort_unless($secret, 403, 'No two-factor setup in progress.');
+
+        if (! $twoFactor->verifyCode($secret, $request->validated('code'))) {
+            return redirect()->back()->withErrors(['code' => __('profile_settings.two_factor_invalid_code')]);
+        }
+
+        $recoveryCodes = $twoFactor->generateRecoveryCodes();
+
+        $user->update([
+            'two_factor_secret' => $secret,
+            'two_factor_recovery_codes' => $recoveryCodes,
+            'two_factor_confirmed_at' => now(),
+        ]);
+
+        $request->session()->forget('two_factor_setup_secret');
+        $request->session()->put('two_factor_new_recovery_codes', $recoveryCodes);
+
+        return redirect()->back()->with('success', __('profile_settings.two_factor_enabled_success'));
+    }
+
+    public function twoFactorDisable(DisableTwoFactorRequest $request)
+    {
+        Auth::user()->update([
+            'two_factor_secret' => null,
+            'two_factor_recovery_codes' => null,
+            'two_factor_confirmed_at' => null,
+        ]);
+
+        $request->session()->forget('two_factor_setup_secret');
+
+        return redirect()->back()->with('success', __('profile_settings.two_factor_disabled_success'));
+    }
+
+    public function twoFactorRegenerateRecoveryCodes(Request $request, TwoFactorAuthenticationService $twoFactor)
+    {
+        $user = Auth::user();
+
+        abort_unless($user->hasTwoFactorEnabled(), 403, 'Two-factor authentication is not enabled.');
+
+        $recoveryCodes = $twoFactor->generateRecoveryCodes();
+        $user->update(['two_factor_recovery_codes' => $recoveryCodes]);
+        $request->session()->put('two_factor_new_recovery_codes', $recoveryCodes);
+
+        return redirect()->back()->with('success', __('profile_settings.two_factor_recovery_codes_regenerated'));
     }
 
     public function destroy(DeleteAccountRequest $request)

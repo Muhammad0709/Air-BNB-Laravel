@@ -103,4 +103,17 @@ return [
         'have_account' => 'قبلاً حساب دارید؟',
         'sign_in_link' => 'ورود',
     ],
+
+    'two_factor' => [
+        'title' => 'تأیید دو مرحله‌ای',
+        'subtitle' => 'کد ۶ رقمی را از اپلیکیشن احراز هویت خود وارد کنید.',
+        'recovery_subtitle' => 'یکی از کدهای بازیابی خود را وارد کنید.',
+        'code_placeholder' => '000000',
+        'recovery_code_placeholder' => 'XXXX-XXXX',
+        'verify' => 'تأیید',
+        'verifying' => 'در حال تأیید...',
+        'use_recovery_code' => 'در عوض از کد بازیابی استفاده کنید',
+        'use_code_instead' => 'در عوض از کد اپلیکیشن استفاده کنید',
+        'invalid_code' => 'این کد نامعتبر است یا منقضی شده.',
+    ],
 ];

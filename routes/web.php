@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\GoogleAuthController;
+use App\Http\Controllers\Auth\TwoFactorChallengeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Admin\PropertyController;
 use App\Http\Controllers\Admin\UserController;
@@ -42,6 +43,9 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [LoginController::class, 'store'])->middleware('throttle:5,1');
     // Avoid 405 when a redirect lands here with DELETE (e.g. session expired during a delete request)
     Route::delete('/login', fn () => redirect()->route('login'));
+
+    Route::get('/two-factor-challenge', [TwoFactorChallengeController::class, 'create'])->name('two-factor.challenge');
+    Route::post('/two-factor-challenge', [TwoFactorChallengeController::class, 'store'])->middleware('throttle:5,1')->name('two-factor.challenge.store');
 
     Route::get('/register', [RegisterController::class, 'create'])->name('register');
     Route::post('/register', [RegisterController::class, 'store']);
@@ -110,6 +114,10 @@ Route::middleware(['auth', 'redirect.admin.host'])->group(function () {
     Route::patch('/profile/currency', [ProfileSettingsController::class, 'updateCurrency'])->name('profile.currency');
     Route::patch('/profile/notifications', [ProfileSettingsController::class, 'updateNotificationPreferences'])->name('profile.notifications');
     Route::post('/profile/logout-other-devices', [ProfileSettingsController::class, 'logoutOtherDevices'])->name('profile.logout-other-devices');
+    Route::post('/profile/2fa/enable', [ProfileSettingsController::class, 'twoFactorEnable'])->name('profile.2fa.enable');
+    Route::post('/profile/2fa/confirm', [ProfileSettingsController::class, 'twoFactorConfirm'])->name('profile.2fa.confirm');
+    Route::delete('/profile/2fa', [ProfileSettingsController::class, 'twoFactorDisable'])->name('profile.2fa.disable');
+    Route::post('/profile/2fa/recovery-codes', [ProfileSettingsController::class, 'twoFactorRegenerateRecoveryCodes'])->name('profile.2fa.recovery-codes');
     Route::post('/profile/picture', [ProfileSettingsController::class, 'uploadProfilePicture'])->name('profile.picture');
     Route::delete('/profile/delete', [ProfileSettingsController::class, 'destroy'])->name('profile.destroy');
 });

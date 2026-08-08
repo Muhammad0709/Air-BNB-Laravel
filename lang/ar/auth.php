@@ -103,4 +103,17 @@ return [
         'have_account' => 'لديك حساب بالفعل؟',
         'sign_in_link' => 'تسجيل الدخول',
     ],
+
+    'two_factor' => [
+        'title' => 'التحقق بخطوتين',
+        'subtitle' => 'أدخل الرمز المكوّن من 6 أرقام من تطبيق المصادقة الخاص بك.',
+        'recovery_subtitle' => 'أدخل أحد رموز الاسترداد الخاصة بك.',
+        'code_placeholder' => '000000',
+        'recovery_code_placeholder' => 'XXXX-XXXX',
+        'verify' => 'تحقق',
+        'verifying' => 'جارٍ التحقق...',
+        'use_recovery_code' => 'استخدم رمز استرداد بدلاً من ذلك',
+        'use_code_instead' => 'استخدم رمز المصادقة بدلاً من ذلك',
+        'invalid_code' => 'هذا الرمز غير صالح أو منتهي الصلاحية.',
+    ],
 ];
