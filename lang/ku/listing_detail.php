@@ -2,6 +2,9 @@
 
 return [
     'per_night' => '/شەو',
+    'per_person' => '/بۆ هەر کەسێک',
+    'duration_hours' => 'ماوە (کاتژمێر)',
+    'max_participants' => 'زۆرترین بەشداربووان',
     'local_time_zone' => 'ناوچەی کاتی ناوخۆیی',
     'book' => 'حجز',
     'quick_info' => 'زانیاری خێرا',

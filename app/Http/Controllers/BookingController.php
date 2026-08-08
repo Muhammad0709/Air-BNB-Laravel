@@ -116,28 +116,39 @@ class BookingController extends Controller
                     $nights = 7;
                 }
 
-                $pricePerNight = (float) $property->price;
-                $cleaningFee = 25;
+                $isExperience = $property->isExperience();
+                $attendees = max(1, (int) $request->query('adults', 1) + (int) $request->query('children', 0));
+                $pricePerUnit = (float) $property->price;
+                $cleaningFee = $isExperience ? 0 : 25;
                 $serviceFeePercent = 10;
-                $subtotal = round($pricePerNight * $nights, 2);
+                $subtotal = $isExperience
+                    ? round($pricePerUnit * $attendees, 2)
+                    : round($pricePerUnit * $nights, 2);
                 $serviceFee = round($subtotal * ($serviceFeePercent / 100), 2);
                 $totalAmount = round($subtotal + $cleaningFee + $serviceFee, 2);
 
-                $costs = [
-                    ['label' => number_format($pricePerNight, 0) . ' × ' . $nights . ' night' . ($nights !== 1 ? 's' : ''), 'amount' => $subtotal],
-                    ['label' => 'Cleaning fee', 'amount' => $cleaningFee],
-                    ['label' => 'Service fee', 'amount' => $serviceFee],
-                ];
+                $costs = $isExperience
+                    ? [
+                        ['label' => number_format($pricePerUnit, 0) . ' × ' . $attendees . ' guest' . ($attendees !== 1 ? 's' : ''), 'amount' => $subtotal],
+                        ['label' => 'Service fee', 'amount' => $serviceFee],
+                    ]
+                    : [
+                        ['label' => number_format($pricePerUnit, 0) . ' × ' . $nights . ' night' . ($nights !== 1 ? 's' : ''), 'amount' => $subtotal],
+                        ['label' => 'Cleaning fee', 'amount' => $cleaningFee],
+                        ['label' => 'Service fee', 'amount' => $serviceFee],
+                    ];
 
                 $propertyData = [
                     'id' => $property->id,
                     'title' => $property->title,
                     'location' => $property->location,
                     'image' => $image,
-                    'price' => $pricePerNight,
+                    'price' => $pricePerUnit,
                     'bedrooms' => $property->bedrooms,
                     'bathrooms' => $property->bathrooms,
                     'guests' => $property->guests,
+                    'listing_category' => $property->listing_category?->value ?? 'stay',
+                    'duration_hours' => $property->duration_hours,
                     'reviews_count' => $property->reviews_count ?? 0,
                     'rating' => round((float) ($property->reviews_avg_rating ?? 0), 1),
                 ];
@@ -237,9 +248,13 @@ class BookingController extends Controller
         $checkout = Carbon::parse($validated['checkout']);
         $nights = max(1, (int) $checkin->diffInDays($checkout));
 
+        $isExperience = $property->isExperience();
+        $attendees = max(1, (int) ($validated['adults'] ?? 1) + (int) ($validated['children'] ?? 0));
         $nightlyRate = (float) $property->price;
-        $cleaningFee = 25.00;
-        $subtotal = round($nightlyRate * $nights, 2);
+        $cleaningFee = $isExperience ? 0.00 : 25.00;
+        $subtotal = $isExperience
+            ? round($nightlyRate * $attendees, 2)
+            : round($nightlyRate * $nights, 2);
         $serviceFeePercent = 10;
         $serviceFee = round($subtotal * ($serviceFeePercent / 100), 2);
         $totalAmount = round($subtotal + $cleaningFee + $serviceFee, 2);

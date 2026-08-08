@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateHostPropertyRequest;
 use App\Models\Property;
 use App\Models\User;
 use App\Enums\CancellationPolicy;
+use App\Enums\ListingCategory;
 use App\Enums\PropertyType;
 use App\Enums\PropertyStatus;
 use App\Enums\UserType;
@@ -80,6 +81,7 @@ class PropertyController extends Controller
     {
         return Inertia::render('Host/Properties/Create', [
             'propertyTypes' => array_column(PropertyType::cases(), 'value'),
+            'listingCategories' => ListingCategory::values(),
             'timezones' => \DateTimeZone::listIdentifiers(),
             'cancellationPolicies' => CancellationPolicy::values(),
         ]);
@@ -120,6 +122,13 @@ class PropertyController extends Controller
         $validated['approval_status'] = PropertyStatus::PENDING->value;
         $validated['airport_pickup_enabled'] = $validated['airport_pickup_enabled'] ?? false;
         $validated['guided_tours_enabled'] = $validated['guided_tours_enabled'] ?? false;
+        $validated['listing_category'] = $validated['listing_category'] ?? ListingCategory::STAY->value;
+        if ($validated['listing_category'] === ListingCategory::EXPERIENCE->value) {
+            $validated['bedrooms'] = null;
+            $validated['bathrooms'] = null;
+        } else {
+            $validated['duration_hours'] = null;
+        }
         $validated['duplicate_flag_reason'] = $this->duplicateDetector->detect(
             $validated['title'],
             $validated['location'],
@@ -211,6 +220,12 @@ class PropertyController extends Controller
         $validated['approval_status'] = PropertyStatus::PENDING->value;
         $validated['airport_pickup_enabled'] = $validated['airport_pickup_enabled'] ?? false;
         $validated['guided_tours_enabled'] = $validated['guided_tours_enabled'] ?? false;
+        if ($property->isExperience()) {
+            $validated['bedrooms'] = null;
+            $validated['bathrooms'] = null;
+        } else {
+            $validated['duration_hours'] = null;
+        }
         $validated['duplicate_flag_reason'] = $this->duplicateDetector->detect(
             $validated['title'],
             $validated['location'],

@@ -2,12 +2,15 @@
 
 return [
     'per_night' => '/night',
+    'per_person' => '/person',
     'local_time_zone' => 'Local time zone',
     'book' => 'Book',
     'quick_info' => 'Quick Info',
     'bedrooms' => 'Bedrooms',
     'bathrooms' => 'Bathrooms',
     'guests' => 'Guests',
+    'duration_hours' => 'Duration (hours)',
+    'max_participants' => 'Max Participants',
     'entire_place' => 'Entire place',
     'about_host' => 'About Host',
     'joined_in' => 'joined in',

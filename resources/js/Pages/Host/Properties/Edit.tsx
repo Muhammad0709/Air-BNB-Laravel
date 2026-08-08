@@ -26,8 +26,10 @@ interface Property {
   cancellation_policy?: string
   price: number
   deposit_amount?: number
-  bedrooms: number
-  bathrooms: number
+  listing_category?: string
+  duration_hours?: number | null
+  bedrooms: number | null
+  bathrooms: number | null
   guests: number
   property_type: string
   status: string
@@ -48,6 +50,7 @@ interface Property {
 export default function EditProperty() {
   const { t } = useLanguage()
   const { property, propertyTypes, timezones, cancellationPolicies } = usePage<{ property: Property, propertyTypes: string[], timezones: string[], cancellationPolicies: string[] }>().props
+  const isExperience = property.listing_category === 'experience'
   const [toastOpen, setToastOpen] = useState(false)
   const [newFiles, setNewFiles] = useState<File[]>([])
   const [formData, setFormData] = useState({
@@ -57,8 +60,9 @@ export default function EditProperty() {
     cancellation_policy: property.cancellation_policy || 'moderate',
     price: property.price.toString(),
     deposit_amount: property.deposit_amount != null ? String(property.deposit_amount) : '',
-    bedrooms: property.bedrooms.toString(),
-    bathrooms: property.bathrooms.toString(),
+    bedrooms: property.bedrooms != null ? property.bedrooms.toString() : '',
+    bathrooms: property.bathrooms != null ? property.bathrooms.toString() : '',
+    duration_hours: property.duration_hours != null ? property.duration_hours.toString() : '',
     guests: property.guests.toString(),
     property_type: property.property_type,
     status: property.status,
@@ -107,8 +111,12 @@ export default function EditProperty() {
     submitData.append('cancellation_policy', formData.cancellation_policy)
     submitData.append('price', formData.price)
     submitData.append('deposit_amount', formData.deposit_amount || '0')
-    submitData.append('bedrooms', formData.bedrooms)
-    submitData.append('bathrooms', formData.bathrooms)
+    if (isExperience) {
+      submitData.append('duration_hours', formData.duration_hours)
+    } else {
+      submitData.append('bedrooms', formData.bedrooms)
+      submitData.append('bathrooms', formData.bathrooms)
+    }
     submitData.append('guests', formData.guests)
     submitData.append('property_type', formData.property_type)
     submitData.append('status', formData.status)
@@ -251,26 +259,41 @@ export default function EditProperty() {
                       ))}
                     </Select>
                   </FormControl>
+                  {isExperience ? (
+                    <TextField
+                      label={t('host.properties.duration_hours')}
+                      name="duration_hours"
+                      type="number"
+                      value={formData.duration_hours}
+                      onChange={handleChange}
+                      required
+                      fullWidth
+                      helperText={t('host.properties.duration_hours_hint')}
+                    />
+                  ) : (
+                    <>
+                      <TextField
+                        label={t('host.properties.bedrooms')}
+                        name="bedrooms"
+                        type="number"
+                        value={formData.bedrooms}
+                        onChange={handleChange}
+                        required
+                        fullWidth
+                      />
+                      <TextField
+                        label={t('host.properties.bathrooms')}
+                        name="bathrooms"
+                        type="number"
+                        value={formData.bathrooms}
+                        onChange={handleChange}
+                        required
+                        fullWidth
+                      />
+                    </>
+                  )}
                   <TextField
-                    label={t('host.properties.bedrooms')}
-                    name="bedrooms"
-                    type="number"
-                    value={formData.bedrooms}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                  />
-                  <TextField
-                    label={t('host.properties.bathrooms')}
-                    name="bathrooms"
-                    type="number"
-                    value={formData.bathrooms}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                  />
-                  <TextField
-                    label={t('host.properties.guests')}
+                    label={isExperience ? t('host.properties.max_participants') : t('host.properties.guests')}
                     name="guests"
                     type="number"
                     value={formData.guests}

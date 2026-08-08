@@ -2,6 +2,9 @@
 
 return [
     'per_night' => '/شب',
+    'per_person' => '/هر نفر',
+    'duration_hours' => 'مدت (ساعت)',
+    'max_participants' => 'حداکثر شرکت‌کنندگان',
     'local_time_zone' => 'منطقه زمانی محلی',
     'book' => 'رزرو',
     'quick_info' => 'اطلاعات سریع',

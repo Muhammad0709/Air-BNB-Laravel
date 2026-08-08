@@ -16,12 +16,13 @@ export default function AddProperty() {
   const { t } = useLanguage()
   const page = usePage<{
     propertyTypes: string[]
+    listingCategories: string[]
     timezones: string[]
     cancellationPolicies: string[]
     errors?: Record<string, string[] | string>
     validationErrors?: Record<string, string[]>
   }>()
-  const { propertyTypes, timezones, cancellationPolicies } = page.props
+  const { propertyTypes, listingCategories, timezones, cancellationPolicies } = page.props
   const pageErrors = page.props.validationErrors ?? page.props.errors ?? {}
   const [formData, setFormData] = useState({
     title: '',
@@ -30,8 +31,10 @@ export default function AddProperty() {
     cancellation_policy: 'moderate',
     price: '',
     deposit_amount: '',
+    listing_category: 'stay',
     bedrooms: '',
     bathrooms: '',
+    duration_hours: '',
     guests: '',
     property_type: '',
     description: '',
@@ -87,8 +90,13 @@ export default function AddProperty() {
     submitData.append('cancellation_policy', formData.cancellation_policy)
     submitData.append('price', formData.price)
     submitData.append('deposit_amount', formData.deposit_amount || '0')
-    submitData.append('bedrooms', formData.bedrooms)
-    submitData.append('bathrooms', formData.bathrooms)
+    submitData.append('listing_category', formData.listing_category)
+    if (formData.listing_category === 'experience') {
+      submitData.append('duration_hours', formData.duration_hours)
+    } else {
+      submitData.append('bedrooms', formData.bedrooms)
+      submitData.append('bathrooms', formData.bathrooms)
+    }
     submitData.append('guests', formData.guests)
     submitData.append('property_type', formData.property_type)
     submitData.append('description', formData.description)
@@ -225,6 +233,22 @@ export default function AddProperty() {
               </Col>
               <Col xs={12} md={6}>
                 <Stack spacing={3}>
+                  <FormControl fullWidth required error={!!err('listing_category')}>
+                    <InputLabel id="listing-category-label">{t('host.properties.listing_category')}</InputLabel>
+                    <Select
+                      labelId="listing-category-label"
+                      value={formData.listing_category}
+                      onChange={(e) => handleSelectChange('listing_category', e.target.value)}
+                      label={t('host.properties.listing_category')}
+                    >
+                      {listingCategories.map((category) => (
+                        <MenuItem key={category} value={category}>
+                          {t(`host.properties.listing_category_${category}`)}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <InputError message={err('listing_category')} />
                   <FormControl fullWidth required error={!!err('property_type')}>
                     <InputLabel id="property-type-label">{t('host.properties.property_type')}</InputLabel>
                     <Select
@@ -241,30 +265,49 @@ export default function AddProperty() {
                     </Select>
                   </FormControl>
                   <InputError message={err('property_type')} />
+                  {formData.listing_category === 'experience' ? (
+                    <>
+                      <TextField
+                        label={t('host.properties.duration_hours')}
+                        name="duration_hours"
+                        type="number"
+                        value={formData.duration_hours}
+                        onChange={handleChange}
+                        required
+                        fullWidth
+                        error={!!err('duration_hours')}
+                        helperText={t('host.properties.duration_hours_hint')}
+                      />
+                      <InputError message={err('duration_hours')} />
+                    </>
+                  ) : (
+                    <>
+                      <TextField
+                        label={t('host.properties.bedrooms')}
+                        name="bedrooms"
+                        type="number"
+                        value={formData.bedrooms}
+                        onChange={handleChange}
+                        required
+                        fullWidth
+                        error={!!err('bedrooms')}
+                      />
+                      <InputError message={err('bedrooms')} />
+                      <TextField
+                        label={t('host.properties.bathrooms')}
+                        name="bathrooms"
+                        type="number"
+                        value={formData.bathrooms}
+                        onChange={handleChange}
+                        required
+                        fullWidth
+                        error={!!err('bathrooms')}
+                      />
+                      <InputError message={err('bathrooms')} />
+                    </>
+                  )}
                   <TextField
-                    label={t('host.properties.bedrooms')}
-                    name="bedrooms"
-                    type="number"
-                    value={formData.bedrooms}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                    error={!!err('bedrooms')}
-                  />
-                  <InputError message={err('bedrooms')} />
-                  <TextField
-                    label={t('host.properties.bathrooms')}
-                    name="bathrooms"
-                    type="number"
-                    value={formData.bathrooms}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                    error={!!err('bathrooms')}
-                  />
-                  <InputError message={err('bathrooms')} />
-                  <TextField
-                    label={t('host.properties.guests')}
+                    label={formData.listing_category === 'experience' ? t('host.properties.max_participants') : t('host.properties.guests')}
                     name="guests"
                     type="number"
                     value={formData.guests}

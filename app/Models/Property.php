@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Enums\PropertyStatus;
+use App\Enums\ListingCategory;
 
 class Property extends Model
 {
@@ -21,6 +22,8 @@ class Property extends Model
         'bathrooms',
         'guests',
         'property_type',
+        'listing_category',
+        'duration_hours',
         'status',
         'approval_status',
         'duplicate_flag_reason',
@@ -50,7 +53,13 @@ class Property extends Model
         'airport_pickup_price' => 'decimal:2',
         'guided_tours_enabled' => 'boolean',
         'guided_tours_price' => 'decimal:2',
+        'listing_category' => ListingCategory::class,
     ];
+
+    public function isExperience(): bool
+    {
+        return $this->listing_category === ListingCategory::EXPERIENCE;
+    }
 
     /**
      * Get the user that owns the property.

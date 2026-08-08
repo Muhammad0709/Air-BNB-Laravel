@@ -2,6 +2,9 @@
 
 return [
     'per_night' => '/ليلة',
+    'per_person' => '/للشخص',
+    'duration_hours' => 'المدة (ساعات)',
+    'max_participants' => 'الحد الأقصى للمشاركين',
     'local_time_zone' => 'المنطقة الزمنية المحلية',
     'book' => 'احجز',
     'quick_info' => 'معلومات سريعة',

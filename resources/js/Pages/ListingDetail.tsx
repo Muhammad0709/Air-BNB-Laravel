@@ -43,10 +43,12 @@ type Property = {
   cancellation_policy?: string
   cancellation_policy_description?: string
   price: number | string
-  bedrooms: number
-  bathrooms: number
+  bedrooms: number | null
+  bathrooms: number | null
   guests: number
   property_type: string
+  listing_category?: string
+  duration_hours?: number | null
   description: string
   amenities: string[]
   image: string | null
@@ -295,7 +297,7 @@ export default function ListingDetail() {
                       <Box className="booking-info">
                         <Box className="price">
                           <Typography component="span" className="price-amount">{formatPriceUtil(priceDisplay, currency)}</Typography>
-                          <Typography component="span" className="price-period">{t('listing_detail.per_night')}</Typography>
+                          <Typography component="span" className="price-period">{property.listing_category === 'experience' ? t('listing_detail.per_person') : t('listing_detail.per_night')}</Typography>
                         </Box>
                         <Button
                           variant="contained"
@@ -433,26 +435,42 @@ export default function ListingDetail() {
             <Paper className="quick-info-section" elevation={0}>
               <Typography className="section-title" component="h2">{t('listing_detail.quick_info')}</Typography>
               <Row className="g-4">
-                <Col md={6} sm={6}>
-                  <Box className="info-item d-flex gap-2">
+                {property.listing_category === 'experience' ? (
+                  <Col md={6} sm={6}>
+                    <Box className="info-item d-flex gap-2">
                       <Box className="info-icon">
-                     <BedIcon sx={{ color: '#AD542D', fontSize: '30px', width: '30px', height: '30px', marginInlineEnd: 1.5 }} />
+                        <AccessTimeIcon sx={{ color: '#AD542D', fontSize: '30px', width: '30px', height: '30px', marginInlineEnd: 1.5 }} />
                       </Box>
-                    <Box className="info-text">
-                      <Typography component="span" className="info-number">{property.bedrooms}</Typography>
-                      <Typography component="span" className="info-label">{t('listing_detail.bedrooms')}</Typography>
+                      <Box className="info-text">
+                        <Typography component="span" className="info-number">{property.duration_hours}</Typography>
+                        <Typography component="span" className="info-label">{t('listing_detail.duration_hours')}</Typography>
+                      </Box>
                     </Box>
-                  </Box>
-                </Col>
-                <Col md={6} sm={6}>
-                  <Box className="info-item d-flex gap-2">
-                    <Box className="info-icon">
-                    <BathroomIcon sx={{ color: '#AD542D', fontSize: '30px', width: '30px', height: '30px', marginInlineEnd: 1.5 }} />
-                    </Box>
-                    <Typography component="span" className="info-number">{property.bathrooms}</Typography>
-                    <Typography component="span" className="info-label">{t('listing_detail.bathrooms')}</Typography>
-                  </Box>
-                </Col>
+                  </Col>
+                ) : (
+                  <>
+                    <Col md={6} sm={6}>
+                      <Box className="info-item d-flex gap-2">
+                          <Box className="info-icon">
+                         <BedIcon sx={{ color: '#AD542D', fontSize: '30px', width: '30px', height: '30px', marginInlineEnd: 1.5 }} />
+                          </Box>
+                        <Box className="info-text">
+                          <Typography component="span" className="info-number">{property.bedrooms}</Typography>
+                          <Typography component="span" className="info-label">{t('listing_detail.bedrooms')}</Typography>
+                        </Box>
+                      </Box>
+                    </Col>
+                    <Col md={6} sm={6}>
+                      <Box className="info-item d-flex gap-2">
+                        <Box className="info-icon">
+                        <BathroomIcon sx={{ color: '#AD542D', fontSize: '30px', width: '30px', height: '30px', marginInlineEnd: 1.5 }} />
+                        </Box>
+                        <Typography component="span" className="info-number">{property.bathrooms}</Typography>
+                        <Typography component="span" className="info-label">{t('listing_detail.bathrooms')}</Typography>
+                      </Box>
+                    </Col>
+                  </>
+                )}
               </Row>
               <Row className="g-4 mt-2">
                 <Col md={6} sm={6}>
@@ -462,7 +480,9 @@ export default function ListingDetail() {
                     </Box>
                     <Box className="info-text">
                       <Typography component="span" className="info-number">{property.guests}</Typography>
-                      <Typography component="span" className="info-label">{t('listing_detail.guests')}</Typography>
+                      <Typography component="span" className="info-label">
+                        {property.listing_category === 'experience' ? t('listing_detail.max_participants') : t('listing_detail.guests')}
+                      </Typography>
                     </Box>
                   </Box>
                 </Col>

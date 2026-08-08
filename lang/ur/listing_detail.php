@@ -2,6 +2,9 @@
 
 return [
     'per_night' => '/رات',
+    'per_person' => '/فی کس',
+    'duration_hours' => 'دورانیہ (گھنٹے)',
+    'max_participants' => 'زیادہ سے زیادہ شرکاء',
     'local_time_zone' => 'مقامی ٹائم زون',
     'book' => 'بک کریں',
     'quick_info' => 'فوری معلومات',

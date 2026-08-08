@@ -116,6 +116,8 @@ class PropertyDetailController extends Controller
             'bathrooms' => $property->bathrooms,
             'guests' => $property->guests,
             'property_type' => $property->property_type,
+            'listing_category' => $property->listing_category?->value ?? 'stay',
+            'duration_hours' => $property->duration_hours,
             'description' => $property->description,
             'amenities' => $amenities,
             'image' => $property->image ? Storage::url($property->image) : null,

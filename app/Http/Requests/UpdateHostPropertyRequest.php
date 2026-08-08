@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\CancellationPolicy;
+use App\Enums\ListingCategory;
 use App\Enums\PropertyType;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,14 +26,22 @@ class UpdateHostPropertyRequest extends FormRequest
         }
     }
 
+    private function isExperienceListing(): bool
+    {
+        $property = $this->route('property');
+
+        return $property && $property->listing_category === ListingCategory::EXPERIENCE;
+    }
+
     public function rules(): array
     {
         return [
             'title' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
             'property_type' => ['required', 'in:' . implode(',', array_column(PropertyType::cases(), 'value'))],
-            'bedrooms' => ['required', 'integer', 'min:1'],
-            'bathrooms' => ['required', 'integer', 'min:1'],
+            'bedrooms' => $this->isExperienceListing() ? ['nullable', 'integer', 'min:1'] : ['required', 'integer', 'min:1'],
+            'bathrooms' => $this->isExperienceListing() ? ['nullable', 'integer', 'min:1'] : ['required', 'integer', 'min:1'],
+            'duration_hours' => $this->isExperienceListing() ? ['required', 'integer', 'min:1', 'max:72'] : ['nullable', 'integer', 'min:1', 'max:72'],
             'guests' => ['required', 'integer', 'min:1'],
             'price' => ['required', 'numeric', 'min:0'],
             'deposit_amount' => ['nullable', 'numeric', 'min:0'],

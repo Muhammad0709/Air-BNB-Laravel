@@ -2,6 +2,9 @@
 
 return [
     'per_night' => '/gece',
+    'per_person' => '/kişi',
+    'duration_hours' => 'Süre (saat)',
+    'max_participants' => 'Maksimum Katılımcı',
     'local_time_zone' => 'Yerel saat dilimi',
     'book' => 'Rezervasyon',
     'quick_info' => 'Hızlı bilgi',
