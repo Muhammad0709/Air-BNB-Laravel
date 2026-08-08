@@ -5,7 +5,6 @@ import { useLanguage } from '../hooks/use-language'
 export default function Footer() {
   const { t } = useLanguage()
   const { auth } = usePage().props as { auth?: { user?: { type?: string } | null } }
-  const isAuthenticated = !!auth?.user
   const isCustomer = auth?.user?.type === 'User'
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -15,24 +14,15 @@ export default function Footer() {
     router.post('/switch-to-host')
   }
 
-  const columnHeadingSx = {
-    color: '#111827',
-    fontWeight: 700,
-    mb: { xs: 1, md: 2.5 },
-    fontSize: '0.9375rem',
-    letterSpacing: '-0.005em',
-  } as const
-
   /** Same visual as other footer links (Box+Link); avoids Typography body1/theme mismatch */
   const footerLinkSx = {
-    color: '#4B5563',
+    color: '#222222',
     textDecoration: 'none',
     fontSize: '0.875rem',
     fontWeight: 400,
     fontFamily: 'inherit',
     letterSpacing: 'normal',
-    transition: 'color 0.15s ease',
-    '&:hover': { color: '#AD542D', textDecoration: 'underline' },
+    '&:hover': { textDecoration: 'underline' },
   } as const
 
   return (
@@ -59,22 +49,15 @@ export default function Footer() {
           }}
         >
           <Box sx={{ minWidth: 0 }}>
-            <Typography sx={columnHeadingSx}>{t('footer.support')}</Typography>
-            <Stack spacing={1.25} useFlexGap>
+            <Typography sx={{ color: '#222222', fontWeight: 600, mb: { xs: 1, md: 2.5 }, fontSize: '0.875rem' }}>{t('footer.support')}</Typography>
+            <Stack spacing={1} useFlexGap>
               <Box component={Link} href="/contact" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.contact_us')}</Box>
-              {!isAuthenticated && (
-                <>
-                  <Box component={Link} href="/login" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.log_in')}</Box>
-                  <Box component={Link} href="/register" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.sign_up')}</Box>
-                </>
-              )}
             </Stack>
           </Box>
           <Box sx={{ minWidth: 0 }}>
-            <Typography sx={columnHeadingSx}>{t('footer.lipabnb')}</Typography>
-            <Stack spacing={1.25} useFlexGap>
+            <Typography sx={{ color: '#222222', fontWeight: 600, mb: { xs: 1, md: 2.5 }, fontSize: '0.875rem' }}>{t('footer.lipabnb')}</Typography>
+            <Stack spacing={1} useFlexGap>
               <Box component={Link} href="/" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.home')}</Box>
-              <Box component={Link} href="/listing" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.stays')}</Box>
               <Box component={Link} href="/about" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.about_us')}</Box>
               {isCustomer && (
                 <>
@@ -100,16 +83,74 @@ export default function Footer() {
                   >
                     {t('footer.become_host')}
                   </Box>
+                  {/*
+                  Toggle: uncomment this block and add `Switch` to the @mui/material import above.
+                  <Stack spacing={1} useFlexGap sx={{ alignItems: 'flex-start', width: '100%', pt: 0.5 }}>
+                    <Box
+                      sx={{
+                        direction: 'ltr',
+                        lineHeight: 0,
+                        alignSelf: 'flex-start',
+                        p: '2px',
+                        borderRadius: '16px',
+                        background: 'linear-gradient(180deg, #ffffff 0%, #f3f3f3 100%)',
+                        boxShadow: '0 1px 2px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9)',
+                      }}
+                    >
+                      <Switch
+                        onChange={(_, checked) => {
+                          if (checked) becomeHost()
+                        }}
+                        sx={{
+                          m: 0,
+                          p: 0,
+                          width: 52,
+                          height: 30,
+                          '& .MuiSwitch-switchBase': {
+                            p: 0,
+                            top: 3,
+                            left: 3,
+                            '&.Mui-checked': {
+                              transform: 'translateX(24px)',
+                              '& + .MuiSwitch-track': {
+                                background: 'linear-gradient(180deg, #c0603d 0%, #9a4528 100%)',
+                                opacity: 1,
+                                borderColor: 'rgba(0,0,0,0.12)',
+                                boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.2), 0 1px 0 rgba(255,255,255,0.15)',
+                              },
+                            },
+                            '&.Mui-focusVisible .MuiSwitch-thumb': {
+                              boxShadow: '0 0 0 3px rgba(173, 84, 45, 0.35)',
+                            },
+                          },
+                          '& .MuiSwitch-thumb': {
+                            width: 22,
+                            height: 22,
+                            background: 'linear-gradient(180deg, #ffffff 0%, #f5f5f5 100%)',
+                            border: '1px solid rgba(0,0,0,0.08)',
+                            boxShadow: '0 2px 5px rgba(0,0,0,0.18), 0 1px 1px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.95)',
+                          },
+                          '& .MuiSwitch-track': {
+                            borderRadius: 15,
+                            opacity: 1,
+                            background: 'linear-gradient(180deg, #ebebeb 0%, #dedede 100%)',
+                            border: '1px solid rgba(0,0,0,0.1)',
+                            boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.08), inset 0 -1px 0 rgba(255,255,255,0.5)',
+                          },
+                        }}
+                      />
+                    </Box>
+                  </Stack>
+                  */}
                 </>
               )}
             </Stack>
           </Box>
-          <Box sx={{ gridColumn: { xs: '1 / -1', sm: 'auto' }, minWidth: 0 }}>
-            <Typography sx={columnHeadingSx}>{t('footer.community')}</Typography>
-            <Stack spacing={1.25} useFlexGap>
+          <Box sx={{ gridColumn: { xs: '1 / -1', md: 'auto' }, minWidth: 0 }}>
+            <Typography sx={{ color: '#222222', fontWeight: 600, mb: { xs: 1, md: 2.5 }, fontSize: '0.875rem' }}>{t('footer.community')}</Typography>
+            <Stack spacing={1} useFlexGap>
               <Box component={Link} href="/wishlist" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.wishlist')}</Box>
               <Box component={Link} href="/bookings" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.bookings')}</Box>
-              <Box component={Link} href="/chat" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.messages')}</Box>
             </Stack>
           </Box>
         </Box>
@@ -119,30 +160,21 @@ export default function Footer() {
         <Box
           sx={{
             display: 'flex',
-            flexDirection: { xs: 'column', sm: 'row' },
+            flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: { xs: 1, sm: 2 },
-            textAlign: { xs: 'center', sm: 'left' },
+            justifyContent: 'center',
+            gap: { xs: 0.75, md: 1.25 },
+            textAlign: 'center',
           }}
         >
-          <Stack direction="row" spacing={1} alignItems="center" useFlexGap>
-            <Box
-              component="img"
-              src="/images/Logo.png"
-              alt=""
-              aria-hidden
-              sx={{ height: 20, width: 'auto', objectFit: 'contain', opacity: 0.85 }}
-            />
-            <Typography sx={{ color: '#6B7280', fontSize: { xs: '0.8125rem', md: '0.875rem' } }}>
-              © {new Date().getFullYear()} {t('footer.lipabnb')}
-            </Typography>
-          </Stack>
+          <Typography sx={{ color: '#222222', fontSize: { xs: '0.8125rem', md: '0.875rem' } }}>
+            © {new Date().getFullYear()} {t('footer.lipabnb')}
+          </Typography>
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'row',
-              flexWrap: 'wrap',
+              flexWrap: 'nowrap',
               alignItems: 'center',
               justifyContent: 'center',
               gap: 1,
@@ -153,12 +185,11 @@ export default function Footer() {
               href="/privacy-policy"
               onClick={scrollToTop}
               sx={{
-                color: '#4B5563',
+                color: '#222222',
                 textDecoration: 'none',
                 fontSize: { xs: '0.8125rem', md: '0.875rem' },
                 whiteSpace: 'nowrap',
-                transition: 'color 0.15s ease',
-                '&:hover': { color: '#AD542D', textDecoration: 'underline' },
+                '&:hover': { textDecoration: 'underline' },
               }}
             >
               {t('footer.privacy')}
@@ -171,12 +202,11 @@ export default function Footer() {
               href="/terms"
               onClick={scrollToTop}
               sx={{
-                color: '#4B5563',
+                color: '#222222',
                 textDecoration: 'none',
                 fontSize: { xs: '0.8125rem', md: '0.875rem' },
                 whiteSpace: 'nowrap',
-                transition: 'color 0.15s ease',
-                '&:hover': { color: '#AD542D', textDecoration: 'underline' },
+                '&:hover': { textDecoration: 'underline' },
               }}
             >
               {t('footer.terms')}
