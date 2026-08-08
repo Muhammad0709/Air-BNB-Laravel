@@ -28,18 +28,20 @@ export default function SignUp() {
   const [googleDialogOpen, setGoogleDialogOpen] = useState(false)
   const currentLanguage = languages.find((l) => l.code === language) || languages[0]
   const { data, setData, post, processing, errors } = useForm({
-    type: 'user' as 'user' | 'host',
+    type: 'user' as 'user' | 'host' | 'company',
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
+    company_name: '',
+    tax_id: '',
   })
   const formWidth = 600
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const typeParam = params.get('type')
-    if (typeParam === 'host' || typeParam === 'user') {
+    if (typeParam === 'host' || typeParam === 'user' || typeParam === 'company') {
       setData('type', typeParam)
     }
   }, [setData])
@@ -111,7 +113,7 @@ export default function SignUp() {
                             select
                             name="type"
                             value={data.type}
-                            onChange={(e) => setData('type', e.target.value as 'user' | 'host')}
+                            onChange={(e) => setData('type', e.target.value as 'user' | 'host' | 'company')}
                             error={!!errors.type}
                             sx={{
                               width: { xs: '100%', md: formWidth },
@@ -127,9 +129,24 @@ export default function SignUp() {
                           >
                             <MenuItem value="user">{t('auth.signup.type_user')}</MenuItem>
                             <MenuItem value="host">{t('auth.signup.type_host')}</MenuItem>
+                            <MenuItem value="company">{t('auth.signup.type_company')}</MenuItem>
                           </TextField>
                           <InputError message={Array.isArray(errors.type) ? errors.type[0] : errors.type} />
                         </Box>
+                        {data.type === 'company' && (
+                          <>
+                            <Box>
+                              <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signup.company_name')}</Typography>
+                              <TextField name="company_name" value={data.company_name} onChange={(e) => setData('company_name', e.target.value)} error={!!errors.company_name} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signup.company_name_placeholder')} />
+                              <InputError message={Array.isArray(errors.company_name) ? errors.company_name[0] : errors.company_name} />
+                            </Box>
+                            <Box>
+                              <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signup.tax_id')}</Typography>
+                              <TextField name="tax_id" value={data.tax_id} onChange={(e) => setData('tax_id', e.target.value)} error={!!errors.tax_id} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signup.tax_id_placeholder')} />
+                              <InputError message={Array.isArray(errors.tax_id) ? errors.tax_id[0] : errors.tax_id} />
+                            </Box>
+                          </>
+                        )}
                         <Box>
                           <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signup.password')}</Typography>
                           <TextField

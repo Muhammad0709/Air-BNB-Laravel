@@ -25,7 +25,7 @@ class HostMiddleware
 
         $user = Auth::user();
 
-        if ($user->type === UserType::HOST) {
+        if ($user->type->isHostPanelUser()) {
             return $next($request);
         }
 

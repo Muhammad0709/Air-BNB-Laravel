@@ -26,6 +26,9 @@ class SettingsController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
+                'type' => $user->type->value,
+                'company_name' => $user->company_name,
+                'tax_id' => $user->tax_id,
                 'profile_picture' => $user->profile_picture
                     ? (filter_var($user->profile_picture, FILTER_VALIDATE_URL)
                         ? $user->profile_picture
