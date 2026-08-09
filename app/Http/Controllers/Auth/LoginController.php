@@ -46,7 +46,7 @@ class LoginController extends Controller
 
             return match ($user->type) {
                 UserType::ADMIN, UserType::MODERATOR => redirect()->intended(route('admin.dashboard'))->with('success', $msg),
-                UserType::HOST => redirect()->intended(route('host.dashboard'))->with('success', $msg),
+                UserType::HOST, UserType::COMPANY => redirect()->intended(route('host.dashboard'))->with('success', $msg),
                 UserType::USER => redirect()->intended('/')->with('success', $msg),
             };
         }

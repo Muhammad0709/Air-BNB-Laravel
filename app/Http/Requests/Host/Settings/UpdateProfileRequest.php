@@ -22,6 +22,8 @@ class UpdateProfileRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'company_name' => $user->type === \App\Enums\UserType::COMPANY ? 'required|string|max:255' : 'nullable|string|max:255',
+            'tax_id' => 'nullable|string|max:255',
         ];
     }
 }

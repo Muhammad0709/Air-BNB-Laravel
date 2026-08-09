@@ -9,7 +9,7 @@ import SaveIcon from '@mui/icons-material/Save'
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { Head, router, usePage } from '@inertiajs/react'
 
-type UserProp = { id: number; name: string; email: string; profile_picture?: string | null }
+type UserProp = { id: number; name: string; email: string; type?: string; company_name?: string | null; tax_id?: string | null; profile_picture?: string | null }
 type PageProps = {
   user?: UserProp
   flash?: { success?: string; error?: string }
@@ -36,6 +36,8 @@ export default function HostProfileSettings() {
   const [profileData, setProfileData] = useState({
     name: user?.name ?? '',
     email: user?.email ?? '',
+    company_name: user?.company_name ?? '',
+    tax_id: user?.tax_id ?? '',
     profileImage: (user?.profile_picture ?? null) as string | null
   })
 
@@ -51,10 +53,12 @@ export default function HostProfileSettings() {
         ...prev,
         name: user.name ?? '',
         email: user.email ?? '',
+        company_name: user.company_name ?? '',
+        tax_id: user.tax_id ?? '',
         profileImage: user.profile_picture ?? null
       }))
     }
-  }, [user?.id, user?.name, user?.email, user?.profile_picture])
+  }, [user?.id, user?.name, user?.email, user?.company_name, user?.tax_id, user?.profile_picture])
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -85,6 +89,8 @@ export default function HostProfileSettings() {
     router.put('/host/settings/profile', {
       name: profileData.name.trim(),
       email: profileData.email,
+      company_name: profileData.company_name,
+      tax_id: profileData.tax_id,
     }, { preserveScroll: true })
   }
 
@@ -257,6 +263,31 @@ export default function HostProfileSettings() {
                     required
                     sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
                   />
+
+                  {user?.type === 'Company' && (
+                    <>
+                      <TextField
+                        fullWidth
+                        label={t('host.settings.company_name')}
+                        name="company_name"
+                        value={profileData.company_name}
+                        onChange={handleProfileChange}
+                        placeholder={t('host.settings.company_name_placeholder')}
+                        required
+                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+                      />
+
+                      <TextField
+                        fullWidth
+                        label={t('host.settings.tax_id')}
+                        name="tax_id"
+                        value={profileData.tax_id}
+                        onChange={handleProfileChange}
+                        placeholder={t('host.settings.tax_id_placeholder')}
+                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+                      />
+                    </>
+                  )}
 
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button
