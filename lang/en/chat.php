@@ -19,4 +19,6 @@ return [
     'message_deleted' => 'Message deleted successfully',
     'delete_for_everyone' => 'Delete for everyone',
     'delete_for_me' => 'Delete for me',
+    'delete_message_question' => 'Delete message?',
+    'delete_file_from_phone' => 'Delete file from your phone',
 ];

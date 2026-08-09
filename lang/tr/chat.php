@@ -17,4 +17,8 @@ return [
     'no_results' => 'Sohbet bulunamadı.',
     'no_conversations' => 'Henüz sohbet yok.',
     'message_deleted' => 'Mesaj başarıyla silindi',
+    'delete_for_everyone' => 'Herkes için sil',
+    'delete_for_me' => 'Benim için sil',
+    'delete_message_question' => 'Mesaj silinsin mi?',
+    'delete_file_from_phone' => 'Dosyayı telefonunuzdan silin',
 ];

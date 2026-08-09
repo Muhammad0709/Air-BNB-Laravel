@@ -40,4 +40,9 @@ return [
     'submit_review' => 'جائزہ جمع کروائیں',
     'explore_more' => 'مزید دیکھیں',
     'show_less' => 'کم دیکھیں',
+    'pickup_time' => 'پک اپ کا وقت',
+    'price' => 'قیمت',
+    'tour_description' => 'ٹور کی تفصیل',
+    'no_reviews' => 'ابھی کوئی جائزہ نہیں۔',
+    'no_related_properties' => 'فی الحال کوئی متعلقہ جائیداد نہیں۔',
 ];

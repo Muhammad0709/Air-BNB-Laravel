@@ -17,4 +17,8 @@ return [
     'no_results' => 'کوئی بات چیت نہیں ملی۔',
     'no_conversations' => 'ابھی تک کوئی بات چیت نہیں۔',
     'message_deleted' => 'پیغام کامیابی سے حذف ہو گیا',
+    'delete_for_everyone' => 'سب کے لیے حذف کریں',
+    'delete_for_me' => 'صرف میرے لیے حذف کریں',
+    'delete_message_question' => 'پیغام حذف کریں؟',
+    'delete_file_from_phone' => 'فون سے فائل حذف کریں',
 ];

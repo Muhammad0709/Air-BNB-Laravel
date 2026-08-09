@@ -40,4 +40,9 @@ return [
     'login_to_book' => 'Giriş yapmadınız. Rezervasyon yapmak için giriş yapın.',
     'explore_more' => 'Daha fazla keşfet',
     'show_less' => 'Daha az göster',
+    'pickup_time' => 'Alım Saati',
+    'price' => 'Fiyat',
+    'tour_description' => 'Tur Açıklaması',
+    'no_reviews' => 'Henüz değerlendirme yok.',
+    'no_related_properties' => 'Şu anda ilgili ilan yok.',
 ];

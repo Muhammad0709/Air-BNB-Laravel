@@ -17,4 +17,8 @@ return [
     'no_results' => 'لم يتم العثور على محادثات.',
     'no_conversations' => 'لا توجد محادثات بعد.',
     'message_deleted' => 'تم حذف الرسالة بنجاح',
+    'delete_for_everyone' => 'حذف للجميع',
+    'delete_for_me' => 'حذف لي فقط',
+    'delete_message_question' => 'حذف الرسالة؟',
+    'delete_file_from_phone' => 'حذف الملف من هاتفك',
 ];
