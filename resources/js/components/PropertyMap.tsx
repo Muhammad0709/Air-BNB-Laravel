@@ -229,7 +229,7 @@ export default function PropertyMap({ properties, center = [34.0522, -118.2437],
                         width: '100%', height: '100%', bgcolor: '#DDDDDD',
                         display: 'flex', alignItems: 'center', justifyContent: 'center'
                       }}>
-                        <Typography sx={{ color: '#717171' }}>No Image</Typography>
+                        <Typography sx={{ color: '#717171' }}>{t('common.no_image')}</Typography>
                       </Box>
                     )}
                     <Box sx={{ position: 'absolute', top: 12, right: 12, display: 'flex', gap: 0.5, zIndex: 10 }}>

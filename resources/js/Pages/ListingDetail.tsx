@@ -598,7 +598,7 @@ export default function ListingDetail() {
                             <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                               <AccessTimeIcon sx={{ color: '#AD542D', fontSize: 24, mt: 0.5 }} />
                               <Box>
-                                <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Pickup Time</Typography>
+                                <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>{t('listing_detail.pickup_time')}</Typography>
                                 <Typography sx={{ fontWeight: 600, color: '#222222' }}>
                                   {property.pickup_start_time && property.pickup_end_time
                                     ? `${property.pickup_start_time} - ${property.pickup_end_time}`
@@ -610,7 +610,7 @@ export default function ListingDetail() {
                             <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                               <AttachMoneyIcon sx={{ color: '#AD542D', fontSize: 24, mt: 0.5 }} />
                               <Box>
-                                <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Price</Typography>
+                                <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>{t('listing_detail.price')}</Typography>
                                 <Typography sx={{ fontWeight: 600, color: '#222222', fontSize: '1.125rem' }}>
                                   {formatPrice(property.airport_pickup_price)}
                                 </Typography>
@@ -647,7 +647,7 @@ export default function ListingDetail() {
                               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                                 <TourIcon sx={{ color: '#AD542D', fontSize: 24, mt: 0.5 }} />
                                 <Box>
-                                  <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Tour Description</Typography>
+                                  <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>{t('listing_detail.tour_description')}</Typography>
                                   <Typography sx={{ fontWeight: 400, color: '#222222', fontSize: '0.9rem' }}>
                                     {property.guided_tours_description}
                                   </Typography>
@@ -670,7 +670,7 @@ export default function ListingDetail() {
                             <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                               <AttachMoneyIcon sx={{ color: '#AD542D', fontSize: 24, mt: 0.5 }} />
                               <Box>
-                                <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Price</Typography>
+                                <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>{t('listing_detail.price')}</Typography>
                                 <Typography sx={{ fontWeight: 600, color: '#222222', fontSize: '1.125rem' }}>
                                   {formatPrice(property.guided_tours_price)}
                                 </Typography>
@@ -838,7 +838,7 @@ export default function ListingDetail() {
                             </Box>
                           </Box>
                         )) : (
-                          <Typography sx={{ color: '#717171' }}>No reviews yet.</Typography>
+                          <Typography sx={{ color: '#717171' }}>{t('listing_detail.no_reviews')}</Typography>
                         )}
                       </Box>
                     </Col>
@@ -879,7 +879,7 @@ export default function ListingDetail() {
                 </Col>
               )) : (
                 <Col lg={12}>
-                  <Typography sx={{ color: '#717171' }}>No related properties at the moment.</Typography>
+                  <Typography sx={{ color: '#717171' }}>{t('listing_detail.no_related_properties')}</Typography>
                 </Col>
               )}
             </Row>

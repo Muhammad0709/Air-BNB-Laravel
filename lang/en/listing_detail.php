@@ -40,4 +40,9 @@ return [
     'explore_more' => 'Explore More',
     'show_less' => 'Show less',
     'show_all_photos' => 'Show all photos',
+    'pickup_time' => 'Pickup Time',
+    'price' => 'Price',
+    'tour_description' => 'Tour Description',
+    'no_reviews' => 'No reviews yet.',
+    'no_related_properties' => 'No related properties at the moment.',
 ];

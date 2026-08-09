@@ -50,10 +50,10 @@ export default function Notifications({ notifications }: NotificationsPageProps)
         const notificationDate = new Date(date);
         const diffInMinutes = Math.floor((now.getTime() - notificationDate.getTime()) / (1000 * 60));
 
-        if (diffInMinutes < 1) return 'Just now';
-        if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-        if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
-        return `${Math.floor(diffInMinutes / 1440)}d ago`;
+        if (diffInMinutes < 1) return t('common.just_now') as string;
+        if (diffInMinutes < 60) return (t('common.minutes_ago') as string).replace(':count', String(diffInMinutes));
+        if (diffInMinutes < 1440) return (t('common.hours_ago') as string).replace(':count', String(Math.floor(diffInMinutes / 60)));
+        return (t('common.days_ago') as string).replace(':count', String(Math.floor(diffInMinutes / 1440)));
     };
 
     const markAsRead = (notificationId: number) => {

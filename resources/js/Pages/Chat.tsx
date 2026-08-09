@@ -969,7 +969,7 @@ export default function Chat() {
                                 },
                               }}
                             >
-                              Delete for everyone
+                              {t('chat.delete_for_everyone')}
                             </Button>
                             <Button
                               onClick={() => {
@@ -997,7 +997,7 @@ export default function Chat() {
                                 },
                               }}
                             >
-                              Delete for me
+                              {t('chat.delete_for_me')}
                             </Button>
                           </>
                         )}
@@ -1023,7 +1023,7 @@ export default function Chat() {
                               '&:hover': { bgcolor: '#78381C' },
                             }}
                           >
-                            Delete for me
+                            {t('chat.delete_for_me')}
                           </Button>
                         )}
                         <Button
