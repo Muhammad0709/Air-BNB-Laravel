@@ -108,6 +108,7 @@ const locationCoordinates: Record<string, [number, number]> = {
 }
 
 export default function PropertyMap({ properties, center = [34.0522, -118.2437], zoom = 10 }: PropertyMapProps) {
+  const { t } = useLanguage()
   const getCoordinates = (location: string, index: number): [number, number] => {
     const baseCoords = locationCoordinates[location] || center
     const variation = 0.015
