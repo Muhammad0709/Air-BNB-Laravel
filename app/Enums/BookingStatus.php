@@ -5,7 +5,9 @@ namespace App\Enums;
 enum BookingStatus: string
 {
     case PENDING = 'pending';
+    case WAITING_FOR_DELIVERY_PAYMENT = 'waiting_for_delivery_payment';
     case CONFIRMED = 'confirmed';
+    case PAID = 'paid';
     case CANCELLED = 'cancelled';
     case COMPLETED = 'completed';
 
@@ -14,7 +16,7 @@ enum BookingStatus: string
      */
     public static function paid(): array
     {
-        return [self::CONFIRMED->value, self::COMPLETED->value];
+        return [self::CONFIRMED->value, self::PAID->value, self::COMPLETED->value];
     }
 
     /**
@@ -22,7 +24,7 @@ enum BookingStatus: string
      */
     public static function upcoming(): array
     {
-        return [self::PENDING->value, self::CONFIRMED->value];
+        return [self::PENDING->value, self::CONFIRMED->value, self::WAITING_FOR_DELIVERY_PAYMENT->value];
     }
 
     /**
@@ -40,7 +42,9 @@ enum BookingStatus: string
     {
         return match ($this) {
             self::PENDING => 'Pending',
+            self::WAITING_FOR_DELIVERY_PAYMENT => 'Waiting for Delivery Payment',
             self::CONFIRMED => 'Confirmed',
+            self::PAID => 'Paid',
             self::CANCELLED => 'Cancelled',
             self::COMPLETED => 'Completed',
         };
