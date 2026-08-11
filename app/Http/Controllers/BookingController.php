@@ -11,9 +11,11 @@ use App\Enums\UserType;
 use App\Models\Booking;
 use App\Models\Property;
 use App\Models\User;
+use App\Services\MpesaService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -319,6 +321,23 @@ class BookingController extends Controller
             ));
         }
 
+        // If M-Pesa online payment — trigger STK Push immediately
+        $mpesaError = null;
+        if ($paymentMethod === 'online_mpesa') {
+            $mpesaPhone = $validated['mpesa_phone'] ?? $validated['phone'];
+            try {
+                app(MpesaService::class)->lipaNaMpesaOnline(
+                    phoneNumber: $mpesaPhone,
+                    amount: $totalAmount,
+                    bookingId: $booking->id,
+                );
+                Log::info('STK Push triggered for booking #' . $booking->id);
+            } catch (\Exception $e) {
+                Log::error('STK Push failed for booking #' . $booking->id . ': ' . $e->getMessage());
+                $mpesaError = $e->getMessage();
+            }
+        }
+
         return redirect()->route('confirmation', [
             'property_id'    => $property->id,
             'checkin'        => $validated['checkin'],
@@ -326,6 +345,7 @@ class BookingController extends Controller
             'booking'        => $booking->id,
             'payment_method' => $paymentMethod,
             'mpesa_phone'    => $validated['mpesa_phone'] ?? null,
+            'mpesa_error'    => $mpesaError,
         ]);
     }
 }
