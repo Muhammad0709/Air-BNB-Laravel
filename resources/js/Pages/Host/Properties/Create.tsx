@@ -48,6 +48,13 @@ export default function AddProperty() {
     guided_tours_description: '',
     guided_tours_duration: '',
     guided_tours_price: '',
+    // Experience-specific fields
+    min_participants: '',
+    guide_language: '',
+    group_size: '',
+    meeting_point: '',
+    included_services: [] as string[],
+    safety_info: '',
   })
   const [guidedToursDurationCustom, setGuidedToursDurationCustom] = useState('')
 
@@ -113,6 +120,17 @@ export default function AddProperty() {
       const durationValue = formData.guided_tours_duration === 'Custom Duration' ? guidedToursDurationCustom : formData.guided_tours_duration
       submitData.append('guided_tours_duration', durationValue)
       submitData.append('guided_tours_price', formData.guided_tours_price)
+    }
+    // Experience-specific fields
+    if (formData.listing_category === 'experience') {
+      if (formData.min_participants) submitData.append('min_participants', formData.min_participants)
+      if (formData.guide_language)   submitData.append('guide_language', formData.guide_language)
+      if (formData.group_size)       submitData.append('group_size', formData.group_size)
+      if (formData.meeting_point)    submitData.append('meeting_point', formData.meeting_point)
+      if (formData.safety_info)      submitData.append('safety_info', formData.safety_info)
+      formData.included_services.forEach((item, i) => {
+        submitData.append(`included_services[${i}]`, item)
+      })
     }
     formData.images.forEach((file) => {
       submitData.append('images[]', file)
@@ -338,6 +356,147 @@ export default function AddProperty() {
                 <InputError message={err('description')} />
               </Col>
             </Row>
+
+            {/* Experience-specific fields */}
+            {formData.listing_category === 'experience' && (
+              <Box sx={{ mt: 4, bgcolor: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '12px', p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: '#166534', mb: 3 }}>
+                  Experience Details
+                </Typography>
+                <Row>
+                  <Col xs={12} md={6}>
+                    <Stack spacing={3}>
+                      <Box>
+                        <TextField
+                          label="Minimum Participants"
+                          name="min_participants"
+                          type="number"
+                          value={formData.min_participants}
+                          onChange={handleChange}
+                          fullWidth
+                          error={!!err('min_participants')}
+                          helperText="Minimum number of people required"
+                          inputProps={{ min: 1 }}
+                        />
+                        <InputError message={err('min_participants')} />
+                      </Box>
+                      <Box>
+                        <TextField
+                          label="Guide Language(s)"
+                          name="guide_language"
+                          value={formData.guide_language}
+                          onChange={handleChange}
+                          fullWidth
+                          error={!!err('guide_language')}
+                          placeholder="e.g. English, Swahili, French"
+                          helperText="Languages spoken by the guide"
+                        />
+                        <InputError message={err('guide_language')} />
+                      </Box>
+                      <Box>
+                        <TextField
+                          label="Group Size / Composition"
+                          name="group_size"
+                          value={formData.group_size}
+                          onChange={handleChange}
+                          fullWidth
+                          error={!!err('group_size')}
+                          placeholder="e.g. Suitable for families, max 10 people"
+                          helperText="Describe ideal group composition"
+                        />
+                        <InputError message={err('group_size')} />
+                      </Box>
+                    </Stack>
+                  </Col>
+                  <Col xs={12} md={6}>
+                    <Stack spacing={3}>
+                      <Box>
+                        <TextField
+                          label="Meeting Point"
+                          name="meeting_point"
+                          value={formData.meeting_point}
+                          onChange={handleChange}
+                          fullWidth
+                          error={!!err('meeting_point')}
+                          placeholder="e.g. Nairobi National Museum entrance"
+                          helperText="Where guests should meet you"
+                        />
+                        <InputError message={err('meeting_point')} />
+                      </Box>
+                      <Box>
+                        <TextField
+                          label="Safety Information"
+                          name="safety_info"
+                          value={formData.safety_info}
+                          onChange={handleChange}
+                          fullWidth
+                          multiline
+                          rows={3}
+                          error={!!err('safety_info')}
+                          placeholder="e.g. Wear comfortable shoes, bring water, not suitable for people with mobility issues"
+                          helperText="Safety requirements and health considerations"
+                        />
+                        <InputError message={err('safety_info')} />
+                      </Box>
+                    </Stack>
+                  </Col>
+                </Row>
+
+                {/* Included Services */}
+                <Box sx={{ mt: 3 }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#166534', mb: 1 }}>
+                    What's Included
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: '#6B7280', mb: 2 }}>
+                    Add items included in this experience (e.g. "Lunch", "Transport", "Equipment")
+                  </Typography>
+                  <Stack spacing={1.5}>
+                    {formData.included_services.map((item, index) => (
+                      <Stack key={index} direction="row" spacing={1} alignItems="center">
+                        <TextField
+                          size="small"
+                          fullWidth
+                          value={item}
+                          onChange={(e) => {
+                            const updated = [...formData.included_services]
+                            updated[index] = e.target.value
+                            setFormData(prev => ({ ...prev, included_services: updated }))
+                          }}
+                          placeholder={`Item ${index + 1}`}
+                        />
+                        <IconButton
+                          size="small"
+                          onClick={() => setFormData(prev => ({
+                            ...prev,
+                            included_services: prev.included_services.filter((_, i) => i !== index)
+                          }))}
+                          sx={{ color: '#EF4444' }}
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>
+                      </Stack>
+                    ))}
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={() => setFormData(prev => ({
+                        ...prev,
+                        included_services: [...prev.included_services, '']
+                      }))}
+                      sx={{
+                        alignSelf: 'flex-start',
+                        borderColor: '#166534',
+                        color: '#166534',
+                        '&:hover': { bgcolor: '#F0FDF4', borderColor: '#15803D' }
+                      }}
+                    >
+                      + Add Item
+                    </Button>
+                  </Stack>
+                  <InputError message={err('included_services')} />
+                </Box>
+              </Box>
+            )}
 
             {/* Service sections: separate cards, light grey background */}
             <Box sx={{ mt: 4, bgcolor: '#F9FAFB', borderRadius: '12px', p: 3 }}>

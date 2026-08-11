@@ -127,7 +127,13 @@ class PropertyController extends Controller
             $validated['bedrooms'] = null;
             $validated['bathrooms'] = null;
         } else {
-            $validated['duration_hours'] = null;
+            $validated['duration_hours']   = null;
+            $validated['min_participants'] = null;
+            $validated['guide_language']   = null;
+            $validated['group_size']       = null;
+            $validated['meeting_point']    = null;
+            $validated['included_services'] = null;
+            $validated['safety_info']      = null;
         }
         $validated['duplicate_flag_reason'] = $this->duplicateDetector->detect(
             $validated['title'],
@@ -224,7 +230,13 @@ class PropertyController extends Controller
             $validated['bedrooms'] = null;
             $validated['bathrooms'] = null;
         } else {
-            $validated['duration_hours'] = null;
+            $validated['duration_hours']    = null;
+            $validated['min_participants']  = null;
+            $validated['guide_language']    = null;
+            $validated['group_size']        = null;
+            $validated['meeting_point']     = null;
+            $validated['included_services'] = null;
+            $validated['safety_info']       = null;
         }
         $validated['duplicate_flag_reason'] = $this->duplicateDetector->detect(
             $validated['title'],

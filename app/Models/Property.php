@@ -42,18 +42,28 @@ class Property extends Model
         'guided_tours_description',
         'guided_tours_duration',
         'guided_tours_price',
+        // Experience-specific fields
+        'min_participants',
+        'guide_language',
+        'group_size',
+        'meeting_point',
+        'included_services',
+        'safety_info',
     ];
 
     protected $casts = [
-        'amenities' => 'array',
-        'images' => 'array',
-        'price' => 'decimal:2',
-        'is_guest_favorite' => 'boolean',
+        'amenities'              => 'array',
+        'images'                 => 'array',
+        'price'                  => 'decimal:2',
+        'is_guest_favorite'      => 'boolean',
         'airport_pickup_enabled' => 'boolean',
-        'airport_pickup_price' => 'decimal:2',
-        'guided_tours_enabled' => 'boolean',
-        'guided_tours_price' => 'decimal:2',
-        'listing_category' => ListingCategory::class,
+        'airport_pickup_price'   => 'decimal:2',
+        'guided_tours_enabled'   => 'boolean',
+        'guided_tours_price'     => 'decimal:2',
+        'listing_category'       => ListingCategory::class,
+        // Experience fields
+        'min_participants'       => 'integer',
+        'included_services'      => 'array',
     ];
 
     public function isExperience(): bool

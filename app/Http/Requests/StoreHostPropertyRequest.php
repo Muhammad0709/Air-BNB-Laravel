@@ -51,10 +51,18 @@ class StoreHostPropertyRequest extends FormRequest
             'pickup_start_time' => ['nullable', 'required_if:airport_pickup_enabled,true', 'string', 'max:10'],
             'pickup_end_time' => ['nullable', 'required_if:airport_pickup_enabled,true', 'string', 'max:10'],
             'airport_pickup_price' => ['nullable', 'required_if:airport_pickup_enabled,true', 'numeric', 'min:0'],
-            'guided_tours_enabled' => ['nullable', 'boolean'],
-            'guided_tours_description' => ['nullable', 'required_if:guided_tours_enabled,true', 'string', 'max:2000'],
-            'guided_tours_duration' => ['nullable', 'required_if:guided_tours_enabled,true', 'string', 'max:255'],
-            'guided_tours_price' => ['nullable', 'required_if:guided_tours_enabled,true', 'numeric', 'min:0'],
+            'guided_tours_enabled'      => ['nullable', 'boolean'],
+            'guided_tours_description'  => ['nullable', 'required_if:guided_tours_enabled,true', 'string', 'max:2000'],
+            'guided_tours_duration'     => ['nullable', 'required_if:guided_tours_enabled,true', 'string', 'max:255'],
+            'guided_tours_price'        => ['nullable', 'required_if:guided_tours_enabled,true', 'numeric', 'min:0'],
+            // Experience-specific fields (only validated when listing_category = experience)
+            'min_participants'          => ['nullable', 'integer', 'min:1'],
+            'guide_language'            => ['nullable', 'string', 'max:255'],
+            'group_size'                => ['nullable', 'string', 'max:255'],
+            'meeting_point'             => ['nullable', 'string', 'max:500'],
+            'included_services'         => ['nullable', 'array'],
+            'included_services.*'       => ['string', 'max:255'],
+            'safety_info'               => ['nullable', 'string', 'max:3000'],
         ];
     }
 

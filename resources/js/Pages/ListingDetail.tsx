@@ -63,6 +63,13 @@ type Property = {
   guided_tours_description?: string | null
   guided_tours_duration?: string | null
   guided_tours_price?: number | null
+  // Experience-specific
+  min_participants?: number | null
+  guide_language?: string | null
+  group_size?: string | null
+  meeting_point?: string | null
+  included_services?: string[]
+  safety_info?: string | null
 }
 
 type Review = {
@@ -134,7 +141,8 @@ export default function ListingDetail() {
   // Airport Pickup / Guided Tours from property (host-configured)
   const { currency } = useCurrency()
   const airportPickupEnabled = Boolean(property.airport_pickup_enabled)
-  const guidedToursEnabled = Boolean(property.guided_tours_enabled)
+  const guidedToursEnabled   = Boolean(property.guided_tours_enabled)
+  const isExperience         = property.listing_category === 'experience'
   const formatPrice = (value: number | string | null | undefined) =>
     value != null ? formatPriceUtil(Number(value), currency) : '—'
 
@@ -679,6 +687,110 @@ export default function ListingDetail() {
                           </Stack>
                         </Box>
                       )}
+                    </Box>
+                  </Paper>
+                )}
+
+                {/* Experience Details Section – shown only for experience listings */}
+                {isExperience && (property.min_participants || property.guide_language || property.group_size || property.meeting_point || (property.included_services && property.included_services.length > 0) || property.safety_info) && (
+                  <Paper className="about-section mt-4" elevation={0} sx={{ bgcolor: '#F0FDF4', border: '1px solid #BBF7D0' }}>
+                    <Typography className="section-title" component="h2" sx={{ color: '#166534' }}>
+                      Experience Details
+                    </Typography>
+                    <Box sx={{ p: 3 }}>
+                      <Stack spacing={2.5}>
+
+                        {/* Participants */}
+                        {(property.min_participants || property.guests) && (
+                          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                            <PeopleIcon sx={{ color: '#16A34A', fontSize: 24, mt: 0.5 }} />
+                            <Box>
+                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Participants</Typography>
+                              <Typography sx={{ fontWeight: 600, color: '#222222' }}>
+                                {property.min_participants && property.guests
+                                  ? `${property.min_participants} – ${property.guests} people`
+                                  : property.guests
+                                    ? `Up to ${property.guests} people`
+                                    : `Min ${property.min_participants} people`}
+                              </Typography>
+                            </Box>
+                          </Box>
+                        )}
+
+                        {/* Guide Language */}
+                        {property.guide_language && (
+                          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                            <Box component="span" sx={{ fontSize: 22, mt: 0.3, color: '#16A34A' }}>🗣️</Box>
+                            <Box>
+                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Guide Language</Typography>
+                              <Typography sx={{ fontWeight: 600, color: '#222222' }}>{property.guide_language}</Typography>
+                            </Box>
+                          </Box>
+                        )}
+
+                        {/* Group Size */}
+                        {property.group_size && (
+                          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                            <Box component="span" sx={{ fontSize: 22, mt: 0.3, color: '#16A34A' }}>👥</Box>
+                            <Box>
+                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Group Size</Typography>
+                              <Typography sx={{ fontWeight: 600, color: '#222222' }}>{property.group_size}</Typography>
+                            </Box>
+                          </Box>
+                        )}
+
+                        {/* Meeting Point */}
+                        {property.meeting_point && (
+                          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                            <LocationOnIcon sx={{ color: '#16A34A', fontSize: 24, mt: 0.5 }} />
+                            <Box>
+                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Meeting Point</Typography>
+                              <Typography sx={{ fontWeight: 600, color: '#222222' }}>{property.meeting_point}</Typography>
+                            </Box>
+                          </Box>
+                        )}
+
+                        {/* Included Services */}
+                        {property.included_services && property.included_services.length > 0 && (
+                          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                            <Box component="span" sx={{ fontSize: 22, mt: 0.3, color: '#16A34A' }}>✅</Box>
+                            <Box sx={{ flex: 1 }}>
+                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 1 }}>What's Included</Typography>
+                              <Stack direction="row" flexWrap="wrap" gap={1}>
+                                {property.included_services.filter(Boolean).map((item, i) => (
+                                  <Box
+                                    key={i}
+                                    sx={{
+                                      bgcolor: '#DCFCE7',
+                                      border: '1px solid #BBF7D0',
+                                      borderRadius: '20px',
+                                      px: 1.5,
+                                      py: 0.5,
+                                      fontSize: '0.875rem',
+                                      fontWeight: 500,
+                                      color: '#166534',
+                                    }}
+                                  >
+                                    {item}
+                                  </Box>
+                                ))}
+                              </Stack>
+                            </Box>
+                          </Box>
+                        )}
+
+                        {/* Safety Info */}
+                        {property.safety_info && (
+                          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                            <Box component="span" sx={{ fontSize: 22, mt: 0.3, color: '#16A34A' }}>⚠️</Box>
+                            <Box>
+                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Safety Information</Typography>
+                              <Typography sx={{ color: '#374151', lineHeight: 1.6 }}>{property.safety_info}</Typography>
+                            </Box>
+                          </Box>
+                        )}
+
+                      </Stack>
                     </Box>
                   </Paper>
                 )}
