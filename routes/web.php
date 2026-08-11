@@ -207,4 +207,22 @@ Route::prefix('host')->name('host.')->middleware('host')->group(function () {
     Route::delete('/notifications/{notification}', [App\Http\Controllers\Host\NotificationController::class, 'destroy'])->name('notifications.destroy');
 });
 
+// M-Pesa routes (no auth required — callback is server-to-server from Safaricom)
+Route::prefix('mpesa')->name('mpesa.')->group(function () {
+    // Initiate STK Push (called by authenticated users from confirmation page)
+    Route::post('/pay', [\App\Http\Controllers\MpesaController::class, 'initiate'])
+        ->middleware('auth')
+        ->name('pay');
+
+    // Daraja callback — Safaricom POSTs here after payment (no session/auth)
+    Route::post('/callback', [\App\Http\Controllers\MpesaController::class, 'callback'])
+        ->name('callback')
+        ->withoutMiddleware([\Illuminate\Session\Middleware\AuthenticateSession::class]);
+
+    // Poll payment status from frontend
+    Route::get('/status/{bookingId}', [\App\Http\Controllers\MpesaController::class, 'status'])
+        ->middleware('auth')
+        ->name('status');
+});
+
 require __DIR__.'/auth.php';

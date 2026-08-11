@@ -139,6 +139,8 @@ export default function Booking() {
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
   const [paymentModalOpen, setPaymentModalOpen] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState('cash')
+  const [mpesaPhone, setMpesaPhone] = useState('')
+  const [mpesaPhoneError, setMpesaPhoneError] = useState('')
 
   const validate = () => {
     const newErrors: Record<string, string> = {}
@@ -178,20 +180,35 @@ export default function Booking() {
   }
 
   const handleConfirmBooking = () => {
+    // Validate M-Pesa phone if online payment selected
+    if (paymentMethod === 'online') {
+      const cleaned = mpesaPhone.replace(/[\s\-\(\)+]/g, '')
+      if (!mpesaPhone.trim()) {
+        setMpesaPhoneError('M-Pesa phone number is required.')
+        return
+      }
+      if (!/^\d{9,12}$/.test(cleaned)) {
+        setMpesaPhoneError('Enter a valid Kenyan phone number (e.g. 0712345678).')
+        return
+      }
+      setMpesaPhoneError('')
+    }
+
     setPaymentModalOpen(false)
     setSubmitting(true)
     router.post('/booking', {
-      property_id: property.id,
+      property_id:    property.id,
       checkin,
       checkout,
-      name: formData.name.trim(),
-      email: formData.email.trim(),
-      phone_code: formData.phoneCode || '+31',
-      phone: formData.phone.trim(),
-      rooms: (formData.rooms === '' ? (property?.bedrooms || 1) : formData.rooms) ?? 1,
-      adults: (formData.adults === '' ? 1 : formData.adults) ?? 1,
-      children: formData.children ?? 0,
-      payment_method: paymentMethod,
+      name:           formData.name.trim(),
+      email:          formData.email.trim(),
+      phone_code:     formData.phoneCode || '+31',
+      phone:          formData.phone.trim(),
+      rooms:          (formData.rooms   === '' ? (property?.bedrooms || 1) : formData.rooms)  ?? 1,
+      adults:         (formData.adults  === '' ? 1 : formData.adults) ?? 1,
+      children:       formData.children ?? 0,
+      payment_method: paymentMethod === 'online' ? 'online_mpesa' : 'cod',
+      mpesa_phone:    paymentMethod === 'online' ? mpesaPhone.trim() : null,
     }, {
       onFinish: () => setSubmitting(false),
       onError: (errors) => {
@@ -476,27 +493,57 @@ export default function Booking() {
                   border: '2px solid', 
                   borderColor: paymentMethod === 'online' ? '#AD542D' : '#E5E7EB',
                   borderRadius: 2,
-                  cursor: 'not-allowed',
-                  opacity: 0.6,
+                  cursor: 'pointer',
                   transition: 'all 0.2s'
                 }}
+                onClick={() => setPaymentMethod('online')}
               >
                 <FormControlLabel 
                   value="online" 
-                  control={<Radio disabled />} 
+                  control={<Radio sx={{ color: '#AD542D', '&.Mui-checked': { color: '#AD542D' } }} />} 
                   label={
                     <Box>
-                      <Typography sx={{ fontWeight: 600, fontSize: '1rem' }}>
-                        {t('booking.payment_online')}
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: '#9CA3AF', mt: 0.5, fontStyle: 'italic' }}>
-                        {t('booking.coming_soon')}
+                      <Stack direction="row" alignItems="center" spacing={1}>
+                        <Typography sx={{ fontWeight: 600, fontSize: '1rem' }}>
+                          {t('booking.payment_online')}
+                        </Typography>
+                        <Box
+                          component="img"
+                          src="/images/mpesa-logo.png"
+                          alt="M-Pesa"
+                          onError={(e: React.SyntheticEvent<HTMLImageElement>) => { e.currentTarget.style.display = 'none' }}
+                          sx={{ height: 20, objectFit: 'contain' }}
+                        />
+                      </Stack>
+                      <Typography variant="body2" sx={{ color: '#6B7280', mt: 0.5 }}>
+                        Pay via M-Pesa STK Push — you will get a prompt on your phone.
                       </Typography>
                     </Box>
                   }
                   sx={{ width: '100%', m: 0 }}
-                  disabled
                 />
+
+                {/* M-Pesa phone input — shown only when online is selected */}
+                {paymentMethod === 'online' && (
+                  <Box sx={{ mt: 2 }} onClick={(e) => e.stopPropagation()}>
+                    <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
+                      M-Pesa Phone Number
+                    </Typography>
+                    <TextField
+                      size="small"
+                      fullWidth
+                      placeholder="e.g. 0712345678"
+                      value={mpesaPhone}
+                      onChange={(e) => {
+                        setMpesaPhone(e.target.value)
+                        if (mpesaPhoneError) setMpesaPhoneError('')
+                      }}
+                      error={!!mpesaPhoneError}
+                      helperText={mpesaPhoneError || 'Safaricom number registered with M-Pesa'}
+                      inputProps={{ maxLength: 15 }}
+                    />
+                  </Box>
+                )}
               </Paper>
             </RadioGroup>
           </DialogContent>

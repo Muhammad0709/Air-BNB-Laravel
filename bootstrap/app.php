@@ -33,6 +33,8 @@ return Application::configure(basePath: dirname(__DIR__))
             // Public search (no auth, no session)
             'api/search',
             'api/currencies',
+            // M-Pesa callback from Safaricom (server-to-server, no session/CSRF)
+            'mpesa/callback',
         ]);
 
         $middleware->web(prepend: [

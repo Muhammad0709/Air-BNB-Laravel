@@ -73,14 +73,17 @@ class ConfirmationController extends Controller
         $depositAmount = (float) ($property->deposit_amount ?? 0);
 
         $bookingReference = null;
-        $bookingStatus = null;
-        $bookingId = $request->query('booking');
+        $bookingStatus    = null;
+        $bookingId        = $request->query('booking');
+        $paymentMethod    = $request->query('payment_method', 'cod');
+        $mpesaPhone       = $request->query('mpesa_phone');
+
         if ($bookingId) {
             $booking = Booking::where('id', $bookingId)
                 ->where('property_id', $propertyId)
-                ->first(['reference', 'status']);
+                ->first(['reference', 'status', 'total_amount']);
             $bookingReference = $booking?->reference;
-            $bookingStatus = $booking?->status->value;
+            $bookingStatus    = $booking?->status->value;
         }
 
         $image = $property->getPrimaryImageUrl() ?? '/images/popular-stay-1.svg';
@@ -98,18 +101,21 @@ class ConfirmationController extends Controller
         ];
 
         return Inertia::render('Confirmation', [
-            'property' => $propertyData,
-            'nights' => $nights,
-            'checkin' => $checkin,
-            'checkout' => $checkout,
-            'costs' => $costs,
-            'totalAmount' => $totalAmount,
-            'rules' => $rules,
-            'cancellationPolicy' => $cancellationPolicy->value,
+            'property'                    => $propertyData,
+            'nights'                      => $nights,
+            'checkin'                     => $checkin,
+            'checkout'                    => $checkout,
+            'costs'                       => $costs,
+            'totalAmount'                 => $totalAmount,
+            'rules'                       => $rules,
+            'cancellationPolicy'          => $cancellationPolicy->value,
             'cancellationPolicyDescription' => $cancellationPolicy->description(),
-            'bookingReference' => $bookingReference,
-            'bookingStatus' => $bookingStatus,
-            'depositAmount' => $depositAmount,
+            'bookingReference'            => $bookingReference,
+            'bookingStatus'               => $bookingStatus,
+            'depositAmount'               => $depositAmount,
+            'bookingId'                   => $bookingId ? (int) $bookingId : null,
+            'paymentMethod'               => $paymentMethod,
+            'mpesaPhone'                  => $mpesaPhone,
         ]);
     }
 }

@@ -273,28 +273,30 @@ class BookingController extends Controller
             }
         }
 
-        $phoneCode = $validated['phone_code'] ?? '+31';
+        $phoneCode     = $validated['phone_code'] ?? '+31';
+        $paymentMethod = $validated['payment_method'] ?? 'cod';
 
         $booking = Booking::create([
-            'property_id' => $property->id,
-            'user_id' => $user->id,
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'phone_code' => $phoneCode,
-            'phone' => $validated['phone'],
-            'rooms' => $validated['rooms'] ?? 1,
-            'adults' => $validated['adults'] ?? 1,
-            'children' => $validated['children'] ?? 0,
-            'check_in_date' => $checkin,
+            'property_id'    => $property->id,
+            'user_id'        => $user->id,
+            'name'           => $validated['name'],
+            'email'          => $validated['email'],
+            'phone_code'     => $phoneCode,
+            'phone'          => $validated['phone'],
+            'rooms'          => $validated['rooms'] ?? 1,
+            'adults'         => $validated['adults'] ?? 1,
+            'children'       => $validated['children'] ?? 0,
+            'check_in_date'  => $checkin,
             'check_out_date' => $checkout,
-            'nights' => $nights,
-            'nightly_rate' => $nightlyRate,
-            'cleaning_fee' => $cleaningFee,
-            'service_fee' => $serviceFee,
-            'total_amount' => $totalAmount,
+            'nights'         => $nights,
+            'nightly_rate'   => $nightlyRate,
+            'cleaning_fee'   => $cleaningFee,
+            'service_fee'    => $serviceFee,
+            'total_amount'   => $totalAmount,
             'deposit_amount' => $depositAmount,
             'deposit_status' => $depositAmount > 0 ? DepositStatus::HELD->value : null,
-            'status' => BookingStatus::PENDING,
+            'status'         => BookingStatus::PENDING,
+            'payment_method' => $paymentMethod,
         ]);
 
         // Send notification to property host
@@ -318,10 +320,12 @@ class BookingController extends Controller
         }
 
         return redirect()->route('confirmation', [
-            'property_id' => $property->id,
-            'checkin' => $validated['checkin'],
-            'checkout' => $validated['checkout'],
-            'booking' => $booking->id,
+            'property_id'    => $property->id,
+            'checkin'        => $validated['checkin'],
+            'checkout'       => $validated['checkout'],
+            'booking'        => $booking->id,
+            'payment_method' => $paymentMethod,
+            'mpesa_phone'    => $validated['mpesa_phone'] ?? null,
         ]);
     }
 }

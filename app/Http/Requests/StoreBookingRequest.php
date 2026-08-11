@@ -18,16 +18,18 @@ class StoreBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'property_id' => ['required', 'integer', 'exists:properties,id'],
-            'checkin' => ['required', 'date'],
-            'checkout' => ['required', 'date', 'after:checkin'],
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email'],
-            'phone_code' => ['nullable', 'string', 'max:10'],
-            'phone' => ['required', 'string', 'max:20'],
-            'rooms' => ['nullable', 'integer', 'min:1', 'max:20'],
-            'adults' => ['nullable', 'integer', 'min:1', 'max:50'],
-            'children' => ['nullable', 'integer', 'min:0', 'max:20'],
+            'property_id'    => ['required', 'integer', 'exists:properties,id'],
+            'checkin'        => ['required', 'date'],
+            'checkout'       => ['required', 'date', 'after:checkin'],
+            'name'           => ['required', 'string', 'max:255'],
+            'email'          => ['required', 'email'],
+            'phone_code'     => ['nullable', 'string', 'max:10'],
+            'phone'          => ['required', 'string', 'max:20'],
+            'rooms'          => ['nullable', 'integer', 'min:1', 'max:20'],
+            'adults'         => ['nullable', 'integer', 'min:1', 'max:50'],
+            'children'       => ['nullable', 'integer', 'min:0', 'max:20'],
+            'payment_method' => ['nullable', 'string', 'in:cod,online_mpesa,delivery_mpesa'],
+            'mpesa_phone'    => ['nullable', 'string', 'max:20'],
         ];
     }
 
