@@ -40,4 +40,9 @@ return [
     'explore_more' => 'عرض المزيد',
     'show_less' => 'عرض أقل',
     'show_all_photos' => 'عرض جميع الصور',
+    'pickup_time' => 'وقت الاستلام',
+    'price' => 'السعر',
+    'tour_description' => 'وصف الجولة',
+    'no_reviews' => 'لا توجد تقييمات بعد.',
+    'no_related_properties' => 'لا توجد عقارات ذات صلة حالياً.',
 ];

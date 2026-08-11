@@ -17,4 +17,8 @@ return [
     'no_results' => 'گفتگویی یافت نشد.',
     'no_conversations' => 'هنوز گفتگویی وجود ندارد.',
     'message_deleted' => 'پیام با موفقیت حذف شد',
+    'delete_for_everyone' => 'حذف برای همه',
+    'delete_for_me' => 'فقط برای من حذف شود',
+    'delete_message_question' => 'پیام حذف شود؟',
+    'delete_file_from_phone' => 'فایل از گوشی شما حذف شود',
 ];

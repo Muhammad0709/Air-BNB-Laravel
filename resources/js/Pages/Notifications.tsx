@@ -1,5 +1,6 @@
-import { Box, Container, Paper, Typography, Stack, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import { Box, Container, Paper, Typography, Stack, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button, Card, CardContent } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Pagination from '../components/Pagination';
@@ -49,10 +50,10 @@ export default function Notifications({ notifications }: NotificationsPageProps)
         const notificationDate = new Date(date);
         const diffInMinutes = Math.floor((now.getTime() - notificationDate.getTime()) / (1000 * 60));
 
-        if (diffInMinutes < 1) return 'Just now';
-        if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-        if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
-        return `${Math.floor(diffInMinutes / 1440)}d ago`;
+        if (diffInMinutes < 1) return t('common.just_now') as string;
+        if (diffInMinutes < 60) return (t('common.minutes_ago') as string).replace(':count', String(diffInMinutes));
+        if (diffInMinutes < 1440) return (t('common.hours_ago') as string).replace(':count', String(Math.floor(diffInMinutes / 60)));
+        return (t('common.days_ago') as string).replace(':count', String(Math.floor(diffInMinutes / 1440)));
     };
 
     const markAsRead = (notificationId: number) => {
@@ -94,56 +95,93 @@ export default function Notifications({ notifications }: NotificationsPageProps)
     return (
         <>
             <Navbar />
-            <Box sx={{ minHeight: '80vh', py: 6, bgcolor: '#F9FAFB' }}>
+            <Box sx={{ minHeight: '80vh', py: 4, bgcolor: '#FFFFFF' }}>
                 <Container maxWidth="md">
-                    <Typography variant="h4" sx={{ fontWeight: 700, mb: 4, color: '#111827' }}>
-                        Notifications
-                    </Typography>
+                    <Box sx={{ textAlign: 'center', mb: 4 }}>
+                        <Typography variant="h2" sx={{ fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2.25rem' }, fontWeight: 800, color: '#111827', mb: 1.5, letterSpacing: '-0.01em' }}>
+                            {t('notifications.title')}
+                        </Typography>
+                        <Typography sx={{ color: '#6B7280', fontSize: { xs: '0.9375rem', md: '1rem' } }}>
+                            {t('notifications.subtitle')}
+                        </Typography>
+                    </Box>
 
-                    <Stack spacing={2}>
-                        {notifications.data.length === 0 ? (
-                            <Paper sx={{ p: 6, textAlign: 'center' }}>
-                                <Typography sx={{ color: '#6B7280', fontSize: '1rem' }}>
-                                    No notifications yet
-                                </Typography>
-                            </Paper>
-                        ) : (
-                            notifications.data.map((notification) => (
-                                <Paper
-                                    key={notification.id}
-                                    sx={{
-                                        p: 3,
-                                        cursor: 'pointer',
-                                        bgcolor: notification.read_at ? '#FFFFFF' : '#F3F4F6',
-                                        '&:hover': { bgcolor: '#F9FAFB', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' },
-                                        transition: 'all 0.2s',
-                                    }}
-                                    onClick={() => !notification.read_at && markAsRead(notification.id)}
-                                >
-                                    <Stack direction="row" justifyContent="space-between" alignItems="center">
-                                        <Box sx={{ flex: 1 }}>
-                                            <Typography sx={{ fontWeight: 600, fontSize: '1rem', color: '#111827', mb: 0.5 }}>
-                                                {notification.title}
-                                            </Typography>
-                                            <Typography sx={{ fontSize: '0.875rem', color: '#6B7280', mb: 1 }}>
-                                                {notification.description}
-                                            </Typography>
-                                            <Typography sx={{ fontSize: '0.75rem', color: '#9CA3AF' }}>
-                                                {formatTimeAgo(notification.created_at)}
-                                            </Typography>
-                                        </Box>
-                                        <IconButton
-                                            size="small"
-                                            onClick={(e) => handleMenuOpen(e, notification.id)}
-                                            sx={{ color: '#DC2626' }}
+                    <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2 }}>
+                        <CardContent sx={{ p: notifications.data.length === 0 ? 0 : { xs: 1.5, sm: 2 } }}>
+                            {notifications.data.length === 0 ? (
+                                <Box sx={{ textAlign: 'center', py: 8, px: 3 }}>
+                                    <NotificationsNoneIcon sx={{ fontSize: 64, color: '#D0D5DD', mb: 2 }} />
+                                    <Typography variant="h6" sx={{ color: '#374151', fontWeight: 700, mb: 1 }}>
+                                        {t('notifications.empty_title')}
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ color: '#9CA3AF' }}>
+                                        {t('notifications.empty_sub')}
+                                    </Typography>
+                                </Box>
+                            ) : (
+                                <Stack spacing={1.5}>
+                                    {notifications.data.map((notification) => (
+                                        <Paper
+                                            key={notification.id}
+                                            elevation={0}
+                                            sx={{
+                                                p: 2.5,
+                                                cursor: 'pointer',
+                                                borderRadius: 2,
+                                                border: '1px solid',
+                                                borderColor: notification.read_at ? '#E5E7EB' : '#F3D9CC',
+                                                bgcolor: notification.read_at ? '#FFFFFF' : '#FFF8F4',
+                                                transition: 'all 0.2s',
+                                                '&:hover': { borderColor: '#AD542D', boxShadow: '0 2px 8px rgba(173, 84, 45, 0.1)' },
+                                            }}
+                                            onClick={() => !notification.read_at && markAsRead(notification.id)}
                                         >
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </Stack>
-                                </Paper>
-                            ))
-                        )}
-                    </Stack>
+                                            <Stack direction="row" spacing={2} alignItems="flex-start">
+                                                <Box
+                                                    sx={{
+                                                        width: 40,
+                                                        height: 40,
+                                                        borderRadius: '50%',
+                                                        flexShrink: 0,
+                                                        display: 'grid',
+                                                        placeItems: 'center',
+                                                        background: notification.read_at
+                                                            ? '#F3F4F6'
+                                                            : 'linear-gradient(160deg, #C46A42 0%, #AD542D 60%, #8F4322 100%)',
+                                                    }}
+                                                >
+                                                    <NotificationsNoneIcon sx={{ fontSize: 20, color: notification.read_at ? '#9CA3AF' : '#fff' }} />
+                                                </Box>
+                                                <Box sx={{ flex: 1, minWidth: 0 }}>
+                                                    <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 0.5 }}>
+                                                        <Typography sx={{ fontWeight: 700, fontSize: '0.9375rem', color: '#111827' }}>
+                                                            {notification.title}
+                                                        </Typography>
+                                                        {!notification.read_at && (
+                                                            <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#AD542D', flexShrink: 0 }} aria-label={t('notifications.unread')} />
+                                                        )}
+                                                    </Stack>
+                                                    <Typography sx={{ fontSize: '0.875rem', color: '#6B7280', mb: 1 }}>
+                                                        {notification.description}
+                                                    </Typography>
+                                                    <Typography sx={{ fontSize: '0.75rem', color: '#9CA3AF' }}>
+                                                        {formatTimeAgo(notification.created_at)}
+                                                    </Typography>
+                                                </Box>
+                                                <IconButton
+                                                    size="small"
+                                                    onClick={(e) => handleMenuOpen(e, notification.id)}
+                                                    sx={{ color: '#9CA3AF', '&:hover': { color: '#DC2626', bgcolor: '#FEF2F2' } }}
+                                                >
+                                                    <DeleteIcon fontSize="small" />
+                                                </IconButton>
+                                            </Stack>
+                                        </Paper>
+                                    ))}
+                                </Stack>
+                            )}
+                        </CardContent>
+                    </Card>
 
                     {lastPage > 1 && (
                         <Pagination

@@ -3,6 +3,7 @@ import { Badge, IconButton, Menu, MenuItem, Typography, Box, Divider } from '@mu
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { router, usePage } from '@inertiajs/react';
 import Toast from '../Components/Admin/Toast';
+import { useLanguage } from '../hooks/use-language';
 
 interface Notification {
     id: number;
@@ -17,6 +18,7 @@ interface Notification {
 }
 
 export default function UserNotificationDropdown() {
+    const { t } = useLanguage();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
@@ -76,7 +78,7 @@ export default function UserNotificationDropdown() {
                         )
                     );
                     setUnreadCount(prev => Math.max(0, prev - 1));
-                    setToastMessage('Notification marked as read');
+                    setToastMessage(t('notifications.marked_read'));
                     setShowToast(true);
                 },
             });
@@ -95,13 +97,13 @@ export default function UserNotificationDropdown() {
                         prev.map(notif => ({ ...notif, read_at: new Date().toISOString() }))
                     );
                     setUnreadCount(0);
-                    setToastMessage('All notifications marked as read');
+                    setToastMessage(t('notifications.all_marked_read'));
                     setShowToast(true);
                 },
             });
         } catch (error) {
             console.error('Failed to mark all notifications as read:', error);
-            setToastMessage('Failed to mark notifications as read');
+            setToastMessage(t('notifications.mark_failed'));
             setShowToast(true);
         }
     };
@@ -124,10 +126,10 @@ export default function UserNotificationDropdown() {
         const notificationDate = new Date(date);
         const diffInMinutes = Math.floor((now.getTime() - notificationDate.getTime()) / (1000 * 60));
 
-        if (diffInMinutes < 1) return 'Just now';
-        if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-        if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
-        return `${Math.floor(diffInMinutes / 1440)}d ago`;
+        if (diffInMinutes < 1) return t('common.just_now') as string;
+        if (diffInMinutes < 60) return (t('common.minutes_ago') as string).replace(':count', String(diffInMinutes));
+        if (diffInMinutes < 1440) return (t('common.hours_ago') as string).replace(':count', String(Math.floor(diffInMinutes / 60)));
+        return (t('common.days_ago') as string).replace(':count', String(Math.floor(diffInMinutes / 1440)));
     };
 
     useEffect(() => {
@@ -205,7 +207,7 @@ export default function UserNotificationDropdown() {
             >
                 <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Typography variant="h6" sx={{ fontWeight: 700, fontSize: '1.125rem' }}>
-                        Notifications
+                        {t('notifications.title')}
                     </Typography>
                     {unreadCount > 0 && (
                         <Typography
@@ -218,7 +220,7 @@ export default function UserNotificationDropdown() {
                                 '&:hover': { textDecoration: 'underline' }
                             }}
                         >
-                            Mark all as read
+                            {t('notifications.mark_read')}
                         </Typography>
                     )}
                 </Box>
@@ -227,7 +229,7 @@ export default function UserNotificationDropdown() {
                     {notifications.length === 0 ? (
                         <Box sx={{ p: 4, textAlign: 'center' }}>
                             <Typography sx={{ color: '#6B7280', fontSize: '0.875rem' }}>
-                                No notifications yet
+                                {t('notifications.empty_title')}
                             </Typography>
                         </Box>
                     ) : (
@@ -273,7 +275,7 @@ export default function UserNotificationDropdown() {
                             '&:hover': { textDecoration: 'underline' }
                         }}
                     >
-                        See all notifications
+                        {t('notifications.see_all')}
                     </Typography>
                 </Box>
             </Menu>

@@ -17,4 +17,8 @@ return [
     'no_results' => 'هیچ گفتوگۆیەک نەدۆزرایەوە.',
     'no_conversations' => 'هێشتا هیچ گفتوگۆیەک نییە.',
     'message_deleted' => 'نامە بە سەرکەوتوویی سڕایەوە',
+    'delete_for_everyone' => 'سڕینەوە بۆ هەمووان',
+    'delete_for_me' => 'تەنها بۆ من بسڕەوە',
+    'delete_message_question' => 'نامەکە بسڕدرێتەوە؟',
+    'delete_file_from_phone' => 'فایلەکە لە مۆبایلەکەت بسڕەوە',
 ];

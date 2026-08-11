@@ -921,7 +921,7 @@ export default function Chat() {
                   >
                     <Box sx={{ p: 3.5, display: 'flex', flexDirection: 'column', alignItems: 'stretch', gap: 3 }}>
                       <Typography sx={{ fontWeight: 700, color: '#AD542D', fontSize: '1.25rem', textAlign: 'left' }}>
-                        Delete message?
+                        {t('chat.delete_message_question')}
                       </Typography>
                       {isOtherUserMessage && (
                         <FormControlLabel
@@ -932,7 +932,7 @@ export default function Chat() {
                               sx={{ color: '#9CA3AF', '&.Mui-checked': { color: '#AD542D' } }}
                             />
                           }
-                          label="Delete file from your phone"
+                          label={t('chat.delete_file_from_phone')}
                           sx={{ color: '#AD542D', '& .MuiFormControlLabel-label': { color: '#AD542D' } }}
                         />
                       )}
@@ -969,7 +969,7 @@ export default function Chat() {
                                 },
                               }}
                             >
-                              Delete for everyone
+                              {t('chat.delete_for_everyone')}
                             </Button>
                             <Button
                               onClick={() => {
@@ -997,7 +997,7 @@ export default function Chat() {
                                 },
                               }}
                             >
-                              Delete for me
+                              {t('chat.delete_for_me')}
                             </Button>
                           </>
                         )}
@@ -1023,7 +1023,7 @@ export default function Chat() {
                               '&:hover': { bgcolor: '#78381C' },
                             }}
                           >
-                            Delete for me
+                            {t('chat.delete_for_me')}
                           </Button>
                         )}
                         <Button
@@ -1047,7 +1047,7 @@ export default function Chat() {
                             },
                           }}
                         >
-                          Cancel
+                          {t('chat.cancel')}
                         </Button>
                       </Stack>
                     </Box>

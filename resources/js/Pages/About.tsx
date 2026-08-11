@@ -14,18 +14,20 @@ export default function About() {
     <div className="about-page">
       <Head title={t('about.title')} />
       <Navbar />
-      <section className="hero-section">
-        <Container>
-          <Box className="hero-content">
-            <Row className="justify-content-center">
-              <Col lg={8} className="text-center">
-                <Typography component="h1" className="hero-title">{t('about.title')}</Typography>
-                <Typography className="hero-subtitle">
-                  {t('about.subtitle')}
-                </Typography>
-              </Col>
-            </Row>
-          </Box>
+      <section className="about-hero">
+        <Box className="about-hero-overlay" />
+        <Container className="about-hero-content">
+          <Row className="justify-content-center">
+            <Col lg={8} className="text-center">
+              <Typography component="p" className="about-hero-eyebrow">
+                {t('about.eyebrow')}
+              </Typography>
+              <Typography component="h1" className="about-hero-title">{t('about.title')}</Typography>
+              <Typography className="about-hero-subtitle">
+                {t('about.subtitle')}
+              </Typography>
+            </Col>
+          </Row>
         </Container>
       </section>
       <HowItWorks />

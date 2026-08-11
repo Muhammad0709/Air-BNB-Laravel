@@ -623,7 +623,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                           whiteSpace: 'nowrap',
                         }}
                       >
-                        {currentCurrency.code} — {currentCurrency.name}
+                        {currentCurrency.code}
                       </Typography>
                       <ArrowDropDownIcon sx={{ fontSize: 22, color: '#6B7280', flexShrink: 0 }} />
                     </Box>

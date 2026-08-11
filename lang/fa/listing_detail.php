@@ -40,4 +40,9 @@ return [
     'explore_more' => 'کاوش بیشتر',
     'show_less' => 'نمایش کمتر',
     'show_all_photos' => 'نمایش همه عکس‌ها',
+    'pickup_time' => 'زمان تحویل',
+    'price' => 'قیمت',
+    'tour_description' => 'توضیحات تور',
+    'no_reviews' => 'هنوز نظری ثبت نشده است.',
+    'no_related_properties' => 'در حال حاضر ملک مرتبطی وجود ندارد.',
 ];

@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'eyebrow' => 'Rêwîtiya te ji vir dest pê dike',
     'title' => 'Der bar me de',
     'subtitle' => 'We bijartineke cuda ji kirêyan pêşkêş dikin, ji apartamanên rehet heta vîlayên luks û otêlan, li gorî bijarteyên we.',
     'how_title' => 'Çawa dixebite',
@@ -21,4 +22,7 @@ return [
     'choose3_desc' => 'Vebijarkên rezervasyona fleksîbel û daxistinên ji bo sekinanên dirêj kêf bikin.',
     'choose4_title' => 'Piştevaniya pêbawer',
     'choose4_desc' => 'Tîma piştevaniya xerîdar a me ji bo her pirs an endîşeyan amade ye.',
+    'cta_title' => 'Amade yî ku sekinana xwe ya pêş rezerve bikî?',
+    'cta_sub' => 'Tevlî hezaran rêwiyên kêfxweş bibe ku sekinana xwe ya îdeal bi me re dîtine',
+    'cta_button' => 'Lîsteyan bibîne',
 ];
