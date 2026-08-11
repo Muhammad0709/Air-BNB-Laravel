@@ -44,7 +44,7 @@ export default function ShowBooking() {
   }
   const id = booking?.id ?? ''
 
-  const [currentStatus, setCurrentStatus] = useState(booking.status)
+  const [currentStatus, setCurrentStatus] = useState(booking.status)  // raw value e.g. 'pending'
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
   const [reviewRating, setReviewRating] = useState(0)
   const [reviewComment, setReviewComment] = useState('')
@@ -102,24 +102,13 @@ export default function ShowBooking() {
     })
   }
 
-  const statusColor = getBookingStatusColor(currentStatus.toLowerCase())
+  const statusColor = getBookingStatusColor(currentStatus)
 
-  const paymentStatusColors: Record<string, string> = {
-    paid: '#10B981',
-    pending: '#F59E0B',
-    unpaid: '#EF4444',
-  }
-  const paymentStatusLabels: Record<string, string> = {
-    paid: t('host.bookings.payment_paid') || 'Paid',
-    pending: t('host.bookings.payment_pending') || 'Payment pending',
-    unpaid: t('host.bookings.payment_unpaid') || 'Unpaid',
-  }
-  const paymentStatusColor = paymentStatusColors[booking.paymentStatus] || '#717171'
+  const paymentStatusColor = getPaymentStatusColor(booking.paymentStatus)
 
   const handleStatusChange = (newStatus: string) => {
-    // newStatus from MenuItem is raw lowercase value (e.g. 'confirmed')
-    const rawStatus = newStatus.toLowerCase().replace(/ /g, '_')
-    router.patch(`/host/bookings/${id}/status`, { status: rawStatus }, {
+    // newStatus is raw lowercase value from MenuItem (e.g. 'confirmed')
+    router.patch(`/host/bookings/${id}/status`, { status: newStatus }, {
       onSuccess: () => {
         setCurrentStatus(newStatus)
         setToast({ open: true, message: t('host.bookings.status_updated'), severity: 'success' })
@@ -189,7 +178,7 @@ export default function ShowBooking() {
                     value={currentStatus}
                     onChange={(e) => handleStatusChange(e.target.value)}
                     sx={{
-                      minWidth: 150,
+                      minWidth: 200,
                       bgcolor: `${statusColor}15`,
                       color: statusColor,
                       fontWeight: 600,
@@ -197,7 +186,7 @@ export default function ShowBooking() {
                     }}
                   >
                     {HOST_SELECTABLE_STATUSES.map((s) => (
-                      <MenuItem key={s} value={s.charAt(0).toUpperCase() + s.slice(1).replace(/_/g, ' ')}>
+                      <MenuItem key={s} value={s}>
                         {getBookingStatusLabel(s)}
                       </MenuItem>
                     ))}
@@ -207,7 +196,7 @@ export default function ShowBooking() {
               <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2, justifyContent: { xs: 'flex-start', sm: 'flex-end' } }}>
                 <Typography sx={{ color: '#717171', fontSize: 14 }}>{t('host.bookings.payment_status') || 'Payment'}:</Typography>
                 <Chip
-                  label={paymentStatusLabels[booking.paymentStatus] || booking.paymentStatus}
+                  label={getPaymentStatusLabel(booking.paymentStatus)}
                   size="small"
                   sx={{ bgcolor: `${paymentStatusColor}15`, color: paymentStatusColor, fontWeight: 600 }}
                 />

@@ -4,36 +4,30 @@
  */
 
 export const BOOKING_STATUS_COLORS: Record<string, string> = {
-  // Active statuses
-  pending:                       '#F59E0B',   // amber
-  awaiting_host_response:        '#F97316',   // orange
-  awaiting_payment:              '#EAB308',   // yellow
-  waiting_for_delivery_payment:  '#D97706',   // dark amber
-  confirmed:                     '#10B981',   // green
-  paid:                          '#059669',   // dark green
-  // Terminal statuses
-  completed:                     '#6366F1',   // indigo
-  cancelled:                     '#EF4444',   // red
-  expired:                       '#9CA3AF',   // grey
-  refunded:                      '#3B82F6',   // blue
-  disputed:                      '#8B5CF6',   // purple
+  pending:                  '#F59E0B',   // amber
+  awaiting_host_response:   '#F97316',   // orange
+  awaiting_payment:         '#EAB308',   // yellow
+  confirmed:                '#10B981',   // green
+  cancelled:                '#EF4444',   // red
+  completed:                '#6366F1',   // indigo
+  expired:                  '#9CA3AF',   // grey
+  refunded:                 '#3B82F6',   // blue
+  disputed:                 '#8B5CF6',   // purple
 }
 
 export const BOOKING_STATUS_LABELS: Record<string, string> = {
-  pending:                       'Pending',
-  awaiting_host_response:        'Awaiting Host Response',
-  awaiting_payment:              'Awaiting Payment',
-  waiting_for_delivery_payment:  'Waiting for Delivery Payment',
-  confirmed:                     'Confirmed',
-  paid:                          'Paid',
-  completed:                     'Completed',
-  cancelled:                     'Cancelled',
-  expired:                       'Expired',
-  refunded:                      'Refunded',
-  disputed:                      'Disputed',
+  pending:                  'Pending',
+  awaiting_host_response:   'Awaiting Host Response',
+  awaiting_payment:         'Awaiting Payment',
+  confirmed:                'Confirmed',
+  cancelled:                'Cancelled',
+  completed:                'Completed',
+  expired:                  'Expired',
+  refunded:                 'Refunded',
+  disputed:                 'Disputed',
 }
 
-/** All 11 status values for dropdowns */
+/** All 9 status values */
 export const ALL_BOOKING_STATUSES = Object.keys(BOOKING_STATUS_COLORS)
 
 /** Statuses a host can manually set */
@@ -42,9 +36,8 @@ export const HOST_SELECTABLE_STATUSES = [
   'awaiting_host_response',
   'awaiting_payment',
   'confirmed',
-  'paid',
-  'completed',
   'cancelled',
+  'completed',
   'expired',
   'refunded',
   'disputed',
