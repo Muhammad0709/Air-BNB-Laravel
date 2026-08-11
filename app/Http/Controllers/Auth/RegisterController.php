@@ -26,20 +26,26 @@ class RegisterController extends Controller
     public function store(RegisterRequest $request)
     {
         $validated = $request->validated();
-        $type = $validated['type'] === 'host' ? UserType::HOST : UserType::USER;
+        $type = match ($validated['type']) {
+            'host' => UserType::HOST,
+            'company' => UserType::COMPANY,
+            default => UserType::USER,
+        };
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'type' => $type,
+            'company_name' => $type === UserType::COMPANY ? $validated['company_name'] : null,
+            'tax_id' => $type === UserType::COMPANY ? ($validated['tax_id'] ?? null) : null,
         ]);
 
         auth()->login($user);
 
         $msg = __('auth.signup.toast_registered');
 
-        return $type === UserType::HOST
+        return $type->isHostPanelUser()
             ? redirect()->intended(route('host.dashboard'))->with('success', $msg)
             : redirect()->intended('/')->with('success', $msg);
     }

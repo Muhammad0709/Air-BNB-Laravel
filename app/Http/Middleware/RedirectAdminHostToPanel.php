@@ -32,7 +32,7 @@ class RedirectAdminHostToPanel
             return redirect()->route('admin.dashboard');
         }
 
-        if ($user->type === UserType::HOST) {
+        if ($user->type->isHostPanelUser()) {
             return redirect()->route('host.dashboard');
         }
 
