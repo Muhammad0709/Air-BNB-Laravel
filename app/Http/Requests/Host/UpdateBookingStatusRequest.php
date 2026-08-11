@@ -17,7 +17,7 @@ class UpdateBookingStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => ['required', 'string', 'in:pending,confirmed,cancelled,completed'],
+            'status' => ['required', 'string', 'in:' . implode(',', \App\Enums\BookingStatus::values())],
         ];
     }
 }

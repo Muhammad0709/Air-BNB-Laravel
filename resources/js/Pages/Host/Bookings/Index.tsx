@@ -9,6 +9,7 @@ import Pagination from '../../../components/Pagination'
 import SearchIcon from '@mui/icons-material/Search'
 import { Head, router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
+import { getBookingStatusColor, getBookingStatusLabel, getPaymentStatusColor, getPaymentStatusLabel } from '../../../utils/bookingStatus'
 
 type BookingRow = {
   id: number
@@ -52,43 +53,10 @@ export default function HostBookings() {
     router.get('/host/bookings', { search, page }, { preserveState: true })
   }
 
-  const getStatusColor = (status: string) => {
-    switch (String(status).toLowerCase()) {
-      case 'confirmed': return '#10B981'
-      case 'pending': return '#F59E0B'
-      case 'cancelled': return '#EF4444'
-      case 'completed': return '#6366F1'
-      default: return '#717171'
-    }
-  }
-
-  const getStatusLabel = (status: string) => {
-    switch (String(status).toLowerCase()) {
-      case 'confirmed': return t('host.bookings.status_confirmed')
-      case 'pending': return t('host.bookings.status_pending')
-      case 'cancelled': return t('host.bookings.status_cancelled')
-      case 'completed': return t('host.earnings.completed')
-      default: return status
-    }
-  }
-
-  const getPaymentStatusColor = (status: string) => {
-    switch (String(status).toLowerCase()) {
-      case 'paid': return '#10B981'
-      case 'pending': return '#F59E0B'
-      case 'unpaid': return '#EF4444'
-      default: return '#717171'
-    }
-  }
-
-  const getPaymentStatusLabel = (status: string) => {
-    switch (String(status).toLowerCase()) {
-      case 'paid': return t('host.bookings.payment_paid') || 'Paid'
-      case 'pending': return t('host.bookings.payment_pending') || 'Payment pending'
-      case 'unpaid': return t('host.bookings.payment_unpaid') || 'Unpaid'
-      default: return status
-    }
-  }
+  const getStatusColor = (status: string) => getBookingStatusColor(status)
+  const getStatusLabel = (status: string) => getBookingStatusLabel(status)
+  const getPaymentColor = (status: string) => getPaymentStatusColor(status)
+  const getPaymentLabel = (status: string) => getPaymentStatusLabel(status)
 
   const handleDeleteClick = (booking: { id: number; guest: string }) => {
     setBookingToDelete(booking)
@@ -194,11 +162,11 @@ export default function HostBookings() {
                         </TableCell>
                         <TableCell>
                           <Chip
-                            label={getPaymentStatusLabel(booking.payment_status)}
+                            label={getPaymentLabel(booking.payment_status)}
                             size="small"
                             sx={{
-                              bgcolor: `${getPaymentStatusColor(booking.payment_status)}15`,
-                              color: getPaymentStatusColor(booking.payment_status),
+                              bgcolor: `${getPaymentColor(booking.payment_status)}15`,
+                              color: getPaymentColor(booking.payment_status),
                               fontWeight: 600,
                               fontSize: 12
                             }}

@@ -13,6 +13,7 @@ import EmailIcon from '@mui/icons-material/Email'
 import PhoneIcon from '@mui/icons-material/Phone'
 import StarIcon from '@mui/icons-material/Star'
 import { useState } from 'react'
+import { getBookingStatusColor, getBookingStatusLabel, getPaymentStatusColor, getPaymentStatusLabel, HOST_SELECTABLE_STATUSES } from '../../../utils/bookingStatus'
 import Toast from '../../../components/shared/Toast'
 
 export default function ShowBooking() {
@@ -101,14 +102,7 @@ export default function ShowBooking() {
     })
   }
 
-  const statusColors = {
-    Confirmed: '#10B981',
-    Pending: '#F59E0B',
-    Cancelled: '#EF4444',
-    Completed: '#3B82F6'
-  }
-
-  const statusColor = statusColors[currentStatus] || '#717171'
+  const statusColor = getBookingStatusColor(currentStatus.toLowerCase())
 
   const paymentStatusColors: Record<string, string> = {
     paid: '#10B981',
@@ -123,7 +117,9 @@ export default function ShowBooking() {
   const paymentStatusColor = paymentStatusColors[booking.paymentStatus] || '#717171'
 
   const handleStatusChange = (newStatus: string) => {
-    router.patch(`/host/bookings/${id}/status`, { status: newStatus.toLowerCase() }, {
+    // newStatus from MenuItem is raw lowercase value (e.g. 'confirmed')
+    const rawStatus = newStatus.toLowerCase().replace(/ /g, '_')
+    router.patch(`/host/bookings/${id}/status`, { status: rawStatus }, {
       onSuccess: () => {
         setCurrentStatus(newStatus)
         setToast({ open: true, message: t('host.bookings.status_updated'), severity: 'success' })
@@ -200,10 +196,11 @@ export default function ShowBooking() {
                       '& .MuiOutlinedInput-notchedOutline': { borderColor: statusColor }
                     }}
                   >
-                    <MenuItem value="Pending">{t('host.bookings.status_pending')}</MenuItem>
-                    <MenuItem value="Confirmed">{t('host.bookings.status_confirmed')}</MenuItem>
-                    <MenuItem value="Completed">{t('host.earnings.completed')}</MenuItem>
-                    <MenuItem value="Cancelled">{t('host.bookings.status_cancelled')}</MenuItem>
+                    {HOST_SELECTABLE_STATUSES.map((s) => (
+                      <MenuItem key={s} value={s.charAt(0).toUpperCase() + s.slice(1).replace(/_/g, ' ')}>
+                        {getBookingStatusLabel(s)}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </Stack>

@@ -333,16 +333,14 @@ class BookingController extends Controller
         // Send notification to user based on status change
         $guest = $booking->user;
         if ($guest && $oldStatus !== $newStatus) {
-            $notificationType = null;
-            
-            if ($newStatus === 'confirmed') {
-                $notificationType = 'booking_confirmed';
-            } elseif ($newStatus === 'completed') {
-                $notificationType = 'booking_completed';
-            } elseif ($newStatus === 'cancelled') {
-                $notificationType = 'booking_cancelled';
-            }
-            
+            $notificationType = match ($newStatus) {
+                'confirmed'              => 'booking_confirmed',
+                'completed'              => 'booking_completed',
+                'cancelled'              => 'booking_cancelled',
+                'refunded'               => 'booking_cancelled',  // reuse cancelled template
+                default                  => null,
+            };
+
             if ($notificationType) {
                 event(new \App\Events\NotificationEvent(
                     $booking,

@@ -12,6 +12,7 @@ import { useLanguage } from '../hooks/use-language'
 import { useCurrency } from '../contexts/CurrencyContext'
 import { formatPrice } from '../utils/currency'
 import Pagination from '../components/Pagination'
+import { getBookingStatusColor, getBookingStatusLabel } from '../utils/bookingStatus'
 
 interface Booking {
   id: number
@@ -63,15 +64,8 @@ export default function CustomerBookings() {
     router.get('/bookings', { [activeTab === 0 ? 'upcoming_page' : 'past_page']: page }, { preserveState: true })
   }
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'confirmed': return '#10B981'
-      case 'pending': return '#F59E0B'
-      case 'cancelled': return '#EF4444'
-      case 'completed': return '#6366F1'
-      default: return '#717171'
-    }
-  }
+  const getStatusColor = (status: string) => getBookingStatusColor(status)
+  const getStatusLabelDisplay = (status: string) => getBookingStatusLabel(status)
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
