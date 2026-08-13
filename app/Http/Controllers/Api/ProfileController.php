@@ -432,4 +432,134 @@ class ProfileController extends Controller
             ],
         ], 200);
     }
+
+    /**
+     * @OA\Patch(
+     *     path="/api/profile/notifications",
+     *     summary="Update notification preferences",
+     *     description="Toggle booking and property notification preferences for the authenticated user.",
+     *     tags={"Profile"},
+     *     security={{"apiAuth": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"notify_bookings","notify_properties"},
+     *             @OA\Property(property="notify_bookings", type="boolean", example=true),
+     *             @OA\Property(property="notify_properties", type="boolean", example=false)
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Notification preferences updated",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Notification preferences updated"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="notify_bookings", type="boolean"),
+     *                 @OA\Property(property="notify_properties", type="boolean")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=422, description="Validation error")
+     * )
+     */
+    public function updateNotificationPreferences(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'notify_bookings'   => ['required', 'boolean'],
+            'notify_properties' => ['required', 'boolean'],
+        ]);
+
+        $user = Auth::user();
+        $user->update($validated);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Notification preferences updated',
+            'data'    => [
+                'notify_bookings'   => (bool) $user->fresh()->notify_bookings,
+                'notify_properties' => (bool) $user->fresh()->notify_properties,
+            ],
+        ], 200);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/profile/logout-other-devices",
+     *     summary="Logout other devices",
+     *     description="Invalidates all other active sessions for the authenticated user. Requires current password.",
+     *     tags={"Profile"},
+     *     security={{"apiAuth": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"password"},
+     *             @OA\Property(property="password", type="string", format="password", example="mypassword123")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Logged out of other devices successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Logged out of all other devices successfully")
+     *         )
+     *     ),
+     *     @OA\Response(response=422, description="Incorrect password")
+     * )
+     */
+    public function logoutOtherDevices(Request $request): JsonResponse
+    {
+        $request->validate([
+            'password' => ['required', 'current_password'],
+        ]);
+
+        Auth::logoutOtherDevices($request->input('password'));
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Logged out of all other devices successfully',
+        ], 200);
+    }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/profile",
+     *     summary="Delete account",
+     *     description="Permanently deletes the authenticated user's account. Requires current password confirmation. All tokens and notifications are revoked.",
+     *     tags={"Profile"},
+     *     security={{"apiAuth": {}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"password"},
+     *             @OA\Property(property="password", type="string", format="password", example="mypassword123")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Account deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Your account has been permanently deleted")
+     *         )
+     *     ),
+     *     @OA\Response(response=422, description="Incorrect password")
+     * )
+     */
+    public function destroy(Request $request): JsonResponse
+    {
+        $request->validate([
+            'password' => ['required', 'current_password'],
+        ]);
+
+        $user = Auth::user();
+
+        // Revoke all API tokens
+        $user->tokens()->delete();
+
+        // Delete notifications (no cascading FK)
+        $user->notifications()->delete();
+
+        $user->delete();
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Your account has been permanently deleted',
+        ], 200);
+    }
 }

@@ -177,5 +177,86 @@ class BookingHistoryController extends Controller
             ],
         ], 200);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/bookings/{id}/receipt",
+     *     summary="Get booking receipt",
+     *     description="Returns full receipt detail for a specific booking belonging to the authenticated user.",
+     *     tags={"Booking History"},
+     *     security={{"apiAuth": {}}},
+     *     @OA\Parameter(name="id", in="path", required=true, description="Booking ID", @OA\Schema(type="integer")),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Receipt retrieved successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Receipt retrieved successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="receipt", type="object",
+     *                     @OA\Property(property="reference", type="string"),
+     *                     @OA\Property(property="guest", type="string"),
+     *                     @OA\Property(property="property", type="string"),
+     *                     @OA\Property(property="property_location", type="string"),
+     *                     @OA\Property(property="checkin", type="string", format="date"),
+     *                     @OA\Property(property="checkout", type="string", format="date"),
+     *                     @OA\Property(property="nights", type="integer"),
+     *                     @OA\Property(property="nightly_rate", type="number"),
+     *                     @OA\Property(property="cleaning_fee", type="number"),
+     *                     @OA\Property(property="service_fee", type="number"),
+     *                     @OA\Property(property="total", type="number"),
+     *                     @OA\Property(property="status", type="string"),
+     *                     @OA\Property(property="status_label", type="string"),
+     *                     @OA\Property(property="payment_status", type="string"),
+     *                     @OA\Property(property="booked_on", type="string", format="date"),
+     *                     @OA\Property(property="deposit_amount", type="number"),
+     *                     @OA\Property(property="deposit_status", type="string", nullable=true)
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="Booking not found")
+     * )
+     */
+    public function receipt(string $id): JsonResponse
+    {
+        $booking = Booking::with('property:id,title,location')
+            ->where('id', $id)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if (! $booking) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Booking not found.',
+            ], 404);
+        }
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Receipt retrieved successfully',
+            'data'    => [
+                'receipt' => [
+                    'reference'        => $booking->reference,
+                    'guest'            => $booking->name ?: $booking->user?->name ?? '',
+                    'property'         => $booking->property?->title ?? '',
+                    'property_location'=> $booking->property?->location ?? '',
+                    'checkin'          => $booking->check_in_date->format('Y-m-d'),
+                    'checkout'         => $booking->check_out_date->format('Y-m-d'),
+                    'nights'           => $booking->nights,
+                    'nightly_rate'     => (float) $booking->nightly_rate,
+                    'cleaning_fee'     => (float) $booking->cleaning_fee,
+                    'service_fee'      => (float) $booking->service_fee,
+                    'total'            => (float) $booking->total_amount,
+                    'status'           => $booking->status->value,
+                    'status_label'     => $booking->status->label(),
+                    'payment_status'   => $booking->payment_status,
+                    'booked_on'        => $booking->created_at->format('Y-m-d'),
+                    'deposit_amount'   => (float) $booking->deposit_amount,
+                    'deposit_status'   => $booking->deposit_status?->value,
+                ],
+            ],
+        ], 200);
+    }
 }
 

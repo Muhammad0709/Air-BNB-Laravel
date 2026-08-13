@@ -67,6 +67,78 @@ class WishlistController extends Controller
      *     )
      * )
      */
+    /**
+     * @OA\Post(
+     *     path="/api/wishlist/{id}",
+     *     summary="Add property to wishlist",
+     *     description="Marks a property as a guest favourite (adds to wishlist).",
+     *     tags={"Wishlist"},
+     *     security={{"apiAuth": {}}},
+     *     @OA\Parameter(name="id", in="path", required=true, description="Property ID", @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="Property added to wishlist",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Property added to wishlist.")
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="Property not found")
+     * )
+     */
+    public function add($id): JsonResponse
+    {
+        $property = \App\Models\Property::find($id);
+
+        if (! $property) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Property not found.',
+            ], 404);
+        }
+
+        $property->update(['is_guest_favorite' => true]);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Property added to wishlist.',
+        ], 200);
+    }
+
+    /**
+     * @OA\Delete(
+     *     path="/api/wishlist/{id}",
+     *     summary="Remove property from wishlist",
+     *     description="Un-marks a property as a guest favourite (removes from wishlist).",
+     *     tags={"Wishlist"},
+     *     security={{"apiAuth": {}}},
+     *     @OA\Parameter(name="id", in="path", required=true, description="Property ID", @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="Property removed from wishlist",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="string", example="success"),
+     *             @OA\Property(property="message", type="string", example="Property removed from wishlist.")
+     *         )
+     *     ),
+     *     @OA\Response(response=404, description="Property not found")
+     * )
+     */
+    public function remove($id): JsonResponse
+    {
+        $property = \App\Models\Property::find($id);
+
+        if (! $property) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Property not found.',
+            ], 404);
+        }
+
+        $property->update(['is_guest_favorite' => false]);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Property removed from wishlist.',
+        ], 200);
+    }
+
     public function index(WishlistRequest $request): JsonResponse
     {
         $limit = $request->input('limit', 10);

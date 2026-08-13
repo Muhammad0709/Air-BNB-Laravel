@@ -5,10 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HostBookingRequest;
 use App\Http\Resources\HostBookingResource;
+use App\Enums\BookingStatus;
+use App\Enums\DepositStatus;
 use App\Models\Booking;
+use App\Models\GuestReview;
 use App\Models\Property;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -543,5 +547,214 @@ class HostBookingController extends Controller
             'status' => 'success',
             'message' => 'Booking deleted successfully',
         ], 200);
+    }
+
+    /**
+     * @OA\Patch(
+     *     path="/api/host/bookings/{id}/status",
+     *     summary="Update booking status",
+     *     description="Updates the status of a booking owned by the host. Sends a notification to the guest on status change.",
+     *     tags={"Host Bookings"},
+     *     security={{"apiAuth": {}}},
+     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"status"},
+     *             @OA\Property(property="status", type="string", example="confirmed",
+     *                 description="One of: pending, confirmed, cancelled, completed, refunded")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Status updated successfully"),
+     *     @OA\Response(response=404, description="Booking not found"),
+     *     @OA\Response(response=422, description="Validation error")
+     * )
+     */
+    public function updateStatus(Request $request, $id): JsonResponse
+    {
+        $request->validate([
+            'status' => ['required', 'string', 'in:' . implode(',', BookingStatus::values())],
+        ]);
+
+        $host        = Auth::user();
+        $propertyIds = Property::where('user_id', $host->id)->pluck('id');
+
+        $booking = Booking::with(['user', 'property'])
+            ->where('id', $id)
+            ->whereIn('property_id', $propertyIds)
+            ->first();
+
+        if (! $booking) {
+            return response()->json(['status' => 'error', 'message' => 'Booking not found.'], 404);
+        }
+
+        $newStatus = $request->input('status');
+        $oldStatus = $booking->status->value;
+
+        $booking->update(['status' => $newStatus]);
+
+        // Notify guest on relevant status changes
+        $guest = $booking->user;
+        if ($guest && $oldStatus !== $newStatus) {
+            $notificationType = match ($newStatus) {
+                'confirmed' => 'booking_confirmed',
+                'completed' => 'booking_completed',
+                'cancelled', 'refunded' => 'booking_cancelled',
+                default => null,
+            };
+
+            if ($notificationType) {
+                event(new \App\Events\NotificationEvent(
+                    $booking,
+                    $notificationType,
+                    ['user' => $guest]
+                ));
+            }
+        }
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Booking status updated successfully.',
+            'data'    => ['status' => $newStatus],
+        ], 200);
+    }
+
+    /**
+     * @OA\Patch(
+     *     path="/api/host/bookings/{id}/deposit",
+     *     summary="Update deposit status",
+     *     description="Resolves the deposit for a completed booking as returned or disputed. Only available when deposit is held.",
+     *     tags={"Host Bookings"},
+     *     security={{"apiAuth": {}}},
+     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"deposit_status"},
+     *             @OA\Property(property="deposit_status", type="string", enum={"returned","disputed"}),
+     *             @OA\Property(property="deposit_dispute_reason", type="string", nullable=true,
+     *                 description="Required when deposit_status is 'disputed'")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Deposit status updated"),
+     *     @OA\Response(response=403, description="Cannot manage this deposit"),
+     *     @OA\Response(response=404, description="Booking not found")
+     * )
+     */
+    public function updateDepositStatus(Request $request, $id): JsonResponse
+    {
+        $request->validate([
+            'deposit_status'         => ['required', 'in:' . implode(',', [DepositStatus::RETURNED->value, DepositStatus::DISPUTED->value])],
+            'deposit_dispute_reason' => ['nullable', 'required_if:deposit_status,' . DepositStatus::DISPUTED->value, 'string', 'max:2000'],
+        ]);
+
+        $host        = Auth::user();
+        $propertyIds = Property::where('user_id', $host->id)->pluck('id');
+
+        $booking = Booking::where('id', $id)
+            ->whereIn('property_id', $propertyIds)
+            ->first();
+
+        if (! $booking) {
+            return response()->json(['status' => 'error', 'message' => 'Booking not found.'], 404);
+        }
+
+        if ((float) $booking->deposit_amount <= 0) {
+            return response()->json(['status' => 'error', 'message' => 'This booking has no deposit to manage.'], 403);
+        }
+
+        if ($booking->deposit_status !== DepositStatus::HELD) {
+            return response()->json(['status' => 'error', 'message' => 'This deposit has already been resolved.'], 403);
+        }
+
+        $newDepositStatus = $request->input('deposit_status');
+
+        $booking->update([
+            'deposit_status'          => $newDepositStatus,
+            'deposit_dispute_reason'  => $newDepositStatus === DepositStatus::DISPUTED->value
+                ? $request->input('deposit_dispute_reason')
+                : null,
+        ]);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Deposit status updated successfully.',
+            'data'    => ['deposit_status' => $newDepositStatus],
+        ], 200);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/api/host/bookings/{id}/review",
+     *     summary="Submit a guest review",
+     *     description="Host submits a review for the guest of a completed booking. One review per booking.",
+     *     tags={"Host Bookings"},
+     *     security={{"apiAuth": {}}},
+     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"rating"},
+     *             @OA\Property(property="rating", type="integer", minimum=1, maximum=5, example=5),
+     *             @OA\Property(property="comment", type="string", nullable=true, example="Great guest!")
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="Guest review submitted"),
+     *     @OA\Response(response=403, description="Not eligible to review"),
+     *     @OA\Response(response=404, description="Booking not found")
+     * )
+     */
+    public function storeGuestReview(Request $request, $id): JsonResponse
+    {
+        $request->validate([
+            'rating'  => ['required', 'integer', 'min:1', 'max:5'],
+            'comment' => ['nullable', 'string', 'max:2000'],
+        ]);
+
+        $host        = Auth::user();
+        $propertyIds = Property::where('user_id', $host->id)->pluck('id');
+
+        $booking = Booking::where('id', $id)
+            ->whereIn('property_id', $propertyIds)
+            ->first();
+
+        if (! $booking) {
+            return response()->json(['status' => 'error', 'message' => 'Booking not found.'], 404);
+        }
+
+        if ($booking->status !== BookingStatus::COMPLETED) {
+            return response()->json(['status' => 'error', 'message' => 'Only completed stays can be reviewed.'], 403);
+        }
+
+        if (! $booking->user_id) {
+            return response()->json(['status' => 'error', 'message' => 'This booking has no registered guest to review.'], 403);
+        }
+
+        if (GuestReview::where('booking_id', $booking->id)->exists()) {
+            return response()->json(['status' => 'error', 'message' => 'This guest has already been reviewed for this booking.'], 403);
+        }
+
+        $review = GuestReview::create([
+            'booking_id' => $booking->id,
+            'host_id'    => $host->id,
+            'guest_id'   => $booking->user_id,
+            'rating'     => $request->input('rating'),
+            'comment'    => $request->input('comment'),
+        ]);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Guest review submitted successfully.',
+            'data'    => [
+                'review' => [
+                    'id'         => $review->id,
+                    'booking_id' => $review->booking_id,
+                    'guest_id'   => $review->guest_id,
+                    'rating'     => $review->rating,
+                    'comment'    => $review->comment,
+                    'created_at' => $review->created_at->toISOString(),
+                ],
+            ],
+        ], 201);
     }
 }
