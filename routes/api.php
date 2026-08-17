@@ -17,6 +17,12 @@ use App\Http\Controllers\Api\HostChatController;
 use App\Http\Controllers\Api\HostEarningsController;
 use App\Http\Controllers\Api\CurrencyController;
 use App\Http\Controllers\Api\SearchController;
+use App\Http\Controllers\Api\SwitchToHostController;
+use App\Http\Controllers\Api\ListingController;
+use App\Http\Controllers\Api\PropertyDetailController;
+use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\HostAvailabilityController;
 use App\Http\Middleware\UserMiddleware;
 use App\Http\Middleware\HostApiMiddleware;
 
@@ -52,6 +58,12 @@ Route::post('/search', [SearchController::class, 'index']);
 // Public currency exchange rates (units of each currency per 1 USD)
 Route::get('/currencies', [CurrencyController::class, 'index']);
 
+// Public listings (browse & filter properties)
+Route::get('/listings', [ListingController::class, 'index']);
+
+// Public property detail
+Route::get('/properties/{id}', [PropertyDetailController::class, 'show']);
+
 // Protected routes (require authentication)
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -79,6 +91,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/bookings/{id}', [HostBookingController::class, 'show']);
         Route::put('/bookings/{id}', [HostBookingController::class, 'update']);
         Route::delete('/bookings/{id}', [HostBookingController::class, 'destroy']);
+        Route::patch('/bookings/{id}/status', [HostBookingController::class, 'updateStatus']);
+        Route::patch('/bookings/{id}/deposit', [HostBookingController::class, 'updateDepositStatus']);
+        Route::post('/bookings/{id}/review', [HostBookingController::class, 'storeGuestReview']);
+
+        // Host Property Availability (blocked dates)
+        Route::post('/properties/{property}/blocked-dates', [HostAvailabilityController::class, 'store']);
+        Route::delete('/properties/{property}/blocked-dates/{blockedDate}', [HostAvailabilityController::class, 'destroy']);
         
         // Host Chat API
         Route::get('/chat/users', [HostChatController::class, 'users']);
@@ -120,6 +139,11 @@ Route::middleware('auth:sanctum')->group(function () {
         
         // Booking History API
         Route::get('/bookings', [BookingHistoryController::class, 'index']);
+        Route::get('/bookings/{id}/receipt', [BookingHistoryController::class, 'receipt']);
+
+        // Switch to host preview
+        Route::post('/switch-to-host', [SwitchToHostController::class, 'store']);
+        Route::delete('/switch-to-host', [SwitchToHostController::class, 'destroy']);
         
         // Contact API
         Route::get('/contact', [ContactController::class, 'index']);
@@ -127,11 +151,21 @@ Route::middleware('auth:sanctum')->group(function () {
         
         // Wishlist API
         Route::get('/wishlist', [WishlistController::class, 'index']);
-        
+        Route::post('/wishlist/{id}', [WishlistController::class, 'add']);
+        Route::delete('/wishlist/{id}', [WishlistController::class, 'remove']);
+
+        // Notification preferences & account management
+        Route::patch('/profile/notifications', [ProfileController::class, 'updateNotificationPreferences']);
+        Route::post('/profile/logout-other-devices', [ProfileController::class, 'logoutOtherDevices']);
+        Route::delete('/profile', [ProfileController::class, 'destroy']);
+
         // Notification API
-        Route::get('/notifications/latest', [\App\Http\Controllers\Api\NotificationController::class, 'latest']);
-        Route::get('/notifications/unread-count', [\App\Http\Controllers\Api\NotificationController::class, 'unreadCount']);
-        Route::patch('/notifications/{notification}/mark-as-read', [\App\Http\Controllers\Api\NotificationController::class, 'markAsRead']);
+        Route::get('/notifications', [NotificationController::class, 'index']);
+        Route::get('/notifications/latest', [NotificationController::class, 'latest']);
+        Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount']);
+        Route::patch('/notifications/mark-all-as-read', [NotificationController::class, 'markAllAsRead']);
+        Route::patch('/notifications/{notification}/mark-as-read', [NotificationController::class, 'markAsRead']);
+        Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy']);
     });
 });
 
