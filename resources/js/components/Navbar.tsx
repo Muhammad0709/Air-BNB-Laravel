@@ -112,17 +112,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
   }
 
   return (
-    <AppBar
-      position="fixed"
-      elevation={0}
-      sx={{
-        bgcolor: '#ffffff',
-        color: 'inherit',
-        boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-        borderBottom: '1px solid #F0F0F0',
-        zIndex: 1100,
-      }}
-    >
+    <AppBar position="static" elevation={0} sx={{ bgcolor: { xs: '#ffffff', md: 'transparent' }, color: 'inherit', boxShadow: { xs: '0 1px 3px rgba(0,0,0,0.06)', md: 'none' } }}>
       <Container maxWidth={false} sx={{ px: { xs: 2, md: 3 }, py: { xs: 1.25, md: 1.5 }, maxWidth: { xs: '100%', md: 1160, xl: 1440 }, mx: 'auto' }}>
         <Toolbar
           disableGutters
