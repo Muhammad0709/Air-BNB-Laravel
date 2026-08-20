@@ -10,7 +10,7 @@ export default function PrivacyPolicy() {
     <Box>
       <Head title={t('privacy.title')} />
       <Navbar />
-      <Box sx={{ minHeight: '80vh', py: { xs: 4, md: 6 } }}>
+      <Box className="privacy-page" sx={{ minHeight: '80vh', py: { xs: 4, md: 6 } }}>
         <Container maxWidth="md" sx={{ px: { xs: 2, md: 3 } }}>
           <Paper elevation={0} sx={{ p: { xs: 3, md: 5 }, bgcolor: '#FFFFFF' }}>
             <Typography variant="h3" sx={{ fontWeight: 700, mb: 3, color: '#222222' }}>{t('privacy.title')}</Typography>

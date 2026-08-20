@@ -8,6 +8,35 @@
 html, body, #root { height: 100%; min-height: 100vh; }
 #root { margin: 0; display: flex; flex-direction: column; }
 
+/* ── Fixed public Navbar offset ──────────────────────────────────────── */
+/* Only public-facing pages use the fixed Navbar.
+   Host and Admin panels have their own layout (sidebar + top bar),
+   so they must NOT get this padding. */
+:root { --navbar-height: 80px; }
+@media (max-width: 767px) { :root { --navbar-height: 72px; } }
+
+/* Apply to every page wrapper that sits under the public fixed Navbar.
+   Since Navbar is rendered INSIDE the page div (not outside),
+   we use padding-top equal to navbar height so content starts below it. */
+.index-page,
+.listing-page,
+.property-detail-page,
+.booking-page,
+.receipt-page,
+.confirmation-page,
+.customer-bookings-page,
+.wishlist-page,
+.contact-page,
+.search-page,
+.about-page,
+.privacy-page,
+.terms-page,
+.notifications-page,
+.profile-settings-page,
+.chat-page-layout {
+  padding-top: var(--navbar-height) !important;
+}
+
 /* Footer always fix bottom: jis page par footer ho, us ka parent flex ho jata hai, footer neeche chipk jata hai */
 .footer-fix-bottom { margin-top: auto; }
 *:has(> .footer-fix-bottom) {
@@ -48,12 +77,9 @@ html, body, #root { height: 100%; min-height: 100vh; }
 /* Hero Section */
 section.hero-section {
   position: relative !important;
-  /* min-height: 780px !important; */
-  /* background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
-              url('https://images.unsplash.com/photo-1564501049412-61c2a3083791?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80') center/cover no-repeat !important; */
   display: flex !important;
   flex-direction: column !important;
-  padding: 57px 0 0 !important;
+  padding: 0 !important;
   overflow: visible !important;
 }
 

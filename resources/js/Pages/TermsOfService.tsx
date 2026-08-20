@@ -11,7 +11,7 @@ export default function TermsOfService() {
     <div>
       <Head title={t('terms.title')} />
       <Navbar />
-      <Box sx={{ py: 8, minHeight: '60vh' }}>
+      <Box className="terms-page" sx={{ py: 8, minHeight: '60vh' }}>
         <Container>
           <Typography component="h1" sx={{ fontSize: '2.5rem', fontWeight: 800, color: '#222222', mb: 4 }}>{t('terms.title')}</Typography>
           <Box sx={{ color: '#222222', fontSize: '1rem', lineHeight: 1.8 }}>

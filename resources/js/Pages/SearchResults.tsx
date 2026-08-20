@@ -109,7 +109,7 @@ export default function SearchResults() {
   }
 
   return (
-    <Box sx={{ width: '100%', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <Box className="search-page" sx={{ width: '100%', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <Head title={t('search_results.title')} />
       <Navbar />
       <Box sx={{ flex: 1, width: '100%' }}>

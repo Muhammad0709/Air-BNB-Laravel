@@ -95,7 +95,7 @@ export default function Notifications({ notifications }: NotificationsPageProps)
     return (
         <>
             <Navbar />
-            <Box sx={{ minHeight: '80vh', py: 4, bgcolor: '#FFFFFF' }}>
+            <Box className="notifications-page" sx={{ minHeight: '80vh', py: 4, bgcolor: '#FFFFFF' }}>
                 <Container maxWidth="md">
                     <Box sx={{ textAlign: 'center', mb: 4 }}>
                         <Typography variant="h2" sx={{ fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2.25rem' }, fontWeight: 800, color: '#111827', mb: 1.5, letterSpacing: '-0.01em' }}>
