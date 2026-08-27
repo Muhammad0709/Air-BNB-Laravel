@@ -31,6 +31,8 @@ return [
         'log_out' => 'تسجيل الخروج',
         'first_name' => 'الاسم الأول',
         'last_name' => 'اسم العائلة',
+        'name' => 'الاسم',
+        'name_placeholder' => 'أدخل اسمك الكامل',
         'email_address' => 'البريد الإلكتروني',
         'company_name' => 'اسم الشركة',
         'company_name_placeholder' => 'أدخل اسم شركتك',

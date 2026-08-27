@@ -31,6 +31,8 @@ return [
         'log_out' => 'Log out',
         'first_name' => 'First Name',
         'last_name' => 'Last Name',
+        'name' => 'Name',
+        'name_placeholder' => 'Enter your full name',
         'email_address' => 'Email address',
         'company_name' => 'Company name',
         'company_name_placeholder' => 'Enter your company name',

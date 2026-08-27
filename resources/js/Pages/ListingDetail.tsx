@@ -291,14 +291,16 @@ export default function ListingDetail() {
                             </span>
                           )}
                         </Box>
-                        <Box className="rating d-none d-md-flex">
-                          <Box className="stars">
-                            {[...Array(5)].map((_, i) => (
-                              <StarIcon key={i} sx={{ fontSize: 14, color: i < Math.round(ratingStats.average) ? '#FFD700' : '#e9ecef' }} />
-                            ))}
+                        {ratingStats.total > 0 && (
+                          <Box className="rating d-none d-md-flex">
+                            <Box className="stars">
+                              {[...Array(5)].map((_, i) => (
+                                <StarIcon key={i} sx={{ fontSize: 14, color: i < Math.round(ratingStats.average) ? '#FFD700' : '#e9ecef' }} />
+                              ))}
+                            </Box>
+                            <Typography className="rating-text">({ratingStats.total})</Typography>
                           </Box>
-                          <Typography className="rating-text">({ratingStats.total})</Typography>
-                        </Box>
+                        )}
                       </Box>
                     </Col>
                     <Col xs={4} md={2}>
@@ -323,20 +325,22 @@ export default function ListingDetail() {
                       </Box>
                     </Col>
                   </Row>
-                  <Row className="d-md-none property-info-rating-row">
-                    <Col xs={12}>
-                      <Box className="property-meta property-meta-mobile-rating">
-                        <Box className="rating d-flex">
-                          <Box className="stars">
-                            {[...Array(5)].map((_, i) => (
-                              <StarIcon key={`m-${i}`} sx={{ fontSize: 14, color: i < Math.round(ratingStats.average) ? '#FFD700' : '#e9ecef' }} />
-                            ))}
+                  {ratingStats.total > 0 && (
+                    <Row className="d-md-none property-info-rating-row">
+                      <Col xs={12}>
+                        <Box className="property-meta property-meta-mobile-rating">
+                          <Box className="rating d-flex">
+                            <Box className="stars">
+                              {[...Array(5)].map((_, i) => (
+                                <StarIcon key={`m-${i}`} sx={{ fontSize: 14, color: i < Math.round(ratingStats.average) ? '#FFD700' : '#e9ecef' }} />
+                              ))}
+                            </Box>
+                            <Typography className="rating-text">({ratingStats.total})</Typography>
                           </Box>
-                          <Typography className="rating-text">({ratingStats.total})</Typography>
                         </Box>
-                      </Box>
-                    </Col>
-                  </Row>
+                      </Col>
+                    </Row>
+                  )}
                 </Paper>
               </Col>
             </Row>

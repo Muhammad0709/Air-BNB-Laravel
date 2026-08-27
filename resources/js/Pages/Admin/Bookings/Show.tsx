@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Box, Button, Card, CardContent, Chip, Divider, Stack, Typography } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
@@ -12,12 +12,28 @@ import EmailIcon from '@mui/icons-material/Email'
 import PhoneIcon from '@mui/icons-material/Phone'
 import { useLanguage } from '../../../hooks/use-language'
 import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
+import { getBookingStatusColor, getBookingStatusLabel } from '../../../utils/bookingStatus'
+
+type BookingDetail = {
+  id: string
+  guest: string
+  guestEmail: string
+  guestPhone: string
+  property: string
+  propertyLocation: string
+  checkin: string
+  checkout: string
+  status: string
+  amount: string
+  nights: number
+  createdAt: string
+}
 
 export default function ShowBooking() {
   const { t } = useLanguage()
-  const { id } = (usePage().props as { id?: string }) || {}
-  const [booking, setBooking] = useState({
-    id: '',
+  const { id, booking: bookingProp } = (usePage().props as { id?: string; booking?: BookingDetail }) || {}
+  const booking = bookingProp ?? {
+    id: id || '',
     guest: '',
     guestEmail: '',
     guestPhone: '',
@@ -29,34 +45,10 @@ export default function ShowBooking() {
     amount: '',
     nights: 0,
     createdAt: ''
-  })
-
-  useEffect(() => {
-    const mockBooking = {
-      id: id || '1',
-      guest: 'John Doe',
-      guestEmail: 'john.doe@example.com',
-      guestPhone: '+1 (555) 123-4567',
-      property: 'Luxury Beachfront Villa',
-      propertyLocation: 'Malibu, California',
-      checkin: '2025-01-15',
-      checkout: '2025-01-20',
-      status: 'Confirmed',
-      amount: '$1,495',
-      nights: 5,
-      createdAt: '2025-01-10'
-    }
-    setBooking(mockBooking)
-  }, [id])
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Confirmed': return '#10B981'
-      case 'Pending': return '#F59E0B'
-      case 'Cancelled': return '#EF4444'
-      default: return '#717171'
-    }
   }
+
+  const getStatusColor = getBookingStatusColor
+  const getStatusLabel = getBookingStatusLabel
 
   return (
     <>
@@ -77,7 +69,7 @@ export default function ShowBooking() {
               <Box>
                 <Typography variant="h4" sx={{ fontWeight: 700, color: '#222222', mb: 2 }}>{t('admin.bookings.booking_number')} #{booking.id}</Typography>
                 <Stack direction="row" spacing={2} useFlexGap alignItems="center">
-                  <Chip label={booking.status} size="small" sx={{ bgcolor: `${getStatusColor(booking.status)}15`, color: getStatusColor(booking.status), fontWeight: 600, fontSize: 12 }} />
+                  <Chip label={getStatusLabel(booking.status)} size="small" sx={{ bgcolor: `${getStatusColor(booking.status)}15`, color: getStatusColor(booking.status), fontWeight: 600, fontSize: 12 }} />
                   <Typography sx={{ color: '#717171', fontSize: 14 }}>{t('admin.bookings.created')} {booking.createdAt && new Date(booking.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</Typography>
                 </Stack>
               </Box>

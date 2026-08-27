@@ -1,55 +1,55 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Button, Card, CardContent, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
-import Toast from '../../../Components/Admin/Toast';
-import { Head, usePage, router } from '@inertiajs/react'
+import { Head, usePage, router, useForm } from '@inertiajs/react'
 import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
 import { useLanguage } from '../../../hooks/use-language'
 import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
+import { ALL_BOOKING_STATUSES, getBookingStatusLabel } from '../../../utils/bookingStatus'
+
+type PropertyOption = { id: number; title: string; location: string }
+
+type BookingFormData = {
+  guest: string
+  guestEmail: string
+  guestPhone: string
+  property: string
+  checkin: string
+  checkout: string
+  status: string
+  amount: string
+}
 
 export default function EditBooking() {
   const { t } = useLanguage()
-  const { id } = (usePage().props as { id?: string }) || {}
-  const [toastOpen, setToastOpen] = useState(false)
-  const [formData, setFormData] = useState({
+  const { id, booking, properties: propertiesList } = (usePage().props as { id?: string; booking?: BookingFormData; properties?: PropertyOption[] }) || {}
+  const properties = propertiesList ?? []
+  const { data: formData, setData: setFormData, put, transform, processing, errors } = useForm<BookingFormData>(booking ?? {
     guest: '',
     guestEmail: '',
     guestPhone: '',
     property: '',
     checkin: '',
     checkout: '',
-    status: 'Pending',
+    status: 'pending',
     amount: ''
   })
 
-  useEffect(() => {
-    const mockBooking = {
-      guest: 'John Doe',
-      guestEmail: 'john.doe@example.com',
-      guestPhone: '+1 (555) 123-4567',
-      property: 'Luxury Beachfront Villa',
-      checkin: '2025-01-15',
-      checkout: '2025-01-20',
-      status: 'Confirmed',
-      amount: '1495'
-    }
-    setFormData(mockBooking)
-  }, [id])
+  transform((data) => ({ ...data, property_id: data.property }))
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    setFormData(name as keyof BookingFormData, value)
   }
 
-  const handleSelectChange = (value: string) => {
-    setFormData(prev => ({ ...prev, status: value }))
+  const handleSelectChange = (name: keyof BookingFormData, value: string) => {
+    setFormData(name, value)
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setToastOpen(true)
-    setTimeout(() => router.visit('/admin/bookings'), 1500)
+    put(`/admin/bookings/${id}`)
   }
 
   return (
@@ -66,30 +66,37 @@ export default function EditBooking() {
               <Row>
                 <Col xs={12} md={6}>
                   <Stack spacing={3} sx={{ mb: { xs: 3, md: 0 } }}>
-                    <TextField label={t('admin.bookings.guest_name')} name="guest" value={formData.guest} onChange={handleChange} required fullWidth />
-                    <TextField label={t('admin.bookings.email_address')} name="guestEmail" type="email" value={formData.guestEmail} onChange={handleChange} required fullWidth />
-                    <TextField label={t('admin.bookings.phone_number')} name="guestPhone" value={formData.guestPhone} onChange={handleChange} required fullWidth />
+                    <TextField label={t('admin.bookings.guest_name')} name="guest" value={formData.guest} onChange={handleChange} required fullWidth error={!!errors.guest} helperText={errors.guest} />
+                    <TextField label={t('admin.bookings.email_address')} name="guestEmail" type="email" value={formData.guestEmail} onChange={handleChange} required fullWidth error={!!errors.guestEmail} helperText={errors.guestEmail} />
+                    <TextField label={t('admin.bookings.phone_number')} name="guestPhone" value={formData.guestPhone} onChange={handleChange} required fullWidth error={!!errors.guestPhone} helperText={errors.guestPhone} />
                   </Stack>
                 </Col>
                 <Col xs={12} md={6}>
                   <Stack spacing={3}>
-                    <TextField label={t('admin.bookings.property')} name="property" value={formData.property} onChange={handleChange} required fullWidth />
-                    <TextField label={t('admin.bookings.checkin_date')} name="checkin" type="date" value={formData.checkin} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} />
-                    <TextField label={t('admin.bookings.checkout_date')} name="checkout" type="date" value={formData.checkout} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} />
+                    <FormControl fullWidth required error={!!errors.property_id}>
+                      <InputLabel>{t('admin.bookings.property')}</InputLabel>
+                      <Select value={formData.property} onChange={(e) => handleSelectChange('property', e.target.value)} label={t('admin.bookings.property')}>
+                        {properties.map((p) => (
+                          <MenuItem key={p.id} value={String(p.id)}>{p.title} — {p.location}</MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <TextField label={t('admin.bookings.checkin_date')} name="checkin" type="date" value={formData.checkin} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} error={!!errors.checkin} helperText={errors.checkin} />
+                    <TextField label={t('admin.bookings.checkout_date')} name="checkout" type="date" value={formData.checkout} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} error={!!errors.checkout} helperText={errors.checkout} />
                   </Stack>
                 </Col>
               </Row>
               <Row className="mt-4">
                 <Col xs={12} md={6}>
-                  <TextField label={t('admin.bookings.total_amount')} name="amount" type="number" value={formData.amount} onChange={handleChange} required fullWidth InputProps={{ startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#717171' }}>$</Typography> }} sx={{ mb: { xs: 3, md: 0 } }} />
+                  <TextField label={t('admin.bookings.total_amount')} name="amount" type="number" value={formData.amount} onChange={handleChange} required fullWidth InputProps={{ startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#717171' }}>$</Typography> }} sx={{ mb: { xs: 3, md: 0 } }} error={!!errors.amount} helperText={errors.amount} />
                 </Col>
                 <Col xs={12} md={6}>
                   <FormControl fullWidth>
                     <InputLabel>{t('admin.bookings.status')}</InputLabel>
-                    <Select value={formData.status} onChange={(e) => handleSelectChange(e.target.value)} label={t('admin.bookings.status')}>
-                      <MenuItem value="Pending">{t('admin.bookings.pending')}</MenuItem>
-                      <MenuItem value="Confirmed">{t('admin.bookings.confirmed')}</MenuItem>
-                      <MenuItem value="Cancelled">{t('admin.bookings.cancelled')}</MenuItem>
+                    <Select value={formData.status} onChange={(e) => handleSelectChange('status', e.target.value)} label={t('admin.bookings.status')}>
+                      {ALL_BOOKING_STATUSES.map((s) => (
+                        <MenuItem key={s} value={s}>{getBookingStatusLabel(s)}</MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </Col>
@@ -98,14 +105,13 @@ export default function EditBooking() {
                 <Col xs={12}>
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap justifyContent="flex-end" sx={{ width: '100%' }}>
                     <Button variant="outlined" type="button" onClick={() => router.visit('/admin/bookings')} sx={{ textTransform: 'none', borderColor: '#D1D5DB', color: '#717171', '&:hover': { borderColor: '#9CA3AF', bgcolor: '#F9FAFB' } }}>{t('common.cancel')}</Button>
-                    <Button type="submit" variant="contained" sx={{ bgcolor: '#AD542D', textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>{t('admin.bookings.update_booking')}</Button>
+                    <Button type="submit" variant="contained" disabled={processing} sx={{ bgcolor: '#AD542D', textTransform: 'none', fontWeight: 700, '&:hover': { bgcolor: '#78381C' } }}>{t('admin.bookings.update_booking')}</Button>
                   </Stack>
                 </Col>
               </Row>
             </form>
           </CardContent>
         </Card>
-        <Toast open={toastOpen} onClose={() => setToastOpen(false)} message={t('admin.bookings.updated_success')} severity="success" />
       </AdminLayout>
     </>
   )
