@@ -444,6 +444,7 @@ p.hero-subtitle {
   padding: 0;
 }
 
+/* Original: 7 cards per row on large screens */
 .airbnb-card-item {
   flex: 0 0 calc((100% - 96px) / 7);
   min-width: calc((100% - 96px) / 7);
@@ -452,7 +453,6 @@ p.hero-subtitle {
   align-items: stretch;
 }
 
-/* Responsive adjustments */
 @media (max-width: 1400px) {
   .airbnb-card-item {
     flex: 0 0 calc((100% - 80px) / 6);
@@ -533,6 +533,12 @@ p.hero-subtitle {
   object-fit: cover;
   display: block;
   border-radius: 16px;
+  transition: transform 0.4s ease;
+}
+
+/* Hover: image thodi upar uthti hai aur zoom hoti hai — Airbnb style */
+.airbnb-card:hover .airbnb-card-image {
+  transform: scale(1.05);
 }
 
 /* Stays (Listing) & Wishlist: cards pehle jaisa – fixed image height 207px, square nahi */
@@ -889,10 +895,10 @@ p.hero-subtitle {
 
 /* Listing Page */
 .listing-page { padding: 50px 0 50px; }
-.filter-card { padding: 16px; border: 1px solid #ECEFF3; border-radius: 16px; box-shadow: 0px 10px 30px rgba(16,24,40,0.06); }
-.filter-title { font-weight: 800; color: #111827; }
-.filter-group { font-weight: 800; color: #111827; margin: 14px 0 8px; }
-.check-row { color: #6B7280; }
+.filter-card { padding: 20px; border: 1px solid #E6E8EC; border-radius: 20px; box-shadow: 0 12px 32px rgba(16,24,40,0.07); background: linear-gradient(180deg, #FFFFFF 0%, #FFFEFD 100%); }
+.filter-title { font-size: 20px !important; font-weight: 800 !important; color: #101828; letter-spacing: -.01em; }
+.filter-group { font-size: 14px !important; font-weight: 800 !important; color: #344054; margin: 20px 0 10px !important; text-transform: uppercase; letter-spacing: .04em; }
+.check-row { color: #6B7280; min-height: 36px; padding: 3px 6px !important; border-radius: 9px; }
 .check-label {
   color: #111827;
   white-space: nowrap;
@@ -943,18 +949,29 @@ p.hero-subtitle {
 .price-slider .MuiSlider-track { background: #AD542D; }
 .price-slider .MuiSlider-thumb { width: 14px; height: 14px; background: #AD542D; border: 2px solid #fff; box-shadow: 0 2px 6px rgba(173, 84, 45, .35); }
 /* Calendar */
-.mini-calendar { border: 1px solid #ECEFF3; border-radius: 12px; padding: 12px; margin-bottom: 12px; background: #fff; }
+.filter-date-summary { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 7px; margin-bottom: 10px; }
+.filter-date-item { min-width: 0; min-height: 54px; padding: 8px 9px; border: 1px solid #EAECF0; border-radius: 11px; background: #F9FAFB; display: flex; align-items: center; gap: 7px; }
+.filter-date-item > svg { color: #98A2B3; font-size: 17px; flex: none; }
+.filter-date-item span { display: block; color: #98A2B3; font-size: 10px; font-weight: 700; line-height: 1.2; }
+.filter-date-item strong { display: block; color: #667085; font-size: 12px; font-weight: 700; white-space: nowrap; }
+.filter-date-item.has-value { border-color: #E4C2B2; background: #FFF7F3; }
+.filter-date-item.has-value > svg, .filter-date-item.has-value strong { color: #AD542D; }
+.filter-date-arrow { color: #98A2B3; font-size: 13px; }
+.mini-calendar { border: 1px solid #E4E7EC; border-radius: 16px; padding: 14px; margin-bottom: 14px; background: #fff; box-shadow: 0 3px 10px rgba(16,24,40,.035); }
 .cal-month { font-weight: 700; color: #111827; }
-.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; font-size: 12px; color: #6B7280; }
-.cal-cell { text-align: center; padding: 4px 0; border-radius: 6px; }
+.calendar-nav-btn { width: 30px !important; height: 30px !important; border: 1px solid #EAECF0 !important; border-radius: 9px !important; color: #667085 !important; }
+.calendar-nav-btn:hover { border-color: #E4C2B2 !important; background: #FFF5F0 !important; color: #AD542D !important; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; font-size: 12px; color: #667085; }
+.cal-cell { display: grid; place-items: center; aspect-ratio: 1; min-width: 0; border-radius: 8px; cursor: pointer; transition: background-color .15s ease, color .15s ease, transform .15s ease; }
 .cal-cell.head { color: #9CA3AF; font-weight: 700; cursor: default !important; }
-.cal-cell:not(.head):not(.disabled):not(.other-month):hover { background-color: #F3F4F6; }
+.cal-cell:not(.head):not(.disabled):not(.other-month):hover { background-color: #FFF2EC; color: #AD542D; transform: scale(1.06); }
 .cal-cell.selected { background-color: #AD542D !important; color: #fff !important; font-weight: 700; }
 .cal-cell.in-range { background-color: #FFF2EE !important; }
 .cal-cell.disabled { opacity: 0.5; cursor: not-allowed; }
 .cal-cell.other-month { color: #9CA3AF; }
-.guest-btn { border: 1px solid #FFD6CC !important; width: 32px !important; height: 32px !important; border-radius: 8px !important; }
-.guest-count { min-width: 68px; text-align: center; border: 1px solid #FFD6CC; background: #FFF2EE; border-radius: 10px; padding: 6px 0; color: #111827; font-weight: 700; }
+.guest-btn { border: 1px solid #E4C2B2 !important; width: 36px !important; height: 36px !important; border-radius: 10px !important; color: #AD542D !important; }
+.guest-btn:hover { background: #FFF2EE !important; }
+.guest-count { min-width: 78px; text-align: center; border: 1px solid #E4C2B2; background: #FFF7F3; border-radius: 11px; padding: 7px 0; color: #111827; font-weight: 800; }
 .results-text { color: #6B7280; }
 .listing-search .MuiOutlinedInput-root { border-radius: 10px; }
 .listing-sort .MuiOutlinedInput-root { border-radius: 10px; }
@@ -1260,7 +1277,16 @@ p.hero-subtitle {
     text-overflow: ellipsis;
     line-clamp: 1;
     min-width: 0;
+    max-width: 100%;
+    flex-shrink: 0;
     word-break: break-word;
+  }
+  .property-info-card .property-timezone-text {
+    min-width: 0;
+    flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .property-info-card .property-info-top-row {
     align-items: flex-start !important;
@@ -1625,7 +1651,9 @@ p.hero-subtitle {
 /* Profile Settings Page */
 .profile-settings-page {
   padding: 60px 0;
-  background: white;
+  background:
+    radial-gradient(circle at 8% 4%, rgba(173, 82, 45, 0.10), transparent 26rem),
+    linear-gradient(180deg, #FFFDFC 0%, #F8FAFC 38%, #FFFFFF 100%);
 }
 
 @media (max-width: 768px) {
@@ -1652,3 +1680,330 @@ p.hero-subtitle {
     display: none !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   GLOBAL UI POLISH — safe additions, no breaking changes
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Smooth scroll ── */
+html { scroll-behavior: smooth; }
+
+/* ── Focus rings — accessible but subtle ── */
+*:focus-visible {
+  outline: 2px solid #AD542D;
+  outline-offset: 2px;
+}
+
+/* ── Better text rendering ── */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Global link hover ── */
+a { transition: color 0.15s ease; }
+
+/* ── Scrollbar styling (webkit) ── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #F9FAFB; }
+::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #9CA3AF; }
+
+/* ═══════════════════════════════════════════════════════════════
+   LISTING PAGE — filter card polish
+   ═══════════════════════════════════════════════════════════════ */
+.filter-card {
+  transition: box-shadow 0.2s ease;
+  position: sticky;
+  top: 90px;
+}
+.filter-card:hover {
+  box-shadow: 0 12px 32px rgba(16,24,40,0.1) !important;
+}
+
+/* Checkbox hover */
+.check-row {
+  transition: background 0.15s;
+  border-radius: 8px;
+  padding: 2px 6px;
+}
+.check-row:hover {
+  background: #FFF5F2;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LISTING DETAIL PAGE — section card polish
+   ═══════════════════════════════════════════════════════════════ */
+.about-section,
+.amenities-section,
+.rules-section,
+.availability-section,
+.quick-info-section,
+.host-section {
+  transition: box-shadow 0.2s ease;
+}
+.about-section:hover,
+.amenities-section:hover,
+.quick-info-section:hover,
+.host-section:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10) !important;
+}
+
+/* Amenity tag chips */
+.amenity-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid #E5E7EB;
+  background: #FAFAFA;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  transition: border-color 0.15s, background 0.15s;
+  cursor: default;
+}
+.amenity-chip:hover {
+  border-color: #AD542D;
+  background: #FFF5F2;
+  color: #AD542D;
+}
+
+/* Review cards hover */
+.review-item {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.review-item:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08) !important;
+  transform: translateY(-2px);
+}
+
+/* Gallery image hover — brightness dim */
+.property-gallery-img-btn:hover .property-gallery-img {
+  filter: brightness(0.94);
+  transition: filter 0.25s ease;
+}
+.property-gallery-img {
+  transition: filter 0.25s ease;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BOOKING PAGE — form polish
+   ═══════════════════════════════════════════════════════════════ */
+.booking-page .MuiOutlinedInput-root {
+  transition: box-shadow 0.2s ease;
+}
+.booking-page .MuiOutlinedInput-root:hover {
+  box-shadow: 0 2px 8px rgba(173,84,45,0.10);
+}
+.booking-page .MuiOutlinedInput-root.Mui-focused {
+  box-shadow: 0 0 0 3px rgba(173,84,45,0.12);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CUSTOMER BOOKINGS — card hover
+   ═══════════════════════════════════════════════════════════════ */
+.customer-bookings-page .MuiCard-root {
+  transition: box-shadow 0.2s ease, transform 0.2s ease !important;
+}
+.customer-bookings-page {
+  background:
+    radial-gradient(circle at 92% 2%, rgba(173, 82, 45, 0.11), transparent 28rem),
+    linear-gradient(180deg, #FFFDFC 0%, #F8FAFC 55%, #FFFFFF 100%);
+}
+.customer-bookings-page .MuiCard-root:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.09) !important;
+  transform: translateY(-1px);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PROFILE SETTINGS — tab sidebar active indicator
+   ═══════════════════════════════════════════════════════════════ */
+.profile-settings-page .MuiCard-root {
+  transition: box-shadow 0.2s ease !important;
+}
+.profile-settings-page .MuiPaper-root {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease !important;
+  background: rgba(255, 255, 255, 0.96);
+}
+.profile-settings-page .MuiPaper-root:hover {
+  border-color: #E4C2B2;
+  box-shadow: 0 12px 30px rgba(16, 24, 40, 0.06) !important;
+}
+.profile-settings-page .MuiTextField-root .MuiOutlinedInput-root:hover {
+  box-shadow: 0 2px 8px rgba(173,84,45,0.08);
+}
+.profile-settings-page .MuiTextField-root .MuiOutlinedInput-root.Mui-focused {
+  box-shadow: 0 0 0 3px rgba(173,84,45,0.10);
+}
+.profile-settings-page .profile-section-card {
+  border-radius: 20px;
+  box-shadow: 0 1px 2px rgba(16,24,40,.03);
+}
+.profile-settings-page .profile-preference-row {
+  padding: 16px 18px;
+  border: 1px solid #EAECF0;
+  border-radius: 14px;
+  background: #FCFCFD;
+  transition: border-color .2s ease, background-color .2s ease;
+}
+.profile-settings-page .profile-preference-row:hover {
+  border-color: #E4C2B2;
+  background: #FFF9F6;
+}
+.profile-settings-page .profile-danger-card {
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFF8F7 100%);
+}
+.profile-settings-page .MuiOutlinedInput-root {
+  min-height: 48px;
+  background: #FFFFFF;
+  transition: box-shadow .2s ease, background-color .2s ease;
+}
+.profile-settings-page .profile-password-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.profile-settings-page .profile-password-grid > :first-child,
+.profile-settings-page .profile-password-grid > .MuiButton-root {
+  grid-column: 1 / -1;
+}
+.profile-settings-page .profile-password-grid > .MuiButton-root {
+  justify-self: start;
+  margin-top: 0;
+}
+.profile-settings-page form .MuiButton-contained {
+  box-shadow: 0 6px 14px rgba(173,82,45,.18);
+  transition: transform .18s ease, box-shadow .18s ease !important;
+}
+.profile-settings-page form .MuiButton-contained:hover {
+  box-shadow: 0 8px 18px rgba(173,82,45,.24);
+  transform: translateY(-1px);
+}
+@media (max-width: 599px) {
+  .profile-settings-page .profile-section-card { border-radius: 16px; }
+  .profile-settings-page .profile-password-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .profile-settings-page .profile-password-grid > :first-child,
+  .profile-settings-page .profile-password-grid > .MuiButton-root { grid-column: auto; }
+  .profile-settings-page .profile-password-grid > .MuiButton-root { width: 100%; }
+  .profile-settings-page .profile-preference-row { padding: 14px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   WISHLIST — card hover (uses .airbnb-card inside)
+   ═══════════════════════════════════════════════════════════════ */
+.wishlist-page .airbnb-card {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.wishlist-page .airbnb-card:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.09) !important;
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SEARCH RESULTS — result card hover
+   ═══════════════════════════════════════════════════════════════ */
+.search-page .MuiCard-root,
+.search-page .MuiPaper-root {
+  transition: box-shadow 0.2s ease, transform 0.2s ease !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CONFIRMATION PAGE — success icon animation
+   ═══════════════════════════════════════════════════════════════ */
+.success-icon {
+  animation: popIn 0.45s cubic-bezier(0.175,0.885,0.32,1.275) both;
+}
+@keyframes popIn {
+  0%   { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CONTACT PAGE — form card shadow
+   ═══════════════════════════════════════════════════════════════ */
+.contact-page .MuiPaper-root {
+  transition: box-shadow 0.2s ease !important;
+}
+.contact-page .MuiTextField-root .MuiOutlinedInput-root:hover {
+  box-shadow: 0 2px 8px rgba(173,84,45,0.08);
+}
+.contact-page .MuiTextField-root .MuiOutlinedInput-root.Mui-focused {
+  box-shadow: 0 0 0 3px rgba(173,84,45,0.10);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NOTIFICATIONS PAGE — notification item hover
+   ═══════════════════════════════════════════════════════════════ */
+.notifications-page .MuiCard-root {
+  transition: box-shadow 0.2s ease !important;
+}
+.notifications-page .MuiPaper-root {
+  transition: box-shadow 0.2s ease !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BUTTONS — global primary button polish
+   ═══════════════════════════════════════════════════════════════ */
+.btn-book,
+.request-btn,
+.return-home-btn,
+.explore-more,
+.cta-btn {
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease !important;
+}
+.btn-book:hover,
+.request-btn:hover,
+.return-home-btn:hover,
+.explore-more:hover,
+.cta-btn:hover {
+  transform: translateY(-1px) !important;
+}
+.btn-book:active,
+.request-btn:active,
+.return-home-btn:active {
+  transform: translateY(0) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ABOUT PAGE — hero + content
+   ═══════════════════════════════════════════════════════════════ */
+.choose-card {
+  cursor: default;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LISTING (Stays) PAGE — property card hover in grid view
+   ═══════════════════════════════════════════════════════════════ */
+.listing-page .airbnb-card {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.listing-page .airbnb-card:hover {
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HOME PAGE — section title consistency
+   ═══════════════════════════════════════════════════════════════ */
+.airbnb-section-title {
+  font-size: 22px !important;
+  font-weight: 700 !important;
+  color: #222222 !important;
+  letter-spacing: -0.01em;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CHIP / BADGE — booking status chips
+   ═══════════════════════════════════════════════════════════════ */
+.MuiChip-root {
+  transition: filter 0.15s ease !important;
+}
+.MuiChip-root:hover {
+  filter: brightness(0.95);
+}
+
+/* END GLOBAL UI POLISH */

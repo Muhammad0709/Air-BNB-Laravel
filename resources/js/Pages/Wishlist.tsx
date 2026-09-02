@@ -105,6 +105,7 @@ export default function Wishlist() {
                           location={item.location}
                           price={item.price}
                           id={item.id}
+                          showFavoriteButton={false}
                         />
                         <IconButton
                           onClick={() => handleRemove(item.id)}

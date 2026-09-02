@@ -250,11 +250,11 @@ export default function ProfileSettings() {
         <Box className="profile-settings-page" sx={{ flex: 1 }}>
           <Container>
             {/* Header Section */}
-            <Box sx={{ textAlign: 'center', mb: 6, mt: 4 }}>
-              <Typography variant="h2" sx={{ fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2rem' }, fontWeight: 800, color: '#111827', mb: 2 }}>
+            <Box sx={{ mb: { xs: 4, md: 6 }, mt: { xs: 1, md: 2 }, maxWidth: 680, mx: 'auto' }}>
+              <Typography variant="h2" sx={{ fontSize: { xs: '1.75rem', sm: '2.15rem', md: '2.6rem' }, lineHeight: 1.15, letterSpacing: '-0.03em', fontWeight: 800, color: '#101828', mb: 1.5 }}>
                 {t('profile_settings.title')}
               </Typography>
-              <Typography variant="body1" sx={{ color: '#6B7280', fontSize: { xs: '0.875rem', sm: '0.9375rem', md: '1rem' }, maxWidth: 600, mx: 'auto' }}>
+              <Typography variant="body1" sx={{ color: '#667085', fontSize: { xs: '0.9375rem', md: '1.0625rem' } }}>
                 {t('profile_settings.subtitle')}
               </Typography>
             </Box>
@@ -262,19 +262,21 @@ export default function ProfileSettings() {
             <Row className="g-4 justify-content-center">
               <Col xs={12} md={10} lg={8} xl={7}>
                 {/* Profile Picture Section */}
-                <Paper elevation={0} sx={{ p: 4, border: '1px solid #E5E7EB', borderRadius: '16px', mb: 3 }}>
+                <Paper elevation={0} sx={{ p: { xs: 2.25, sm: 3, md: 4 }, border: '1px solid #E5E7EB', borderRadius: { xs: '16px', md: '20px' }, mb: 3, overflow: 'hidden', position: 'relative', '&::after': { content: '""', position: 'absolute', insetInlineEnd: -55, top: -60, width: 150, height: 150, borderRadius: '50%', bgcolor: 'rgba(173,82,45,.07)', pointerEvents: 'none' } }}>
                   <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 3 }}>
                     {t('profile_settings.profile_picture')}
                   </Typography>
-                  <Stack direction="row" spacing={3} useFlexGap alignItems="center">
+                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} useFlexGap alignItems={{ xs: 'flex-start', sm: 'center' }}>
                     <Avatar
                       src={user?.profile_picture}
                       sx={{
-                        width: 100,
-                        height: 100,
+                        width: { xs: 88, sm: 104 },
+                        height: { xs: 88, sm: 104 },
                         bgcolor: '#AD542D',
                         fontSize: '2.5rem',
-                        fontWeight: 700
+                        fontWeight: 700,
+                        border: '4px solid #fff',
+                        boxShadow: '0 0 0 1px #E4C2B2, 0 10px 24px rgba(173,82,45,.16)'
                       }}
                     >
                       {!user?.profile_picture && 
@@ -569,13 +571,13 @@ export default function ProfileSettings() {
                 </Paper>
 
                 {/* Change Password */}
-                <Paper elevation={0} sx={{ p: 4, border: '1px solid #E5E7EB', borderRadius: '16px' }}>
+                <Paper elevation={0} sx={{ p: 4, border: '1px solid #E5E7EB', borderRadius: '16px', mb: 3 }}>
                   <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 3 }}>
                     {t('profile_settings.change_password')}
                   </Typography>
                   
                   <form onSubmit={handlePasswordSubmit}>
-                    <Stack spacing={3}>
+                    <Stack className="profile-password-grid" spacing={3}>
                       <Box>
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: { xs: '0.8125rem', sm: '0.875rem' } }}>
                           {t('profile_settings.current_password')}

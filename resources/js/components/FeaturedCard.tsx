@@ -17,6 +17,7 @@ type FeaturedCardProps = {
   reviews?: number
   isGuestFavorite?: boolean
   fallbackImage?: string
+  showFavoriteButton?: boolean
 }
 
 export default function FeaturedCard({ 
@@ -29,6 +30,7 @@ export default function FeaturedCard({
   reviews: _reviews,
   isGuestFavorite = false,
   fallbackImage = '/images/popular-stay-1.svg',
+  showFavoriteButton = true,
 }: FeaturedCardProps) {
   const { t } = useLanguage()
   const { currency } = useCurrency()
@@ -78,9 +80,7 @@ export default function FeaturedCard({
     <Paper 
       className="airbnb-card" 
       elevation={0} 
-      sx={{ 
-        cursor: 'pointer'
-      }} 
+      sx={{ cursor: 'pointer' }} 
       onClick={handleClick}
     >
       <Box 
@@ -94,25 +94,28 @@ export default function FeaturedCard({
           className="airbnb-card-image"
           onError={handleImageError}
         />
-        
-        <IconButton
-          className="airbnb-favorite-button"
-          onClick={handleFavoriteClick}
-          size="small"
-          aria-label={isFavorited ? t('wishlist.remove_from_wishlist') : t('wishlist.add_to_wishlist')}
-          sx={{
-            position: 'absolute',
-            top: { xs: 4, sm: 8 },
-            right: { xs: 6, sm: 8 },
-            padding: '6px',
-            bgcolor: 'transparent',
-            color: '#222222',
-            '&:hover': { bgcolor: 'transparent', color: '#222222' },
-          }}
-        >
-          <CardFavoriteIcon isFavorited={isFavorited} />
-        </IconButton>
+
+        {showFavoriteButton && (
+          <IconButton
+            className="airbnb-favorite-button"
+            onClick={handleFavoriteClick}
+            size="small"
+            aria-label={isFavorited ? t('wishlist.remove_from_wishlist') : t('wishlist.add_to_wishlist')}
+            sx={{
+              position: 'absolute',
+              top: { xs: 4, sm: 8 },
+              right: { xs: 6, sm: 8 },
+              padding: '6px',
+              bgcolor: 'transparent',
+              color: '#222222',
+              '&:hover': { bgcolor: 'transparent', color: '#222222' },
+            }}
+          >
+            <CardFavoriteIcon isFavorited={isFavorited} />
+          </IconButton>
+        )}
       </Box>
+
       <Box className="airbnb-card-body">
         <Typography className="airbnb-card-title" component="h3" title={title}>
           {title}
@@ -120,12 +123,12 @@ export default function FeaturedCard({
         <Box className="airbnb-card-price-rating">
           <div>
             <Typography component="span" className="airbnb-card-price-text">
-            {formatPrice(Number(price), currency)}
-          </Typography>
-          <Typography component="span" className="airbnb-card-night-text">
-            {' / '}{t('listing.night')}
-          </Typography>
-            </div>
+              {formatPrice(Number(price), currency)}
+            </Typography>
+            <Typography component="span" className="airbnb-card-night-text">
+              {' / '}{t('listing.night')}
+            </Typography>
+          </div>
           {rating > 0 && (
             <Box className="airbnb-card-rating-inline">
               <StarIcon sx={{ fontSize: 11, color: '#717171', marginInlineStart: 1 }} />
