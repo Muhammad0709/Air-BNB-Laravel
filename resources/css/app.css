@@ -1674,9 +1674,7 @@ p.hero-subtitle {
 /* Contact Page */
 .contact-page {
   padding: 40px 0 64px;
-  background:
-    radial-gradient(circle at 85% 4%, rgba(173,82,45,.10), transparent 28rem),
-    linear-gradient(180deg, #FFFDFC 0%, #F8FAFC 48%, #FFFFFF 100%);
+  background: #FFFFFF;
 }
 .contact-hero { text-align: center; margin: 24px auto 48px; }
 .contact-form-icon {
