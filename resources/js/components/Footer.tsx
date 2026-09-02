@@ -1,11 +1,13 @@
-import { Box, Container as MUIContainer, Divider, Stack, Typography } from '@mui/material'
+import { Box, Container as MUIContainer, Divider, IconButton, Stack, Typography } from '@mui/material'
 import { Link, router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../hooks/use-language'
+import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded'
 
 export default function Footer() {
   const { t } = useLanguage()
   const { auth } = usePage().props as { auth?: { user?: { type?: string } | null } }
   const isCustomer = auth?.user?.type === 'User'
+  const isLoggedIn = !!auth?.user
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -27,14 +29,14 @@ export default function Footer() {
 
   return (
     <div className="footer-fix-bottom">
-      <Box component="footer" sx={{ bgcolor: '#F7F7F7', color: '#222222', mt: { xs: 4, md: 8 }, borderTop: '1px solid #DDDDDD' }}>
+      <Box component="footer" className="site-footer" sx={{ color: '#222222', mt: { xs: 4, md: 8 } }}>
         <MUIContainer
           maxWidth={false}
           sx={{
             maxWidth: { xs: '100%', md: 1160, xl: 1440 },
             px: { xs: 2, md: 3 },
-            pt: { xs: 3, md: 6 },
-            pb: { xs: 2, md: 6 },
+            pt: { xs: 4, md: 7 },
+            pb: { xs: 3, md: 4 },
             mx: 'auto',
           }}
         >
@@ -42,16 +44,26 @@ export default function Footer() {
           sx={{
             display: 'grid',
             alignItems: 'start',
-            gridTemplateColumns: { xs: 'repeat(2, minmax(0, 1fr))', sm: 'repeat(2, minmax(0, 1fr))', md: 'repeat(3, minmax(0, 1fr))' },
+            gridTemplateColumns: { xs: 'repeat(2, minmax(0, 1fr))', md: '1.35fr repeat(3, minmax(0, 1fr))' },
             columnGap: { xs: 2, sm: 3, md: 6 },
-            rowGap: { xs: 1.5, sm: 2, md: 4 },
-            mb: { xs: 2, md: 4 },
+            rowGap: { xs: 3, md: 4 },
+            mb: { xs: 3, md: 5 },
           }}
         >
+          <Box className="footer-brand" sx={{ gridColumn: { xs: '1 / -1', md: 'auto' }, minWidth: 0 }}>
+            <Box component={Link} href="/" onClick={scrollToTop} className="footer-logo-link">
+              <Box component="img" src="/images/Logo.png" alt={t('footer.lipabnb')} className="footer-logo" />
+            </Box>
+            <Typography sx={{ color: '#667085', fontSize: '.875rem', lineHeight: 1.65, maxWidth: 260, mt: 2 }}>
+              {t('footer.lipabnb')}
+            </Typography>
+          </Box>
           <Box sx={{ minWidth: 0 }}>
             <Typography sx={{ color: '#222222', fontWeight: 600, mb: { xs: 1, md: 2.5 }, fontSize: '0.875rem' }}>{t('footer.support')}</Typography>
             <Stack spacing={1} useFlexGap>
               <Box component={Link} href="/contact" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.contact_us')}</Box>
+              {!isLoggedIn && <Box component={Link} href="/login" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.log_in')}</Box>}
+              {!isLoggedIn && <Box component={Link} href="/register" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.sign_up')}</Box>}
             </Stack>
           </Box>
           <Box sx={{ minWidth: 0 }}>
@@ -59,6 +71,7 @@ export default function Footer() {
             <Stack spacing={1} useFlexGap>
               <Box component={Link} href="/" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.home')}</Box>
               <Box component={Link} href="/about" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.about_us')}</Box>
+              <Box component={Link} href="/listing" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.stays')}</Box>
               {isCustomer && (
                 <>
                   <Box
@@ -146,25 +159,27 @@ export default function Footer() {
               )}
             </Stack>
           </Box>
-          <Box sx={{ gridColumn: { xs: '1 / -1', md: 'auto' }, minWidth: 0 }}>
+          <Box sx={{ minWidth: 0 }}>
             <Typography sx={{ color: '#222222', fontWeight: 600, mb: { xs: 1, md: 2.5 }, fontSize: '0.875rem' }}>{t('footer.community')}</Typography>
             <Stack spacing={1} useFlexGap>
               <Box component={Link} href="/wishlist" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.wishlist')}</Box>
               <Box component={Link} href="/bookings" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.bookings')}</Box>
+              {isLoggedIn && <Box component={Link} href="/chat" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.messages')}</Box>}
+              {isLoggedIn && <Box component={Link} href="/profile/settings" onClick={scrollToTop} sx={footerLinkSx}>{t('footer.profile')}</Box>}
             </Stack>
           </Box>
         </Box>
 
-        <Divider sx={{ my: { xs: 1.5, md: 3 }, borderColor: '#DDDDDD' }} />
+        <Divider sx={{ my: { xs: 2, md: 3 }, borderColor: '#E4E7EC' }} />
 
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'column',
+            flexDirection: { xs: 'column', sm: 'row' },
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
             gap: { xs: 0.75, md: 1.25 },
-            textAlign: 'center',
+            textAlign: { xs: 'center', sm: 'start' },
           }}
         >
           <Typography sx={{ color: '#222222', fontSize: { xs: '0.8125rem', md: '0.875rem' } }}>
@@ -212,6 +227,9 @@ export default function Footer() {
               {t('footer.terms')}
             </Box>
           </Box>
+          <IconButton onClick={scrollToTop} className="footer-top-button" aria-label="Back to top">
+            <ArrowUpwardRoundedIcon fontSize="small" />
+          </IconButton>
         </Box>
       </MUIContainer>
       </Box>

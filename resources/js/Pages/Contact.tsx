@@ -7,6 +7,7 @@ import Toast from '../components/Admin/Toast';
 import SendIcon from '@mui/icons-material/Send'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
 import CloseIcon from '@mui/icons-material/Close'
+import MailOutlineRoundedIcon from '@mui/icons-material/MailOutlineRounded'
 import { Head, useForm, usePage } from '@inertiajs/react'
 import { useLanguage } from '../hooks/use-language'
 import InputError from '../components/InputError'
@@ -97,26 +98,29 @@ export default function Contact() {
         <Box className="contact-page" sx={{ flex: 1 }}>
           <Container>
             {/* Header Section */}
-            <Box sx={{ textAlign: 'center', mb: 6, mt: 4 }}>
-              <Typography variant="h2" sx={{ fontSize: '2rem', fontWeight: 800, color: '#111827', mb: 2 }}>
+            <Box className="contact-hero">
+              <Typography variant="h2" sx={{ fontSize: { xs: '2rem', md: '2.75rem' }, lineHeight: 1.12, letterSpacing: '-.03em', fontWeight: 800, color: '#101828', mb: 1.5 }}>
                 {t('contact.title')}
               </Typography>
-              <Typography variant="body1" sx={{ color: '#6B7280', fontSize: '1rem',  mx: 'auto' }}>
+              <Typography variant="body1" sx={{ color: '#667085', fontSize: { xs: '.9375rem', md: '1.0625rem' }, mx: 'auto', lineHeight: 1.7, whiteSpace: { xs: 'normal', md: 'nowrap' } }}>
                 {t('contact.subtitle')}
               </Typography>
             </Box>
 
             <Row className="g-4 justify-content-center">
               {/* Contact Form */}
-              <Col xs={12} md={10} lg={8} xl={6}>
-                <Paper elevation={0} sx={{ p: 4, border: '1px solid #E5E7EB', borderRadius: '16px' }}>
-                  <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 3, fontSize: '1.25rem' }}>
+              <Col xs={12} md={11} lg={9} xl={8}>
+                <Paper className="contact-form-card" elevation={0} sx={{ p: { xs: 2.25, sm: 3.5, md: 5 }, border: '1px solid #E5E7EB', borderRadius: { xs: '18px', md: '24px' } }}>
+                  <Stack direction="row" alignItems="center" spacing={1.5} sx={{ mb: { xs: 3, md: 4 } }}>
+                    <Box className="contact-form-icon"><MailOutlineRoundedIcon /></Box>
+                    <Typography variant="h5" sx={{ fontWeight: 750, color: '#101828', fontSize: { xs: '1.2rem', md: '1.4rem' } }}>
                     {t('contact.send_message')}
-                  </Typography>
+                    </Typography>
+                  </Stack>
                   
                   <form onSubmit={handleSubmit}>
-                    <Stack spacing={3} useFlexGap>
-                      <Box>
+                    <Stack className="contact-form-grid" spacing={3} useFlexGap>
+                      <Box className="contact-half-field">
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
                           {t('contact.name')}
                         </Typography>
@@ -141,7 +145,7 @@ export default function Contact() {
                         <InputError message={Array.isArray(errors.name) ? errors.name[0] : errors.name} />
                       </Box>
 
-                      <Box>
+                      <Box className="contact-half-field">
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
                           {t('contact.email')}
                         </Typography>
@@ -167,7 +171,7 @@ export default function Contact() {
                         <InputError message={Array.isArray(errors.email) ? errors.email[0] : errors.email} />
                       </Box>
 
-                      <Box>
+                      <Box className="contact-full-field">
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
                           {t('contact.subject')}
                         </Typography>
@@ -192,11 +196,12 @@ export default function Contact() {
                         <InputError message={Array.isArray(errors.subject) ? errors.subject[0] : errors.subject} />
                       </Box>
 
-                      <Box>
+                      <Box className="contact-full-field">
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
                           {t('contact.attach_files')}
                         </Typography>
                         <Box
+                          className="contact-upload-zone"
                           sx={{
                             border: '2px dashed #D0D5DD',
                             borderRadius: '12px',
@@ -255,7 +260,7 @@ export default function Contact() {
                         )}
                       </Box>
 
-                      <Box>
+                      <Box className="contact-full-field">
                         <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1, fontSize: '0.875rem' }}>
                           {t('contact.message')}
                         </Typography>
@@ -282,6 +287,7 @@ export default function Contact() {
                       </Box>
 
                       <Button
+                        className="contact-submit-button"
                         type="submit"
                         variant="contained"
                         startIcon={<SendIcon />}
