@@ -8,6 +8,38 @@
 html, body, #root { height: 100%; min-height: 100vh; }
 #root { margin: 0; display: flex; flex-direction: column; }
 
+/* Shared customer navbar: one stable height and spacing across every page. */
+.site-navbar {
+  top: 0;
+  z-index: 1200 !important;
+  width: 100%;
+  margin-bottom: 20px;
+  border-bottom: 0;
+  box-shadow: none !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: box-shadow .2s ease;
+}
+.site-navbar.is-scrolled {
+  box-shadow: 0 6px 20px rgba(16, 24, 40, 0.10) !important;
+}
+.site-navbar + * {
+  scroll-margin-top: 96px;
+}
+@supports (padding: max(0px)) {
+  .site-navbar .MuiContainer-root {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+}
+@media (max-width: 599px) {
+  .site-navbar {
+    margin-bottom: 12px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
 /* Footer always fix bottom: jis page par footer ho, us ka parent flex ho jata hai, footer neeche chipk jata hai */
 .footer-fix-bottom { margin-top: auto; }
 *:has(> .footer-fix-bottom) {
@@ -55,6 +87,11 @@ section.hero-section {
   flex-direction: column !important;
   padding: 57px 0 0 !important;
   overflow: visible !important;
+}
+
+/* Home search needs breathing room below the shared sticky navbar. */
+.index-page section.hero-section {
+  padding-top: 96px !important;
 }
 
 .hero-content {
@@ -1555,7 +1592,7 @@ p.hero-subtitle {
 @media (max-width: 768px) {
   .index-page section.hero-section {
     min-height: 0 !important;
-    padding: 22px 0 16px !important;
+    padding: 34px 0 20px !important;
   }
   .index-page .hero-search-wrapper {
     position: relative !important;
@@ -1620,17 +1657,6 @@ p.hero-subtitle {
   background:
     radial-gradient(circle at 8% 10%, rgba(173,82,45,.10), transparent 23rem),
     linear-gradient(180deg, #FFFDFC 0%, #F8F7F5 100%);
-}
-.site-footer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 92px;
-  height: 3px;
-  transform: translateX(-50%);
-  border-radius: 0 0 6px 6px;
-  background: #AD542D;
 }
 .footer-logo-link { display: inline-flex; text-decoration: none; }
 .footer-logo { display: block; width: auto; height: 42px; max-width: 190px; object-fit: contain; }
@@ -1709,9 +1735,7 @@ p.hero-subtitle {
 /* Profile Settings Page */
 .profile-settings-page {
   padding: 60px 0;
-  background:
-    radial-gradient(circle at 8% 4%, rgba(173, 82, 45, 0.10), transparent 26rem),
-    linear-gradient(180deg, #FFFDFC 0%, #F8FAFC 38%, #FFFFFF 100%);
+  background: #FFFFFF;
 }
 
 @media (max-width: 768px) {
@@ -1866,9 +1890,7 @@ a { transition: color 0.15s ease; }
   transition: box-shadow 0.2s ease, transform 0.2s ease !important;
 }
 .customer-bookings-page {
-  background:
-    radial-gradient(circle at 92% 2%, rgba(173, 82, 45, 0.11), transparent 28rem),
-    linear-gradient(180deg, #FFFDFC 0%, #F8FAFC 55%, #FFFFFF 100%);
+  background: #FFFFFF;
 }
 .customer-bookings-page .MuiCard-root:hover {
   box-shadow: 0 6px 24px rgba(0,0,0,0.09) !important;
