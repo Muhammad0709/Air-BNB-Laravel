@@ -142,6 +142,34 @@ export default function Home() {
     }
   }, [destinationOpen])
 
+  useEffect(() => {
+    if (!datesOpen && !guestsOpen) return
+
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target
+      if (!(target instanceof Element)) return
+
+      if (
+        datesOpen &&
+        !target.closest('.search-field-when') &&
+        !target.closest('.home-calendar-popover')
+      ) {
+        setDatesOpen(false)
+      }
+
+      if (
+        guestsOpen &&
+        !target.closest('.search-field-guests') &&
+        !target.closest('.home-guests-popover')
+      ) {
+        setGuestsOpen(false)
+      }
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown, true)
+    return () => document.removeEventListener('pointerdown', handlePointerDown, true)
+  }, [datesOpen, guestsOpen])
+
   const handleDestinationSelect = (name: string) => {
     setDestination(name)
     setDestinationOpen(false)
@@ -216,8 +244,16 @@ export default function Home() {
                 <Box className="hero-search-form">
                   <form className="search-form" onSubmit={handleSearch}>
                     <Box className="search-input-group">
-                      <Box className={`search-field search-field-destination${destination ? ' has-value' : ''}${destinationOpen ? ' active' : ''}`} ref={destinationAnchorRef}>
-                        <label htmlFor="destination">{t('home.where_to')}</label>
+                      <Box
+                        className={`search-field search-field-destination${destination ? ' has-value' : ''}${destinationOpen ? ' active' : ''}`}
+                        ref={destinationAnchorRef}
+                        onClick={() => {
+                          setDatesOpen(false)
+                          setGuestsOpen(false)
+                          setDestinationOpen(true)
+                        }}
+                      >
+                        <label className="search-field-label" htmlFor="destination">{t('home.where_to')}</label>
                         <TextField
                           id="destination"
                           name="destination"
@@ -249,9 +285,9 @@ export default function Home() {
                       </Box>
                       <HomeDatePicker checkin={checkin} checkout={checkout} onCheckinChange={setCheckin} onCheckoutChange={setCheckout} whenLabel={t('home.when')} addDatesLabel={t('home.add_dates')} checkinLabel={t('home.checkin')} checkoutLabel={t('home.checkout')} isRtl={isRtl} open={datesOpen} onOpenChange={(nextOpen) => { if (nextOpen) { setDestinationOpen(false); setGuestsOpen(false) } setDatesOpen(nextOpen) }} />
                       <Box className={`search-guests-action-group${guestsOpen ? ' active' : ''}`}>
-                        <Box className={`search-field search-field-guests${(adults > 0 || children > 0 || rooms > 0) ? ' has-value' : ''}${guestsOpen ? ' active' : ''}`} ref={guestsAnchorRef}>
-                          <label htmlFor="guests">{t('home.who')}</label>
-                          <Box onClick={handleGuestsClick} className="search-field-guests-value" sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', py: 0.5 }}>
+                        <Box className={`search-field search-field-guests${(adults > 0 || children > 0 || rooms > 0) ? ' has-value' : ''}${guestsOpen ? ' active' : ''}`} ref={guestsAnchorRef} onClick={handleGuestsClick}>
+                          <label className="search-field-label" htmlFor="guests">{t('home.who')}</label>
+                          <Box className="search-field-guests-value" sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', py: 0.5 }}>
                             <Typography component="span" sx={{ color: (adults === 0 && children === 0 && rooms === 0) ? '#717171' : '#222222', fontSize: '0.875rem', fontWeight: 400 }}>
                               {adults === 0 && children === 0 && rooms === 0 ? t('home.add_guests_placeholder') : getGuestsText()}
                             </Typography>
@@ -270,12 +306,13 @@ export default function Home() {
                       disableRestoreFocus
                       slotProps={{
                         root: {
-                          sx: { zIndex: (theme) => (theme.vars || theme).zIndex.modal },
+                          sx: { zIndex: (theme) => (theme.vars || theme).zIndex.modal, pointerEvents: 'none' },
                         },
                         paper: {
                           ref: destinationPopoverPaperRef,
                           className: 'home-destination-popover',
                           sx: {
+                            pointerEvents: 'auto',
                             mt: 1,
                             borderRadius: { xs: '22px', sm: '28px' },
                             boxShadow: '0 18px 48px rgba(16,24,40,0.16)',
@@ -316,9 +353,6 @@ export default function Home() {
                             '& .MuiOutlinedInput-root': { borderRadius: 2 },
                           }}
                         />
-                        <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222', mb: 1.5, fontSize: '0.875rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
-                          {t('home.popular_destinations_label')}
-                        </Typography>
                         <Stack className="home-destination-list" spacing={0} sx={{ maxHeight: { xs: 360, sm: 430 }, overflow: 'auto' }}>
                           {filteredDestinations.length === 0 && destination.trim() ? (
                             <Typography variant="body2" sx={{ color: '#717171', py: 1.5, px: 0.5 }}>
@@ -371,11 +405,12 @@ export default function Home() {
                       marginThreshold={16}
                       slotProps={{
                         root: {
-                          sx: { zIndex: (theme) => (theme.vars || theme).zIndex.modal },
+                          sx: { zIndex: (theme) => (theme.vars || theme).zIndex.modal, pointerEvents: 'none' },
                         },
                         paper: {
                           className: 'home-guests-popover',
                           sx: {
+                            pointerEvents: 'auto',
                             mt: 1,
                             boxSizing: 'border-box',
                             width: { xs: 'calc(100vw - 32px)', sm: 560 },

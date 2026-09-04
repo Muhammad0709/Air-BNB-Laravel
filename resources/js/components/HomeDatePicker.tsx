@@ -56,7 +56,7 @@ export default function HomeDatePicker({ checkin, checkout, onCheckinChange, onC
   return (
     <>
       <Box ref={anchorRef} className={`search-field search-field-when${checkin ? ' has-value' : ''}${open ? ' active' : ''}`} role="button" tabIndex={0} onClick={() => onOpenChange(true)} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onOpenChange(true) }}>
-        <label>{whenLabel}</label><Typography component="span" className="search-date-value">{displayValue}</Typography>
+        <label className="search-field-label">{whenLabel}</label><Typography component="span" className="search-date-value">{displayValue}</Typography>
       </Box>
       <Popover
         open={open}
@@ -66,9 +66,12 @@ export default function HomeDatePicker({ checkin, checkout, onCheckinChange, onC
         transformOrigin={{ vertical: 'top', horizontal: isRtl ? 'right' : 'left' }}
         marginThreshold={12}
         slotProps={{
+          root: {
+            sx: { pointerEvents: 'none' },
+          },
           paper: {
             className: 'home-calendar-popover',
-            style: { width: anchorRef.current?.closest('.hero-search-form')?.getBoundingClientRect().width },
+            style: { width: anchorRef.current?.closest('.hero-search-form')?.getBoundingClientRect().width, pointerEvents: 'auto' },
           },
         }}
       >
