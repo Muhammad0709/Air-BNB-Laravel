@@ -9,6 +9,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
+import HomeDatePicker from '../components/HomeDatePicker'
 import { Container, Row, Col, Container as RBContainer } from 'react-bootstrap'
 import { router, usePage } from '@inertiajs/react'
 
@@ -29,7 +30,7 @@ interface Destination {
 }
 
 export default function Home() {
-  const { t } = useLanguage()
+  const { t, isRtl } = useLanguage()
   const pageProps = usePage().props as {
     featuredProperties?: Property[]
     popularProperties?: Property[]
@@ -49,6 +50,7 @@ export default function Home() {
   const [checkout, setCheckout] = useState('')
   const [guestsOpen, setGuestsOpen] = useState(false)
   const [destinationOpen, setDestinationOpen] = useState(false)
+  const [datesOpen, setDatesOpen] = useState(false)
   const [adults, setAdults] = useState(0)
   const [children, setChildren] = useState(0)
   const [rooms, setRooms] = useState(0)
@@ -100,7 +102,9 @@ export default function Home() {
   }
 
   const handleGuestsClick = () => {
-    setGuestsOpen(!guestsOpen)
+    setDestinationOpen(false)
+    setDatesOpen(false)
+    setGuestsOpen((current) => !current)
   }
 
   const handleGuestsClose = () => {
@@ -212,7 +216,7 @@ export default function Home() {
                 <Box className="hero-search-form">
                   <form className="search-form" onSubmit={handleSearch}>
                     <Box className="search-input-group">
-                      <Box className={`search-field search-field-destination${destination ? ' has-value' : ''}`} ref={destinationAnchorRef}>
+                      <Box className={`search-field search-field-destination${destination ? ' has-value' : ''}${destinationOpen ? ' active' : ''}`} ref={destinationAnchorRef}>
                         <label htmlFor="destination">{t('home.where_to')}</label>
                         <TextField
                           id="destination"
@@ -221,6 +225,8 @@ export default function Home() {
                           onChange={(e) => setDestination(e.target.value)}
                           onFocus={() => {
                             if (ignoreDestinationFocusOpenRef.current) return
+                            setDatesOpen(false)
+                            setGuestsOpen(false)
                             setDestinationOpen(true)
                           }}
                           placeholder={t('home.search_destinations_placeholder')}
@@ -241,60 +247,25 @@ export default function Home() {
                           }}
                         />
                       </Box>
-                      <Box className="search-field-dates-row">
-                        <Box className={`search-field${checkin ? ' has-value' : ''}`}>
-                          <label htmlFor="checkin">{t('home.checkin')}</label>
-                          <TextField
-                            id="checkin"
-                            name="checkin"
-                            type="date"
-                            value={checkin}
-                            onChange={(e) => setCheckin(e.target.value)}
-                            variant="standard"
-                            InputProps={{ disableUnderline: true }}
-                            sx={{ '& .MuiInput-input': { border: 'none', padding: 0, fontWeight: 400, color: checkin ? '#222222' : '#717171' } }}
-                            InputLabelProps={{ shrink: true }}
-                          />
+                      <HomeDatePicker checkin={checkin} checkout={checkout} onCheckinChange={setCheckin} onCheckoutChange={setCheckout} whenLabel={t('home.when')} addDatesLabel={t('home.add_dates')} checkinLabel={t('home.checkin')} checkoutLabel={t('home.checkout')} isRtl={isRtl} open={datesOpen} onOpenChange={(nextOpen) => { if (nextOpen) { setDestinationOpen(false); setGuestsOpen(false) } setDatesOpen(nextOpen) }} />
+                      <Box className={`search-guests-action-group${guestsOpen ? ' active' : ''}`}>
+                        <Box className={`search-field search-field-guests${(adults > 0 || children > 0 || rooms > 0) ? ' has-value' : ''}${guestsOpen ? ' active' : ''}`} ref={guestsAnchorRef}>
+                          <label htmlFor="guests">{t('home.who')}</label>
+                          <Box onClick={handleGuestsClick} className="search-field-guests-value" sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', py: 0.5 }}>
+                            <Typography component="span" sx={{ color: (adults === 0 && children === 0 && rooms === 0) ? '#717171' : '#222222', fontSize: '0.875rem', fontWeight: 400 }}>
+                              {adults === 0 && children === 0 && rooms === 0 ? t('home.add_guests_placeholder') : getGuestsText()}
+                            </Typography>
+                          </Box>
                         </Box>
-                        <Box className={`search-field${checkout ? ' has-value' : ''}`}>
-                          <label htmlFor="checkout">{t('home.checkout')}</label>
-                          <TextField
-                            id="checkout"
-                            name="checkout"
-                            type="date"
-                            value={checkout}
-                            onChange={(e) => setCheckout(e.target.value)}
-                            variant="standard"
-                            InputProps={{ disableUnderline: true }}
-                            sx={{ '& .MuiInput-input': { border: 'none', padding: 0, fontWeight: 400, color: checkout ? '#222222' : '#717171' } }}
-                            InputLabelProps={{ shrink: true }}
-                          />
-                        </Box>
+                        <Button type="submit" className="search-button" aria-label={t('home.search')}>
+                          <SearchIcon sx={{ fontSize: '1.75rem' }} />
+                          <span>{t('home.search')}</span>
+                        </Button>
                       </Box>
-                      <Box className={`search-field search-field-guests${(adults > 0 || children > 0 || rooms > 0) ? ' has-value' : ''}`} ref={guestsAnchorRef}>
-                        <label htmlFor="guests">{t('home.guests')}</label>
-                        <Box
-                          onClick={handleGuestsClick}
-                          className="search-field-guests-value"
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            cursor: 'pointer',
-                            py: 0.5
-                          }}
-                        >
-                          <Typography component="span" sx={{ color: (adults === 0 && children === 0 && rooms === 0) ? '#717171' : '#222222', fontSize: '0.875rem', fontWeight: 400 }}>
-                            {adults === 0 && children === 0 && rooms === 0 ? t('home.add_guests_placeholder') : getGuestsText()}
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <Button type="submit" className="search-button" aria-label={t('home.search')}>
-                        <SearchIcon sx={{ fontSize: '1.75rem' }} />
-                      </Button>
                     </Box>
                     <Popover
                       open={destinationOpen}
-                      anchorEl={destinationAnchorRef.current}
+                      anchorEl={() => destinationAnchorRef.current?.closest('.hero-search-form') as HTMLElement}
                       onClose={handleDestinationClose}
                       disableRestoreFocus
                       slotProps={{
@@ -303,12 +274,13 @@ export default function Home() {
                         },
                         paper: {
                           ref: destinationPopoverPaperRef,
+                          className: 'home-destination-popover',
                           sx: {
                             mt: 1,
-                            borderRadius: 3,
-                            boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
-                            width: { xs: 'calc(100vw - 32px)', sm: 400 },
-                            maxWidth: 600,
+                            borderRadius: { xs: '22px', sm: '28px' },
+                            boxShadow: '0 18px 48px rgba(16,24,40,0.16)',
+                            width: { xs: 'calc(100vw - 32px)', sm: 560 },
+                            maxWidth: 'calc(100vw - 32px)',
                           },
                         },
                       }}
@@ -321,9 +293,9 @@ export default function Home() {
                         horizontal: 'left',
                       }}
                     >
-                      <Paper elevation={0} sx={{ p: 3, overflow: 'hidden' }}>
+                      <Paper elevation={0} sx={{ p: { xs: 2.5, sm: 4 }, overflow: 'hidden' }}>
                         <Typography variant="h6" sx={{ fontWeight: 700, color: '#222222', mb: 2, wordBreak: 'break-word', overflowWrap: 'break-word' }}>
-                          {t('home.where_to')}
+                          Suggested destinations
                         </Typography>
                         <TextField
                           fullWidth
@@ -347,7 +319,7 @@ export default function Home() {
                         <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222', mb: 1.5, fontSize: '0.875rem', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                           {t('home.popular_destinations_label')}
                         </Typography>
-                        <Stack spacing={0} sx={{ maxHeight: 320, overflow: 'auto' }}>
+                        <Stack className="home-destination-list" spacing={0} sx={{ maxHeight: { xs: 360, sm: 430 }, overflow: 'auto' }}>
                           {filteredDestinations.length === 0 && destination.trim() ? (
                             <Typography variant="body2" sx={{ color: '#717171', py: 1.5, px: 0.5 }}>
                               {t('home.search_no_suggestions')}
@@ -356,9 +328,9 @@ export default function Home() {
                           {filteredDestinations.map((dest, index) => (
                             <Box
                               key={index}
+                              className={`home-destination-option tone-${index % 4}`}
                               onClick={() => handleDestinationSelect(dest.name)}
                               sx={{
-                                p: 2,
                                 cursor: 'pointer',
                                 borderRadius: 2,
                                 transition: 'background-color 0.2s',
@@ -369,7 +341,7 @@ export default function Home() {
                               }}
                             >
                               <Stack direction="row" spacing={2} useFlexGap alignItems="flex-start" sx={{ minWidth: 0 }}>
-                                <LocationOnIcon sx={{ color: '#222222', fontSize: 20, mt: 0.5, flexShrink: 0 }} />
+                                <Box className="home-destination-icon"><LocationOnIcon /></Box>
                                 <Stack spacing={0.5} sx={{ minWidth: 0, overflow: 'hidden' }}>
                                   <Typography variant="body1" sx={{ fontWeight: 600, color: '#222222', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                                     {dest.name}
@@ -386,15 +358,15 @@ export default function Home() {
                     </Popover>
                     <Popover
                       open={guestsOpen}
-                      anchorEl={guestsAnchorRef.current}
+                      anchorEl={() => guestsAnchorRef.current?.closest('.hero-search-form') as HTMLElement}
                       onClose={handleGuestsClose}
                       anchorOrigin={{
                         vertical: 'bottom',
-                        horizontal: 'center',
+                        horizontal: isRtl ? 'left' : 'right',
                       }}
                       transformOrigin={{
                         vertical: 'top',
-                        horizontal: 'center',
+                        horizontal: isRtl ? 'left' : 'right',
                       }}
                       marginThreshold={16}
                       slotProps={{
@@ -402,32 +374,28 @@ export default function Home() {
                           sx: { zIndex: (theme) => (theme.vars || theme).zIndex.modal },
                         },
                         paper: {
+                          className: 'home-guests-popover',
                           sx: {
                             mt: 1,
                             boxSizing: 'border-box',
-                            width: { xs: 'min(calc(100vw - 32px), 100%)', sm: 'auto' },
-                            minWidth: { xs: 0, sm: 280 },
-                            maxWidth: { xs: 'calc(100vw - 32px)', sm: 400 },
-                            borderRadius: 2,
-                            boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-                            p: 3,
+                            width: { xs: 'calc(100vw - 32px)', sm: 560 },
+                            maxWidth: 'calc(100vw - 32px)',
+                            borderRadius: { xs: '22px', sm: '28px' },
+                            boxShadow: '0 18px 48px rgba(16,24,40,0.16)',
+                            p: { xs: 2.5, sm: 4 },
                           },
                         },
                       }}
                     >
-                      <Stack spacing={3} useFlexGap>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <Typography sx={{ fontWeight: 600, color: '#222222' }}>{t('home.adults')}</Typography>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, border: '1px solid #E5E7EB', borderRadius: 2, px: 1 }}>
+                      <Stack className="home-guests-list" useFlexGap>
+                        <Box className="home-guest-row">
+                          <Typography className="home-guest-label">{t('home.adults')}</Typography>
+                          <Box className="home-guest-counter">
                             <IconButton
                               size="small"
                               onClick={() => handleDecrement('adults')}
                               disabled={adults <= 0}
-                              sx={{
-                                color: adults <= 1 ? '#D1D5DB' : '#AD542D',
-                                '&:hover': { bgcolor: adults <= 1 ? 'transparent' : '#FFF5F7' },
-                                '&.Mui-disabled': { color: '#D1D5DB' }
-                              }}
+                              className="home-guest-stepper"
                             >
                               <RemoveIcon fontSize="small" />
                             </IconButton>
@@ -437,27 +405,20 @@ export default function Home() {
                             <IconButton
                               size="small"
                               onClick={() => handleIncrement('adults')}
-                              sx={{
-                                color: '#AD542D',
-                                '&:hover': { bgcolor: '#FFF5F7' }
-                              }}
+                              className="home-guest-stepper"
                             >
                               <AddIcon fontSize="small" />
                             </IconButton>
                           </Box>
                         </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <Typography sx={{ fontWeight: 600, color: '#222222' }}>{t('home.children')}</Typography>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, border: '1px solid #E5E7EB', borderRadius: 2, px: 1 }}>
+                        <Box className="home-guest-row">
+                          <Typography className="home-guest-label">{t('home.children')}</Typography>
+                          <Box className="home-guest-counter">
                             <IconButton
                               size="small"
                               onClick={() => handleDecrement('children')}
                               disabled={children <= 0}
-                              sx={{
-                                color: children <= 0 ? '#D1D5DB' : '#AD542D',
-                                '&:hover': { bgcolor: children <= 0 ? 'transparent' : '#FFF5F7' },
-                                '&.Mui-disabled': { color: '#D1D5DB' }
-                              }}
+                              className="home-guest-stepper"
                             >
                               <RemoveIcon fontSize="small" />
                             </IconButton>
@@ -467,27 +428,20 @@ export default function Home() {
                             <IconButton
                               size="small"
                               onClick={() => handleIncrement('children')}
-                              sx={{
-                                color: '#AD542D',
-                                '&:hover': { bgcolor: '#FFF5F7' }
-                              }}
+                              className="home-guest-stepper"
                             >
                               <AddIcon fontSize="small" />
                             </IconButton>
                           </Box>
                         </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                          <Typography sx={{ fontWeight: 600, color: '#222222' }}>{t('home.rooms')}</Typography>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, border: '1px solid #E5E7EB', borderRadius: 2, px: 1 }}>
+                        <Box className="home-guest-row">
+                          <Typography className="home-guest-label">{t('home.rooms')}</Typography>
+                          <Box className="home-guest-counter">
                             <IconButton
                               size="small"
                               onClick={() => handleDecrement('rooms')}
                               disabled={rooms <= 0}
-                              sx={{
-                                color: rooms <= 1 ? '#D1D5DB' : '#AD542D',
-                                '&:hover': { bgcolor: rooms <= 1 ? 'transparent' : '#FFF5F7' },
-                                '&.Mui-disabled': { color: '#D1D5DB' }
-                              }}
+                              className="home-guest-stepper"
                             >
                               <RemoveIcon fontSize="small" />
                             </IconButton>
@@ -497,34 +451,12 @@ export default function Home() {
                             <IconButton
                               size="small"
                               onClick={() => handleIncrement('rooms')}
-                              sx={{
-                                color: '#AD542D',
-                                '&:hover': { bgcolor: '#FFF5F7' }
-                              }}
+                              className="home-guest-stepper"
                             >
                               <AddIcon fontSize="small" />
                             </IconButton>
                           </Box>
                         </Box>
-                        <Button
-                          onClick={handleGuestsClose}
-                          variant="outlined"
-                          fullWidth
-                          sx={{
-                            borderColor: '#AD542D',
-                            color: '#AD542D',
-                            borderRadius: 2,
-                            py: 1.5,
-                            fontWeight: 600,
-                            textTransform: 'none',
-                            '&:hover': {
-                              borderColor: '#78381C',
-                              bgcolor: '#FFF5F7'
-                            }
-                          }}
-                        >
-                          {t('home.done')}
-                        </Button>
                       </Stack>
                     </Popover>
                   </form>
@@ -554,5 +486,3 @@ export default function Home() {
     </div>
   )
 }
-
-

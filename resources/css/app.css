@@ -110,6 +110,9 @@ section.hero-section {
   right: 0 !important;
   z-index: 100 !important;
 }
+.hero-search-wrapper:has(.search-field.active) {
+  z-index: 1400 !important;
+}
 
 h1.hero-title {
   font-size: 3.5rem !important;
@@ -131,15 +134,15 @@ p.hero-subtitle {
 /* Hero Search Form - compact width like reference */
 .hero-search-form {
   position: relative;
-  background: #ffffff !important;
-  border: none !important;
+  background: #F3F3F3 !important;
+  border: 1px solid #DDDDDD !important;
   border-radius: 50px !important;
   padding: 0 !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
   backdrop-filter: blur(10px) !important;
   overflow: visible;
   height: 80px !important;
-  max-width: 900px !important;
+  max-width: 1080px !important;
   margin-left: auto !important;
   margin-right: auto !important;
   z-index: 10;
@@ -172,20 +175,33 @@ p.hero-subtitle {
   min-width: 0;
   position: relative;
   height: 100% !important;
+  border-radius: 48px;
+  cursor: pointer;
+  transition: background-color .18s ease, box-shadow .18s ease;
 }
+.search-field:hover { background: #E9E9E9; }
+.search-field.active { background: #FFFFFF; box-shadow: 0 5px 18px rgba(0,0,0,.12); z-index: 2; }
+.search-guests-action-group { display: flex; align-items: center; flex: 1.35; height: 100%; padding: 8px; box-sizing: border-box; border-radius: 50px; background: transparent; box-shadow: none; position: relative; z-index: 2; transition: background-color .18s ease, box-shadow .18s ease; }
+.search-guests-action-group.active { background: #FFFFFF; box-shadow: 0 5px 18px rgba(0,0,0,.10); }
+.search-guests-action-group .search-field-guests { flex: 1; height: 64px !important; border: 0 !important; border-radius: 42px; box-shadow: none !important; background: transparent; }
+.search-guests-action-group .search-field-guests:hover { background: #F3F3F3; }
+.search-guests-action-group .search-field-guests.active { background: transparent; }
 
 .search-field:last-of-type {
   border-right: none !important;
 }
 
 .search-field label {
-  font-size: 0.6875rem;
+  font-size: 0.875rem;
   font-weight: 700;
   color: #222222;
   margin-bottom: 4px;
-  letter-spacing: 0.5px;
+  letter-spacing: 0;
   line-height: 1;
 }
+.search-field-when { flex: 1.15; }
+.search-date-value { color: #717171; font-size: .875rem !important; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.search-field-when.has-value .search-date-value { color: #222222; }
 
 .search-field .MuiTextField-root,
 .search-field .MuiFormControl-root {
@@ -295,24 +311,80 @@ p.hero-subtitle {
   background: #AD542D !important;
   color: #ffffff !important;
   border: none !important;
-  border-radius: 50% !important;
+  border-radius: 999px !important;
   padding: 0 !important;
   cursor: pointer;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 64px !important;
-  min-width: 64px !important;
+  width: auto !important;
+  min-width: 132px !important;
   height: 64px !important;
   flex-shrink: 0;
-  margin-left: 8px !important;
-  margin-right: 8px !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16) !important;
 }
+.search-button span { margin-inline-start: 8px; font-size: 1rem; font-weight: 700; text-transform: none; }
 
 .search-button:hover {
   background: #78381C !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.20) !important;
+}
+
+/* Home date-range popover */
+.home-calendar-popover { width: min(1080px, calc(100vw - 32px)); max-width: calc(100vw - 32px) !important; margin-top: 12px; border-radius: 28px !important; box-shadow: 0 18px 55px rgba(16,24,40,.18) !important; overflow: hidden; }
+.home-calendar-panel { padding: 26px 32px 22px; background: #fff; }
+.home-calendar-heading { margin-bottom: 22px; }
+.home-calendar-heading strong { display: block; color: #111827; font-size: 18px; font-weight: 800; }
+.home-calendar-heading span { display: block; color: #717171; font-size: 13px; margin-top: 2px; }
+.home-calendar-heading .MuiIconButton-root { border: 1px solid #E5E7EB; width: 38px; height: 38px; }
+.home-calendar-months { display: grid; grid-template-columns: 1fr 1fr; gap: 54px; }
+.home-calendar-month-title { text-align: center; color: #222 !important; font-size: 17px !important; font-weight: 800 !important; margin-bottom: 18px !important; }
+.home-calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0,1fr)); row-gap: 8px; }
+.home-calendar-weekday { display: grid; place-items: center; height: 34px; color: #717171; font-size: 12px; font-weight: 700; }
+.home-calendar-day { aspect-ratio: 1; border: 0; border-radius: 50%; background: transparent; color: #222; font: inherit; font-size: 14px; cursor: pointer; transition: background .15s ease, color .15s ease; }
+.home-calendar-day:not(:disabled):hover { box-shadow: inset 0 0 0 1px #222; }
+.home-calendar-day:disabled { color: #C7C7C7; cursor: not-allowed; }
+.home-calendar-day.in-range { border-radius: 0; background: #FFF0EA; }
+.home-calendar-day.range-start, .home-calendar-day.range-end { background: #AD542D; color: #fff; font-weight: 800; }
+.home-calendar-footer { margin-top: 22px; padding-top: 16px; border-top: 1px solid #ECECEC; }
+.home-calendar-footer button { border: 0; background: transparent; color: #444; font-size: 14px; font-weight: 700; text-decoration: underline; cursor: pointer; }
+.home-calendar-footer button.done { padding: 10px 18px; border-radius: 999px; background: #AD542D; color: #fff; text-decoration: none; }
+.home-guests-popover { overflow: hidden; }
+.home-guests-list { gap: 0 !important; }
+.home-guest-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 118px; border-bottom: 1px solid #E8E8E8; }
+.home-guest-row:last-child { border-bottom: 0; }
+.home-guest-label { color: #222 !important; font-size: 20px !important; font-weight: 700 !important; }
+.home-guest-counter { display: flex; align-items: center; gap: 16px; flex: none; }
+.home-guest-counter > .MuiTypography-root { min-width: 24px; text-align: center; color: #222; font-size: 18px; font-weight: 600; }
+.home-guest-stepper { width: 48px !important; height: 48px !important; border: 0 !important; color: #222 !important; background: #F2F2F2 !important; }
+.home-guest-stepper:hover { background: #E8E8E8 !important; }
+.home-guest-stepper.Mui-disabled { border: 0 !important; color: #C7C7C7 !important; background: #F4F4F4 !important; }
+.home-destination-popover { overflow: hidden; }
+.home-destination-list { padding-inline-end: 8px; scrollbar-width: thin; scrollbar-color: #A8A8A8 transparent; }
+.home-destination-option { padding: 10px !important; border-radius: 18px !important; }
+.home-destination-option:hover { background: #F7F7F7 !important; }
+.home-destination-icon { width: 64px; height: 64px; flex: none; display: grid; place-items: center; border-radius: 16px; color: #3F7FC4; background: #EFF6FD; }
+.home-destination-icon svg { font-size: 30px; }
+.home-destination-option.tone-1 .home-destination-icon { color: #E58A3D; background: #FFF5EB; }
+.home-destination-option.tone-2 .home-destination-icon { color: #239454; background: #EFF8F2; }
+.home-destination-option.tone-3 .home-destination-icon { color: #E85B52; background: #FFF1F0; }
+.home-destination-option .MuiTypography-body1 { font-size: 17px; font-weight: 700 !important; }
+.home-destination-option .MuiTypography-body2 { margin-top: 3px; font-size: 14px !important; color: #717171 !important; }
+@media (max-width: 599px) {
+  .home-guest-row { min-height: 82px; }
+  .home-guest-label { font-size: 16px !important; }
+  .home-guest-counter { gap: 10px; }
+  .home-guest-stepper { width: 38px !important; height: 38px !important; }
+  .home-destination-icon { width: 52px; height: 52px; border-radius: 14px; }
+  .home-destination-icon svg { font-size: 25px; }
+}
+@media (max-width: 768px) {
+  .home-calendar-popover { width: calc(100vw - 32px); border-radius: 22px !important; }
+  .home-calendar-panel { padding: 20px 18px 18px; }
+  .home-calendar-months { grid-template-columns: 1fr; gap: 0; }
+  .home-calendar-month.secondary { display: none; }
 }
 
 [dir="rtl"] .search-button {
@@ -1466,29 +1538,16 @@ p.hero-subtitle {
     height: auto !important;
   }
   .search-input-group > .search-field-destination {
-    grid-column: 1;
+    grid-column: 1 / -1;
     grid-row: 1;
   }
-  .search-input-group > .search-field-guests {
-    grid-column: 2;
-    grid-row: 1;
-  }
-  .search-input-group > .search-field-dates-row {
+  .search-input-group > .search-guests-action-group { grid-column: 1 / -1; grid-row: 3; }
+  .search-input-group > .search-field-when {
     grid-column: 1 / -1;
     grid-row: 2;
   }
-  .search-input-group > .search-button {
-    grid-column: 1 / -1;
-    grid-row: 3;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
   [dir="rtl"] .search-input-group > .search-field-destination {
-    grid-column: 2;
-    grid-row: 1;
-  }
-  [dir="rtl"] .search-input-group > .search-field-guests {
-    grid-column: 1;
+    grid-column: 1 / -1;
     grid-row: 1;
   }
   .search-field-dates-row {
@@ -1516,14 +1575,18 @@ p.hero-subtitle {
   .search-field:last-of-type {
     border-bottom: none !important;
   }
-  .search-input-group > .search-field.search-field-guests {
-    border-bottom: 1px solid #e5e7eb !important;
-  }
+  .search-guests-action-group { min-height: 58px; padding: 6px; }
+  .search-guests-action-group .search-field-guests { height: 46px !important; border-bottom: 0 !important; padding: 7px 12px !important; }
   .search-button {
     border-radius: 50px !important;
     width: 100% !important;
     height: 35px !important;
   }
+  .search-button span { display: inline; }
+  .home-calendar-popover { width: calc(100vw - 24px); border-radius: 20px !important; }
+  .home-calendar-panel { padding: 20px 16px 16px; }
+  .home-calendar-months { grid-template-columns: 1fr; gap: 0; }
+  .home-calendar-month.secondary { display: none; }
   h1.hero-title {
     font-size: 2rem !important;
   }
