@@ -1,0 +1,1 @@
+import{j as o,T as n}from"./app-Cak5uWPq.js";function p({message:r}){return r?o.jsx(n,{component:"p",sx:{marginTop:"8px !important",fontSize:"0.875rem",color:"#d32f2f"},children:r}):null}export{p as I};
