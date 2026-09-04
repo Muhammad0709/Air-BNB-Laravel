@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'err_phone_country' => 'ژمارەیەکی تەلەفۆنی دروست بۆ :code بنووسە.',
+    'check_in' => 'چوونەژوورەوە',
+    'check_out' => 'چوونەدەرەوە',
     'title' => 'Rezervasyona xwe temam bikin',
     'your_booking' => 'Rezervasyona we',
     'total' => 'Tevahî',

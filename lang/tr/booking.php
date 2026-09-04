@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'err_phone_country' => ':code için geçerli bir telefon numarası girin.',
+    'check_in' => 'Giriş',
+    'check_out' => 'Çıkış',
     'title' => 'Rezervasyonunuzu tamamlayın',
     'your_booking' => 'Rezervasyonunuz',
     'total' => 'Toplam',

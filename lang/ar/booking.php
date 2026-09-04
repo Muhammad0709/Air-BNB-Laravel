@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'err_phone_country' => 'أدخل رقم هاتف صالحًا للرمز :code.',
+    'check_in' => 'تسجيل الوصول',
+    'check_out' => 'تسجيل المغادرة',
     'title' => 'أكمل حجزك',
     'your_booking' => 'حجزك',
     'total' => 'المجموع',

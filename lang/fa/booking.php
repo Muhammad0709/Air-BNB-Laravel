@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'err_phone_country' => 'یک شماره تلفن معتبر برای :code وارد کنید.',
+    'check_in' => 'ورود',
+    'check_out' => 'خروج',
     'title' => 'رزرو خود را تکمیل کنید',
     'your_booking' => 'رزرو شما',
     'total' => 'مجموع',

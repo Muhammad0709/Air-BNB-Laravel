@@ -98,7 +98,7 @@ export default function Notifications({ notifications }: NotificationsPageProps)
             <Box sx={{ minHeight: '80vh', py: 4, bgcolor: '#FFFFFF' }}>
                 <Container maxWidth="md">
                     <Box sx={{ textAlign: 'center', mb: 4 }}>
-                        <Typography variant="h2" sx={{ fontSize: { xs: '1.5rem', sm: '1.75rem', md: '2.25rem' }, fontWeight: 800, color: '#111827', mb: 1.5, letterSpacing: '-0.01em' }}>
+                        <Typography variant="h2" className="customer-page-title" sx={{ fontWeight: 800, color: '#111827', mb: 1.5 }}>
                             {t('notifications.title')}
                         </Typography>
                         <Typography sx={{ color: '#6B7280', fontSize: { xs: '0.9375rem', md: '1rem' } }}>

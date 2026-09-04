@@ -514,6 +514,22 @@ p.hero-subtitle {
   white-space: nowrap;
 }
 
+/* Customer-facing page titles */
+.MuiTypography-root.customer-page-title,
+.customer-page-title {
+  font-size: 1.5rem !important;
+  line-height: 1.3 !important;
+  font-weight: 700 !important;
+  letter-spacing: normal !important;
+}
+
+@media (max-width: 599.95px) {
+  .MuiTypography-root.customer-page-title,
+  .customer-page-title {
+    font-size: 1.25rem !important;
+  }
+}
+
 .airbnb-section-header {
   gap: 12px;
 }
@@ -1092,7 +1108,14 @@ p.hero-subtitle {
 .booking-form { padding: 18px; border-radius: 12px; background: transparent !important; box-shadow: none !important; border: none !important; }
 .section-title { font-weight: 800; color: #111827; margin: 12px 0 8px; font-size: 20px; }
 .field { margin-bottom: 14px; }
-.label { color: #222222; font-weight: 700; margin-bottom: 6px; font-size: 16px; }
+.booking-form .label {
+  color: #222222 !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  margin-bottom: 6px !important;
+  text-transform: none !important;
+}
 
 /* Shared customer-facing form label typography. */
 .contact-page .MuiTypography-root:has(+ .MuiFormControl-root),

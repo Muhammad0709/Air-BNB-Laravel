@@ -277,7 +277,7 @@ export default function ListingDetail() {
                   <Row className="align-items-start property-info-top-row">
                     <Col xs={8} md={10}>
                       <Typography
-                        className="property-title"
+                        className="property-title customer-page-title"
                         component="h1"
                         sx={{ fontWeight: 800 }}
                         title={property.title || undefined}
@@ -1184,7 +1184,7 @@ export default function ListingDetail() {
                           '0',
                         overflow: 'hidden',
                         position: 'relative',
-                        height: { xs: 120, sm: 250 },
+                        height: { xs: 120, sm: '100%' },
                       }}
                     >
                       <img

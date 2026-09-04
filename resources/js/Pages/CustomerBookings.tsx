@@ -88,7 +88,7 @@ export default function CustomerBookings() {
         <Container>
           <Box sx={{ mb: { xs: 3, md: 5 }, maxWidth: 720 }}>
             <Chip label={t('customer_bookings.title')} size="small" sx={{ mb: 2, bgcolor: '#FBEDE7', color: '#8A4022', fontWeight: 700 }} />
-            <Typography variant="h2" sx={{ fontSize: { xs: '1.75rem', sm: '2.25rem', md: '3rem' }, lineHeight: 1.12, letterSpacing: '-0.035em', fontWeight: 800, color: '#171717', mb: 1.5 }}>{t('customer_bookings.title')}</Typography>
+            <Typography variant="h2" className="customer-page-title" sx={{ fontWeight: 800, color: '#171717', mb: 1.5 }}>{t('customer_bookings.title')}</Typography>
             <Typography variant="body1" sx={{ color: '#667085', fontSize: { xs: '0.9375rem', md: '1.0625rem' } }}>
               {t('customer_bookings.subtitle')}
             </Typography>

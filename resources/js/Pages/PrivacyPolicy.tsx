@@ -13,7 +13,7 @@ export default function PrivacyPolicy() {
       <Box sx={{ minHeight: '80vh', py: { xs: 4, md: 6 } }}>
         <Container maxWidth="md" sx={{ px: { xs: 2, md: 3 } }}>
           <Paper elevation={0} sx={{ p: { xs: 3, md: 5 }, bgcolor: '#FFFFFF' }}>
-            <Typography variant="h3" sx={{ fontWeight: 700, mb: 3, color: '#222222' }}>{t('privacy.title')}</Typography>
+            <Typography variant="h3" className="customer-page-title" sx={{ mb: 3, color: '#222222' }}>{t('privacy.title')}</Typography>
             <Typography variant="body2" sx={{ color: '#717171', mb: 4 }}>
               {t('privacy.last_updated')}: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             </Typography>

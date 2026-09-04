@@ -107,7 +107,7 @@ export default function BookingReceipt() {
                 <Paper elevation={0} sx={{ p: { xs: 3, md: 5 }, border: '1px solid #E5E7EB', borderRadius: '16px' }}>
                   <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} spacing={2} sx={{ mb: 4 }}>
                     <Box>
-                      <Typography variant="h4" sx={{ fontWeight: 700, color: '#222222' }}>{t('receipt.title')}</Typography>
+                      <Typography variant="h4" className="customer-page-title" sx={{ color: '#222222' }}>{t('receipt.title')}</Typography>
                       <Typography sx={{ color: '#717171', fontSize: 14, mt: 0.5 }}>{t('receipt.subtitle')}</Typography>
                     </Box>
                     <Chip

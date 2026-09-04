@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'err_phone_country' => ':code کے لیے درست فون نمبر درج کریں۔',
+    'check_in' => 'چیک اِن',
+    'check_out' => 'چیک آؤٹ',
     'title' => 'اپنی بکنگ مکمل کریں',
     'your_booking' => 'آپ کی بکنگ',
     'total' => 'کل',

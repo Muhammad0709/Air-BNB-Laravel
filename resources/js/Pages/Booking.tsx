@@ -13,8 +13,17 @@ import { formatPrice } from '../utils/currency'
 import PhoneCountrySelect from '../components/PhoneCountrySelect'
 import InputError from '../components/InputError'
 import { splitStoredPhone } from '../utils/phone'
+import { isValidPhoneNumber, type Country } from 'react-phone-number-input'
+import { getExampleNumber } from 'libphonenumber-js'
+import mobilePhoneExamples from 'libphonenumber-js/examples.mobile.json'
 
 const PLACEHOLDER_IMAGE = '/images/popular-stay-1.svg'
+
+function getNationalPhoneLimit(country: Country, startsWithZero: boolean): number {
+  const example = getExampleNumber(country, mobilePhoneExamples)
+  const nationalLength = example?.nationalNumber.length ?? 15
+  return nationalLength + (startsWithZero ? 1 : 0)
+}
 
 type BookingProperty = {
   id: number
@@ -68,6 +77,7 @@ export default function Booking() {
     email: string
     phone: string
     phoneCode: string
+    phoneCountry: Country
     guests: number
     rooms: number | ''
     adults: number | ''
@@ -80,6 +90,7 @@ export default function Booking() {
       email: '',
       phone: '',
       phoneCode: '+31',
+      phoneCountry: 'NL',
       guests: 1,
       rooms: prefill && gp?.rooms != null ? gp.rooms : '',
       adults: prefill && gp?.adults != null ? gp.adults : '',
@@ -130,6 +141,7 @@ export default function Booking() {
         name: u.name || '',
         email: u.email || '',
         phoneCode: fromAuth.phoneCode,
+        phoneCountry: fromAuth.phoneCountry,
         phone: fromAuth.phone,
       }
     })
@@ -151,8 +163,12 @@ export default function Booking() {
     if (!formData.email.trim()) newErrors.email = t('booking.err_email_required')
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = t('booking.err_email_invalid')
 
-    if (!formData.phone.trim()) newErrors.phone = t('booking.err_phone_required')
-    else if (!/^\d{7,15}$/.test(formData.phone.replace(/[\s\-\(\)]/g, ''))) newErrors.phone = t('booking.err_phone_invalid')
+    const nationalPhone = formData.phone.replace(/\D/g, '').replace(/^0+/, '')
+    const completePhone = `${formData.phoneCode}${nationalPhone}`
+    if (!nationalPhone) newErrors.phone = t('booking.err_phone_required')
+    else if (!isValidPhoneNumber(completePhone)) {
+      newErrors.phone = t('booking.err_phone_country').replace(':code', formData.phoneCode)
+    }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -233,7 +249,7 @@ export default function Booking() {
         <Box className="booking-page">
           <Container className="px-0">
             <Box sx={{ mb: 2, mt: 4 }}>
-              <Typography variant="h2" sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' }, fontWeight: 800, color: '#222222', mb: 2 }}>
+              <Typography variant="h2" className="customer-page-title" sx={{ fontWeight: 800, color: '#222222', mb: 2 }}>
                 {t('booking.title')}
               </Typography>
             </Box>
@@ -247,7 +263,7 @@ export default function Booking() {
                     {property && (
                       <Stack direction="row" spacing={1.5} useFlexGap className="field" sx={{ mb: 2 }}>
                         <Box sx={{ flex: 1 }}>
-                          <Typography className="label">{t('home.checkin')}</Typography>
+                          <Typography className="label">{t('booking.check_in')}</Typography>
                           <TextField
                             size="small"
                             fullWidth
@@ -268,7 +284,7 @@ export default function Booking() {
                           />
                         </Box>
                         <Box sx={{ flex: 1 }}>
-                          <Typography className="label">{t('home.checkout')}</Typography>
+                          <Typography className="label">{t('booking.check_out')}</Typography>
                           <TextField
                             size="small"
                             fullWidth
@@ -375,16 +391,30 @@ export default function Booking() {
                     <Box className="field">
                       <Typography className="label">{t('booking.phone_number')}</Typography>
                       <Stack direction="row" spacing={1.5} useFlexGap>
-                        <PhoneCountrySelect
-                          value={formData.phoneCode}
-                          onChange={(code) => handleChange('phoneCode', code)}
+                          <PhoneCountrySelect
+                            value={formData.phoneCode}
+                            onChange={(code, country) => {
+                              setFormData((current) => ({ ...current, phoneCode: code, phoneCountry: country, phone: '' }))
+                              setErrors((current) => ({ ...current, phone: '' }))
+                            }}
                         />
                         <TextField 
                           size="small" 
                           fullWidth 
-                          value={formData.phone}
-                          onChange={(e) => handleChange('phone', e.target.value)}
-                          error={!!errors.phone}
+                            value={formData.phone}
+                            onChange={(e) => {
+                              const digits = e.target.value.replace(/\D/g, '')
+                              const maxDigits = getNationalPhoneLimit(formData.phoneCountry, digits.startsWith('0'))
+                              if (digits.length <= maxDigits) {
+                                handleChange('phone', digits)
+                              }
+                            }}
+                            error={!!errors.phone}
+                            inputProps={{
+                              inputMode: 'numeric',
+                              pattern: '[0-9]*',
+                              autoComplete: 'tel-national',
+                            }}
                         />
                       </Stack>
                       <InputError message={errors.phone} />

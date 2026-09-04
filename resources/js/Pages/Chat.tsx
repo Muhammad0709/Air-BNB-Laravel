@@ -449,7 +449,7 @@ export default function Chat() {
       >
         <Container className="chat-page-container">
           <Box sx={{ mb: { xs: 2, md: 4 } }}>
-            <Typography variant="h2" sx={{ fontSize: { xs: '1.75rem', md: '2.5rem' }, fontWeight: 800, color: '#222222', mb: 1 }}>
+            <Typography variant="h2" className="customer-page-title" sx={{ fontWeight: 800, color: '#222222', mb: 1 }}>
               {t('chat.messages')}
             </Typography>
             <Typography variant="body1" sx={{ color: '#717171', fontSize: '1rem' }}>

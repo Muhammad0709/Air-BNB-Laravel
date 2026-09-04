@@ -99,7 +99,7 @@ export default function Contact() {
           <Container>
             {/* Header Section */}
             <Box className="contact-hero">
-              <Typography variant="h2" sx={{ fontSize: { xs: '2rem', md: '2.75rem' }, lineHeight: 1.12, letterSpacing: '-.03em', fontWeight: 800, color: '#101828', mb: 1.5 }}>
+              <Typography variant="h2" className="customer-page-title" sx={{ fontWeight: 800, color: '#101828', mb: 1.5 }}>
                 {t('contact.title')}
               </Typography>
               <Typography variant="body1" sx={{ color: '#667085', fontSize: { xs: '.9375rem', md: '1.0625rem' }, mx: 'auto', lineHeight: 1.7, whiteSpace: { xs: 'normal', md: 'nowrap' } }}>

@@ -251,7 +251,7 @@ export default function ProfileSettings() {
           <Container>
             {/* Header Section */}
             <Box sx={{ mb: { xs: 4, md: 6 }, mt: { xs: 1, md: 2 }, maxWidth: 680, mx: 'auto' }}>
-              <Typography variant="h2" sx={{ fontSize: { xs: '1.75rem', sm: '2.15rem', md: '2.6rem' }, lineHeight: 1.15, letterSpacing: '-0.03em', fontWeight: 800, color: '#101828', mb: 1.5 }}>
+              <Typography variant="h2" className="customer-page-title" sx={{ fontWeight: 800, color: '#101828', mb: 1.5 }}>
                 {t('profile_settings.title')}
               </Typography>
               <Typography variant="body1" sx={{ color: '#667085', fontSize: { xs: '0.9375rem', md: '1.0625rem' } }}>
