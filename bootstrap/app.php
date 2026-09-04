@@ -58,7 +58,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (PostTooLargeException $e, $request) {
             if ($request->header('X-Inertia')) {
-                return back()->with('error', 'File too large. Image must be 2MB or less.');
+                return back()->withErrors([
+                    'images' => 'The combined upload is too large. Each image must be 2MB or less.',
+                ]);
             }
         });
 

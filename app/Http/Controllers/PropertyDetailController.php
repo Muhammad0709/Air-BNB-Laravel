@@ -81,7 +81,7 @@ class PropertyDetailController extends Controller
                 'id' => $review->id,
                 'rating' => $review->rating,
                 'comment' => $review->comment,
-                'created_at' => $review->created_at->format('d M, Y'),
+                'created_at' => $review->created_at->diffForHumans(),
                 'user' => [
                     'id' => $review->user->id,
                     'name' => $review->user->name,

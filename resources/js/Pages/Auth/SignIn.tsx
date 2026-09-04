@@ -107,12 +107,12 @@ export default function SignIn({ status }: SignInPageProps) {
                     <form onSubmit={(e) => { e.preventDefault(); post('/login'); }}>
                       <Stack spacing={2.5}>
                         <Box>
-                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signin.email')}</Typography>
+                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#222222', fontSize: 16, fontWeight: 700 }}>{t('auth.signin.email')}</Typography>
                           <TextField name="email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} error={!!emailError} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signin.email_placeholder')} />
                           <InputError message={loginErrorMessage ? undefined : emailError} />
                         </Box>
                         <Box>
-                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.signin.password')}</Typography>
+                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#222222', fontSize: 16, fontWeight: 700 }}>{t('auth.signin.password')}</Typography>
                           <TextField
                             name="password"
                             type={showPassword ? 'text' : 'password'}
@@ -158,25 +158,23 @@ export default function SignIn({ status }: SignInPageProps) {
           maxWidth={false}
           PaperProps={{
             sx: {
-              borderRadius: '16px',
+              borderRadius: '24px',
               overflow: 'hidden',
+              position: 'relative',
               width: '100%',
-              maxWidth: { xs: 'min(420px, calc(100% - 32px))', md: 400 },
+              maxWidth: { xs: 'min(440px, calc(100% - 32px))', md: 440 },
               mx: 2,
               border: '1px solid #ECEFF3',
-              boxShadow: '0 12px 40px rgba(17, 24, 39, 0.12)',
+              boxShadow: '0 24px 70px rgba(17, 24, 39, 0.20)',
             },
           }}
         >
           <Box
             sx={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              alignItems: 'flex-start',
-              flexShrink: 0,
-              px: 1.5,
-              pt: 1.5,
-              pb: 2.5,
+              position: 'absolute',
+              top: 16,
+              right: 16,
+              zIndex: 1,
             }}
           >
             <IconButton
@@ -186,6 +184,9 @@ export default function SignIn({ status }: SignInPageProps) {
               size="small"
               sx={{
                 color: '#6B7280',
+                bgcolor: '#F5F5F5',
+                width: 40,
+                height: 40,
                 '&:hover': { bgcolor: '#F3F4F6', color: '#111827' },
               }}
             >
@@ -195,33 +196,31 @@ export default function SignIn({ status }: SignInPageProps) {
           <DialogTitle
             sx={{
               fontWeight: 700,
-              fontSize: '1.125rem',
+              fontSize: '1.5rem',
               lineHeight: 1.35,
               color: '#111827',
-              pt: 0,
-              px: 2.5,
-              pb: 2,
-              borderBottom: '1px solid #F3F4F6',
+              pt: 4,
+              px: 4,
+              pb: 1,
               letterSpacing: '-0.01em',
             }}
           >
             {t('auth.signin.google_intent_title')}
           </DialogTitle>
-          <DialogContent sx={{ px: 2.5, pt: 2.5, pb: 3 }}>
+          <DialogContent sx={{ px: 4, pt: 0.5, pb: 4 }}>
             <Typography
               variant="body2"
               sx={{
                 color: '#6B7280',
                 fontSize: '0.875rem',
                 lineHeight: 1.55,
-                mb: 2.5,
+                mb: 3,
               }}
             >
               {t('auth.signin.google_intent_subtitle')}
             </Typography>
-            <Stack spacing={1.25}>
+            <Stack direction="row" spacing={1.25}>
               <Button
-                fullWidth
                 variant="contained"
                 disableElevation
                 onClick={() => { window.location.href = '/auth/google?intent=customer' }}
@@ -232,6 +231,7 @@ export default function SignIn({ status }: SignInPageProps) {
                   textTransform: 'none',
                   fontWeight: 600,
                   fontSize: '0.9375rem',
+                  flex: 1,
                   bgcolor: '#AD542D',
                   boxShadow: 'none',
                   '&:hover': { bgcolor: '#8a4224', boxShadow: 'none' },
@@ -240,7 +240,6 @@ export default function SignIn({ status }: SignInPageProps) {
                 {t('auth.signin.google_intent_customer')}
               </Button>
               <Button
-                fullWidth
                 variant="outlined"
                 onClick={() => { window.location.href = '/auth/google?intent=host' }}
                 sx={{
@@ -250,6 +249,7 @@ export default function SignIn({ status }: SignInPageProps) {
                   textTransform: 'none',
                   fontWeight: 600,
                   fontSize: '0.9375rem',
+                  flex: 1,
                   borderColor: '#AD542D',
                   borderWidth: 1.5,
                   color: '#AD542D',

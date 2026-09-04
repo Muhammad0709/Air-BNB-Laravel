@@ -133,10 +133,11 @@ export default function ListingDetail() {
   const [reviewComment, setReviewComment] = useState('')
   const [reviewSubmitting, setReviewSubmitting] = useState(false)
   const [showAllReviews, setShowAllReviews] = useState(false)
+  const [expandedReviews, setExpandedReviews] = useState<number[]>([])
   const [toast, setToast] = useState({ open: false, message: '', severity: 'warning' as 'success' | 'error' | 'warning' | 'info' })
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
 
-  const displayedReviews = showAllReviews ? reviews : reviews.slice(0, 3)
+  const displayedReviews = showAllReviews ? reviews : reviews.slice(0, 4)
 
   // Airport Pickup / Guided Tours from property (host-configured)
   const { currency } = useCurrency()
@@ -240,6 +241,10 @@ export default function ListingDetail() {
   }
 
   const priceDisplay = typeof property.price === 'number' ? property.price : Number(property.price) || 0
+  const bookingNights = selectedCheckin && selectedCheckout
+    ? Math.max(1, Math.ceil((selectedCheckout.getTime() - selectedCheckin.getTime()) / 86_400_000))
+    : 1
+  const bookingTotal = priceDisplay * bookingNights
   const hostJoinedYear = property.host?.created_at ? new Date(property.host.created_at).getFullYear() : ''
 
   const handleSubmitReview = (e: React.FormEvent) => {
@@ -274,7 +279,7 @@ export default function ListingDetail() {
                       <Typography
                         className="property-title"
                         component="h1"
-                        sx={{ fontWeight: 700 }}
+                        sx={{ fontWeight: 800 }}
                         title={property.title || undefined}
                       >
                         {property.title}
@@ -306,21 +311,21 @@ export default function ListingDetail() {
                     <Col xs={4} md={2}>
                       <Box className="booking-info">
                         <Box className="price">
-                          <Typography component="span" className="price-amount">{formatPriceUtil(priceDisplay, currency)}</Typography>
-                          <Typography component="span" className="price-period">{property.listing_category === 'experience' ? t('listing_detail.per_person') : t('listing_detail.per_night')}</Typography>
+                          <Typography component="span" className="price-amount">{formatPriceUtil(bookingTotal, currency)}</Typography>
+                          <Typography component="span" className="price-period"><span className="price-separator">/</span>{bookingNights} {bookingNights === 1 ? 'night' : 'nights'}</Typography>
                         </Box>
                         <Button
                           variant="contained"
                           className="btn-book"
                           onClick={() => {
                             if (!authUser) {
-                              setToast({ open: true, message: t('listing_detail.login_to_book'), severity: 'warning' })
+                              setToast({ open: true, message: t('listing_detail.login_to_book'), severity: 'error' })
                               return
                             }
                             router.visit(bookingUrl())
                           }}
                         >
-                         {t('listing_detail.book')}
+                         Reserve
                         </Button>
                       </Box>
                     </Col>
@@ -939,18 +944,36 @@ export default function ListingDetail() {
                           <Box key={review.id} className="review-item">
                             <Box className="reviewer-info">
                               <Box className="reviewer-avatar">
-                                <img src={review.user?.profile_picture || '/images/popular-stay-1.svg'} alt={review.user?.name || 'Reviewer'} />
+                                {review.user?.profile_picture ? (
+                                  <img src={review.user.profile_picture} alt={review.user?.name || 'Reviewer'} />
+                                ) : (
+                                  <span>{review.user?.name?.charAt(0).toUpperCase() || 'G'}</span>
+                                )}
                               </Box>
-                              <Typography className="reviewer-name">{review.user?.name}</Typography>
-                              <Typography className="review-date">{review.created_at}</Typography>
+                              <Box className="reviewer-details">
+                                <Typography className="reviewer-name">{review.user?.name}</Typography>
+                                <Typography className="reviewer-subtitle">Guest on Bondoqi</Typography>
+                              </Box>
                             </Box>
                             <Box className="review-content">
-                              <Box className="stars">
-                                {[...Array(5)].map((_, i) => (
-                                  <StarIcon key={i} sx={{ fontSize: 14, color: i < review.rating ? '#ffc107' : '#e9ecef' }} />
-                                ))}
+                              <Box className="review-meta">
+                                <Box className="stars">
+                                  {[...Array(5)].map((_, i) => (
+                                    <StarIcon key={i} sx={{ fontSize: 14, color: i < review.rating ? '#ffc107' : '#dddddd' }} />
+                                  ))}
+                                </Box>
+                                <span aria-hidden="true">·</span>
+                                <Typography className="review-date">{review.created_at}</Typography>
                               </Box>
-                              <Typography className="review-text">{review.comment}</Typography>
+                              <Typography className={`review-text${expandedReviews.includes(review.id) ? ' expanded' : ''}`}>{review.comment}</Typography>
+                              {review.comment.length > 110 && (
+                                <Button
+                                  className="review-show-more"
+                                  onClick={() => setExpandedReviews((current) => current.includes(review.id) ? current.filter((id) => id !== review.id) : [...current, review.id])}
+                                >
+                                  {expandedReviews.includes(review.id) ? 'Show less' : 'Show more'}
+                                </Button>
+                              )}
                             </Box>
                           </Box>
                         )) : (
@@ -960,13 +983,13 @@ export default function ListingDetail() {
                     </Col>
                   </Row>
                   {reviews.length > 3 && (
-                  <Box className="text-center mt-4">
+                  <Box className="reviews-show-all-wrap">
                     <Button
                       className="explore-more"
-                      variant="contained"
+                      variant="text"
                       onClick={() => setShowAllReviews((v) => !v)}
                     >
-                      {showAllReviews ? t('listing_detail.show_less') : t('listing_detail.explore_more')}
+                      {showAllReviews ? t('listing_detail.show_less') : `Show all ${reviews.length} reviews`}
                     </Button>
                   </Box>
                 )}
@@ -983,7 +1006,7 @@ export default function ListingDetail() {
             <Typography className="section-title" component="h2">{t('listing_detail.popular_near')}</Typography>
             <Row className="g-4">
               {relatedProperties.length > 0 ? relatedProperties.map((stay) => (
-                <Col key={stay.id} lg={4} md={6}>
+                <Col key={stay.id} lg={3} md={4} sm={6} xs={6}>
                   <FeaturedCard
                     image={stay.image || PLACEHOLDER_IMAGE}
                     title={stay.title}

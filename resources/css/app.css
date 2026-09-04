@@ -1092,7 +1092,16 @@ p.hero-subtitle {
 .booking-form { padding: 18px; border-radius: 12px; background: transparent !important; box-shadow: none !important; border: none !important; }
 .section-title { font-weight: 800; color: #111827; margin: 12px 0 8px; font-size: 20px; }
 .field { margin-bottom: 14px; }
-.label { color: #111827; font-weight: 700; margin-bottom: 6px; font-size: 14px; }
+.label { color: #222222; font-weight: 700; margin-bottom: 6px; font-size: 16px; }
+
+/* Shared customer-facing form label typography. */
+.contact-page .MuiTypography-root:has(+ .MuiFormControl-root),
+.profile-settings-page .MuiTypography-root:has(+ .MuiFormControl-root),
+.property-detail-page .MuiTypography-root:has(+ .MuiFormControl-root) {
+  color: #222222 !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
 .help { color: #6B7280; font-size: 12px; margin-top: 6px; }
 .booking-form .MuiOutlinedInput-root { border-radius: 10px; height: 46px; }
 .booking-form .MuiOutlinedInput-root input { height: 46px; padding-top: 12px; padding-bottom: 12px; }
@@ -1139,7 +1148,7 @@ p.hero-subtitle {
 .breadcrumb-section { padding: 20px 0; border-bottom: none; }
 .property-details-section { background: transparent; padding-top: 0; }
 .property-info-card { background: white; padding: 32px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); margin-top: 0; position: relative; z-index: 10; border-radius: 14px !important; }
-.property-title { font-size: 32px; font-weight: 700 !important; color: #1a1a1a; margin-bottom: 16px; line-height: 1.2; }
+.property-title { font-size: 32px; font-weight: 800 !important; color: #1a1a1a; margin-bottom: 16px; line-height: 1.2; }
 .property-meta { display: flex; align-items: center; gap: 24px; margin-bottom: 24px; }
 .property-meta .location { display: flex; align-items: center; gap: 8px; font-size: 16px; color: #4a4a4a; }
 .property-meta .rating { display: flex; align-items: center; gap: 8px; }
@@ -1147,9 +1156,10 @@ p.hero-subtitle {
 .rating-text { color: #666666; font-size: 14px; }
 .booking-info { text-align: center; }
 .price { margin-bottom: 16px; }
-.price-amount { font-size: 32px; font-weight: 700; color: #1a1a1a; }
-.price-period { font-size: 16px; color: #666666; margin-left: 4px; }
-.btn-book { background: #AD542D !important; border: none !important; border-radius: 58px !important; padding: 8px 24px !important; font-size: 16px !important; font-weight: 600 !important; color: white !important; width: auto !important; min-width: 0 !important; text-transform: none !important; }
+.price-amount { font-size: 32px; font-weight: 700 !important; color: #1a1a1a; }
+.price-period { font-size: 16px; color: #666666; margin-left: 0; }
+.price-separator { display: inline-block; margin: 0 4px; font-weight: 700; color: #1a1a1a; }
+.btn-book { background: #AD542D !important; border: none !important; border-radius: 58px !important; padding: 10px 32px !important; font-size: 16px !important; font-weight: 600 !important; color: white !important; width: auto !important; min-width: 150px !important; text-transform: none !important; }
 .btn-book:hover { background: #78381C !important; }
 .booking-note { font-size: 12px; color: #666666; margin-top: 8px; margin-bottom: 0; }
 /* Airbnb-style Gallery Section */
@@ -1312,21 +1322,27 @@ p.hero-subtitle {
 .calendar-days .day.in-range { background-color: #FFF2EE; border-radius: 0; }
 .reviews-section { margin: 2rem 0; }
 .reviews-title { font-size: 1.75rem; font-weight: 700; color: #1a1a1a; margin-bottom: 2rem; }
-.reviews-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 0; }
-.review-item { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; padding: 1.5rem; border: 1px solid #E5E7EB; border-radius: 12px; text-align: center; }
+.reviews-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 5rem; row-gap: 4.5rem; margin-bottom: 0; }
+.review-item { display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem; padding: 0; border: 0; border-radius: 0; text-align: left; min-width: 0; }
 .review-item .review-content { width: 100%; }
-.review-item .review-content .stars { justify-content: center; }
+.review-item .review-content .stars { justify-content: flex-start; }
 @media (max-width: 1024px) and (min-width: 769px) {
   .reviews-list { grid-template-columns: repeat(2, 1fr); }
 }
-.reviewer-info { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; min-width: 80px; }
-.reviewer-avatar { width: 64px; height: 64px; border-radius: 50%; overflow: hidden; }
+.reviewer-info { display: flex; flex-direction: row; align-items: center; gap: 0.875rem; min-width: 0; }
+.reviewer-avatar { width: 52px; height: 52px; border-radius: 50%; overflow: hidden; flex: 0 0 52px; background: #E7F6EC; color: #16884B; display: grid; place-items: center; font-size: 22px; font-weight: 600; }
 .reviewer-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.reviewer-name { font-size: 14px; font-weight: 600; color: #1a1a1a; margin: 0; text-align: center; }
-.review-date { font-size: 12px; color: #666666; text-align: center; }
+.reviewer-details { min-width: 0; }
+.reviewer-name { font-size: 16px !important; font-weight: 700 !important; color: #222222; margin: 0; text-align: left; }
+.reviewer-subtitle { margin-top: 2px !important; font-size: 14px !important; color: #717171; }
+.review-date { font-size: 14px !important; color: #717171; text-align: left; }
 .review-content { flex: 1; }
-.review-content .stars { display: flex; gap: 2px; margin-bottom: 0.5rem; }
-.review-text { font-size: 14px; line-height: 1.5; color: #4a4a4a; margin: 0 0 0.5rem 0; }
+.review-meta { display: flex; align-items: center; gap: 7px; margin-bottom: 0.65rem; color: #717171; }
+.review-content .stars { display: flex; gap: 0; margin: 0; }
+.review-text { font-size: 16px !important; line-height: 1.5 !important; color: #222222; margin: 0 !important; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.review-text.expanded { display: block; overflow: visible; }
+.review-show-more { min-width: 0 !important; padding: 8px 0 0 !important; color: #222222 !important; font-size: 15px !important; font-weight: 700 !important; line-height: 1.2 !important; text-decoration: underline !important; text-transform: none !important; }
+.reviews-show-all-wrap { margin-top: 3rem; text-align: left; }
 .helpful-text { font-size: 12px; color: #8a8a8a; margin: 0; }
 .rating-summary { padding: 1.5rem; border-radius: 14px !important; height: fit-content; background: #fff; border: 1px solid #E7E7F4; }
 .average-rating { text-align: center; margin-bottom: 1.5rem; }
@@ -1340,8 +1356,8 @@ p.hero-subtitle {
 .bar-container { flex: 1; height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden; }
 .bar-fill { height: 100%; background: #AD542D;}
 .rating-count { font-size: 0.875rem; color: #495057; min-width: 35px; text-align: right; }
-.explore-more { background: #AD542D !important; border: none !important; border-radius: 58px !important; padding: 0.75rem 2rem !important; font-weight: 600 !important; text-transform: none !important; }
-.explore-more:hover { background: #78381C !important; }
+.reviews-show-all-wrap .explore-more { background: #F2F2F2 !important; color: #222222 !important; border: none !important; border-radius: 12px !important; padding: 0.9rem 1.75rem !important; font-size: 16px !important; font-weight: 700 !important; text-transform: none !important; }
+.reviews-show-all-wrap .explore-more:hover { background: #E8E8E8 !important; transform: none !important; }
 .host-section { padding: 24px 32px; border: 1px solid #E7E7F4; border-radius: 14px !important; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); background: white; }
 .host-info { display: flex; align-items: flex-start; gap: 20px; padding: 0; }
 .host-avatar { width: 60px; height: 60px; border-radius: 50%; overflow: hidden; flex-shrink: 0; }
@@ -1496,7 +1512,7 @@ p.hero-subtitle {
     font-size: 12px;
   }
   .reviews-list { grid-template-columns: 1fr; gap: 1rem; }
-  .review-item { gap: 0.75rem; padding: 1rem; }
+  .review-item { gap: 1rem; padding: 0; }
   /* Match gap below gallery to card padding above (~20px on mobile) — no extra padding-top here */
   .property-detail-page .property-gallery-section {
     padding-top: 0;
@@ -1921,8 +1937,8 @@ a { transition: color 0.15s ease; }
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 .review-item:hover {
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08) !important;
-  transform: translateY(-2px);
+  box-shadow: none !important;
+  transform: none;
 }
 
 /* Gallery image hover — brightness dim */

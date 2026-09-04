@@ -113,7 +113,7 @@ export default function ResetPassword({ token, email: initialEmail }: Props) {
                     <form onSubmit={(e) => { e.preventDefault(); post('/reset-password'); }}>
                       <Stack spacing={2.5}>
                         <Box>
-                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.forgot_password_page.email')}</Typography>
+                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#222222', fontSize: 16, fontWeight: 700 }}>{t('auth.forgot_password_page.email')}</Typography>
                           <TextField
                             name="email"
                             type="email"
@@ -126,7 +126,7 @@ export default function ResetPassword({ token, email: initialEmail }: Props) {
                           <InputError message={line(errors.email)} />
                         </Box>
                         <Box>
-                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.reset_password_page.password')}</Typography>
+                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#222222', fontSize: 16, fontWeight: 700 }}>{t('auth.reset_password_page.password')}</Typography>
                           <TextField
                             name="password"
                             type={showPassword ? 'text' : 'password'}
@@ -148,7 +148,7 @@ export default function ResetPassword({ token, email: initialEmail }: Props) {
                           <InputError message={line(errors.password)} />
                         </Box>
                         <Box>
-                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#6B7280', fontSize: 14, fontWeight: 600 }}>{t('auth.reset_password_page.confirm_password')}</Typography>
+                          <Typography variant="subtitle2" sx={{ mb: 1, color: '#222222', fontSize: 16, fontWeight: 700 }}>{t('auth.reset_password_page.confirm_password')}</Typography>
                           <TextField
                             name="password_confirmation"
                             type={showConfirmPassword ? 'text' : 'password'}

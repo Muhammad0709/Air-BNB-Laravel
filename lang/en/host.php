@@ -281,7 +281,7 @@ return [
         'upload_images' => 'Upload Images',
         'property_information' => 'Property Information',
         'edit_property_information' => 'Edit Property Information',
-        'update_property' => 'Update Property',
+        'update_property' => 'Update',
         'location_placeholder' => 'e.g., Malibu, California',
         'description_placeholder' => 'Describe the property in detail...',
         'enable_airport_pickup' => 'Enable Airport Pickup Service',
