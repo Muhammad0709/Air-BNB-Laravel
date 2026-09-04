@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'err_check_in_required' => 'Giriş tarihi gereklidir',
+    'err_check_out_required' => 'Çıkış tarihi gereklidir',
+    'err_rooms_required' => 'Lütfen oda sayısını seçin',
+    'err_adults_required' => 'Lütfen yetişkin sayısını seçin',
     'err_phone_country' => ':code için geçerli bir telefon numarası girin.',
     'check_in' => 'Giriş',
     'check_out' => 'Çıkış',

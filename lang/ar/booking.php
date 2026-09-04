@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'err_check_in_required' => 'تاريخ تسجيل الوصول مطلوب',
+    'err_check_out_required' => 'تاريخ تسجيل المغادرة مطلوب',
+    'err_rooms_required' => 'يرجى اختيار عدد الغرف',
+    'err_adults_required' => 'يرجى اختيار عدد البالغين',
     'err_phone_country' => 'أدخل رقم هاتف صالحًا للرمز :code.',
     'check_in' => 'تسجيل الوصول',
     'check_out' => 'تسجيل المغادرة',

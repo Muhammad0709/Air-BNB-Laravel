@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'err_check_in_required' => 'چیک اِن کی تاریخ ضروری ہے',
+    'err_check_out_required' => 'چیک آؤٹ کی تاریخ ضروری ہے',
+    'err_rooms_required' => 'کمروں کی تعداد منتخب کریں',
+    'err_adults_required' => 'بالغ افراد کی تعداد منتخب کریں',
     'err_phone_country' => ':code کے لیے درست فون نمبر درج کریں۔',
     'check_in' => 'چیک اِن',
     'check_out' => 'چیک آؤٹ',

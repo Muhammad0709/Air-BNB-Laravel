@@ -157,6 +157,9 @@ export default function Booking() {
   const validate = () => {
     const newErrors: Record<string, string> = {}
 
+    if (!checkin) newErrors.checkin = t('booking.err_check_in_required')
+    if (!checkout) newErrors.checkout = t('booking.err_check_out_required')
+
     if (!formData.name.trim()) newErrors.name = t('booking.err_name_required')
     else if (formData.name.trim().length < 2) newErrors.name = t('booking.err_name_min')
 
@@ -169,6 +172,9 @@ export default function Booking() {
     else if (!isValidPhoneNumber(completePhone)) {
       newErrors.phone = t('booking.err_phone_country').replace(':code', formData.phoneCode)
     }
+
+    if (formData.rooms === '') newErrors.rooms = t('booking.err_rooms_required')
+    if (formData.adults === '') newErrors.adults = t('booking.err_adults_required')
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -184,7 +190,6 @@ export default function Booking() {
   const handleBookClick = (e: React.FormEvent) => {
     e.preventDefault()
     if (!validate()) {
-      setToast({ open: true, message: t('booking.toast_fix_errors'), severity: 'error' })
       return
     }
     if (!property?.id) {
@@ -263,7 +268,7 @@ export default function Booking() {
                     {property && (
                       <Stack direction="row" spacing={1.5} useFlexGap className="field" sx={{ mb: 2 }}>
                         <Box sx={{ flex: 1 }}>
-                          <Typography className="label">{t('booking.check_in')}</Typography>
+                          <Typography className="label">{t('booking.check_in')} <Box component="span" className="required-asterisk">*</Box></Typography>
                           <TextField
                             size="small"
                             fullWidth
@@ -281,10 +286,12 @@ export default function Booking() {
                             }}
                             InputLabelProps={{ shrink: true }}
                             inputProps={{ min: new Date().toISOString().slice(0, 10) }}
+                            error={!!errors.checkin}
                           />
+                          <InputError message={errors.checkin} />
                         </Box>
                         <Box sx={{ flex: 1 }}>
-                          <Typography className="label">{t('booking.check_out')}</Typography>
+                          <Typography className="label">{t('booking.check_out')} <Box component="span" className="required-asterisk">*</Box></Typography>
                           <TextField
                             size="small"
                             fullWidth
@@ -297,7 +304,9 @@ export default function Booking() {
                             }}
                             InputLabelProps={{ shrink: true }}
                             inputProps={{ min: checkin }}
+                            error={!!errors.checkout}
                           />
+                          <InputError message={errors.checkout} />
                         </Box>
                       </Stack>
                     )}
@@ -309,7 +318,7 @@ export default function Booking() {
                       </Typography>
                     )}
                     <Box className="field">
-                      <Typography className="label">{t('booking.name')}</Typography>
+                      <Typography className="label">{t('booking.name')} <Box component="span" className="required-asterisk">*</Box></Typography>
                       <TextField 
                         size="small" 
                         fullWidth 
@@ -322,8 +331,8 @@ export default function Booking() {
                     </Box>
 
                     <Box className="field">
-                      <Typography className="label">{t('booking.number_of_rooms')}</Typography>
-                      <FormControl fullWidth size="small">
+                      <Typography className="label">{t('booking.number_of_rooms')} <Box component="span" className="required-asterisk">*</Box></Typography>
+                      <FormControl fullWidth size="small" error={!!errors.rooms}>
                         <Select
                           value={formData.rooms === '' ? '' : formData.rooms}
                           displayEmpty
@@ -336,12 +345,13 @@ export default function Booking() {
                           ))}
                         </Select>
                       </FormControl>
+                      <InputError message={errors.rooms} />
                     </Box>
 
                     <Stack direction="row" spacing={1.5} useFlexGap className="field">
                       <Box sx={{ flex: 1 }}>
-                        <Typography className="label">{t('booking.adults')}</Typography>
-                        <FormControl fullWidth size="small">
+                        <Typography className="label">{t('booking.adults')} <Box component="span" className="required-asterisk">*</Box></Typography>
+                        <FormControl fullWidth size="small" error={!!errors.adults}>
                           <Select
                             value={formData.adults === '' ? '' : formData.adults}
                             displayEmpty
@@ -354,6 +364,7 @@ export default function Booking() {
                             ))}
                           </Select>
                         </FormControl>
+                        <InputError message={errors.adults} />
                       </Box>
                       <Box sx={{ flex: 1 }}>
                         <Typography className="label">{t('booking.children')}</Typography>
@@ -374,7 +385,7 @@ export default function Booking() {
                     </Stack>
 
                     <Box className="field">
-                      <Typography className="label">{t('booking.email')}</Typography>
+                      <Typography className="label">{t('booking.email')} <Box component="span" className="required-asterisk">*</Box></Typography>
                       <TextField 
                         size="small" 
                         placeholder={t('booking.email_placeholder')} 
@@ -389,7 +400,7 @@ export default function Booking() {
                     </Box>
 
                     <Box className="field">
-                      <Typography className="label">{t('booking.phone_number')}</Typography>
+                      <Typography className="label">{t('booking.phone_number')} <Box component="span" className="required-asterisk">*</Box></Typography>
                       <Stack direction="row" spacing={1.5} useFlexGap>
                           <PhoneCountrySelect
                             value={formData.phoneCode}

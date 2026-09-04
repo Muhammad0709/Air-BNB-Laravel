@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'err_check_in_required' => 'بەرواری چوونەژوورەوە پێویستە',
+    'err_check_out_required' => 'بەرواری چوونەدەرەوە پێویستە',
+    'err_rooms_required' => 'ژمارەی ژوورەکان هەڵبژێرە',
+    'err_adults_required' => 'ژمارەی گەورەکان هەڵبژێرە',
     'err_phone_country' => 'ژمارەیەکی تەلەفۆنی دروست بۆ :code بنووسە.',
     'check_in' => 'چوونەژوورەوە',
     'check_out' => 'چوونەدەرەوە',

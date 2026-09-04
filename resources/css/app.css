@@ -1116,6 +1116,10 @@ p.hero-subtitle {
   margin-bottom: 6px !important;
   text-transform: none !important;
 }
+.booking-form .required-asterisk {
+  color: #d32f2f;
+  font: inherit;
+}
 
 /* Shared customer-facing form label typography. */
 .contact-page .MuiTypography-root:has(+ .MuiFormControl-root),
