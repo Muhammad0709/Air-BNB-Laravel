@@ -17,7 +17,7 @@ class UpdatePropertyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:255', 'regex:/^(?=.*\p{L})[\p{L} ]+$/u'],
             'location' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'min:0'],
             'bedrooms' => ['required', 'integer', 'min:0'],
@@ -41,6 +41,7 @@ class UpdatePropertyRequest extends FormRequest
         return [
             'title.required' => __('validation.property.title_required'),
             'title.max' => __('validation.property.title_max'),
+            'title.regex' => __('validation.property.title_format'),
             'location.required' => __('validation.property.location_required'),
             'location.max' => __('validation.property.location_max'),
             'price.required' => __('validation.property.price_required'),

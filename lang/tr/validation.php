@@ -121,6 +121,9 @@ return [
     'property' => [
         'title_required' => 'Mülk başlığı zorunludur.',
         'title_max' => 'Mülk başlığı 255 karakteri geçemez.',
+        'title_format' => 'Mülk başlığı yalnızca harf ve boşluk içerebilir.',
+        'deposit_max' => 'Güvenlik depozitosu mülk fiyatından fazla olamaz.',
+        'images_required' => 'En az bir mülk görseli gereklidir.',
         'location_required' => 'Konum zorunludur.',
         'location_max' => 'Konum 255 karakteri geçemez.',
         'price_required' => 'Gece fiyatı zorunludur.',

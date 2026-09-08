@@ -36,7 +36,7 @@ class UpdateHostPropertyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:255', 'regex:/^(?=.*\p{L})[\p{L} ]+$/u'],
             'description' => ['required', 'string'],
             'property_type' => ['required', 'in:' . implode(',', array_column(PropertyType::cases(), 'value'))],
             'bedrooms' => $this->isExperienceListing() ? ['nullable', 'integer', 'min:1'] : ['required', 'integer', 'min:1'],
@@ -44,7 +44,7 @@ class UpdateHostPropertyRequest extends FormRequest
             'duration_hours' => $this->isExperienceListing() ? ['required', 'integer', 'min:1', 'max:72'] : ['nullable', 'integer', 'min:1', 'max:72'],
             'guests' => ['required', 'integer', 'min:1'],
             'price' => ['required', 'numeric', 'min:0'],
-            'deposit_amount' => ['nullable', 'numeric', 'min:0'],
+            'deposit_amount' => ['nullable', 'numeric', 'min:0', 'lte:price'],
             'location' => ['required', 'string', 'max:255'],
             'timezone' => ['nullable', 'timezone'],
             'cancellation_policy' => ['nullable', 'in:' . implode(',', CancellationPolicy::values())],
@@ -55,8 +55,8 @@ class UpdateHostPropertyRequest extends FormRequest
             'images.*' => ['image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
             'airport_pickup_enabled' => ['nullable', 'boolean'],
             'airport' => ['nullable', 'required_if:airport_pickup_enabled,true', 'string', 'max:255'],
-            'pickup_start_time' => ['nullable', 'required_if:airport_pickup_enabled,true', 'string', 'max:10'],
-            'pickup_end_time' => ['nullable', 'required_if:airport_pickup_enabled,true', 'string', 'max:10'],
+            'pickup_start_time' => ['nullable', 'required_if:airport_pickup_enabled,true', 'date_format:H:i'],
+            'pickup_end_time' => ['nullable', 'required_if:airport_pickup_enabled,true', 'date_format:H:i', 'after:pickup_start_time'],
             'airport_pickup_price' => ['nullable', 'required_if:airport_pickup_enabled,true', 'numeric', 'min:0'],
             'guided_tours_enabled'      => ['nullable', 'boolean'],
             'guided_tours_description'  => ['nullable', 'required_if:guided_tours_enabled,true', 'string', 'max:2000'],
@@ -78,11 +78,13 @@ class UpdateHostPropertyRequest extends FormRequest
         return [
             'title.required' => __('validation.property.title_required'),
             'title.max' => __('validation.property.title_max'),
+            'title.regex' => __('validation.property.title_format'),
             'location.required' => __('validation.property.location_required'),
             'location.max' => __('validation.property.location_max'),
             'price.required' => __('validation.property.price_required'),
             'price.numeric' => __('validation.property.price_numeric'),
             'price.min' => __('validation.property.price_min'),
+            'deposit_amount.lte' => __('validation.property.deposit_max'),
             'property_type.required' => __('validation.property.property_type_required'),
             'property_type.in' => __('validation.property.property_type_in'),
             'bedrooms.required' => __('validation.property.bedrooms_required'),

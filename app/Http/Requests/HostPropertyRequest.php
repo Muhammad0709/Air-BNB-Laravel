@@ -60,16 +60,17 @@ class HostPropertyRequest extends FormRequest
         // For store/create requests
         if ($this->isMethod('POST')) {
             return [
-                'title' => 'required|string|max:255',
+                'title' => ['required', 'string', 'max:255', 'regex:/^(?=.*\p{L})[\p{L} ]+$/u'],
                 'description' => 'required|string',
                 'property_type' => 'required|string|in:' . implode(',', array_column(PropertyType::cases(), 'value')),
                 'bedrooms' => 'required|integer|min:1',
                 'bathrooms' => 'required|integer|min:1',
                 'guests' => 'required|integer|min:1',
                 'price' => 'required|numeric|min:0',
+                'deposit_amount' => 'nullable|numeric|min:0|lte:price',
                 'location' => 'required|string|max:255',
                 'status' => 'sometimes|string|in:Active,Inactive',
-                'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+                'image' => 'required|file|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
                 'airport_pickup_enabled' => 'nullable|boolean',
                 'airport' => 'nullable|required_if:airport_pickup_enabled,true|string|max:255',
                 'pickup_start_time' => 'nullable|required_if:airport_pickup_enabled,true|date_format:H:i',
@@ -85,13 +86,14 @@ class HostPropertyRequest extends FormRequest
         // For update requests
         if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
             return [
-                'title' => 'sometimes|required|string|max:255',
+                'title' => ['sometimes', 'required', 'string', 'max:255', 'regex:/^(?=.*\p{L})[\p{L} ]+$/u'],
                 'description' => 'sometimes|required|string',
                 'property_type' => 'sometimes|required|string|in:' . implode(',', array_column(PropertyType::cases(), 'value')),
                 'bedrooms' => 'sometimes|required|integer|min:1',
                 'bathrooms' => 'sometimes|required|integer|min:1',
                 'guests' => 'sometimes|required|integer|min:1',
                 'price' => 'sometimes|required|numeric|min:0',
+                'deposit_amount' => 'nullable|numeric|min:0|lte:price',
                 'location' => 'sometimes|required|string|max:255',
                 'status' => 'sometimes|string|in:Active,Inactive',
                 'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,webp|max:5120',

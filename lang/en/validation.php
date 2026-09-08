@@ -121,6 +121,9 @@ return [
     'property' => [
         'title_required' => 'Property title is required.',
         'title_max' => 'Property title may not exceed 255 characters.',
+        'title_format' => 'Property title may contain only letters and spaces.',
+        'deposit_max' => 'Security deposit cannot be greater than the property price.',
+        'images_required' => 'At least one property image is required.',
         'location_required' => 'Location is required.',
         'location_max' => 'Location may not exceed 255 characters.',
         'price_required' => 'Price per night is required.',

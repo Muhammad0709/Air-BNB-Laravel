@@ -228,7 +228,6 @@ export default function AddProperty() {
                     name="title"
                     value={formData.title}
                     onChange={handleChange}
-                    inputProps={{ maxLength: 255 }}
                     required
                     fullWidth
                     error={!!err('title')}

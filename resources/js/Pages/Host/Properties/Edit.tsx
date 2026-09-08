@@ -280,11 +280,12 @@ export default function EditProperty() {
                     name="title"
                     value={formData.title}
                     onChange={handleChange}
-                    inputProps={{ maxLength: 255 }}
                     required
                     fullWidth
+                    error={!!activeErrors.title}
                     sx={{ mb: 2 }}
                   />
+                  <InputError message={Array.isArray(activeErrors.title) ? activeErrors.title[0] : activeErrors.title} />
                   <TextField
                     label={t('host.properties.location')}
                     name="location"
@@ -404,11 +405,13 @@ export default function EditProperty() {
                   value={formData.deposit_amount}
                   onChange={handleChange}
                   fullWidth
+                  error={!!activeErrors.deposit_amount}
                   helperText={t('host.properties.deposit_amount_hint')}
                   InputProps={{
                     startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#6B7280' }}>$</Typography>
                   }}
                 />
+                <InputError message={Array.isArray(activeErrors.deposit_amount) ? activeErrors.deposit_amount[0] : activeErrors.deposit_amount} />
               </Col>
             </Row>
 
@@ -589,8 +592,8 @@ export default function EditProperty() {
                         </Select>
                       </FormControl>
                       <Stack direction="row" spacing={2}>
-                        <TextField label="Pickup Start Time *" name="pickup_start_time" value={formData.pickup_start_time} onChange={handleChange} type="time" fullWidth size="medium" InputLabelProps={{ shrink: true }} placeholder="--:--" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
-                        <TextField label="Pickup End Time *" name="pickup_end_time" value={formData.pickup_end_time} onChange={handleChange} type="time" fullWidth size="medium" InputLabelProps={{ shrink: true }} placeholder="--:--" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
+                        <TextField label="Pickup Start Time *" name="pickup_start_time" value={formData.pickup_start_time} onChange={handleChange} type="time" fullWidth size="medium" error={!!activeErrors.pickup_start_time} helperText={Array.isArray(activeErrors.pickup_start_time) ? activeErrors.pickup_start_time[0] : activeErrors.pickup_start_time} InputLabelProps={{ shrink: true }} placeholder="--:--" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
+                        <TextField label="Pickup End Time *" name="pickup_end_time" value={formData.pickup_end_time} onChange={handleChange} type="time" fullWidth size="medium" error={!!activeErrors.pickup_end_time} helperText={Array.isArray(activeErrors.pickup_end_time) ? activeErrors.pickup_end_time[0] : activeErrors.pickup_end_time} InputLabelProps={{ shrink: true }} placeholder="--:--" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
                       </Stack>
                       <TextField label="Airport Pickup Price *" name="airport_pickup_price" type="number" value={formData.airport_pickup_price} onChange={handleChange} fullWidth size="medium" inputProps={{ min: 0, step: 0.01 }} InputProps={{ startAdornment: <Typography sx={{ mr: 1, color: '#6B7280' }}>$</Typography> }} placeholder="Enter price for airport pickup service" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
                     </Stack>
