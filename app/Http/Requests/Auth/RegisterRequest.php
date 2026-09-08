@@ -19,7 +19,7 @@ class RegisterRequest extends FormRequest
         return [
             'type' => ['required', Rule::in(['user', 'host', 'company'])],
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['bail', 'required', 'string', 'regex:/^[A-Za-z0-9._-]+@/', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'company_name' => ['nullable', 'required_if:type,company', 'string', 'max:255'],
             'tax_id' => ['nullable', 'string', 'max:255'],
