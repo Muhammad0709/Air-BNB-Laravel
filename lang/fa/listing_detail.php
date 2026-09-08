@@ -36,6 +36,7 @@ return [
     'your_comment' => 'نظر شما (اختیاری)',
     'submit_review' => 'ارسال نظر',
     'login_to_review' => 'برای نوشتن نظر وارد شوید',
+    'login_required_title' => 'لطفاً وارد شوید',
     'login_to_book' => 'شما وارد نشده‌اید. برای رزرو وارد شوید.',
     'explore_more' => 'کاوش بیشتر',
     'show_less' => 'نمایش کمتر',

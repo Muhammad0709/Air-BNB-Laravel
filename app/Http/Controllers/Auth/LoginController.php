@@ -16,6 +16,17 @@ class LoginController extends Controller
      */
     public function create(Request $request)
     {
+        $redirect = $request->query('redirect');
+
+        if (
+            is_string($redirect)
+            && str_starts_with($redirect, '/')
+            && ! str_starts_with($redirect, '//')
+            && ! str_contains($redirect, '\\')
+        ) {
+            $request->session()->put('url.intended', url($redirect));
+        }
+
         return Inertia::render('Auth/SignIn', [
             'status' => $request->session()->get('status'),
         ]);

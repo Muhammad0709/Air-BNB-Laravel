@@ -136,6 +136,7 @@ export default function ListingDetail() {
   const [expandedReviews, setExpandedReviews] = useState<number[]>([])
   const [toast, setToast] = useState({ open: false, message: '', severity: 'warning' as 'success' | 'error' | 'warning' | 'info' })
   const [galleryModalOpen, setGalleryModalOpen] = useState(false)
+  const [loginModalOpen, setLoginModalOpen] = useState(false)
 
   const displayedReviews = showAllReviews ? reviews : reviews.slice(0, 4)
 
@@ -319,7 +320,7 @@ export default function ListingDetail() {
                           className="btn-book"
                           onClick={() => {
                             if (!authUser) {
-                              setToast({ open: true, message: t('listing_detail.login_to_book'), severity: 'error' })
+                              setLoginModalOpen(true)
                               return
                             }
                             router.visit(bookingUrl())
@@ -1026,6 +1027,61 @@ export default function ListingDetail() {
         </section>
       </main>
       <Footer />
+
+      {/* Login prompt for guests who try to reserve */}
+      <Modal
+        open={loginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
+        aria-labelledby="login-required-title"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          p: 2,
+        }}
+      >
+        <Box
+          sx={{
+            width: '100%',
+            maxWidth: 420,
+            bgcolor: '#FFFFFF',
+            borderRadius: 3,
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.2)',
+            p: { xs: 3, sm: 4 },
+            outline: 'none',
+            textAlign: 'center',
+          }}
+        >
+          <Typography id="login-required-title" variant="h5" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>
+            {t('listing_detail.login_required_title')}
+          </Typography>
+          <Typography sx={{ color: '#717171', mb: 3 }}>
+            {t('listing_detail.login_to_book')}
+          </Typography>
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={() => {
+              setLoginModalOpen(false)
+              router.visit(`/login?redirect=${encodeURIComponent(bookingUrl())}`)
+            }}
+            sx={{
+              borderRadius: 999,
+              py: 1.25,
+              textTransform: 'none',
+              fontWeight: 700,
+              bgcolor: '#AD542D',
+              boxShadow: 'none',
+              '&:hover': {
+                bgcolor: '#78381C',
+                boxShadow: 'none',
+              },
+            }}
+          >
+            {t('auth.signin.submit')}
+          </Button>
+        </Box>
+      </Modal>
       
       {/* Gallery Modal - responsive for all devices */}
       <Modal

@@ -37,6 +37,7 @@ return [
     'your_comment' => 'لێدوانی تۆ (دڵخواز)',
     'submit_review' => 'نێرین بنێرە',
     'login_to_review' => 'بۆ نووسینی نێرین چوونەژوورەوە بکە',
+    'login_required_title' => 'تکایە بچۆ ژوورەوە',
     'login_to_book' => 'تۆ چوونەژوورەوە نیت. بۆ حجز چوونەژوورەوە بکە.',
     'explore_more' => 'زیاتر بگەڕێ',
     'show_less' => 'کەمتر پیشان بدە',
