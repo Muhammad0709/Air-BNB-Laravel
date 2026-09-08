@@ -10,7 +10,11 @@ import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 
 export default function EditUser() {
   const { t } = useLanguage()
-  const { user } = usePage().props as any
+  const page = usePage().props as any
+  const { user } = page
+  const resourcePath = page.resourcePath || '/admin/users'
+  const pageTitle = page.pageTitle || t('admin.users.edit_user')
+  const backLabel = page.backLabel || t('admin.users.back_to_users')
   const { data, setData, put, processing, errors } = useForm({
     name: user?.name || '',
     email: user?.email || '',
@@ -18,9 +22,9 @@ export default function EditUser() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    put(`/admin/users/${user.id}`, {
+    put(`${resourcePath}/${user.id}`, {
       onSuccess: () => {
-        router.visit('/admin/users')
+        router.visit(resourcePath)
       }
     })
   }
@@ -31,17 +35,17 @@ export default function EditUser() {
 
   if (!user) {
     return (
-      <AdminLayout title={t('admin.users.edit_user')}>
+      <AdminLayout title={pageTitle}>
         <Typography>{t('admin.users.user_not_found')}</Typography>
       </AdminLayout>
     )
   }
 
   return (
-    <AdminLayout title={t('admin.users.edit_user')}>
+    <AdminLayout title={pageTitle}>
       <Button
         startIcon={<RtlBackArrowIcon />}
-        onClick={() => router.visit('/admin/users')}
+        onClick={() => router.visit(resourcePath)}
         sx={{
           mb: 3,
           color: '#6B7280',
@@ -50,7 +54,7 @@ export default function EditUser() {
           ...adminButtonStartIconSx,
         }}
       >
-        {t('admin.users.back_to_users')}
+        {backLabel}
       </Button>
 
       <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '16px' }}>
@@ -135,7 +139,7 @@ export default function EditUser() {
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap justifyContent="flex-end" sx={{ width: '100%' }}>
                   <Button
                     variant="outlined"
-                    onClick={() => router.visit('/admin/users')}
+                    onClick={() => router.visit(resourcePath)}
                     sx={{
                       textTransform: 'none',
                       borderRadius: '12px',
@@ -169,4 +173,3 @@ export default function EditUser() {
     </AdminLayout>
   )
 }
-

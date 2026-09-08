@@ -39,6 +39,7 @@ export default function AdminSidebar({ sidebarOpen, onNavigate }: AdminSidebarPr
   const menuItems = [
     { labelKey: 'admin.sidebar.dashboard', icon: DashboardIcon, path: '/admin/dashboard', onClick: () => handleNav('/admin/dashboard') },
     ...(isModerator ? [] : [{ labelKey: 'admin.sidebar.users', icon: PeopleIcon, path: '/admin/users', onClick: () => handleNav('/admin/users') }]),
+    ...(isModerator ? [] : [{ labelKey: 'admin.sidebar.hosts', icon: PeopleIcon, path: '/admin/hosts', onClick: () => handleNav('/admin/hosts') }]),
     { labelKey: 'admin.sidebar.properties', icon: HotelIcon, path: '/admin/properties', onClick: () => handleNav('/admin/properties') },
     { labelKey: 'admin.sidebar.bookings', icon: BookOnlineIcon, path: '/admin/bookings', onClick: () => handleNav('/admin/bookings') },
     { labelKey: 'admin.sidebar.history', icon: HistoryIcon, path: '/admin/history', onClick: () => handleNav('/admin/history') },
@@ -106,5 +107,4 @@ export default function AdminSidebar({ sidebarOpen, onNavigate }: AdminSidebarPr
     </>
   )
 }
-
 

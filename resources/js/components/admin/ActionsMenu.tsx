@@ -6,16 +6,19 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 
 type ActionsMenuProps = {
   onEdit?: () => void
   onDelete?: () => void
   onView?: () => void
+  onManageAccess?: () => void
   onApprove?: () => void
   onReject?: () => void
   editLabel?: string
   deleteLabel?: string
   viewLabel?: string
+  manageAccessLabel?: string
   approveLabel?: string
   rejectLabel?: string
 }
@@ -24,11 +27,13 @@ export default function ActionsMenu({
   onEdit,
   onDelete,
   onView,
+  onManageAccess,
   onApprove,
   onReject,
   editLabel = 'Edit',
   deleteLabel = 'Delete',
   viewLabel = 'View',
+  manageAccessLabel = 'Manage access',
   approveLabel = 'Approve',
   rejectLabel = 'Reject'
 }: ActionsMenuProps) {
@@ -61,6 +66,13 @@ export default function ActionsMenu({
   const handleView = () => {
     if (onView) {
       onView()
+    }
+    handleClose()
+  }
+
+  const handleManageAccess = () => {
+    if (onManageAccess) {
+      onManageAccess()
     }
     handleClose()
   }
@@ -132,6 +144,19 @@ export default function ActionsMenu({
             <Typography sx={{ color: '#111827', fontSize: 14 }}>{editLabel}</Typography>
           </MenuItem>
         )}
+        {onManageAccess && (
+          <MenuItem
+            onClick={handleManageAccess}
+            sx={{
+              py: 1,
+              px: 1.5,
+              '&:hover': { bgcolor: '#FFF7F3' }
+            }}
+          >
+            <LockOutlinedIcon sx={{ fontSize: 16, color: '#AD542D', marginInlineEnd: 1 }} />
+            <Typography sx={{ color: '#AD542D', fontSize: 14 }}>{manageAccessLabel}</Typography>
+          </MenuItem>
+        )}
         {onApprove && (
           <MenuItem
             onClick={handleApprove}
@@ -175,6 +200,5 @@ export default function ActionsMenu({
     </>
   )
 }
-
 
 

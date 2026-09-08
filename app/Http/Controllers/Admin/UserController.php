@@ -22,8 +22,8 @@ class UserController extends Controller
     {
         $query = User::query();
 
-        // Exclude admin and moderator (staff) accounts from the list
-        $query->whereNotIn('type', [UserType::ADMIN->value, UserType::MODERATOR->value]);
+        // Hosts have a dedicated management section; keep them out of the general users list.
+        $query->whereIn('type', [UserType::USER->value, UserType::COMPANY->value]);
 
         // Search functionality
         if ($request->has('search') && $request->search) {
@@ -34,7 +34,7 @@ class UserController extends Controller
             });
         }
 
-        $filters = $request->validate(['account_status' => ['nullable', 'in:active,suspended,disabled'], 'type' => ['nullable', 'in:User,Host,Company']]);
+        $filters = $request->validate(['account_status' => ['nullable', 'in:active,suspended,disabled'], 'type' => ['nullable', 'in:User,Company']]);
         foreach ($filters as $key => $value) {
             if ($value) { $query->where($key, $value); }
         }

@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\TwoFactorChallengeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Admin\PropertyController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\HostController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\BookingController as AdminBookingController;
 use App\Http\Controllers\Admin\HistoryController as AdminHistoryController;
@@ -136,6 +137,12 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
 
     // Full-admin-only: staff/user management, audit trail, and system configuration are off-limits to moderators.
     Route::middleware('admin.only')->group(function () {
+        Route::get('/hosts', [HostController::class, 'index'])->name('hosts.index');
+        Route::get('/hosts/{host}', [HostController::class, 'show'])->name('hosts.show');
+        Route::get('/hosts/{host}/edit', [HostController::class, 'edit'])->name('hosts.edit');
+        Route::put('/hosts/{host}', [HostController::class, 'update'])->name('hosts.update');
+        Route::patch('/hosts/{host}/status', [HostController::class, 'updateStatus'])->name('hosts.status');
+        Route::delete('/hosts/{host}', [HostController::class, 'destroy'])->name('hosts.destroy');
         Route::patch('/users/{user}/status', [UserController::class, 'updateStatus'])->name('users.status');
         Route::resource('users', UserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
         Route::get('/audit-logs', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit-logs.index');

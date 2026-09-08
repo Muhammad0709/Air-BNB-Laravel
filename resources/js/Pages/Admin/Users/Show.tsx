@@ -14,7 +14,13 @@ import { adminButtonStartIconSx } from '../../../utils/adminButtonStartIconSx'
 
 export default function ViewUser() {
   const { t } = useLanguage()
-  const { user } = usePage().props as any
+  const page = usePage().props as any
+  const { user } = page
+  const resourcePath = page.resourcePath || '/admin/users'
+  const pageTitle = page.pageTitle || t('admin.users.view_user')
+  const backLabel = page.backLabel || t('admin.users.back_to_users')
+  const deleteConfirm = page.deleteConfirm || t('admin.users.delete_confirm')
+  const deleteItemName = page.deleteItemName || t('admin.users.item_name')
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
   const handleDeleteClick = () => {
@@ -22,9 +28,9 @@ export default function ViewUser() {
   }
 
   const handleDeleteConfirm = () => {
-    router.delete(`/admin/users/${user.id}`, {
+    router.delete(`${resourcePath}/${user.id}`, {
       onSuccess: () => {
-        router.visit('/admin/users')
+        router.visit(resourcePath)
       }
     })
   }
@@ -39,18 +45,18 @@ export default function ViewUser() {
 
   if (!user) {
     return (
-      <AdminLayout title={t('admin.users.view_user')}>
+      <AdminLayout title={pageTitle}>
         <Typography>{t('admin.users.user_not_found')}</Typography>
       </AdminLayout>
     )
   }
 
   return (
-    <AdminLayout title={t('admin.users.view_user')}>
+    <AdminLayout title={pageTitle}>
       <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" sx={{ mb: 3, gap: 2 }}>
         <Button
           startIcon={<RtlBackArrowIcon />}
-          onClick={() => router.visit('/admin/users')}
+          onClick={() => router.visit(resourcePath)}
           sx={{
             color: '#6B7280',
             textTransform: 'none',
@@ -58,7 +64,7 @@ export default function ViewUser() {
             ...adminButtonStartIconSx,
           }}
         >
-          {t('admin.users.back_to_users')}
+        {backLabel}
         </Button>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} useFlexGap sx={{ width: { xs: '100%', sm: 'auto' } }}>
           <Button
@@ -83,7 +89,7 @@ export default function ViewUser() {
           <Button
             variant="contained"
             startIcon={<EditIcon />}
-            onClick={() => router.visit(`/admin/users/${user.id}/edit`)}
+            onClick={() => router.visit(`${resourcePath}/${user.id}/edit`)}
             sx={{
               bgcolor: '#AD542D',
               textTransform: 'none',
@@ -190,10 +196,9 @@ export default function ViewUser() {
         open={deleteDialogOpen}
         onClose={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
-        title={t('admin.users.delete_confirm')}
-        itemName={t('admin.users.item_name')}
+        title={deleteConfirm}
+        itemName={deleteItemName}
       />
     </AdminLayout>
   )
 }
-
