@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Link, usePage, router } from '@inertiajs/react'
+import { createPortal } from 'react-dom'
 import { AppBar, Avatar, Box, Button, Container, IconButton, Stack, Toolbar, Typography, Menu, MenuItem } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import CloseIcon from '@mui/icons-material/Close'
@@ -100,6 +101,13 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
     setLanguageAnchor(null)
   }
 
+  useEffect(() => {
+    if (!open) {
+      setLanguageAnchor(null)
+      setCurrencyAnchor(null)
+    }
+  }, [open])
+
   const handleLanguageSelect = (code: string) => {
     const locale = code as 'en' | 'ar' | 'ur' | 'fa' | 'tr' | 'ku'
     handleLanguageClose()
@@ -123,7 +131,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
     <AppBar
       position="sticky"
       elevation={0}
-      className={`site-navbar${isScrolled ? ' is-scrolled' : ''}`}
+      className={`site-navbar${isScrolled ? ' is-scrolled' : ''}${open ? ' menu-open' : ''}`}
       sx={{ bgcolor: 'rgba(255,255,255,.97)', color: 'inherit' }}
     >
       <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3, lg: 4 }, maxWidth: { xs: '100%', md: 1160, xl: 1440 }, mx: 'auto' }}>
@@ -160,7 +168,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
             spacing={{ md: 3, lg: 5 }}
             useFlexGap
             sx={{
-              display: { xs: 'none', md: 'flex' },
+              display: { xs: 'none', lg: 'flex' },
               flex: '0 0 auto',
               justifyContent: 'center',
               }}
@@ -179,15 +187,31 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
           </Stack>
 
           <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', minWidth: 0 }}>
+            {showAuth && isAuthenticated && (
+              <IconButton
+                component={Link}
+                href="/chat"
+                aria-label={t('nav.messages')}
+                sx={{
+                  display: { xs: 'flex', lg: 'none' },
+                  color: '#AD542D',
+                  p: 1.25,
+                  mr: 0.5,
+                  '&:hover': { bgcolor: 'rgba(173, 84, 45, 0.08)' },
+                }}
+              >
+                <MessageIcon sx={{ fontSize: 25 }} />
+              </IconButton>
+            )}
             <IconButton
               aria-label="Menu"
-              sx={{ display: { xs: 'flex', md: 'none' }, color: '#222222', p: 1.25 }}
+              sx={{ display: { xs: 'flex', lg: 'none' }, color: '#222222', p: 1.25 }}
               onClick={() => setOpen(true)}
             >
               <MenuIcon sx={{ fontSize: 28 }} />
             </IconButton>
           {showAuth && (
-            <Stack direction="row" spacing={2} useFlexGap sx={{ display: { xs: 'none', md: 'flex' } }} alignItems="center">
+            <Stack direction="row" spacing={2} useFlexGap sx={{ display: { xs: 'none', lg: 'flex' } }} alignItems="center">
               {isAuthenticated && (
                 <>
                   <IconButton
@@ -228,7 +252,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
               </Box>
               <Menu
                 anchorEl={languageAnchor}
-                open={Boolean(languageAnchor)}
+                open={Boolean(languageAnchor) && !open}
                 onClose={handleLanguageClose}
                 PaperProps={{
                   sx: { mt: 1, minWidth: 180, borderRadius: 2, boxShadow: '0 2px 16px rgba(0,0,0,0.12)' }
@@ -278,7 +302,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
               </Box>
               <Menu
                 anchorEl={currencyAnchor}
-                open={Boolean(currencyAnchor)}
+                open={Boolean(currencyAnchor) && !open}
                 onClose={handleCurrencyClose}
                 PaperProps={{
                   sx: { mt: 1, minWidth: 160, borderRadius: 2, boxShadow: '0 2px 16px rgba(0,0,0,0.12)' }
@@ -402,9 +426,16 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
         </Toolbar>
       </Container>
 
-      {open && (
+      {open && typeof document !== 'undefined' ? createPortal(
         <Box
-          sx={{ position: 'fixed', inset: 0, bgcolor: 'rgba(0,0,0,0.45)', zIndex: 1200, backdropFilter: 'blur(2px)' }}
+          sx={{
+            position: 'fixed',
+            inset: 0,
+            overflow: 'hidden',
+            bgcolor: 'rgba(0,0,0,0.45)',
+            zIndex: 2000,
+            backdropFilter: 'blur(2px)',
+          }}
           onClick={() => setOpen(false)}
         >
           <Box
@@ -415,16 +446,20 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
             sx={{
               position: 'absolute',
               top: 0,
-              bottom: 0,
+              bottom: 'auto',
               ...(isRtl ? { left: 0 } : { right: 0 }),
-              width: { xs: 'min(76vw, 270px)', sm: 288 },
+              width: { xs: '100%', sm: 'min(82vw, 360px)' },
               maxWidth: '100%',
-              height: '100%',
+              height: '100dvh',
+              maxHeight: '100dvh',
               bgcolor: '#fff',
               boxShadow: isRtl ? '4px 0 24px rgba(0,0,0,0.12)' : '-4px 0 24px rgba(0,0,0,0.12)',
               display: 'flex',
               flexDirection: 'column',
-              overflow: 'hidden',
+              overflowY: 'auto',
+              overflowX: 'hidden',
+              WebkitOverflowScrolling: 'touch',
+              overscrollBehavior: 'contain',
             }}
           >
             <Stack
@@ -472,7 +507,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
               </Stack>
             </Stack>
 
-            <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
+            <Box sx={{ flex: '0 0 auto', minHeight: 0 }}>
               <Stack component="nav" spacing={0} sx={{ px: 1.5, py: 2 }}>
                 {links.map((l) => (
                   <Box
@@ -578,9 +613,11 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                     </Box>
                     <Menu
                       anchorEl={languageAnchor}
-                      open={Boolean(languageAnchor)}
+                      open={Boolean(languageAnchor) && open}
                       onClose={handleLanguageClose}
-                      PaperProps={{ sx: { mt: 1, minWidth: 220, maxWidth: 'min(100vw - 32px, 320px)', borderRadius: 2, boxShadow: '0 8px 24px rgba(0,0,0,0.12)' } }}
+                      slotProps={{ root: { sx: { zIndex: 2200 } } }}
+                      PaperProps={{ sx: { mt: 1, minWidth: 220, maxWidth: 'calc(100vw - 40px)', maxHeight: 'calc(100dvh - 160px)', overflowY: 'auto', borderRadius: 2, boxShadow: '0 8px 24px rgba(0,0,0,0.12)' } }}
+                      marginThreshold={16}
                       transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     >
@@ -643,11 +680,13 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                     </Box>
                     <Menu
                       anchorEl={currencyAnchor}
-                      open={Boolean(currencyAnchor)}
+                      open={Boolean(currencyAnchor) && open}
                       onClose={handleCurrencyClose}
-                      PaperProps={{ sx: { mt: 1, minWidth: 220, maxWidth: 'min(100vw - 32px, 320px)', borderRadius: 2, boxShadow: '0 8px 24px rgba(0,0,0,0.12)' } }}
-                      transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                      slotProps={{ root: { sx: { zIndex: 2200 } } }}
+                      PaperProps={{ sx: { mt: 1, minWidth: 220, maxWidth: 'calc(100vw - 40px)', maxHeight: 'calc(100dvh - 160px)', overflowY: 'auto', borderRadius: 2, boxShadow: '0 8px 24px rgba(0,0,0,0.12)' } }}
+                      marginThreshold={16}
+                      transformOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                      anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
                     >
                       {currencies.map((curr) => (
                         <MenuItem
@@ -725,8 +764,9 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
               </Box>
             )}
           </Box>
-        </Box>
-      )}
+        </Box>,
+        document.body
+      ) : null}
     </AppBar>
   )
 }
