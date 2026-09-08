@@ -20,11 +20,12 @@ class GoogleAuthController extends Controller
     /**
      * ?intent=host — /login & /register (hosts only; admins cannot use Google here).
      * ?intent=customer — /login & /register (customers only).
+     * ?intent=company — /login & /register (companies only).
      */
     public function redirect()
     {
         $intent = request()->query('intent');
-        if (!in_array($intent, ['host', 'customer'], true)) {
+        if (!in_array($intent, ['host', 'customer', 'company'], true)) {
             return redirect()->route('home')->withErrors([
                 'email' => 'Please use the Sign in with Google button on the login or register page.',
             ]);
@@ -69,13 +70,20 @@ class GoogleAuthController extends Controller
 
         $isNewUser = false;
         if (!$user) {
-            $userType = $intent === 'host' ? UserType::HOST : UserType::USER;
+            $userType = match ($intent) {
+                'host' => UserType::HOST,
+                'company' => UserType::COMPANY,
+                default => UserType::USER,
+            };
             $user = User::create([
                 'name' => $googleUser->getName() ?? $googleUser->getEmail(),
                 'email' => $googleUser->getEmail(),
                 'google_id' => $googleUser->getId(),
                 'password' => Hash::make(Str::random(32)),
                 'type' => $userType,
+                'company_name' => $userType === UserType::COMPANY
+                    ? ($googleUser->getName() ?? $googleUser->getEmail())
+                    : null,
             ]);
             $isNewUser = true;
         } else {
@@ -87,6 +95,19 @@ class GoogleAuthController extends Controller
         abort_unless(($user->account_status ?? 'active') === 'active', 403, 'Your account is suspended or disabled.');
         Auth::login($user, true);
         request()->session()->regenerate();
+
+        if ($intent === 'company') {
+            if ($user->type !== UserType::COMPANY) {
+                Auth::logout();
+                request()->session()->invalidate();
+                request()->session()->regenerateToken();
+                return redirect()->route('login')->withErrors([
+                    'email' => 'This Google account is not registered as a company.',
+                ])->onlyInput('email');
+            }
+
+            return redirect()->route('host.dashboard')->with('success', __('auth.signin.toast_signed_in'));
+        }
 
         if ($intent === 'customer') {
             if ($user->type === UserType::ADMIN) {

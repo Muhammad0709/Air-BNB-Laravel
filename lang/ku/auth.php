@@ -21,7 +21,7 @@ return [
         'toast_signed_in' => 'تۆ چوویتەژوورەوە.',
         'sign_in_google' => 'چوونەژوورەوە لەگەڵ Google',
         'google_intent_title' => 'بەردەوام بە لەگەڵ Google',
-        'google_intent_subtitle' => 'کڕیار یان خانەخوێ هەڵبژێرە. بۆ چوونەژوورەوە لەگەڵ Google.',
+        'google_intent_subtitle' => 'بۆ چوونەژوورەوە لەگەڵ Google، کڕیار یان خانەخوێ یان کۆمپانیا هەڵبژێرە.',
         'google_intent_customer' => 'وەک کڕیار بەردەوام بە',
         'google_intent_host' => 'وەک خانەخوێ بەردەوام بە',
         'google_intent_cancel' => 'هەڵوەشاندنەوە',

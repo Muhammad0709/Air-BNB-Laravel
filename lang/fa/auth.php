@@ -21,7 +21,7 @@ return [
         'toast_signed_in' => 'وارد شدید.',
         'sign_in_google' => 'ورود با Google',
         'google_intent_title' => 'ادامه با Google',
-        'google_intent_subtitle' => 'مشتری یا میزبان را انتخاب کنید. برای ورود با Google.',
+        'google_intent_subtitle' => 'برای ورود با Google، مشتری، میزبان یا شرکت را انتخاب کنید.',
         'google_intent_customer' => 'ادامه به‌عنوان مشتری',
         'google_intent_host' => 'ادامه به‌عنوان میزبان',
         'google_intent_cancel' => 'انصراف',

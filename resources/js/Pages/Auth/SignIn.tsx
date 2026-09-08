@@ -162,7 +162,7 @@ export default function SignIn({ status }: SignInPageProps) {
               overflow: 'hidden',
               position: 'relative',
               width: '100%',
-              maxWidth: { xs: 'min(440px, calc(100% - 32px))', md: 440 },
+              maxWidth: { xs: 'min(440px, calc(100% - 32px))', md: 500 },
               mx: 2,
               border: '1px solid #ECEFF3',
               boxShadow: '0 24px 70px rgba(17, 24, 39, 0.20)',
@@ -203,11 +203,12 @@ export default function SignIn({ status }: SignInPageProps) {
               px: 4,
               pb: 1,
               letterSpacing: '-0.01em',
+              textAlign: 'center',
             }}
           >
             {t('auth.signin.google_intent_title')}
           </DialogTitle>
-          <DialogContent sx={{ px: 4, pt: 0.5, pb: 4 }}>
+          <DialogContent sx={{ px: { xs: 3, sm: 3.5 }, pt: 0.5, pb: { xs: 3, sm: 3.5 } }}>
             <Typography
               variant="body2"
               sx={{
@@ -215,11 +216,12 @@ export default function SignIn({ status }: SignInPageProps) {
                 fontSize: '0.875rem',
                 lineHeight: 1.55,
                 mb: 3,
+                textAlign: 'center',
               }}
             >
               {t('auth.signin.google_intent_subtitle')}
             </Typography>
-            <Stack direction="row" spacing={1.25}>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.25} sx={{ width: '100%', '& .MuiButton-root': { whiteSpace: 'nowrap', minWidth: 0, fontSize: { xs: '0.9375rem', sm: '0.875rem' } } }}>
               <Button
                 variant="contained"
                 disableElevation
@@ -237,7 +239,7 @@ export default function SignIn({ status }: SignInPageProps) {
                   '&:hover': { bgcolor: '#8a4224', boxShadow: 'none' },
                 }}
               >
-                {t('auth.signin.google_intent_customer')}
+                {t('auth.signup.type_user')}
               </Button>
               <Button
                 variant="outlined"
@@ -260,7 +262,30 @@ export default function SignIn({ status }: SignInPageProps) {
                   },
                 }}
               >
-                {t('auth.signin.google_intent_host')}
+                {t('auth.signup.type_host')}
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => { window.location.href = '/auth/google?intent=company' }}
+                sx={{
+                  py: 1.5,
+                  minHeight: 48,
+                  borderRadius: '999px',
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  fontSize: '0.9375rem',
+                  flex: 1,
+                  borderColor: '#AD542D',
+                  borderWidth: 1.5,
+                  color: '#AD542D',
+                  bgcolor: '#fff',
+                  '&:hover': {
+                    borderColor: '#78381C',
+                    bgcolor: 'rgba(173, 84, 45, 0.06)',
+                  },
+                }}
+              >
+                {t('auth.signup.type_company')}
               </Button>
             </Stack>
           </DialogContent>

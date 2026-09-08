@@ -21,7 +21,7 @@ return [
         'toast_signed_in' => 'You are signed in.',
         'sign_in_google' => 'Sign in with Google',
         'google_intent_title' => 'Continue with Google',
-        'google_intent_subtitle' => 'Choose customer or host. For Google login.',
+        'google_intent_subtitle' => 'Choose customer, host, or company for Google login.',
         'google_intent_customer' => 'As Customer',
         'google_intent_host' => 'As Host',
         'google_intent_cancel' => 'Cancel',

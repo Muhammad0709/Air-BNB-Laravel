@@ -21,7 +21,7 @@ return [
         'toast_signed_in' => 'تم تسجيل الدخول.',
         'sign_in_google' => 'تسجيل الدخول عبر جوجل',
         'google_intent_title' => 'المتابعة مع جوجل',
-        'google_intent_subtitle' => 'اختر عميلًا أو مضيفًا. لتسجيل الدخول عبر جوجل.',
+        'google_intent_subtitle' => 'اختر عميلاً أو مضيفاً أو شركة لتسجيل الدخول عبر جوجل.',
         'google_intent_customer' => 'المتابعة كعميل',
         'google_intent_host' => 'المتابعة كمضيف',
         'google_intent_cancel' => 'إلغاء',

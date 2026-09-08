@@ -21,7 +21,7 @@ return [
         'toast_signed_in' => 'آپ سائن ان ہیں۔',
         'sign_in_google' => 'گوگل کے ساتھ سائن ان',
         'google_intent_title' => 'گوگل کے ساتھ جاری رکھیں',
-        'google_intent_subtitle' => 'کسٹمر یا میزبان منتخب کریں۔ گوگل لاگ ان کے لیے۔',
+        'google_intent_subtitle' => 'گوگل لاگ ان کے لیے کسٹمر، میزبان یا کمپنی منتخب کریں۔',
         'google_intent_customer' => 'کسٹمر کے طور پر جاری رکھیں',
         'google_intent_host' => 'میزبان کے طور پر جاری رکھیں',
         'google_intent_cancel' => 'منسوخ',

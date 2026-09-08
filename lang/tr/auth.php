@@ -21,7 +21,7 @@ return [
         'toast_signed_in' => 'Giriş yaptınız.',
         'sign_in_google' => 'Google ile giriş yap',
         'google_intent_title' => 'Google ile devam et',
-        'google_intent_subtitle' => 'Müşteri veya ev sahibi seçin. Google ile giriş için.',
+        'google_intent_subtitle' => 'Google ile giriş için müşteri, ev sahibi veya şirket seçin.',
         'google_intent_customer' => 'Müşteri olarak devam et',
         'google_intent_host' => 'Ev sahibi olarak devam et',
         'google_intent_cancel' => 'İptal',
