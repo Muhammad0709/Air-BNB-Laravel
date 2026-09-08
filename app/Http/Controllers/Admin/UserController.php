@@ -34,11 +34,15 @@ class UserController extends Controller
             });
         }
 
-        $users = $query->latest()->paginate(10);
+        $filters = $request->validate(['account_status' => ['nullable', 'in:active,suspended,disabled'], 'type' => ['nullable', 'in:User,Host,Company']]);
+        foreach ($filters as $key => $value) {
+            if ($value) { $query->where($key, $value); }
+        }
+        $users = $query->latest()->paginate(10)->withQueryString();
 
         return Inertia::render('Admin/Users/Index', [
             'users' => $users,
-            'filters' => $request->only(['search']),
+            'filters' => $request->only(['search', 'account_status', 'type']),
         ]);
     }
 
@@ -78,7 +82,22 @@ class UserController extends Controller
      */
     public function updateStatus(UpdateUserStatusRequest $request, User $user)
     {
-        $user->update($request->validated());
+        abort_if($user->id === $request->user()->id || in_array($user->type, [UserType::ADMIN, UserType::MODERATOR], true), 403);
+        \Illuminate\Support\Facades\DB::transaction(function () use ($request, $user) {
+            $user = User::lockForUpdate()->findOrFail($user->id);
+            abort_if($user->account_status === 'disabled', 422, 'Permanently disabled accounts cannot be reactivated.');
+            $user->forceFill([
+                'account_status' => $request->validated('account_status'),
+                'account_status_reason' => $request->validated('account_status') === 'active' ? null : $request->validated('reason'),
+            ])->save();
+            if ($user->account_status !== 'active') {
+                $user->tokens()->delete();
+                if (config('session.driver') === 'database') {
+                    \Illuminate\Support\Facades\DB::table(config('session.table', 'sessions'))->where('user_id', $user->id)->delete();
+                }
+            }
+            AuditLog::record($request->user(), 'account_'.$user->account_status, (string) $user->id, $request->validated('reason'));
+        });
 
         return redirect()->back()
             ->with('success', __('admin.users.flash_status_updated'));

@@ -17,7 +17,8 @@ class UpdateUserStatusRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => ['required', 'in:Active,Inactive'],
+            'account_status' => ['required', 'in:active,suspended,disabled'],
+            'reason' => ['required_unless:account_status,active', 'nullable', 'string', 'max:2000'],
         ];
     }
 }

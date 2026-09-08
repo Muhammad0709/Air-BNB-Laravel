@@ -84,6 +84,7 @@ class GoogleAuthController extends Controller
             }
         }
 
+        abort_unless(($user->account_status ?? 'active') === 'active', 403, 'Your account is suspended or disabled.');
         Auth::login($user, true);
         request()->session()->regenerate();
 

@@ -22,12 +22,15 @@ class DashboardController extends Controller
     {
         $stats = [
             'totalBookings' => Booking::count(),
-            'totalUsers' => User::where('type', '!=', UserType::ADMIN)->count(),
+            'totalUsers' => User::whereNotIn('type', [UserType::ADMIN->value, UserType::MODERATOR->value])->count(),
+            'totalHosts' => User::where('type', UserType::HOST)->count(),
+            'totalCompanies' => User::where('type', UserType::COMPANY)->count(),
+            'activeListings' => Property::where('status', 'Active')->where('approval_status', PropertyStatus::APPROVED)->count(),
             'totalProperties' => Property::count(),
             'revenue' => (float) Booking::whereIn('status', BookingStatus::paid())->sum('total_amount'),
             'pendingApprovals' => Property::where('approval_status', PropertyStatus::PENDING->value)->count(),
             'pendingBookings' => Booking::where('status', BookingStatus::PENDING->value)->count(),
-            'activeHosts' => User::where('type', UserType::HOST)->count(),
+            'activeHosts' => User::where('type', UserType::HOST)->where('account_status', 'active')->count(),
             'averageRating' => round((float) Review::avg('rating'), 1),
             'pendingPayouts' => (float) Payout::whereIn('status', ['pending', 'processing'])->sum('amount'),
         ];
@@ -53,4 +56,3 @@ class DashboardController extends Controller
         ]);
     }
 }
-

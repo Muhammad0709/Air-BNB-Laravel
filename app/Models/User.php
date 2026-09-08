@@ -71,6 +71,15 @@ class User extends Authenticatable
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::updating(function (User $user) {
+            if ($user->isDirty('account_status') && $user->account_status !== 'active') {
+                $user->remember_token = null;
+            }
+        });
+    }
+
     public function hasTwoFactorEnabled(): bool
     {
         return ! is_null($this->two_factor_confirmed_at);

@@ -136,6 +136,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
 
     // Full-admin-only: staff/user management, audit trail, and system configuration are off-limits to moderators.
     Route::middleware('admin.only')->group(function () {
+        Route::patch('/users/{user}/status', [UserController::class, 'updateStatus'])->name('users.status');
         Route::resource('users', UserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
         Route::get('/audit-logs', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit-logs.index');
         Route::get('/settings/configuration', [AdminSettingsController::class, 'configuration'])->name('settings.configuration');

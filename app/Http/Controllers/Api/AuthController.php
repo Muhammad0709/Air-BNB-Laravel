@@ -97,7 +97,10 @@ class AuthController extends Controller
         ]);
 
         // Create token for API authentication
-        $token = $user->createToken('auth-token')->plainTextToken;
+        if (($user->account_status ?? 'active') !== 'active') {
+                return response()->json(['message' => 'Your account is suspended or disabled.'], 403);
+            }
+            $token = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
             'status' => 'success',
@@ -193,7 +196,10 @@ class AuthController extends Controller
         // $user->tokens()->delete();
 
         // Create new token
-        $token = $user->createToken('auth-token')->plainTextToken;
+        if (($user->account_status ?? 'active') !== 'active') {
+                return response()->json(['message' => 'Your account is suspended or disabled.'], 403);
+            }
+            $token = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
             'status' => 'success',
@@ -664,6 +670,9 @@ class AuthController extends Controller
                 }
             }
 
+            if (($user->account_status ?? 'active') !== 'active') {
+                return response()->json(['message' => 'Your account is suspended or disabled.'], 403);
+            }
             $token = $user->createToken('google_auth')->plainTextToken;
 
             return response()->json([

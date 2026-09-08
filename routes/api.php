@@ -45,11 +45,11 @@ Route::get('/health', function () {
 });
 
 // Authentication routes (public)
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/password/forgot', [AuthController::class, 'forgotPassword']);
-Route::post('/password/reset', [AuthController::class, 'resetPassword']);
-Route::post('/social-login', [AuthController::class, 'socialLogin']);
+Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:api-auth');
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:api-auth');
+Route::post('/password/forgot', [AuthController::class, 'forgotPassword'])->middleware('throttle:api-auth');
+Route::post('/password/reset', [AuthController::class, 'resetPassword'])->middleware('throttle:api-auth');
+Route::post('/social-login', [AuthController::class, 'socialLogin'])->middleware('throttle:api-auth');
 
 // Public search (no auth required – destination, dates, guests)
 Route::get('/search', [SearchController::class, 'index']);
@@ -65,7 +65,7 @@ Route::get('/listings', [ListingController::class, 'index']);
 Route::get('/properties/{id}', [PropertyDetailController::class, 'show']);
 
 // Protected routes (require authentication)
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'account.active'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
     
@@ -168,4 +168,3 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy']);
     });
 });
-

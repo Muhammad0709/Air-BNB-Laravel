@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { Avatar, Box, Card, CardContent, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, InputAdornment } from '@mui/material'
+import { Button, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Avatar, Box, Card, CardContent, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, InputAdornment } from '@mui/material'
 import { Row, Col } from 'react-bootstrap'
 import AdminLayout from '../../../Components/Admin/AdminLayout'
 import DeleteConfirmationDialog from '../../../Components/Admin/DeleteConfirmationDialog'
 import ActionsMenu from '../../../Components/Admin/ActionsMenu'
 import Pagination from '../../../components/Pagination'
-import { router, usePage } from '@inertiajs/react'
+import { router, usePage, useForm } from '@inertiajs/react'
 import SearchIcon from '@mui/icons-material/Search'
 import { useLanguage } from '../../../hooks/use-language'
 
@@ -22,14 +22,14 @@ export default function AdminUsers() {
 
   const handleSearchChange = (value: string) => {
     setSearch(value)
-    router.get('/admin/users', { search: value, page: 1 }, {
+    router.get('/admin/users', { ...filters, search: value, page: 1 }, {
       preserveState: true,
       replace: true
     })
   }
 
   const handlePageChange = (page: number) => {
-    router.get('/admin/users', { search, page }, { preserveState: true })
+    router.get('/admin/users', { ...filters, search, page }, { preserveState: true })
   }
 
   const handleDeleteClick = (user: { id: number; name: string }) => {
@@ -53,12 +53,23 @@ export default function AdminUsers() {
     setUserToDelete(null)
   }
 
+  const [statusUser, setStatusUser] = useState<any>(null)
+  const statusForm = useForm({ account_status: 'suspended', reason: '' })
   const usersList = users?.data || []
   const currentPage = users?.current_page ?? 1
   const lastPage = users?.last_page ?? 1
 
   return (
     <AdminLayout title={t('admin.users.title')}>
+      <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+        <TextField select label="Account status" sx={{ minWidth: 180 }} value={filters?.account_status || ''} onChange={e => router.get('/admin/users', { ...filters, account_status: e.target.value })}><MenuItem value="">All</MenuItem>{['active', 'suspended', 'disabled'].map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}</TextField>
+        <TextField select label="Account type" sx={{ minWidth: 180 }} value={filters?.type || ''} onChange={e => router.get('/admin/users', { ...filters, type: e.target.value })}><MenuItem value="">All</MenuItem>{['User', 'Host', 'Company'].map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}</TextField>
+      </Stack>
+      <Dialog open={!!statusUser} onClose={() => setStatusUser(null)} fullWidth><DialogTitle>Manage {statusUser?.name}</DialogTitle><DialogContent><Stack spacing={2} sx={{ mt: 1 }}>
+        <TextField select label="Account status" value={statusForm.data.account_status} onChange={e => statusForm.setData('account_status', e.target.value)}>{['active', 'suspended', 'disabled'].map(s => <MenuItem key={s} value={s}>{s === 'disabled' ? 'Permanently disabled' : s}</MenuItem>)}</TextField>
+        <TextField label="Reason" multiline value={statusForm.data.reason} onChange={e => statusForm.setData('reason', e.target.value)} error={!!statusForm.errors.reason} helperText={statusForm.errors.reason} />
+        <Typography>Permanently disabled accounts cannot be reactivated.</Typography>
+      </Stack></DialogContent><DialogActions><Button onClick={() => setStatusUser(null)}>Cancel</Button><Button disabled={statusForm.processing} onClick={() => statusForm.patch(`/admin/users/${statusUser.id}/status`, { onSuccess: () => setStatusUser(null) })}>Save</Button></DialogActions></Dialog>
       {/* Users Table */}
       <Row>
         <Col xs={12}>
@@ -159,6 +170,8 @@ export default function AdminUsers() {
                             })}
                           </TableCell>
                           <TableCell>
+                            <Typography variant="caption">{user.account_status || 'active'}</Typography>
+                            <Button disabled={user.account_status === 'disabled'} onClick={() => { statusForm.reset(); statusForm.clearErrors(); statusForm.setData('account_status', user.account_status === 'suspended' ? 'active' : 'suspended'); setStatusUser(user) }}>Manage access</Button>
                             <ActionsMenu
                               onView={() => router.visit(`/admin/users/${user.id}`)}
                               onEdit={() => router.visit(`/admin/users/${user.id}/edit`)}

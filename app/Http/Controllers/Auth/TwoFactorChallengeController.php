@@ -57,6 +57,7 @@ class TwoFactorChallengeController extends Controller
         $remember = $request->session()->get('two_factor_challenge_remember', false);
         $request->session()->forget(['two_factor_challenge_user_id', 'two_factor_challenge_remember']);
 
+        abort_unless(($user->account_status ?? 'active') === 'active', 403, 'Your account is suspended or disabled.');
         Auth::login($user, $remember);
         $request->session()->regenerate();
 

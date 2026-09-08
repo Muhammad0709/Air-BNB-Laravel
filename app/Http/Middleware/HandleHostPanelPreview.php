@@ -32,7 +32,7 @@ class HandleHostPanelPreview
         }
 
         // Allow logout, switch routes, and API routes
-        if ($path === 'logout' || 
+        if ($path === 'logout' ||
             $path === 'switch-to-host' || 
             $path === 'switch-to-customer-view' ||
             str_starts_with($path, 'api/')) {

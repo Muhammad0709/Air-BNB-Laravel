@@ -29,6 +29,7 @@ class LoginController extends Controller
         $request->validated();
 
         $credentials = array_merge($request->only('email', 'password'), [
+            'account_status' => 'active',
             'type' => [UserType::USER->value, UserType::HOST->value, UserType::COMPANY->value, UserType::MODERATOR->value],
         ]);
 

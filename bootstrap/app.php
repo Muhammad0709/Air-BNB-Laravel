@@ -44,11 +44,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\SetLocaleFromSession::class,
             \Illuminate\Session\Middleware\AuthenticateSession::class,
+            \App\Http\Middleware\EnsureAccountActive::class,
             \App\Http\Middleware\HandleInertiaRequests::class,
             \App\Http\Middleware\HandleHostPanelPreview::class,
         ]);
 
         $middleware->alias([
+            'account.active' => \App\Http\Middleware\EnsureAccountActive::class,
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
             'admin.only' => \App\Http\Middleware\AdminOnlyMiddleware::class,
             'host' => \App\Http\Middleware\HostMiddleware::class,
