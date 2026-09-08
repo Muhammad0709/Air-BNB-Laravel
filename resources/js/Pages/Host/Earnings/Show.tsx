@@ -38,12 +38,19 @@ export default function ShowEarning() {
     switch (status) {
       case 'Paid': return '#10B981'
       case 'Pending': return '#F59E0B'
+      case 'Refunded': return '#3B82F6'
       case 'Cancelled': return '#EF4444'
       default: return '#717171'
     }
   }
 
-  const statusLabel = earning.status === 'Paid' ? t('host.earnings.paid') : earning.status === 'Pending' ? t('host.earnings.pending') : earning.status
+  const statusLabel = earning.status === 'Paid'
+    ? t('host.earnings.paid')
+    : earning.status === 'Pending'
+      ? t('host.earnings.pending')
+      : earning.status === 'Refunded'
+        ? t('host.earnings.refunded')
+        : earning.status
 
   return (
     <>

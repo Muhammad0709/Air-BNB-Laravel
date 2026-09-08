@@ -184,6 +184,7 @@ return [
         'paid' => 'مدفوع',
         'pending' => 'معلق',
         'completed' => 'مكتمل',
+        'refunded' => 'تم رد المبلغ',
         'request_payout' => 'طلب صرف',
         'payout_history' => 'سجل المدفوعات',
         'payout_id' => 'رقم الدفع',

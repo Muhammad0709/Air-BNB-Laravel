@@ -32,16 +32,22 @@ class EarningsController extends Controller
         $paidOut = Payout::where('user_id', $hostId)->where('status', 'completed')->sum('amount');
         $payouts = Payout::where('user_id', $hostId)->pluck('processed_at', 'booking_id');
         
-        $earnings = $bookings->map(fn($b) => [
+        $earnings = $bookings->map(function ($b) {
+            $status = $b->status->value;
+
+            return [
             'id' => $b->id,
             'bookingId' => 'BK-' . str_pad($b->id, 3, '0', STR_PAD_LEFT),
             'guest' => $b->user->name ?? $b->name,
             'property' => $b->property->title ?? 'N/A',
             'date' => $b->check_in_date->format('Y-m-d'),
             'amount' => '$' . number_format($b->total_amount, 0),
-            'status' => in_array($b->status->value, ['completed', 'confirmed']) ? 'Paid' : 'Pending',
+            'status' => $status === 'refunded'
+                ? 'Refunded'
+                : (in_array($status, ['completed', 'confirmed']) ? 'Paid' : 'Pending'),
             'payoutDate' => isset($payouts[$b->id]) ? $payouts[$b->id]->format('Y-m-d') : '-',
-        ]);
+            ];
+        });
         
         return Inertia::render('Host/Earnings/Index', [
             'earnings' => $earnings,
@@ -74,7 +80,9 @@ class EarningsController extends Controller
                 'property' => $booking->property->title,
                 'date' => $booking->check_in_date->format('F d, Y'),
                 'amount' => '$' . number_format($booking->total_amount, 0),
-                'status' => in_array($booking->status->value, ['completed', 'confirmed']) ? 'Paid' : 'Pending',
+                'status' => $booking->status->value === 'refunded'
+                    ? 'Refunded'
+                    : (in_array($booking->status->value, ['completed', 'confirmed']) ? 'Paid' : 'Pending'),
                 'payoutDate' => $payout && $payout->processed_at ? $payout->processed_at->format('F d, Y') : '-',
                 'nights' => $nights,
                 'commission' => '$' . number_format($commission, 2),

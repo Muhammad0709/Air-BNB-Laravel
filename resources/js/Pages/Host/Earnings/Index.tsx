@@ -53,6 +53,7 @@ export default function HostEarnings() {
       case 'Completed': return '#10B981'
       case 'Pending':
       case 'Processing': return '#F59E0B'
+      case 'Refunded': return '#3B82F6'
       case 'Cancelled': return '#EF4444'
       default: return '#717171'
     }
@@ -90,6 +91,7 @@ export default function HostEarnings() {
     if (status === 'Paid') return t('host.earnings.paid')
     if (status === 'Pending') return t('host.earnings.pending')
     if (status === 'Completed') return t('host.earnings.completed')
+    if (status === 'Refunded') return t('host.earnings.refunded')
     return status
   }
 

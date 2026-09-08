@@ -122,7 +122,7 @@ class HostEarningsController extends Controller
         // Get earnings (bookings)
         $query = Booking::with('property')
             ->whereIn('property_id', $propertyIds)
-            ->whereIn('status', ['confirmed', 'completed']);
+            ->whereIn('status', ['confirmed', 'completed', 'refunded']);
         
         if ($request->filled('search')) {
             $search = $request->input('search');

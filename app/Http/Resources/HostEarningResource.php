@@ -22,8 +22,12 @@ class HostEarningResource extends JsonResource
             'propertyId' => $this->property_id,
             'date' => $this->created_at->format('Y-m-d'),
             'amount' => '$' . number_format($this->total_amount, 2),
-            'status' => $this->status === 'completed' ? 'Paid' : 'Pending',
-            'payoutDate' => $this->status === 'completed' ? $this->updated_at->format('Y-m-d') : '-',
+            'status' => $this->status->value === 'refunded'
+                ? 'Refunded'
+                : ($this->status->value === 'completed' ? 'Paid' : 'Pending'),
+            'payoutDate' => in_array($this->status->value, ['completed', 'confirmed'], true)
+                ? $this->updated_at->format('Y-m-d')
+                : '-',
             'nights' => $this->nights,
             'commission' => '$' . number_format($commission, 2, '.', ','),
             'netAmount' => '$' . number_format($netAmount, 2, '.', ','),

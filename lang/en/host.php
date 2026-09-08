@@ -184,6 +184,7 @@ return [
         'paid' => 'Paid',
         'pending' => 'Pending',
         'completed' => 'Completed',
+        'refunded' => 'Refunded',
         'request_payout' => 'Request Payout',
         'payout_history' => 'Payout History',
         'payout_id' => 'Payout ID',

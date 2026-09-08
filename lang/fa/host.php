@@ -184,6 +184,7 @@ return [
         'paid' => 'پرداخت شده',
         'pending' => 'در انتظار',
         'completed' => 'تکمیل شده',
+        'refunded' => 'بازپرداخت شده',
         'request_payout' => 'درخواست پرداخت',
         'payout_history' => 'سابقه پرداخت',
         'payout_id' => 'شماره پرداخت',

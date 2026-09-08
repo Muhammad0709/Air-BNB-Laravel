@@ -184,6 +184,7 @@ return [
         'paid' => 'Ödendi',
         'pending' => 'Beklemede',
         'completed' => 'Tamamlandı',
+        'refunded' => 'İade Edildi',
         'request_payout' => 'Ödeme talep et',
         'payout_history' => 'Ödeme geçmişi',
         'payout_id' => 'Ödeme no',

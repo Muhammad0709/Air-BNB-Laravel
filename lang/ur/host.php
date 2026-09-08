@@ -184,6 +184,7 @@ return [
         'paid' => 'ادا شدہ',
         'pending' => 'زیر التوا',
         'completed' => 'مکمل',
+        'refunded' => 'رقم واپس',
         'request_payout' => 'ادائیگی کی درخواست',
         'payout_history' => 'ادائیگیوں کی تاریخ',
         'payout_id' => 'ادائیگی آئی ڈی',

@@ -184,6 +184,7 @@ return [
         'paid' => 'پارەدراو',
         'pending' => 'چاوەڕوان',
         'completed' => 'تەواوبوو',
+        'refunded' => 'پارەکە گەڕێندرایەوە',
         'request_payout' => 'داوای پارەدان',
         'payout_history' => 'مێژووی پارەدان',
         'payout_id' => 'ژمارەی پارەدان',
