@@ -13,11 +13,13 @@ class Message extends Model
         'sender_id',
         'sender_type',
         'message',
+        'hidden_for_user_ids',
         'read',
     ];
 
     protected $casts = [
         'read' => 'boolean',
+        'hidden_for_user_ids' => 'array',
     ];
 
     public function conversation(): BelongsTo
@@ -35,4 +37,3 @@ class Message extends Model
         return $this->hasMany(MessageFile::class);
     }
 }
-

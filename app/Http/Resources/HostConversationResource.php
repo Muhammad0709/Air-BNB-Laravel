@@ -12,7 +12,11 @@ class HostConversationResource extends JsonResource
     {
         $host = $request->user();
         
-        $unreadCount = $this->messages()
+        $visibleMessages = $this->messages()
+            ->whereJsonDoesntContain('hidden_for_user_ids', $host->id);
+        $lastMessage = (clone $visibleMessages)->latest('created_at')->first();
+
+        $unreadCount = (clone $visibleMessages)
             ->where('sender_id', '!=', $host->id)
             ->where('read', false)
             ->count();
@@ -27,8 +31,8 @@ class HostConversationResource extends JsonResource
                 : null,
             'property' => $this->property->title ?? 'Unknown Property',
             'propertyId' => $this->property->id ?? null,
-            'lastMessage' => $this->lastMessage->message ?? '',
-            'lastMessageTime' => ($this->lastMessage->created_at ?? $this->created_at)->toISOString(),
+            'lastMessage' => $lastMessage->message ?? '',
+            'lastMessageTime' => ($lastMessage->created_at ?? $this->created_at)->toISOString(),
             'unreadCount' => $unreadCount,
         ];
     }

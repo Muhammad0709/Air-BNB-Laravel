@@ -83,8 +83,9 @@ class MessagesController extends Controller
                     ->orWhereHas('property.user', function ($uq) use ($search) {
                         $uq->where('name', 'like', "%{$search}%");
                     })
-                    ->orWhereHas('lastMessage', function ($mq) use ($search) {
-                        $mq->where('message', 'like', "%{$search}%");
+                    ->orWhereHas('messages', function ($mq) use ($search, $user) {
+                        $mq->where('message', 'like', "%{$search}%")
+                            ->whereJsonDoesntContain('hidden_for_user_ids', $user->id);
                     });
                 });
             })
@@ -226,9 +227,11 @@ class MessagesController extends Controller
 
         Message::where('conversation_id', $conversationId)
             ->where('sender_id', '!=', $user->id)
+            ->whereJsonDoesntContain('hidden_for_user_ids', $user->id)
             ->update(['read' => true]);
 
         $messages = $conversation->messages()
+            ->whereJsonDoesntContain('hidden_for_user_ids', $user->id)
             ->with(['files', 'conversation'])
             ->orderBy('created_at', 'desc')
             ->get();
@@ -470,8 +473,23 @@ class MessagesController extends Controller
             ->where('conversation_id', $conversationId)
             ->firstOrFail();
 
-        $message->delete();
+        $scope = $request->input('scope', 'for_me');
+
+        if ($scope === 'for_everyone') {
+            if ($message->sender_id !== $user->id) {
+                return response()->json(['status' => 'error', 'message' => 'Only the sender can delete this message for everyone'], 403);
+            }
+
+            $message->delete();
+        } else {
+            $hiddenForUserIds = $message->hidden_for_user_ids ?? [];
+            $hiddenForUserIds[] = $user->id;
+
+            $message->update([
+                'hidden_for_user_ids' => array_values(array_unique($hiddenForUserIds)),
+            ]);
+        }
+
         return response()->noContent();
     }
 }
-

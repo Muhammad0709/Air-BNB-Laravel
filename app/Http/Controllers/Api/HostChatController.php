@@ -280,9 +280,11 @@ class HostChatController extends Controller
 
         Message::where('conversation_id', $id)
             ->where('sender_id', '!=', $host->id)
+            ->whereJsonDoesntContain('hidden_for_user_ids', $host->id)
             ->update(['read' => true]);
 
         $messages = $conversation->messages()
+            ->whereJsonDoesntContain('hidden_for_user_ids', $host->id)
             ->with(['files'])
             ->orderBy('created_at', 'desc')
             ->get();
@@ -559,7 +561,7 @@ class HostChatController extends Controller
      * Delete a single message. Only the message is removed; the conversation stays.
      * Host must own the conversation's property.
      */
-    public function deleteMessage($id, $messageId): JsonResponse|\Illuminate\Http\Response
+    public function deleteMessage(Request $request, $id, $messageId): JsonResponse|\Illuminate\Http\Response
     {
         $host = Auth::user();
         $propertyIds = Property::where('user_id', $host->id)->pluck('id');
@@ -570,7 +572,23 @@ class HostChatController extends Controller
         }
 
         $message = Message::where('id', $messageId)->where('conversation_id', $id)->firstOrFail();
-        $message->delete();
+        $scope = $request->input('scope', 'for_me');
+
+        if ($scope === 'for_everyone') {
+            if ($message->sender_id !== $host->id) {
+                return response()->json(['status' => 'error', 'message' => 'Only the sender can delete this message for everyone'], 403);
+            }
+
+            $message->delete();
+        } else {
+            $hiddenForUserIds = $message->hidden_for_user_ids ?? [];
+            $hiddenForUserIds[] = $host->id;
+
+            $message->update([
+                'hidden_for_user_ids' => array_values(array_unique($hiddenForUserIds)),
+            ]);
+        }
+
         return response()->noContent();
     }
 }

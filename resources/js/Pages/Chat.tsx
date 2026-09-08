@@ -398,10 +398,10 @@ export default function Chat() {
     }
   }
 
-  const handleDeleteMessage = async (messageId: number) => {
+  const handleDeleteMessage = async (messageId: number, scope: 'for_me' | 'for_everyone' = 'for_me') => {
     if (!selectedConversation) return
     try {
-      await apiDelete(`/api/messages/conversations/${selectedConversation}/messages/${messageId}`)
+      await apiDelete(`/api/messages/conversations/${selectedConversation}/messages/${messageId}?scope=${scope}`)
       setConversations((prev) =>
         prev.map((c) => c.id === selectedConversation 
           ? { ...c, messages: c.messages.filter((m) => m.id !== messageId), lastMessage: c.messages.filter((m) => m.id !== messageId).slice(-1)[0]?.text || '' }
@@ -946,7 +946,7 @@ export default function Chat() {
                             <Button
                               onClick={() => {
                                 if (messageToDelete != null) {
-                                  handleDeleteMessage(messageToDelete)
+                                  handleDeleteMessage(messageToDelete, 'for_everyone')
                                 }
                               }}
                               disabled={messageToDelete == null}
@@ -974,7 +974,7 @@ export default function Chat() {
                             <Button
                               onClick={() => {
                                 if (messageToDelete != null) {
-                                  handleDeleteMessage(messageToDelete)
+                                  handleDeleteMessage(messageToDelete, 'for_me')
                                 }
                               }}
                               disabled={messageToDelete == null}
@@ -1005,7 +1005,7 @@ export default function Chat() {
                           <Button
                             onClick={() => {
                               if (messageToDelete != null) {
-                                handleDeleteMessage(messageToDelete)
+                                handleDeleteMessage(messageToDelete, 'for_me')
                               }
                             }}
                             disabled={messageToDelete == null}

@@ -14,9 +14,19 @@ class ConversationResource extends JsonResource
         $property = $this->property;
         $host = $property->user ?? null;
 
-        $lastMessage = $this->lastMessage;
+        $lastMessage = $user
+            ? $this->messages()
+                ->whereJsonDoesntContain('hidden_for_user_ids', $user->id)
+                ->with('files')
+                ->latest('created_at')
+                ->first()
+            : $this->lastMessage;
         $unreadCount = $user
-            ? $this->messages()->where('sender_id', '!=', $user->id)->where('read', false)->count()
+            ? $this->messages()
+                ->where('sender_id', '!=', $user->id)
+                ->where('read', false)
+                ->whereJsonDoesntContain('hidden_for_user_ids', $user->id)
+                ->count()
             : 0;
 
         $lastMessageText = '';
