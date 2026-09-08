@@ -80,9 +80,9 @@ return [
         'log_in_link' => 'Log in',
     ],
     'admin_login' => [
-        'title' => 'Login',
-        'heading' => 'Login',
-        'subtitle' => 'Sign in to access your host dashboard',
+        'title' => 'Admin Login',
+        'heading' => 'Admin Login',
+        'subtitle' => 'Sign in to access your admin dashboard',
         'email' => 'Email',
         'password' => 'Password',
         'submit' => 'Sign In',

@@ -80,9 +80,9 @@ return [
         'log_in_link' => 'Giriş yap',
     ],
     'admin_login' => [
-        'title' => 'Giriş',
-        'heading' => 'Giriş',
-        'subtitle' => 'Ev sahibi panelinize erişmek için giriş yapın',
+        'title' => 'Yönetici Girişi',
+        'heading' => 'Yönetici Girişi',
+        'subtitle' => 'Yönetici panelinize erişmek için giriş yapın',
         'email' => 'E-posta',
         'password' => 'Şifre',
         'submit' => 'Giriş yap',

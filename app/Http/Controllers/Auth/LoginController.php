@@ -22,13 +22,17 @@ class LoginController extends Controller
     }
 
     /**
-     * Handle an incoming authentication request (customer, host, and admin).
+     * Handle an incoming non-admin authentication request.
      */
     public function store(LoginRequest $request)
     {
         $request->validated();
 
-        if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+        $credentials = array_merge($request->only('email', 'password'), [
+            'type' => [UserType::USER->value, UserType::HOST->value, UserType::COMPANY->value, UserType::MODERATOR->value],
+        ]);
+
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $user = Auth::user();
 
             if ($user->hasTwoFactorEnabled()) {

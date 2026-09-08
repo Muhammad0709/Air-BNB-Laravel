@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
-import { Box, Button, IconButton, InputAdornment, Link, Menu, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, IconButton, InputAdornment, Menu, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { Container, Row, Col } from 'react-bootstrap'
-import { Head, Link as InertiaLink, useForm, usePage } from '@inertiajs/react'
+import { Head, useForm, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 import InputError from '../../../components/InputError'
 
 const logoUrl = '/images/Logo.png'
-const socialIcon = '/images/Social-icon.svg'
 const languages = [
   { code: 'en', name: 'English', flag: '🇺🇸' },
   { code: 'ar', name: 'Arabic', flag: '🇸🇦' },
@@ -36,17 +35,15 @@ export default function AdminLogin() {
   const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null)
   const [showPassword, setShowPassword] = useState(false)
   const currentLanguage = languages.find((l) => l.code === language) || languages[0]
-  const { data, setData, post, processing, errors: formErrors } = useForm({ email: '', password: '' })
+  const { data, setData, post, processing, reset, errors: formErrors } = useForm({ email: '', password: '' })
   const pageErrors = (usePage<{ errors?: PageErrors }>().props.errors ?? {}) as PageErrors
   const emailError = firstErr(formErrors.email) ?? firstErr(pageErrors.email)
   const passwordError = firstErr(formErrors.password) ?? firstErr(pageErrors.password)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    post('/login', { onSuccess: () => {} })
+    post('/admin/login', { onFinish: () => reset('password') })
   }
-
-  const googleIconEl = <Box component="img" src={socialIcon} alt="Google" sx={{ width: 24, height: 24 }} />
 
   return (
     <>
@@ -176,42 +173,6 @@ export default function AdminLogin() {
                       {processing ? t('auth.admin_login.signing_in') : t('auth.admin_login.submit')}
                     </Button>
 
-                    <Button
-                      component="a"
-                      href="/auth/google?intent=host"
-                      fullWidth
-                      variant="outlined"
-                      {...(isRtl ? { endIcon: googleIconEl } : { startIcon: googleIconEl })}
-                      sx={{
-                        borderRadius: '24px',
-                        py: 1.5,
-                        fontWeight: 600,
-                        textTransform: 'none',
-                        fontSize: 16,
-                        borderColor: '#D0D5DD',
-                        color: '#344054',
-                        bgcolor: '#FFFFFF',
-                        textDecoration: 'none',
-                        gap: 1,
-                        '& .MuiButton-startIcon, & .MuiButton-endIcon': { margin: 0 },
-                        '&:hover': { borderColor: '#9CA3AF', bgcolor: '#F9FAFB' },
-                      }}
-                    >
-                      {t('auth.admin_login.sign_in_google')}
-                    </Button>
-
-                    <Box sx={{ textAlign: 'center', mt: 2 }}>
-                      <Typography variant="body2" sx={{ color: '#717171' }}>
-                        {t('auth.admin_login.no_account')}{' '}
-                        <Link
-                          component={InertiaLink}
-                          href="/register"
-                          sx={{ color: '#AD542D', fontWeight: 600, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}
-                        >
-                          {t('auth.admin_login.sign_up_link')}
-                        </Link>
-                      </Typography>
-                    </Box>
                   </Stack>
                 </form>
               </Paper>

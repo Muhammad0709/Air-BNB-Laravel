@@ -61,6 +61,12 @@ class GoogleAuthController extends Controller
         $user = User::where('google_id', $googleUser->getId())->first()
             ?? User::where('email', $googleUser->getEmail())->first();
 
+        if ($user && $user->type === UserType::ADMIN) {
+            return redirect()->route('admin.login')->withErrors([
+                'email' => 'Administrators must sign in at /admin/login with email and password.',
+            ]);
+        }
+
         $isNewUser = false;
         if (!$user) {
             $userType = $intent === 'host' ? UserType::HOST : UserType::USER;

@@ -57,8 +57,8 @@ Route::middleware('guest')->group(function () {
     });
     
     // Admin login (admin can only login, not register)
-    // Route::get('/login', [AdminLoginController::class, 'create'])->name('admin.login');
-    // Route::post('/login', [AdminLoginController::class, 'store']);
+    Route::get('/admin/login', [AdminLoginController::class, 'create'])->name('admin.login');
+    Route::post('/admin/login', [AdminLoginController::class, 'store'])->middleware('throttle:5,1');
     
     // Host-only registration (replaced by unified /register with type=host; Admin/Auth/SignUp unused)
     // Route::get('/register', [AdminRegisterController::class, 'create'])->name('host.register');
@@ -123,7 +123,7 @@ Route::middleware(['auth', 'redirect.admin.host'])->group(function () {
     Route::delete('/profile/delete', [ProfileSettingsController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Admin routes: only 'admin' middleware – unauthenticated or non-admin go to /login (admin login)
+// Admin routes: guests are redirected to the separate admin login.
 Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AdminLoginController::class, 'destroy'])->name('logout');

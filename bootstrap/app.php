@@ -63,7 +63,7 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->render(function (ThrottleRequestsException $e, $request) {
-            if ($request->header('X-Inertia') && $request->is('login')) {
+            if ($request->header('X-Inertia') && $request->is('login', 'admin/login')) {
                 $seconds = $e->getHeaders()['Retry-After'] ?? 60;
 
                 return back()->withErrors([

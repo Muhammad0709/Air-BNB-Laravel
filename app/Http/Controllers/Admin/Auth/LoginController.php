@@ -26,24 +26,26 @@ class LoginController extends Controller
     {
         $request->validated();
 
-        if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
-            $user = Auth::user();
-            // Only allow Admin or Host to log in here; customers must use /login
-            if ($user->type === UserType::USER) {
-                Auth::logout();
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
-                return back()->withErrors([
-                    'email' => __('admin.auth.customer_sign_in_required'),
-                ])->onlyInput('email');
-            }
-            $request->session()->regenerate();
-            $msg = __('auth.signin.toast_signed_in');
+        $credentials = array_merge($request->only('email', 'password'), [
+            'type' => UserType::ADMIN->value,
+        ]);
 
-            if ($user->type === UserType::ADMIN) {
-                return redirect()->intended('/admin/dashboard')->with('success', $msg);
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $user = Auth::user();
+
+            if ($user->hasTwoFactorEnabled()) {
+                Auth::logout();
+                $request->session()->regenerate();
+                $request->session()->put('two_factor_challenge_user_id', $user->id);
+                $request->session()->put('two_factor_challenge_remember', $request->boolean('remember'));
+
+                return redirect()->route('two-factor.challenge');
             }
-            return redirect()->intended('/host/dashboard')->with('success', $msg);
+
+            $request->session()->regenerate();
+
+            return redirect()->intended(route('admin.dashboard'))
+                ->with('success', __('auth.signin.toast_signed_in'));
         }
 
         return back()->withErrors([
@@ -59,6 +61,8 @@ class LoginController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/');
+        return $request->routeIs('admin.logout')
+            ? redirect()->route('admin.login')
+            : redirect('/');
     }
 }
