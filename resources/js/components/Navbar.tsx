@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Link, usePage, router } from '@inertiajs/react'
 import { AppBar, Avatar, Box, Button, Container, IconButton, Stack, Toolbar, Typography, Menu, MenuItem } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
@@ -55,6 +55,14 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
   const [currencyAnchor, setCurrencyAnchor] = useState<null | HTMLElement>(null)
   const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null)
   const [profileAnchor, setProfileAnchor] = useState<null | HTMLElement>(null)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const updateNavbarShadow = () => setIsScrolled(window.scrollY > 8)
+    updateNavbarShadow()
+    window.addEventListener('scroll', updateNavbarShadow, { passive: true })
+    return () => window.removeEventListener('scroll', updateNavbarShadow)
+  }, [])
 
   const user = (props as any)?.auth?.user || null
   const isAuthenticated = !!user
@@ -112,12 +120,18 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
   }
 
   return (
-    <AppBar position="static" elevation={0} sx={{ bgcolor: { xs: '#ffffff', md: 'transparent' }, color: 'inherit', boxShadow: { xs: '0 1px 3px rgba(0,0,0,0.06)', md: 'none' } }}>
-      <Container maxWidth={false} sx={{ px: { xs: 2, md: 3 }, py: { xs: 1.25, md: 1.5 }, maxWidth: { xs: '100%', md: 1160, xl: 1440 }, mx: 'auto' }}>
+    <AppBar
+      position="sticky"
+      elevation={0}
+      className={`site-navbar${isScrolled ? ' is-scrolled' : ''}`}
+      sx={{ bgcolor: 'rgba(255,255,255,.97)', color: 'inherit' }}
+    >
+      <Container maxWidth={false} sx={{ px: { xs: 2, sm: 3, lg: 4 }, maxWidth: { xs: '100%', md: 1160, xl: 1440 }, mx: 'auto' }}>
         <Toolbar
           disableGutters
           sx={{
             gap: 2,
+            minHeight: { xs: '72px', sm: '82px', md: '88px' },
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
@@ -131,7 +145,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                 src={logoUrl}
                 alt="Bondoqi"
                 sx={{
-                  height: { xs: 48, sm: 56 },
+                  height: { xs: 46, sm: 54 },
                   width: 'auto',
                   maxWidth: { xs: 160, sm: 220},
                   objectFit: 'contain',

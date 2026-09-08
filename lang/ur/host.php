@@ -31,6 +31,8 @@ return [
         'log_out' => 'لاگ آؤٹ',
         'first_name' => 'پہلا نام',
         'last_name' => 'آخری نام',
+        'name' => 'نام',
+        'name_placeholder' => 'اپنا پورا نام درج کریں',
         'email_address' => 'ای میل',
         'company_name' => 'کمپنی کا نام',
         'company_name_placeholder' => 'اپنی کمپنی کا نام درج کریں',

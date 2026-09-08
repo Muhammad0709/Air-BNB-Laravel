@@ -3,6 +3,8 @@
 return [
     'cancel' => 'Cancel',
     'delete' => 'Delete',
+    'previous' => 'Previous',
+    'next' => 'Next',
     'no_image' => 'No Image',
     'just_now' => 'Just now',
     'minutes_ago' => ':count m ago',

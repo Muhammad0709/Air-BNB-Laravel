@@ -12,6 +12,9 @@ import RemoveIcon from '@mui/icons-material/Remove'
 import AddIcon from '@mui/icons-material/Add'
 import MapIcon from '@mui/icons-material/Map'
 import ListIcon from '@mui/icons-material/List'
+import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
+import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined'
 import { Head, router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../hooks/use-language'
 
@@ -183,6 +186,9 @@ export default function Listing() {
   const items = properties.data || []
   const minPrice = priceRange.min ?? 0
   const maxPrice = priceRange.max ?? 1000
+  const formatFilterDate = (date: Date | null) => date
+    ? date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+    : '—'
 
   return (
     <>
@@ -253,13 +259,29 @@ export default function Listing() {
                   </Box>
 
                   <Typography className="filter-group">{t('listing.checkin')} / {t('listing.checkout')}</Typography>
+                  <Box className="filter-date-summary">
+                    <Box className={`filter-date-item ${selectedCheckin ? 'has-value' : ''}`}>
+                      <CalendarTodayOutlinedIcon />
+                      <Box>
+                        <Typography component="span">{t('listing.checkin')}</Typography>
+                        <Typography component="strong">{formatFilterDate(selectedCheckin)}</Typography>
+                      </Box>
+                    </Box>
+                    <Box className="filter-date-arrow">{isRtl ? '←' : '→'}</Box>
+                    <Box className={`filter-date-item ${selectedCheckout ? 'has-value' : ''}`}>
+                      <Box>
+                        <Typography component="span">{t('listing.checkout')}</Typography>
+                        <Typography component="strong">{formatFilterDate(selectedCheckout)}</Typography>
+                      </Box>
+                    </Box>
+                  </Box>
                   <Box className="mini-calendar">
                     <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
-                      <IconButton size="small" onClick={() => changeMonth(-1)}><RemoveIcon fontSize="small" /></IconButton>
+                      <IconButton className="calendar-nav-btn" size="small" onClick={() => changeMonth(-1)} aria-label="Previous month"><ChevronLeftRoundedIcon fontSize="small" /></IconButton>
                       <Typography className="cal-month">
                         {currentMonth.toLocaleString('default', { month: 'short', year: 'numeric' })}
                       </Typography>
-                      <IconButton size="small" onClick={() => changeMonth(1)}><AddIcon fontSize="small" /></IconButton>
+                      <IconButton className="calendar-nav-btn" size="small" onClick={() => changeMonth(1)} aria-label="Next month"><ChevronRightRoundedIcon fontSize="small" /></IconButton>
                     </Stack>
                     <Box className="cal-grid">
                       {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (

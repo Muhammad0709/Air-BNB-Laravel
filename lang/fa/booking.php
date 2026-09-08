@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'err_check_in_required' => 'تاریخ ورود الزامی است',
+    'err_check_out_required' => 'تاریخ خروج الزامی است',
+    'err_rooms_required' => 'تعداد اتاق‌ها را انتخاب کنید',
+    'err_adults_required' => 'تعداد بزرگسالان را انتخاب کنید',
+    'err_phone_country' => 'یک شماره تلفن معتبر برای :code وارد کنید.',
+    'check_in' => 'ورود',
+    'check_out' => 'خروج',
     'title' => 'رزرو خود را تکمیل کنید',
     'your_booking' => 'رزرو شما',
     'total' => 'مجموع',

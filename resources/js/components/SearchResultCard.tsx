@@ -24,6 +24,7 @@ type SearchResultCardProps = {
   isGuestFavorite?: boolean
   /** Query string (no leading ?) e.g. adults=2&rooms=1 — passed to /detail/:id so booking can pre-fill guests */
   detailQuery?: string
+  fallbackImage?: string
 }
 
 export default function SearchResultCard({
@@ -44,13 +45,28 @@ export default function SearchResultCard({
   isNew = false,
   isGuestFavorite = false,
   detailQuery,
+  fallbackImage = '/images/popular-stay-1.svg',
 }: SearchResultCardProps) {
   const { t } = useLanguage()
   const [isFavorited, setIsFavorited] = useState(isGuestFavorite)
+  const [imgSrc, setImgSrc] = useState(image || fallbackImage)
+  const [imgError, setImgError] = useState(false)
 
   useEffect(() => {
     setIsFavorited(isGuestFavorite)
   }, [isGuestFavorite])
+
+  useEffect(() => {
+    setImgSrc(image || fallbackImage)
+    setImgError(false)
+  }, [image])
+
+  const handleImageError = () => {
+    if (!imgError) {
+      setImgError(true)
+      setImgSrc(fallbackImage)
+    }
+  }
 
   const handleClick = () => {
     const suffix = detailQuery ? `?${detailQuery}` : ''
@@ -91,8 +107,9 @@ export default function SearchResultCard({
       <Box sx={{ position: 'relative' }}>
         <Box
           component="img"
-          src={image}
+          src={imgSrc}
           alt={title}
+          onError={handleImageError}
           sx={{ width: '100%', height: 300, objectFit: 'cover', borderRadius: '12px', mb: 1.5 }}
         />
         <IconButton

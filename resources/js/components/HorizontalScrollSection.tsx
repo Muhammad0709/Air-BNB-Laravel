@@ -62,18 +62,13 @@ export default function HorizontalScrollSection({
 
   const scroll = (direction: 'left' | 'right') => {
     if (!scrollContainerRef.current) return
-    
-    // Scroll by approximately 4 cards (310px * 4 + gaps)
-    const scrollAmount = 310 * 4 + 16 * 3
-    const newScrollLeft = 
-      direction === 'left' 
+    // Scroll by ~3 cards at a time (each card ~300px + 24px gap)
+    const scrollAmount = (300 + 24) * 3
+    const newScrollLeft =
+      direction === 'left'
         ? scrollContainerRef.current.scrollLeft - scrollAmount
         : scrollContainerRef.current.scrollLeft + scrollAmount
-    
-    scrollContainerRef.current.scrollTo({
-      left: newScrollLeft,
-      behavior: 'smooth'
-    })
+    scrollContainerRef.current.scrollTo({ left: newScrollLeft, behavior: 'smooth' })
   }
 
   if (items.length === 0) {

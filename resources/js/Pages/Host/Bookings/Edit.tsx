@@ -396,7 +396,7 @@ export default function EditBooking() {
                         ))}
                       </Box>
                       <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: { xs: 0.25, md: 0.5 }, width: '100%' }}>
-                        {calendarDays.slice(0, 35).map((d, idx) => {
+                        {calendarDays.map((d, idx) => {
                           const isInRange = !d.isOtherMonth && selectedCheckin && selectedCheckout && isDateInRange(d.date)
                           const isStart = !d.isOtherMonth && selectedCheckin && isDateStart(d.date)
                           const isEnd = !d.isOtherMonth && selectedCheckout && isDateEnd(d.date)

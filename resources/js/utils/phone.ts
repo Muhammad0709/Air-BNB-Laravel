@@ -1,8 +1,8 @@
-import { parsePhoneNumber } from 'react-phone-number-input'
+import { parsePhoneNumber, type Country } from 'react-phone-number-input'
 
 /** Split DB / profile value into country code + national digits for UI pickers */
-export function splitStoredPhone(raw: string | null | undefined): { phoneCode: string; phone: string } {
-  const fallback = { phoneCode: '+31', phone: '' }
+export function splitStoredPhone(raw: string | null | undefined): { phoneCode: string; phone: string; phoneCountry: Country } {
+  const fallback: { phoneCode: string; phone: string; phoneCountry: Country } = { phoneCode: '+31', phone: '', phoneCountry: 'NL' }
   if (!raw?.trim()) return fallback
   const s = raw.trim()
   try {
@@ -11,6 +11,7 @@ export function splitStoredPhone(raw: string | null | undefined): { phoneCode: s
       return {
         phoneCode: `+${parsed.countryCallingCode}`,
         phone: String(parsed.nationalNumber).replace(/\D/g, ''),
+        phoneCountry: parsed.country ?? 'NL',
       }
     }
   } catch {

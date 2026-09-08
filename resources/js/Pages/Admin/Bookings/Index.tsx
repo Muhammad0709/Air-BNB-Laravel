@@ -58,8 +58,13 @@ export default function AdminBookings() {
 
   const handleDeleteConfirm = () => {
     if (bookingToDelete) {
-      setDeleteDialogOpen(false)
-      setBookingToDelete(null)
+      router.delete(`/admin/bookings/${bookingToDelete.id}`, {
+        preserveScroll: true,
+        onFinish: () => {
+          setDeleteDialogOpen(false)
+          setBookingToDelete(null)
+        },
+      })
     }
   }
 

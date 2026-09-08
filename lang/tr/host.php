@@ -31,6 +31,8 @@ return [
         'log_out' => 'Çıkış yap',
         'first_name' => 'Ad',
         'last_name' => 'Soyad',
+        'name' => 'Ad Soyad',
+        'name_placeholder' => 'Tam adınızı girin',
         'email_address' => 'E-posta adresi',
         'company_name' => 'Şirket adı',
         'company_name_placeholder' => 'Şirket adınızı girin',

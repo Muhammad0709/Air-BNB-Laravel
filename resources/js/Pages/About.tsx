@@ -22,7 +22,7 @@ export default function About() {
               <Typography component="p" className="about-hero-eyebrow">
                 {t('about.eyebrow')}
               </Typography>
-              <Typography component="h1" className="about-hero-title">{t('about.title')}</Typography>
+              <Typography component="h1" className="about-hero-title customer-page-title">{t('about.title')}</Typography>
               <Typography className="about-hero-subtitle">
                 {t('about.subtitle')}
               </Typography>

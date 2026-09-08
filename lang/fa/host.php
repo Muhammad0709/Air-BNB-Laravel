@@ -31,6 +31,8 @@ return [
         'log_out' => 'خروج',
         'first_name' => 'نام',
         'last_name' => 'نام خانوادگی',
+        'name' => 'نام',
+        'name_placeholder' => 'نام کامل خود را وارد کنید',
         'email_address' => 'ایمیل',
         'company_name' => 'نام شرکت',
         'company_name_placeholder' => 'نام شرکت خود را وارد کنید',

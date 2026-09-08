@@ -31,6 +31,8 @@ return [
         'log_out' => 'چوونەدەرەوە',
         'first_name' => 'ناوی یەکەم',
         'last_name' => 'ناوی خێزان',
+        'name' => 'ناو',
+        'name_placeholder' => 'ناوی تەواوت بنووسە',
         'email_address' => 'ئیمەیڵ',
         'company_name' => 'ناوی کۆمپانیا',
         'company_name_placeholder' => 'ناوی کۆمپانیاکەت بنووسە',

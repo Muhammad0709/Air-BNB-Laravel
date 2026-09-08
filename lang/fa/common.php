@@ -3,6 +3,8 @@
 return [
     'cancel' => 'انصراف',
     'delete' => 'حذف',
+    'previous' => 'قبلی',
+    'next' => 'بعدی',
     'no_image' => 'بدون تصویر',
     'just_now' => 'همین الان',
     'minutes_ago' => ':count دقیقه پیش',

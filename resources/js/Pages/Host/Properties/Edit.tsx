@@ -4,6 +4,7 @@ import Checkbox from '@mui/material/Checkbox'
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import Toast from '../../../Components/Admin/Toast';
+import InputError from '../../../components/InputError'
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
@@ -56,10 +57,23 @@ interface Property {
 
 export default function EditProperty() {
   const { t } = useLanguage()
-  const { property, propertyTypes, timezones, cancellationPolicies } = usePage<{ property: Property, propertyTypes: string[], timezones: string[], cancellationPolicies: string[] }>().props
+  const page = usePage<{
+    property: Property
+    propertyTypes: string[]
+    timezones: string[]
+    cancellationPolicies: string[]
+    errors?: Record<string, string[] | string>
+    validationErrors?: Record<string, string[]>
+  }>()
+  const { property, propertyTypes, timezones, cancellationPolicies } = page.props
+  const pageErrors = page.props.validationErrors ?? page.props.errors ?? {}
   const isExperience = property.listing_category === 'experience'
   const [toastOpen, setToastOpen] = useState(false)
   const [newFiles, setNewFiles] = useState<File[]>([])
+  const [submitErrors, setSubmitErrors] = useState<Record<string, string[] | string>>({})
+  const [submitError, setSubmitError] = useState<string | null>(null)
+  const [submitting, setSubmitting] = useState(false)
+  const [hasSubmitted, setHasSubmitted] = useState(false)
   const [formData, setFormData] = useState({
     title: property.title,
     location: property.location,
@@ -96,20 +110,50 @@ export default function EditProperty() {
     !isPresetDuration && property.guided_tours_duration ? String(property.guided_tours_duration) : ''
   )
 
+  const activeErrors = hasSubmitted ? submitErrors : pageErrors
+
+  const clearFieldError = (field: string) => {
+    setSubmitErrors((current) => {
+      if (!Object.prototype.hasOwnProperty.call(current, field)) return current
+      const next = { ...current }
+      delete next[field]
+      return next
+    })
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+    clearFieldError(name)
   }
 
   const handleSelectChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }))
+    clearFieldError(name)
   }
 
   const handleAddImages = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files ? Array.from(e.target.files) : []
-    if (files.length) setNewFiles(prev => [...prev, ...files])
     e.target.value = ''
+    if (!files.length) return
+
+    const maxImageBytes = 2 * 1024 * 1024
+    const oversizedImage = files.find((file) => file.size > maxImageBytes)
+    if (oversizedImage) {
+      setHasSubmitted(true)
+      setSubmitErrors({ images: `${oversizedImage.name} is larger than 2MB.` })
+      return
+    }
+
+    clearFieldError('images')
+    setNewFiles(prev => [...prev, ...files])
   }
+
+  const imageErrorText = (() => {
+    const key = Object.keys(activeErrors).find((item) => item === 'images' || item.startsWith('images.'))
+    const value = key ? activeErrors[key] : null
+    return value ? (Array.isArray(value) ? value[0] : String(value)) : null
+  })()
 
   const removeNew = (index: number) => {
     setNewFiles(prev => prev.filter((_, i) => i !== index))
@@ -165,9 +209,25 @@ export default function EditProperty() {
 
     router.post(`/host/properties/${property.id}`, submitData, {
       forceFormData: true,
+      preserveScroll: true,
+      preserveState: true,
+      onStart: () => {
+        setHasSubmitted(true)
+        setSubmitting(true)
+        setSubmitErrors({})
+        setSubmitError(null)
+      },
+      onError: (errors) => {
+        setSubmitErrors(errors)
+        setSubmitError(Object.keys(errors).length === 0 ? 'Property could not be updated. Please try again.' : null)
+      },
       onSuccess: () => {
+        setSubmitErrors({})
+        setSubmitError(null)
         setToastOpen(true)
-      }
+      },
+      onFinish: () => setSubmitting(false),
+      onException: () => setSubmitError('Property could not be updated. Please try again.'),
     })
   }
 
@@ -197,7 +257,21 @@ export default function EditProperty() {
             {t('host.properties.edit_property_information')}
           </Typography>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} noValidate>
+            {submitError && (
+              <Typography sx={{ mb: 3, color: '#D32F2F', fontSize: '0.875rem', fontWeight: 600 }}>
+                {submitError}
+              </Typography>
+            )}
+            {Object.keys(activeErrors).length > 0 && !submitError && (
+              <Box sx={{ mb: 3, color: '#D32F2F', fontSize: '0.875rem', fontWeight: 600 }}>
+                {Array.from(new Set(Object.values(activeErrors).flat())).map((message) => (
+                  <Typography key={message} sx={{ color: 'inherit', fontSize: 'inherit', fontWeight: 'inherit' }}>
+                    {message}
+                  </Typography>
+                ))}
+              </Box>
+            )}
             <Row>
               <Col xs={12} md={6}>
                 <Stack spacing={3} sx={{ mb: { xs: 3, md: 0 } }}>
@@ -236,36 +310,11 @@ export default function EditProperty() {
                     >
                       {cancellationPolicies.map((policy) => (
                         <MenuItem key={policy} value={policy}>
-                          {t(`host.properties.cancellation_policy_${policy}`)}
+                          {t(`host.properties.cancellation_policy_${policy}`).split(' — ')[0]}
                         </MenuItem>
                       ))}
                     </Select>
                   </FormControl>
-                  <TextField
-                    label={t('host.properties.price_per_night')}
-                    name="price"
-                    type="number"
-                    value={formData.price}
-                    onChange={handleChange}
-                    required
-                    fullWidth
-                    helperText={t('host.properties.price_per_night_hint')}
-                    InputProps={{
-                      startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#6B7280' }}>$</Typography>
-                    }}
-                  />
-                  <TextField
-                    label={t('host.properties.deposit_amount')}
-                    name="deposit_amount"
-                    type="number"
-                    value={formData.deposit_amount}
-                    onChange={handleChange}
-                    fullWidth
-                    helperText={t('host.properties.deposit_amount_hint')}
-                    InputProps={{
-                      startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#6B7280' }}>$</Typography>
-                    }}
-                  />
                 </Stack>
               </Col>
               <Col xs={12} md={6}>
@@ -327,6 +376,38 @@ export default function EditProperty() {
                     fullWidth
                   />
                 </Stack>
+              </Col>
+            </Row>
+
+            <Row className="mt-4">
+              <Col xs={12} md={6}>
+                <TextField
+                  label={t('host.properties.price_per_night')}
+                  name="price"
+                  type="number"
+                  value={formData.price}
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                  helperText={t('host.properties.price_per_night_hint')}
+                  InputProps={{
+                    startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#6B7280' }}>$</Typography>
+                  }}
+                />
+              </Col>
+              <Col xs={12} md={6} className="mt-4 mt-md-0">
+                <TextField
+                  label={t('host.properties.deposit_amount')}
+                  name="deposit_amount"
+                  type="number"
+                  value={formData.deposit_amount}
+                  onChange={handleChange}
+                  fullWidth
+                  helperText={t('host.properties.deposit_amount_hint')}
+                  InputProps={{
+                    startAdornment: <Typography sx={{ marginInlineEnd: 1, color: '#6B7280' }}>$</Typography>
+                  }}
+                />
               </Col>
             </Row>
 
@@ -599,25 +680,24 @@ export default function EditProperty() {
                   onChange={handleAddImages}
                   style={{ display: 'none' }}
                 />
+                <InputError message={imageErrorText} />
                 {property.images && property.images.length > 0 && (
-                  <Box sx={{ mb: 2 }}>
-                    <Typography variant="body2" sx={{ color: '#6B7280', mb: 1 }}>{t('host.properties.current_images')}</Typography>
-                    <Stack direction="row" flexWrap="wrap" gap={2}>
-                      {property.images.map((url, index) => (
-                        <Box
-                          key={index}
-                          component="img"
-                          src={url}
-                          alt={`Image ${index + 1}`}
-                          sx={{ width: 120, height: 90, objectFit: 'cover', borderRadius: 2, border: '1px solid #E5E7EB' }}
-                        />
-                      ))}
-                    </Stack>
-                  </Box>
+                  <Typography variant="body2" sx={{ color: '#6B7280', mb: 1 }}>
+                    {t('host.properties.current_images')}
+                  </Typography>
                 )}
-                <Stack direction="row" flexWrap="wrap" gap={2}>
+                <Stack direction="row" flexWrap="wrap" gap={2} sx={{ mb: 2 }}>
+                  {property.images?.map((url, index) => (
+                    <Box
+                      key={`existing-${index}`}
+                      component="img"
+                      src={url}
+                      alt={`Image ${index + 1}`}
+                      sx={{ width: 120, height: 90, objectFit: 'cover', borderRadius: 2, border: '1px solid #E5E7EB' }}
+                    />
+                  ))}
                   {newFiles.map((file, index) => (
-                    <Box key={index} sx={{ position: 'relative' }}>
+                    <Box key={`new-${index}`} sx={{ position: 'relative' }}>
                       <Box
                         component="img"
                         src={URL.createObjectURL(file)}
@@ -682,6 +762,7 @@ export default function EditProperty() {
                   <Button
                     type="submit"
                     variant="contained"
+                    disabled={submitting}
                     sx={{
                       bgcolor: '#AD542D',
                       textTransform: 'none',
@@ -689,7 +770,7 @@ export default function EditProperty() {
                       '&:hover': { bgcolor: '#78381C' }
                     }}
                   >
-                    {t('host.properties.update_property')}
+                    {submitting ? 'Updating...' : t('host.properties.update_property')}
                   </Button>
                 </Stack>
               </Col>
@@ -706,4 +787,3 @@ export default function EditProperty() {
     </HostLayout>
   )
 }
-
