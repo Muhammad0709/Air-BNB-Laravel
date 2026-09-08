@@ -106,6 +106,7 @@ export default function EditProperty() {
                     name="title"
                     value={data.title}
                     onChange={handleChange}
+                    inputProps={{ maxLength: 255 }}
                     required
                     fullWidth
                     error={!!errors.title}
@@ -373,6 +374,5 @@ export default function EditProperty() {
     </AdminLayout>
   )
 }
-
 
 

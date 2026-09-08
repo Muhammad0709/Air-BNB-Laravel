@@ -280,6 +280,7 @@ export default function EditProperty() {
                     name="title"
                     value={formData.title}
                     onChange={handleChange}
+                    inputProps={{ maxLength: 255 }}
                     required
                     fullWidth
                     sx={{ mb: 2 }}

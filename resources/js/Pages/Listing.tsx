@@ -86,6 +86,7 @@ export default function Listing() {
   const [selectedCheckout, setSelectedCheckout] = useState<Date | null>(null)
   const [guests, setGuests] = useState(filters.guests ?? 1)
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list')
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const [localPriceRange, setLocalPriceRange] = useState<number[]>([
     filters.min_price ?? priceRange.min,
     filters.max_price ?? priceRange.max,
@@ -199,109 +200,121 @@ export default function Listing() {
           <RBContainer>
             <Row>
               <Col xs={12} md={4} lg={3}>
-                <Paper className="filter-card" elevation={0}>
+                <Paper className={`filter-card${mobileFiltersOpen ? ' mobile-filters-open' : ''}`} elevation={0}>
                   <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
                     <Typography className="filter-title">{t('listing.filters')}</Typography>
-                    <IconButton size="small"><ExpandMoreIcon /></IconButton>
-                  </Stack>
-                  <Divider sx={{ mb: 2 }} />
-
-                  <Typography className="filter-group">{t('listing.location')}</Typography>
-                  <Box className="location-filter-scroll" sx={{ maxHeight: 380, overflowY: 'auto', mb: 2 }}>
-                    <Stack spacing={1} sx={{ pr: 2, boxSizing: 'border-box' }}>
-                      {availableLocations.length > 0 ? (
-                        availableLocations.map((location) => {
-                          const count = items.filter((p) =>
-                            p.location.toLowerCase().includes(location.toLowerCase())
-                          ).length
-                          return (
-                            <Stack
-                              key={location}
-                              direction="row"
-                              alignItems="center"
-                              justifyContent="space-between"
-                              className="check-row"
-                            >
-                              <Stack direction="row" alignItems="center" spacing={1.2} useFlexGap>
-                                <Checkbox
-                                  size="small"
-                                  checked={selectedLocations.includes(location)}
-                                  onChange={(e) => handleLocationChange(location, e.target.checked)}
-                                />
-                                <Typography className="check-label">{location}</Typography>
-                              </Stack>
-                              <Typography className="check-count">{count}</Typography>
-                            </Stack>
-                          )
-                        })
-                      ) : (
-                        <Typography variant="body2" color="text.secondary">{t('listing.no_locations')}</Typography>
-                      )}
-                    </Stack>
-                  </Box>
-
-                  <Typography className="filter-group">{t('listing.price_range')}</Typography>
-                  <Box sx={{ px: 1 }}>
-                    <Slider
+                    <IconButton
                       size="small"
-                      value={localPriceRange}
-                      onChange={(_, v) => setLocalPriceRange(v as number[])}
-                      min={minPrice}
-                      max={maxPrice}
-                      valueLabelDisplay="auto"
-                      valueLabelFormat={(v) => `$${v}`}
-                      className="price-slider"
-                    />
-                    <Stack direction="row" justifyContent="space-between" sx={{ color: '#9CA3AF', fontSize: 12, mt: 1, mb: 2 }}>
-                      <span>${minPrice}</span>
-                      <span>${maxPrice}</span>
-                    </Stack>
-                  </Box>
+                      onClick={() => setMobileFiltersOpen((open) => !open)}
+                      aria-label={t('listing.filters')}
+                      aria-expanded={mobileFiltersOpen}
+                      sx={{
+                        transition: 'transform 0.2s ease',
+                        transform: mobileFiltersOpen ? 'rotate(180deg)' : 'none',
+                      }}
+                    >
+                      <ExpandMoreIcon />
+                    </IconButton>
+                  </Stack>
+                  <Box className="filter-card-content">
+                    <Divider sx={{ mb: 2 }} />
 
-                  <Typography className="filter-group">{t('listing.checkin')} / {t('listing.checkout')}</Typography>
-                  <Box className="filter-date-summary">
-                    <Box className={`filter-date-item ${selectedCheckin ? 'has-value' : ''}`}>
-                      <CalendarTodayOutlinedIcon />
-                      <Box>
-                        <Typography component="span">{t('listing.checkin')}</Typography>
-                        <Typography component="strong">{formatFilterDate(selectedCheckin)}</Typography>
+                    <Typography className="filter-group">{t('listing.location')}</Typography>
+                    <Box className="location-filter-scroll" sx={{ maxHeight: 380, overflowY: 'auto', mb: 2 }}>
+                      <Stack spacing={1} sx={{ pr: 2, boxSizing: 'border-box' }}>
+                        {availableLocations.length > 0 ? (
+                          availableLocations.map((location) => {
+                            const count = items.filter((p) =>
+                              p.location.toLowerCase().includes(location.toLowerCase())
+                            ).length
+                            return (
+                              <Stack
+                                key={location}
+                                direction="row"
+                                alignItems="center"
+                                justifyContent="space-between"
+                                className="check-row"
+                              >
+                                <Stack direction="row" alignItems="center" spacing={1.2} useFlexGap>
+                                  <Checkbox
+                                    size="small"
+                                    checked={selectedLocations.includes(location)}
+                                    onChange={(e) => handleLocationChange(location, e.target.checked)}
+                                  />
+                                  <Typography className="check-label">{location}</Typography>
+                                </Stack>
+                                <Typography className="check-count">{count}</Typography>
+                              </Stack>
+                            )
+                          })
+                        ) : (
+                          <Typography variant="body2" color="text.secondary">{t('listing.no_locations')}</Typography>
+                        )}
+                      </Stack>
+                    </Box>
+
+                    <Typography className="filter-group">{t('listing.price_range')}</Typography>
+                    <Box sx={{ px: 1 }}>
+                      <Slider
+                        size="small"
+                        value={localPriceRange}
+                        onChange={(_, v) => setLocalPriceRange(v as number[])}
+                        min={minPrice}
+                        max={maxPrice}
+                        valueLabelDisplay="auto"
+                        valueLabelFormat={(v) => `$${v}`}
+                        className="price-slider"
+                      />
+                      <Stack direction="row" justifyContent="space-between" sx={{ color: '#9CA3AF', fontSize: 12, mt: 1, mb: 2 }}>
+                        <span>${minPrice}</span>
+                        <span>${maxPrice}</span>
+                      </Stack>
+                    </Box>
+
+                    <Typography className="filter-group">{t('listing.checkin')} / {t('listing.checkout')}</Typography>
+                    <Box className="filter-date-summary">
+                      <Box className={`filter-date-item ${selectedCheckin ? 'has-value' : ''}`}>
+                        <CalendarTodayOutlinedIcon />
+                        <Box>
+                          <Typography component="span">{t('listing.checkin')}</Typography>
+                          <Typography component="strong">{formatFilterDate(selectedCheckin)}</Typography>
+                        </Box>
+                      </Box>
+                      <Box className="filter-date-arrow">{isRtl ? '←' : '→'}</Box>
+                      <Box className={`filter-date-item ${selectedCheckout ? 'has-value' : ''}`}>
+                        <Box>
+                          <Typography component="span">{t('listing.checkout')}</Typography>
+                          <Typography component="strong">{formatFilterDate(selectedCheckout)}</Typography>
+                        </Box>
                       </Box>
                     </Box>
-                    <Box className="filter-date-arrow">{isRtl ? '←' : '→'}</Box>
-                    <Box className={`filter-date-item ${selectedCheckout ? 'has-value' : ''}`}>
-                      <Box>
-                        <Typography component="span">{t('listing.checkout')}</Typography>
-                        <Typography component="strong">{formatFilterDate(selectedCheckout)}</Typography>
+                    <Box className="mini-calendar">
+                      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
+                        <IconButton className="calendar-nav-btn" size="small" onClick={() => changeMonth(-1)} aria-label="Previous month"><ChevronLeftRoundedIcon fontSize="small" /></IconButton>
+                        <Typography className="cal-month">
+                          {currentMonth.toLocaleString('default', { month: 'short', year: 'numeric' })}
+                        </Typography>
+                        <IconButton className="calendar-nav-btn" size="small" onClick={() => changeMonth(1)} aria-label="Next month"><ChevronRightRoundedIcon fontSize="small" /></IconButton>
+                      </Stack>
+                      <Box className="cal-grid">
+                        {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
+                          <span key={day} className="cal-cell head">{day}</span>
+                        ))}
+                        {calendarDays.map((d, idx) => {
+                          const { isSelected, isInRange, isPast } = getDateState(d.date)
+                          const isDisabled = d.isOtherMonth || isPast
+                          return (
+                            <span
+                              key={idx}
+                              className={`cal-cell ${d.isOtherMonth ? 'other-month' : ''} ${isSelected ? 'selected' : ''} ${isInRange ? 'in-range' : ''} ${isDisabled ? 'disabled' : ''}`}
+                              onClick={() => !isDisabled && d.date && handleDateClick(d.date)}
+                            >
+                              {d.day}
+                            </span>
+                          )
+                        })}
                       </Box>
                     </Box>
-                  </Box>
-                  <Box className="mini-calendar">
-                    <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
-                      <IconButton className="calendar-nav-btn" size="small" onClick={() => changeMonth(-1)} aria-label="Previous month"><ChevronLeftRoundedIcon fontSize="small" /></IconButton>
-                      <Typography className="cal-month">
-                        {currentMonth.toLocaleString('default', { month: 'short', year: 'numeric' })}
-                      </Typography>
-                      <IconButton className="calendar-nav-btn" size="small" onClick={() => changeMonth(1)} aria-label="Next month"><ChevronRightRoundedIcon fontSize="small" /></IconButton>
-                    </Stack>
-                    <Box className="cal-grid">
-                      {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
-                        <span key={day} className="cal-cell head">{day}</span>
-                      ))}
-                      {calendarDays.map((d, idx) => {
-                        const { isSelected, isInRange, isPast } = getDateState(d.date)
-                        const isDisabled = d.isOtherMonth || isPast
-                        return (
-                          <span
-                            key={idx}
-                            className={`cal-cell ${d.isOtherMonth ? 'other-month' : ''} ${isSelected ? 'selected' : ''} ${isInRange ? 'in-range' : ''} ${isDisabled ? 'disabled' : ''}`}
-                            onClick={() => !isDisabled && d.date && handleDateClick(d.date)}
-                          >
-                            {d.day}
-                          </span>
-                        )
-                      })}
-                    </Box>
-                  </Box>
 
                   <Typography className="filter-group">{t('listing.guests')}</Typography>
                   <Stack direction="row" alignItems="center" spacing={1.5} useFlexGap sx={{ mb: 2 }}>
@@ -309,6 +322,7 @@ export default function Listing() {
                     <Box className="guest-count">{guests}</Box>
                     <IconButton size="small" className="guest-btn" onClick={() => setGuests((g) => g + 1)}><AddIcon fontSize="small" /></IconButton>
                   </Stack>
+                  </Box>
                 </Paper>
               </Col>
 

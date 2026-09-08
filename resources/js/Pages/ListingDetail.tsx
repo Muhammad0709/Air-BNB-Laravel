@@ -276,7 +276,7 @@ export default function ListingDetail() {
               <Col lg={12}>
                 <Paper className="property-info-card" elevation={0}>
                   <Row className="align-items-start property-info-top-row">
-                    <Col xs={8} md={10}>
+                    <Col xs={12} md={10}>
                       <Typography
                         className="property-title customer-page-title"
                         component="h1"
@@ -309,7 +309,7 @@ export default function ListingDetail() {
                         )}
                       </Box>
                     </Col>
-                    <Col xs={4} md={2}>
+                    <Col xs={12} md={2}>
                       <Box className="booking-info">
                         <Box className="price">
                           <Typography component="span" className="price-amount">{formatPriceUtil(bookingTotal, currency)}</Typography>
