@@ -8,9 +8,6 @@ import HotelIcon from '@mui/icons-material/Hotel'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import PendingActionsIcon from '@mui/icons-material/PendingActions'
 import EventBusyIcon from '@mui/icons-material/EventBusy'
-import BusinessIcon from '@mui/icons-material/Business'
-import StarIcon from '@mui/icons-material/Star'
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import AdminLayout from '../../Components/Admin/AdminLayout'
 import { usePage, router } from '@inertiajs/react'
 import { useLanguage } from '../../hooks/use-language'
@@ -20,16 +17,12 @@ export default function AdminDashboard() {
   const { stats, recentBookings } = usePage().props as any
 
   const statsData = [
-    ...[['Total hosts', 'totalHosts'], ['Total companies', 'totalCompanies'], ['Active listings', 'activeListings']].map(([titleKey, key]) => ({ titleKey, value: String(stats?.[key] ?? 0), icon: PeopleIcon, color: '#4F46E5', change: undefined as string | undefined })),
     { titleKey: 'admin.dashboard.total_bookings', value: stats?.totalBookings?.toLocaleString() || '0', icon: DashboardIcon, color: '#AD542D' },
     { titleKey: 'admin.dashboard.total_users', value: stats?.totalUsers?.toLocaleString() || '0', icon: PeopleIcon, color: '#4F46E5' },
     { titleKey: 'admin.dashboard.properties', value: stats?.totalProperties?.toLocaleString() || '0', icon: HotelIcon, color: '#10B981' },
-    { titleKey: 'Confirmed/completed booking value (USD)', value: stats?.revenue ? `$${stats.revenue.toLocaleString()}` : '$0', icon: TrendingUpIcon, color: '#F59E0B' },
+    { titleKey: 'admin.dashboard.revenue', value: stats?.revenue ? `$${stats.revenue.toLocaleString()}` : '$0', icon: TrendingUpIcon, color: '#F59E0B' },
     { titleKey: 'admin.dashboard.pending_approvals', value: stats?.pendingApprovals?.toLocaleString() || '0', icon: PendingActionsIcon, color: '#F59E0B' },
     { titleKey: 'admin.dashboard.pending_bookings', value: stats?.pendingBookings?.toLocaleString() || '0', icon: EventBusyIcon, color: '#EF4444' },
-    { titleKey: 'admin.dashboard.active_hosts', value: stats?.activeHosts?.toLocaleString() || '0', icon: BusinessIcon, color: '#6366F1' },
-    { titleKey: 'admin.dashboard.average_rating', value: stats?.averageRating ? `${stats.averageRating} / 5` : '—', icon: StarIcon, color: '#FBBF24' },
-    { titleKey: 'admin.dashboard.pending_payouts', value: stats?.pendingPayouts ? `$${stats.pendingPayouts.toLocaleString()}` : '$0', icon: AccountBalanceWalletIcon, color: '#10B981' },
   ]
 
   const getStatusColor = (status: string) => {
