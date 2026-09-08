@@ -1700,16 +1700,129 @@ p.hero-subtitle {
   .index-page section.hero-section {
     min-height: 0 !important;
     padding: 34px 0 20px !important;
+    isolation: isolate;
   }
   .index-page .hero-search-wrapper {
     position: relative !important;
     bottom: auto !important;
     left: auto !important;
     right: auto !important;
+    width: 100%;
+    margin: 0;
+    z-index: 1 !important;
+  }
+  .index-page .hero-search-wrapper > .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .index-page .hero-search-form {
+    width: 100%;
+    max-width: none !important;
+    box-sizing: border-box;
+  }
+  .index-page .search-input-group {
+    min-width: 0;
+  }
+  .index-page .search-guests-action-group {
+    min-width: 0;
+    height: auto !important;
+    align-items: stretch;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(116px, .75fr);
+    gap: 8px;
+  }
+  .index-page .search-guests-action-group .search-field-guests {
+    min-width: 0;
+  }
+  .index-page .search-button {
+    min-width: 0 !important;
+    margin: 0 !important;
   }
   .index-page .featured-section {
     margin-top: 0 !important;
     padding: 16px 0 24px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Keep the guest field and Search action in separate rows on narrow screens. */
+  .index-page .search-guests-action-group {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    padding: 6px;
+  }
+  .index-page .search-guests-action-group .search-field-guests {
+    height: auto !important;
+    min-height: 46px;
+  }
+  .index-page .search-button {
+    grid-column: 1;
+    width: 100% !important;
+    height: 48px !important;
+    align-self: stretch;
+  }
+}
+
+/* Tablet and compact desktop: stack the search controls before they become cramped. */
+@media (max-width: 1024px) {
+  .index-page .hero-search-wrapper {
+    position: relative !important;
+    inset: auto !important;
+    width: 100%;
+  }
+  .index-page .hero-search-form {
+    height: auto !important;
+    max-width: 680px !important;
+    margin: 0 auto !important;
+    padding: 16px !important;
+    border-radius: 24px !important;
+    box-sizing: border-box;
+  }
+  .index-page .search-input-group {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: stretch !important;
+    gap: 12px !important;
+    height: auto !important;
+  }
+  .index-page .search-field {
+    height: auto !important;
+    min-height: 64px;
+    box-sizing: border-box;
+  }
+  .index-page .search-input-group > .search-field-destination {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .index-page .search-input-group > .search-field-when {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .index-page .search-input-group > .search-guests-action-group {
+    grid-column: 1;
+    grid-row: 3;
+  }
+  .index-page .search-guests-action-group {
+    height: auto !important;
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    padding: 6px;
+    box-sizing: border-box;
+  }
+  .index-page .search-guests-action-group .search-field-guests {
+    height: auto !important;
+    min-height: 46px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .index-page .search-button {
+    grid-column: 1;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 48px !important;
+    margin: 0 !important;
   }
 }
 
