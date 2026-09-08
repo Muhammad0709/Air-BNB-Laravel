@@ -18,8 +18,8 @@ class RegisterRequest extends FormRequest
     {
         return [
             'type' => ['required', Rule::in(['user', 'host', 'company'])],
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['bail', 'required', 'string', 'regex:/^[A-Za-z0-9._-]+@/', 'email', 'max:255', 'unique:'.User::class],
+            'name' => ['bail', 'required', 'string', 'regex:/^\p{L}(?:[\p{L} ]*\p{L})?$/u', 'max:255'],
+            'email' => ['bail', 'required', 'string', 'regex:/^[A-Za-z0-9._-]+@/', 'email', 'regex:/\.[A-Za-z]{2,}$/', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'company_name' => ['nullable', 'required_if:type,company', 'string', 'max:255'],
             'tax_id' => ['nullable', 'string', 'max:255'],
