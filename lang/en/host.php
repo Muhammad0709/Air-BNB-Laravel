@@ -91,6 +91,7 @@ return [
         'actions' => 'Actions',
         'view' => 'View',
         'edit' => 'Edit',
+        'approve' => 'Approve Booking',
         'delete_confirm' => 'Are you sure you want to delete this booking?',
         'item_name' => 'the booking',
         'review_guest' => 'Review Guest',

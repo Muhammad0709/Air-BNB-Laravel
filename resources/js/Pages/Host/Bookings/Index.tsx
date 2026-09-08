@@ -53,6 +53,10 @@ export default function HostBookings() {
     router.get('/host/bookings', { search, page }, { preserveState: true })
   }
 
+  const handleApprove = (bookingId: number) => {
+    router.patch(`/host/bookings/${bookingId}/status`, { status: 'confirmed' }, { preserveScroll: true })
+  }
+
   const getStatusColor = (status: string) => getBookingStatusColor(status)
   const getStatusLabel = (status: string) => getBookingStatusLabel(status)
   const getPaymentColor = (status: string) => getPaymentStatusColor(status)
@@ -177,9 +181,11 @@ export default function HostBookings() {
                           <ActionsMenu
                             onView={() => router.visit(`/host/bookings/${booking.id}`)}
                             onEdit={() => router.visit(`/host/bookings/${booking.id}/edit`)}
+                            onApprove={booking.status === 'pending' ? () => handleApprove(booking.id) : undefined}
                             onDelete={() => handleDeleteClick({ id: booking.id, guest: booking.guest })}
                             viewLabel={t('host.bookings.view')}
                             editLabel={t('host.bookings.edit')}
+                            approveLabel={t('host.bookings.approve')}
                           />
                         </TableCell>
                       </TableRow>

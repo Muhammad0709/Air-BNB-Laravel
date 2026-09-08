@@ -23,9 +23,9 @@ class UpdateBookingRequest extends FormRequest
 
         return [
             'property_id' => 'sometimes|required|integer|exists:properties,id',
-            'guest' => 'sometimes|required|string|max:255',
+            'guest' => ['sometimes', 'required', 'string', 'max:255', 'regex:/^(?=.*\p{L})[\p{L} ]+$/u'],
             'guestEmail' => 'sometimes|required|email|max:255',
-            'guestPhone' => 'sometimes|required|string|max:20',
+            'guestPhone' => 'sometimes|required|string|regex:/^\d{7,15}$/',
             'checkin' => 'sometimes|required|date',
             'checkout' => 'sometimes|required|date|after:checkin',
             'amount' => 'sometimes|required|numeric|min:0',

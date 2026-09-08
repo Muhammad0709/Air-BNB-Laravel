@@ -91,6 +91,7 @@ return [
         'actions' => 'إجراءات',
         'view' => 'عرض',
         'edit' => 'تعديل',
+        'approve' => 'الموافقة على الحجز',
         'delete_confirm' => 'هل أنت متأكد من حذف هذا الحجز؟',
         'item_name' => 'الحجز',
         'review_guest' => 'تقييم الضيف',

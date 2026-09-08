@@ -23,9 +23,9 @@ class StoreBookingRequest extends FormRequest
 
         return [
             'property_id' => 'required|integer|exists:properties,id',
-            'guest' => 'required|string|max:255',
+            'guest' => ['required', 'string', 'max:255', 'regex:/^(?=.*\p{L})[\p{L} ]+$/u'],
             'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
+            'phone' => 'required|string|regex:/^\d{7,15}$/',
             'checkin' => 'required|date',
             'checkout' => 'required|date|after:checkin',
             'amount' => 'required|numeric|min:0',

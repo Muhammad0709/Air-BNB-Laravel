@@ -30,9 +30,9 @@ class HostBookingRequest extends FormRequest
         if ($this->isMethod('POST')) {
             return [
                 'property_id' => 'required|integer|exists:properties,id',
-                'guest' => 'required|string|max:255',
+                'guest' => ['required', 'string', 'max:255', 'regex:/^(?=.*\p{L})[\p{L} ]+$/u'],
                 'email' => 'required|email|max:255',
-                'phone' => 'required|string|max:20',
+                'phone' => 'required|string|regex:/^\d{7,15}$/',
                 'checkin' => 'required|date',
                 'checkout' => 'required|date|after:checkin',
                 'amount' => 'required|numeric|min:0',
@@ -44,9 +44,9 @@ class HostBookingRequest extends FormRequest
         if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
             return [
                 'property_id' => 'sometimes|required|integer|exists:properties,id',
-                'guest' => 'sometimes|required|string|max:255',
+                'guest' => ['sometimes', 'required', 'string', 'max:255', 'regex:/^(?=.*\p{L})[\p{L} ]+$/u'],
                 'email' => 'sometimes|required|email|max:255',
-                'phone' => 'sometimes|required|string|max:20',
+                'phone' => 'sometimes|required|string|regex:/^\d{7,15}$/',
                 'checkin' => 'sometimes|required|date',
                 'checkout' => 'sometimes|required|date|after:checkin',
                 'amount' => 'sometimes|required|numeric|min:0',

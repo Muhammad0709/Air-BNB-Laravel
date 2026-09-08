@@ -91,6 +91,7 @@ return [
         'actions' => 'İşlemler',
         'view' => 'Görüntüle',
         'edit' => 'Düzenle',
+        'approve' => 'Rezervasyonu Onayla',
         'delete_confirm' => 'Bu rezervasyonu silmek istediğinize emin misiniz?',
         'item_name' => 'rezervasyon',
         'review_guest' => 'Misafiri Değerlendir',

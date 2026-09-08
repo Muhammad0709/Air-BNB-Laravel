@@ -36,10 +36,10 @@ class BookingRequest extends FormRequest
         // For POST requests (store method), validate booking data
         return [
             'property_id' => 'required|integer|exists:properties,id',
-            'name' => 'required|string|min:2|max:255',
+            'name' => ['required', 'string', 'min:2', 'max:255', 'regex:/^(?=.*\p{L})[\p{L} ]+$/u'],
             'email' => 'required|email|max:255',
             'phone_code' => 'sometimes|string|max:10',
-            'phone' => 'required|string|regex:/^[\d\s\-\(\)]{7,15}$/',
+            'phone' => 'required|string|regex:/^\d{7,15}$/',
             'rooms' => 'required|integer|min:1|max:10',
             'adults' => 'required|integer|min:1|max:20',
             'children' => 'sometimes|integer|min:0|max:10',

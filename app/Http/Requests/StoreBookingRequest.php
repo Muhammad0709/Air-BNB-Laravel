@@ -21,15 +21,15 @@ class StoreBookingRequest extends FormRequest
             'property_id'    => ['required', 'integer', 'exists:properties,id'],
             'checkin'        => ['required', 'date'],
             'checkout'       => ['required', 'date', 'after:checkin'],
-            'name'           => ['required', 'string', 'max:255'],
-            'email'          => ['required', 'email'],
+            'name'           => ['required', 'string', 'max:255', 'regex:/^(?=.*\p{L})[\p{L} ]+$/u'],
+            'email'          => ['required', 'email', 'max:255'],
             'phone_code'     => ['nullable', 'string', 'max:10'],
-            'phone'          => ['required', 'string', 'max:20'],
+            'phone'          => ['required', 'string', 'regex:/^\d{7,15}$/'],
             'rooms'          => ['nullable', 'integer', 'min:1', 'max:20'],
             'adults'         => ['nullable', 'integer', 'min:1', 'max:50'],
             'children'       => ['nullable', 'integer', 'min:0', 'max:20'],
             'payment_method' => ['nullable', 'string', 'in:cod,online_mpesa,delivery_mpesa'],
-            'mpesa_phone'    => ['nullable', 'string', 'max:20'],
+            'mpesa_phone'    => ['nullable', 'required_if:payment_method,online_mpesa', 'string', 'max:20', 'regex:/^\d{9,15}$/'],
         ];
     }
 

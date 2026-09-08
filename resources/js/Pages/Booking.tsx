@@ -13,17 +13,9 @@ import { formatPrice } from '../utils/currency'
 import PhoneCountrySelect from '../components/PhoneCountrySelect'
 import InputError from '../components/InputError'
 import { splitStoredPhone } from '../utils/phone'
-import { isValidPhoneNumber, type Country } from 'react-phone-number-input'
-import { getExampleNumber } from 'libphonenumber-js'
-import mobilePhoneExamples from 'libphonenumber-js/examples.mobile.json'
+import { type Country } from 'react-phone-number-input'
 
 const PLACEHOLDER_IMAGE = '/images/popular-stay-1.svg'
-
-function getNationalPhoneLimit(country: Country, startsWithZero: boolean): number {
-  const example = getExampleNumber(country, mobilePhoneExamples)
-  const nationalLength = example?.nationalNumber.length ?? 15
-  return nationalLength + (startsWithZero ? 1 : 0)
-}
 
 type BookingProperty = {
   id: number
@@ -152,34 +144,6 @@ export default function Booking() {
   const [paymentModalOpen, setPaymentModalOpen] = useState(false)
   const [paymentMethod, setPaymentMethod] = useState('cash')
   const [mpesaPhone, setMpesaPhone] = useState('')
-  const [mpesaPhoneError, setMpesaPhoneError] = useState('')
-
-  const validate = () => {
-    const newErrors: Record<string, string> = {}
-
-    if (!checkin) newErrors.checkin = t('booking.err_check_in_required')
-    if (!checkout) newErrors.checkout = t('booking.err_check_out_required')
-
-    if (!formData.name.trim()) newErrors.name = t('booking.err_name_required')
-    else if (formData.name.trim().length < 2) newErrors.name = t('booking.err_name_min')
-
-    if (!formData.email.trim()) newErrors.email = t('booking.err_email_required')
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = t('booking.err_email_invalid')
-
-    const nationalPhone = formData.phone.replace(/\D/g, '').replace(/^0+/, '')
-    const completePhone = `${formData.phoneCode}${nationalPhone}`
-    if (!nationalPhone) newErrors.phone = t('booking.err_phone_required')
-    else if (!isValidPhoneNumber(completePhone)) {
-      newErrors.phone = t('booking.err_phone_country').replace(':code', formData.phoneCode)
-    }
-
-    if (formData.rooms === '') newErrors.rooms = t('booking.err_rooms_required')
-    if (formData.adults === '') newErrors.adults = t('booking.err_adults_required')
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
   const handleChange = (field: string, value: any) => {
     setFormData({ ...formData, [field]: value })
     if (errors[field]) setErrors({ ...errors, [field]: '' })
@@ -189,9 +153,6 @@ export default function Booking() {
 
   const handleBookClick = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!validate()) {
-      return
-    }
     if (!property?.id) {
       setToast({ open: true, message: t('booking.select_property'), severity: 'error' })
       return
@@ -201,20 +162,6 @@ export default function Booking() {
   }
 
   const handleConfirmBooking = () => {
-    // Validate M-Pesa phone if online payment selected
-    if (paymentMethod === 'online') {
-      const cleaned = mpesaPhone.replace(/[\s\-\(\)+]/g, '')
-      if (!mpesaPhone.trim()) {
-        setMpesaPhoneError('M-Pesa phone number is required.')
-        return
-      }
-      if (!/^\d{9,12}$/.test(cleaned)) {
-        setMpesaPhoneError('Enter a valid Kenyan phone number (e.g. 0712345678).')
-        return
-      }
-      setMpesaPhoneError('')
-    }
-
     setPaymentModalOpen(false)
     setSubmitting(true)
     router.post('/booking', {
@@ -264,7 +211,7 @@ export default function Booking() {
                 <Paper elevation={0} className="booking-form">
                   <Typography className="section-title" sx={{ fontSize: { xs: '1.125rem', sm: '1.5rem' }, fontWeight: 700, color: '#222222', mb: 2 }}>{t('booking.guest_details')}</Typography>
 
-                  <form onSubmit={handleSubmit}>
+                  <form onSubmit={handleSubmit} noValidate>
                     {property && (
                       <Stack direction="row" spacing={1.5} useFlexGap className="field" sx={{ mb: 2 }}>
                         <Box sx={{ flex: 1 }}>
@@ -413,19 +360,8 @@ export default function Booking() {
                           size="small" 
                           fullWidth 
                             value={formData.phone}
-                            onChange={(e) => {
-                              const digits = e.target.value.replace(/\D/g, '')
-                              const maxDigits = getNationalPhoneLimit(formData.phoneCountry, digits.startsWith('0'))
-                              if (digits.length <= maxDigits) {
-                                handleChange('phone', digits)
-                              }
-                            }}
+                            onChange={(e) => handleChange('phone', e.target.value)}
                             error={!!errors.phone}
-                            inputProps={{
-                              inputMode: 'numeric',
-                              pattern: '[0-9]*',
-                              autoComplete: 'tel-national',
-                            }}
                         />
                       </Stack>
                       <InputError message={errors.phone} />
@@ -577,11 +513,9 @@ export default function Booking() {
                       value={mpesaPhone}
                       onChange={(e) => {
                         setMpesaPhone(e.target.value)
-                        if (mpesaPhoneError) setMpesaPhoneError('')
                       }}
-                      error={!!mpesaPhoneError}
-                      helperText={mpesaPhoneError || 'Safaricom number registered with M-Pesa'}
-                      inputProps={{ maxLength: 15 }}
+                      error={!!errors.mpesa_phone}
+                      helperText={errors.mpesa_phone || 'Safaricom number registered with M-Pesa'}
                     />
                   </Box>
                 )}

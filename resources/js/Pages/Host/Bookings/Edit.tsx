@@ -210,7 +210,7 @@ export default function EditBooking() {
             {t('host.bookings.edit_booking_information')}
           </Typography>
 
-          <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} noValidate>
             <Row>
               <Col xs={12} md={6}>
                 <Stack spacing={3} sx={{ mb: { xs: 3, md: 0 } }}>
@@ -518,5 +518,4 @@ export default function EditBooking() {
     </>
   )
 }
-
 

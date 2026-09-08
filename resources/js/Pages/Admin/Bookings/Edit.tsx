@@ -62,7 +62,7 @@ export default function EditBooking() {
         <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: 2 }}>
           <CardContent sx={{ p: { xs: 2, md: 4 } }}>
             <Typography variant="h5" sx={{ fontWeight: 700, color: '#222222', mb: 4 }}>{t('admin.bookings.edit_booking_information')}</Typography>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} noValidate>
               <Row>
                 <Col xs={12} md={6}>
                   <Stack spacing={3} sx={{ mb: { xs: 3, md: 0 } }}>
