@@ -1081,10 +1081,28 @@ export default function ListingDetail() {
             borderRadius: 3,
             boxShadow: '0 20px 60px rgba(0, 0, 0, 0.2)',
             p: { xs: 3, sm: 4 },
+            position: 'relative',
             outline: 'none',
             textAlign: 'center',
           }}
         >
+          <IconButton
+            aria-label="Close"
+            onClick={() => setLoginModalOpen(false)}
+            sx={{
+              position: 'absolute',
+              top: 10,
+              right: 10,
+              zIndex: 2,
+              width: 40,
+              height: 40,
+              bgcolor: 'transparent',
+              color: '#717171',
+              '&:hover': { bgcolor: 'transparent', color: '#222222' },
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
           <Typography id="login-required-title" variant="h5" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>
             {t('listing_detail.login_required_title')}
           </Typography>
