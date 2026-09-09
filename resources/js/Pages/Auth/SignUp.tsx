@@ -85,7 +85,7 @@ export default function SignUp() {
         </Box>
         <Container>
           <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Box sx={{ maxWidth: 1160, width: '100%', mx: 'auto', px: { xs: 2, md: 3 }, py: { xs: 4, md: 6 } }}>
+            <Box sx={{ maxWidth: 1160, width: '100%', mx: 'auto', px: { xs: 2, md: 3 }, py: { xs: 4, md: 6 }, pt: { xs: 7, md: 6 } }}>
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
                 <Box sx={{ width: '100%', maxWidth: formWidth, minWidth: 0 }}>
                   <Stack alignItems="center" sx={{ mb: { xs: 3, md: 4 } }}>
