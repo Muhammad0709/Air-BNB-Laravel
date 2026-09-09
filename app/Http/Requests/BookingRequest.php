@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Property;
+use Carbon\Carbon;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -60,5 +63,27 @@ class BookingRequest extends FormRequest
             'check_out.after' => __('validation.custom.checkout.after'),
             'check_out_date.after' => __('validation.custom.checkout.after'),
         ];
+    }
+
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator): void {
+            if ($this->isMethod('GET') || ! $this->filled(['property_id', 'check_in_date', 'check_out_date'])) {
+                return;
+            }
+
+            $property = Property::find($this->input('property_id'));
+            if (! $property || $property->isExperience()) {
+                return;
+            }
+
+            $nights = Carbon::parse($this->input('check_in_date'))->diffInDays(Carbon::parse($this->input('check_out_date')));
+            if ($property->minimum_stay && $nights < $property->minimum_stay) {
+                $validator->errors()->add('check_out_date', "This property requires a minimum stay of {$property->minimum_stay} nights.");
+            }
+            if ($property->maximum_stay && $nights > $property->maximum_stay) {
+                $validator->errors()->add('check_out_date', "This property allows a maximum stay of {$property->maximum_stay} nights.");
+            }
+        });
     }
 }

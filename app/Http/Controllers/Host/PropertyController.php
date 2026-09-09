@@ -125,7 +125,13 @@ class PropertyController extends Controller
         $validated['listing_category'] = $validated['listing_category'] ?? ListingCategory::STAY->value;
         if ($validated['listing_category'] === ListingCategory::EXPERIENCE->value) {
             $validated['bedrooms'] = null;
+            $validated['beds'] = null;
             $validated['bathrooms'] = null;
+            $validated['house_rules'] = null;
+            $validated['check_in_time'] = null;
+            $validated['check_out_time'] = null;
+            $validated['minimum_stay'] = null;
+            $validated['maximum_stay'] = null;
         } else {
             $validated['duration_hours']   = null;
             $validated['min_participants'] = null;
@@ -228,7 +234,13 @@ class PropertyController extends Controller
         $validated['guided_tours_enabled'] = $validated['guided_tours_enabled'] ?? false;
         if ($property->isExperience()) {
             $validated['bedrooms'] = null;
+            $validated['beds'] = null;
             $validated['bathrooms'] = null;
+            $validated['house_rules'] = null;
+            $validated['check_in_time'] = null;
+            $validated['check_out_time'] = null;
+            $validated['minimum_stay'] = null;
+            $validated['maximum_stay'] = null;
         } else {
             $validated['duration_hours']    = null;
             $validated['min_participants']  = null;

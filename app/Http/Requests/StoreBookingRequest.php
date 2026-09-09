@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 use App\Enums\BookingStatus;
 use App\Models\Booking;
 use App\Models\PropertyBlockedDate;
+use App\Models\Property;
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 
@@ -45,6 +47,17 @@ class StoreBookingRequest extends FormRequest
 
             if (! $propertyId || ! $checkin || ! $checkout) {
                 return;
+            }
+
+            $property = Property::find($propertyId);
+            if ($property && ! $property->isExperience()) {
+                $nights = Carbon::parse($checkin)->diffInDays(Carbon::parse($checkout));
+                if ($property->minimum_stay && $nights < $property->minimum_stay) {
+                    $validator->errors()->add('checkout', "This property requires a minimum stay of {$property->minimum_stay} nights.");
+                }
+                if ($property->maximum_stay && $nights > $property->maximum_stay) {
+                    $validator->errors()->add('checkout', "This property allows a maximum stay of {$property->maximum_stay} nights.");
+                }
             }
 
             $overlaps = Booking::where('property_id', $propertyId)

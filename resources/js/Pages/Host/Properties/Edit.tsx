@@ -30,7 +30,13 @@ interface Property {
   listing_category?: string
   duration_hours?: number | null
   bedrooms: number | null
+  beds?: number | null
   bathrooms: number | null
+  house_rules?: string | null
+  check_in_time?: string | null
+  check_out_time?: string | null
+  minimum_stay?: number | null
+  maximum_stay?: number | null
   guests: number
   property_type: string
   status: string
@@ -82,7 +88,13 @@ export default function EditProperty() {
     price: property.price.toString(),
     deposit_amount: property.deposit_amount != null ? String(property.deposit_amount) : '',
     bedrooms: property.bedrooms != null ? property.bedrooms.toString() : '',
+    beds: property.beds != null ? property.beds.toString() : '',
     bathrooms: property.bathrooms != null ? property.bathrooms.toString() : '',
+    house_rules: property.house_rules ?? '',
+    check_in_time: toTimeInputValue(property.check_in_time),
+    check_out_time: toTimeInputValue(property.check_out_time),
+    minimum_stay: property.minimum_stay != null ? String(property.minimum_stay) : '1',
+    maximum_stay: property.maximum_stay != null ? String(property.maximum_stay) : '30',
     duration_hours: property.duration_hours != null ? property.duration_hours.toString() : '',
     guests: property.guests.toString(),
     property_type: property.property_type,
@@ -173,7 +185,13 @@ export default function EditProperty() {
       submitData.append('duration_hours', formData.duration_hours)
     } else {
       submitData.append('bedrooms', formData.bedrooms)
+      submitData.append('beds', formData.beds)
       submitData.append('bathrooms', formData.bathrooms)
+      submitData.append('house_rules', formData.house_rules)
+      submitData.append('check_in_time', formData.check_in_time)
+      submitData.append('check_out_time', formData.check_out_time)
+      submitData.append('minimum_stay', formData.minimum_stay)
+      submitData.append('maximum_stay', formData.maximum_stay)
     }
     submitData.append('guests', formData.guests)
     submitData.append('property_type', formData.property_type)
@@ -366,6 +384,17 @@ export default function EditProperty() {
                         required
                         fullWidth
                       />
+                      <TextField
+                        label="Beds"
+                        name="beds"
+                        type="number"
+                        value={formData.beds}
+                        onChange={handleChange}
+                        required
+                        fullWidth
+                        inputProps={{ min: 1 }}
+                        error={!!activeErrors.beds}
+                      />
                     </>
                   )}
                   <TextField
@@ -414,6 +443,36 @@ export default function EditProperty() {
                 <InputError message={Array.isArray(activeErrors.deposit_amount) ? activeErrors.deposit_amount[0] : activeErrors.deposit_amount} />
               </Col>
             </Row>
+
+            {!isExperience && (
+              <Box sx={{ mt: 4, bgcolor: '#F8FAFC', border: '1px solid #E5E7EB', borderRadius: '12px', p: 3 }}>
+                <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 3 }}>
+                  Stay details
+                </Typography>
+                <Row>
+                  <Col xs={12} md={6}>
+                    <TextField label="Check-in time" name="check_in_time" type="time" value={formData.check_in_time} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} error={!!activeErrors.check_in_time} />
+                    <InputError message={Array.isArray(activeErrors.check_in_time) ? activeErrors.check_in_time[0] : activeErrors.check_in_time} />
+                  </Col>
+                  <Col xs={12} md={6} className="mt-3 mt-md-0">
+                    <TextField label="Check-out time" name="check_out_time" type="time" value={formData.check_out_time} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} error={!!activeErrors.check_out_time} />
+                    <InputError message={Array.isArray(activeErrors.check_out_time) ? activeErrors.check_out_time[0] : activeErrors.check_out_time} />
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col xs={12} md={6}>
+                    <TextField label="Minimum stay (nights)" name="minimum_stay" type="number" value={formData.minimum_stay} onChange={handleChange} required fullWidth inputProps={{ min: 1, max: 365 }} error={!!activeErrors.minimum_stay} />
+                    <InputError message={Array.isArray(activeErrors.minimum_stay) ? activeErrors.minimum_stay[0] : activeErrors.minimum_stay} />
+                  </Col>
+                  <Col xs={12} md={6} className="mt-3 mt-md-0">
+                    <TextField label="Maximum stay (nights)" name="maximum_stay" type="number" value={formData.maximum_stay} onChange={handleChange} required fullWidth inputProps={{ min: 1, max: 365 }} error={!!activeErrors.maximum_stay} />
+                    <InputError message={Array.isArray(activeErrors.maximum_stay) ? activeErrors.maximum_stay[0] : activeErrors.maximum_stay} />
+                  </Col>
+                </Row>
+                <TextField sx={{ mt: 3 }} label="House rules" name="house_rules" value={formData.house_rules} onChange={handleChange} required fullWidth multiline rows={4} placeholder="Describe check-in rules, smoking, pets, parties and quiet hours." error={!!activeErrors.house_rules} />
+                <InputError message={Array.isArray(activeErrors.house_rules) ? activeErrors.house_rules[0] : activeErrors.house_rules} />
+              </Box>
+            )}
 
             <Row className="mt-3">
               <Col xs={12}>

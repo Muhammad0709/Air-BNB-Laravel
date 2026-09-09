@@ -19,6 +19,7 @@ class Property extends Model
         'price',
         'deposit_amount',
         'bedrooms',
+        'beds',
         'bathrooms',
         'guests',
         'property_type',
@@ -29,6 +30,11 @@ class Property extends Model
         'duplicate_flag_reason',
         'is_guest_favorite',
         'description',
+        'house_rules',
+        'check_in_time',
+        'check_out_time',
+        'minimum_stay',
+        'maximum_stay',
         'amenities',
         'image',
         'images',
@@ -64,6 +70,9 @@ class Property extends Model
         // Experience fields
         'min_participants'       => 'integer',
         'included_services'      => 'array',
+        'beds'                   => 'integer',
+        'minimum_stay'           => 'integer',
+        'maximum_stay'           => 'integer',
     ];
 
     public function isExperience(): bool

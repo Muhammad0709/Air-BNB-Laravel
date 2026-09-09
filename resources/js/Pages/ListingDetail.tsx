@@ -44,7 +44,13 @@ type Property = {
   cancellation_policy_description?: string
   price: number | string
   bedrooms: number | null
+  beds?: number | null
   bathrooms: number | null
+  house_rules?: string | null
+  check_in_time?: string | null
+  check_out_time?: string | null
+  minimum_stay?: number | null
+  maximum_stay?: number | null
   guests: number
   property_type: string
   listing_category?: string
@@ -481,6 +487,17 @@ export default function ListingDetail() {
                     <Col md={6} sm={6}>
                       <Box className="info-item d-flex gap-2">
                         <Box className="info-icon">
+                          <BedIcon sx={{ color: '#AD542D', fontSize: '30px', width: '30px', height: '30px', marginInlineEnd: 1.5 }} />
+                        </Box>
+                        <Box className="info-text">
+                          <Typography component="span" className="info-number">{property.beds}</Typography>
+                          <Typography component="span" className="info-label">Beds</Typography>
+                        </Box>
+                      </Box>
+                    </Col>
+                    <Col md={6} sm={6}>
+                      <Box className="info-item d-flex gap-2">
+                        <Box className="info-icon">
                         <BathroomIcon sx={{ color: '#AD542D', fontSize: '30px', width: '30px', height: '30px', marginInlineEnd: 1.5 }} />
                         </Box>
                         <Typography component="span" className="info-number">{property.bathrooms}</Typography>
@@ -571,6 +588,22 @@ export default function ListingDetail() {
                     {property.description || t('listing_detail.no_description')}
                   </Typography>
                 </Paper>
+
+                {property.listing_category !== 'experience' && (
+                  <Paper className="about-section mt-4" elevation={0}>
+                    <Typography className="section-title" component="h2">Stay information</Typography>
+                    <Typography className="about-text">
+                      Check-in: {property.check_in_time || '—'} · Check-out: {property.check_out_time || '—'}
+                    </Typography>
+                    <Typography className="about-text" sx={{ mt: 1 }}>
+                      Stay length: {property.minimum_stay || 1} to {property.maximum_stay || 30} nights
+                    </Typography>
+                    <Typography sx={{ fontWeight: 700, color: '#1a1a1a', mt: 2, mb: 0.5 }}>House rules</Typography>
+                    <Typography className="about-text" sx={{ whiteSpace: 'pre-line' }}>
+                      {property.house_rules || 'No house rules provided.'}
+                    </Typography>
+                  </Paper>
+                )}
 
                 {/* Cancellation Policy Section */}
                 <Paper className="about-section mt-4" elevation={0}>
