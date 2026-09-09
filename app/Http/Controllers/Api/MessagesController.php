@@ -231,9 +231,10 @@ class MessagesController extends Controller
             ->update(['read' => true]);
 
         $messages = $conversation->messages()
+            ->reorder('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->whereJsonDoesntContain('hidden_for_user_ids', $user->id)
             ->with(['files', 'conversation'])
-            ->orderBy('created_at', 'desc')
             ->get();
 
         $messagesList = $messages->map(fn ($m) => (new MessageResource($m))->toArray($request))->values()->all();
@@ -305,21 +306,20 @@ class MessagesController extends Controller
             ], 404);
         }
 
-        $hostId = $property->user_id;
-
-        $conversation = Conversation::where('user_id', $user->id)
-            ->whereHas('property', fn($q) => $q->where('user_id', $hostId))
-            ->with(['property.user', 'lastMessage'])
-            ->latest()
-            ->first();
-
-        if (!$conversation) {
-            $conversation = Conversation::create([
+        // A user must have one conversation per property. Matching only by
+        // host can return a different property's conversation and make the
+        // chat appear to disappear after the client refreshes.
+        $conversation = Conversation::firstOrCreate(
+            [
                 'user_id' => $user->id,
                 'property_id' => $propertyId,
-            ]);
-            $conversation->load(['property.user', 'lastMessage']);
-        }
+            ],
+            [
+                'user_id' => $user->id,
+                'property_id' => $propertyId,
+            ]
+        );
+        $conversation->load(['property.user', 'lastMessage']);
 
         $conversationPayload = (new ConversationResource($conversation))->toArray($request);
         $conversationPayload['messages'] = [];

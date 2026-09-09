@@ -284,9 +284,10 @@ class HostChatController extends Controller
             ->update(['read' => true]);
 
         $messages = $conversation->messages()
+            ->reorder('created_at', 'desc')
+            ->orderBy('id', 'desc')
             ->whereJsonDoesntContain('hidden_for_user_ids', $host->id)
             ->with(['files'])
-            ->orderBy('created_at', 'desc')
             ->get();
 
         return response()->json([

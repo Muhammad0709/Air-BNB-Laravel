@@ -16,9 +16,10 @@ class ConversationResource extends JsonResource
 
         $lastMessage = $user
             ? $this->messages()
+                ->reorder('created_at', 'desc')
+                ->orderBy('id', 'desc')
                 ->whereJsonDoesntContain('hidden_for_user_ids', $user->id)
                 ->with('files')
-                ->latest('created_at')
                 ->first()
             : $this->lastMessage;
         $unreadCount = $user
