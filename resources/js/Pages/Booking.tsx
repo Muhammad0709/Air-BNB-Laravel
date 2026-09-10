@@ -487,13 +487,13 @@ export default function Booking() {
                         <Box
                           component="img"
                           src="/images/mpesa-logo.png"
-                          alt="M-Pesa"
+                          alt={t('booking.mpesa')}
                           onError={(e: React.SyntheticEvent<HTMLImageElement>) => { e.currentTarget.style.display = 'none' }}
                           sx={{ height: 20, objectFit: 'contain' }}
                         />
                       </Stack>
                       <Typography variant="body2" sx={{ color: '#6B7280', mt: 0.5 }}>
-                        Pay via M-Pesa STK Push — you will get a prompt on your phone.
+                        {t('booking.mpesa_prompt')}
                       </Typography>
                     </Box>
                   }
@@ -504,18 +504,18 @@ export default function Booking() {
                 {paymentMethod === 'online' && (
                   <Box sx={{ mt: 2 }} onClick={(e) => e.stopPropagation()}>
                     <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
-                      M-Pesa Phone Number
+                      {t('booking.mpesa_phone')}
                     </Typography>
                     <TextField
                       size="small"
                       fullWidth
-                      placeholder="e.g. 0712345678"
+                      placeholder={t('booking.mpesa_phone_placeholder')}
                       value={mpesaPhone}
                       onChange={(e) => {
                         setMpesaPhone(e.target.value)
                       }}
                       error={!!errors.mpesa_phone}
-                      helperText={errors.mpesa_phone || 'Safaricom number registered with M-Pesa'}
+                      helperText={errors.mpesa_phone || t('booking.mpesa_phone_help')}
                     />
                   </Box>
                 )}

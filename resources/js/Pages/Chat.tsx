@@ -559,7 +559,7 @@ export default function Chat() {
                                 open={Boolean(menuAnchor[conversation.id])}
                                 onClose={() => handleMenuClose(conversation.id)}
                               >
-                                <MenuItem onClick={() => handleDeleteConversation(conversation.id)}>Delete</MenuItem>
+                                <MenuItem onClick={() => handleDeleteConversation(conversation.id)}>{t('common.delete')}</MenuItem>
                               </Menu>
                             </Stack>
                           </Stack>
@@ -760,7 +760,7 @@ export default function Chat() {
                                 <IconButton
                                   size="small"
                                   onClick={(e) => { e.stopPropagation(); openDeleteMessageDialog(message.id) }}
-                                  aria-label="Options"
+                                  aria-label={t('common.options')}
                                   sx={{
                                     position: 'absolute',
                                     top: '50%',
@@ -875,7 +875,7 @@ export default function Chat() {
                               <IconButton
                                 size="small"
                                 onClick={(e) => { e.stopPropagation(); openDeleteMessageDialog(message.id) }}
-                                aria-label="Options"
+                                  aria-label={t('common.options')}
                                 sx={{
                                   position: 'absolute',
                                   top: '50%',

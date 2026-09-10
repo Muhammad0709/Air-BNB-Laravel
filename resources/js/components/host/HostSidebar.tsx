@@ -6,7 +6,7 @@ import BookOnlineIcon from '@mui/icons-material/BookOnline'
 import MessageIcon from '@mui/icons-material/Message'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 import NotificationsIcon from '@mui/icons-material/Notifications'
-import { router } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../hooks/use-language'
 
 type HostSidebarProps = {
@@ -15,6 +15,8 @@ type HostSidebarProps = {
 
 export default function HostSidebar({ sidebarOpen }: HostSidebarProps) {
   const { isRtl, t } = useLanguage()
+  const { auth } = usePage().props as { auth?: { user?: { type?: string } } }
+  const isCompany = auth?.user?.type === 'Company'
   const isActive = (path: string) => {
     if (path === '/host/dashboard') {
       return window.location.pathname === '/host/dashboard'
@@ -81,7 +83,7 @@ export default function HostSidebar({ sidebarOpen }: HostSidebarProps) {
       >
         <Box sx={{ p: 3, borderBottom: '1px solid #E5E7EB' }}>
           <Typography variant="h6" sx={{ fontWeight: 800, color: '#222222' }}>
-            {t('host.sidebar.host_panel')}
+            {isCompany ? 'Company Panel' : t('host.sidebar.host_panel')}
           </Typography>
         </Box>
         <Stack spacing={1} sx={{ p: 2, flex: 1, overflowY: 'auto' }}>

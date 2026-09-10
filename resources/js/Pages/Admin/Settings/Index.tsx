@@ -56,11 +56,11 @@ export default function SystemSettings() {
                     <FormControl fullWidth>
                       <InputLabel>{t('admin.settings.timezone')}</InputLabel>
                       <Select value={settings.timezone} onChange={(e) => handleSelectChange('timezone', e.target.value)} label={t('admin.settings.timezone')}>
-                        <MenuItem value="America/New_York">Eastern Time (ET)</MenuItem>
-                        <MenuItem value="America/Chicago">Central Time (CT)</MenuItem>
-                        <MenuItem value="America/Denver">Mountain Time (MT)</MenuItem>
-                        <MenuItem value="America/Los_Angeles">Pacific Time (PT)</MenuItem>
-                        <MenuItem value="Asia/Karachi">Pakistan Standard Time (PKT)</MenuItem>
+                        <MenuItem value="America/New_York">{t('admin.settings.timezone_eastern')}</MenuItem>
+                        <MenuItem value="America/Chicago">{t('admin.settings.timezone_central')}</MenuItem>
+                        <MenuItem value="America/Denver">{t('admin.settings.timezone_mountain')}</MenuItem>
+                        <MenuItem value="America/Los_Angeles">{t('admin.settings.timezone_pacific')}</MenuItem>
+                        <MenuItem value="Asia/Karachi">{t('admin.settings.timezone_pakistan')}</MenuItem>
                       </Select>
                     </FormControl>
                   </Stack>

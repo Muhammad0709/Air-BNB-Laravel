@@ -35,6 +35,10 @@ export default function SignUp() {
     password_confirmation: '',
     company_name: '',
     tax_id: '',
+    company_registration_number: '',
+    company_registered_address: '',
+    company_contact_person: '',
+    company_description: '',
   })
   const formWidth = 600
 
@@ -144,6 +148,26 @@ export default function SignUp() {
                               <Typography variant="subtitle2" sx={{ mb: 1, color: '#222222', fontSize: 16, fontWeight: 700 }}>{t('auth.signup.tax_id')}</Typography>
                               <TextField name="tax_id" value={data.tax_id} onChange={(e) => setData('tax_id', e.target.value)} error={!!errors.tax_id} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signup.tax_id_placeholder')} />
                               <InputError message={Array.isArray(errors.tax_id) ? errors.tax_id[0] : errors.tax_id} />
+                            </Box>
+                            <Box>
+                              <Typography variant="subtitle2" sx={{ mb: 1, color: '#222222', fontSize: 16, fontWeight: 700 }}>{t('auth.signup.company_registration_number')}*</Typography>
+                              <TextField name="company_registration_number" value={data.company_registration_number} onChange={(e) => setData('company_registration_number', e.target.value)} error={!!errors.company_registration_number} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signup.company_registration_number_placeholder')} />
+                              <InputError message={Array.isArray(errors.company_registration_number) ? errors.company_registration_number[0] : errors.company_registration_number} />
+                            </Box>
+                            <Box>
+                              <Typography variant="subtitle2" sx={{ mb: 1, color: '#222222', fontSize: 16, fontWeight: 700 }}>{t('auth.signup.company_registered_address')}*</Typography>
+                              <TextField name="company_registered_address" value={data.company_registered_address} onChange={(e) => setData('company_registered_address', e.target.value)} error={!!errors.company_registered_address} multiline minRows={2} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signup.company_registered_address_placeholder')} />
+                              <InputError message={Array.isArray(errors.company_registered_address) ? errors.company_registered_address[0] : errors.company_registered_address} />
+                            </Box>
+                            <Box>
+                              <Typography variant="subtitle2" sx={{ mb: 1, color: '#222222', fontSize: 16, fontWeight: 700 }}>{t('auth.signup.company_contact_person')}*</Typography>
+                              <TextField name="company_contact_person" value={data.company_contact_person} onChange={(e) => setData('company_contact_person', e.target.value)} error={!!errors.company_contact_person} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { height: 52, bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signup.company_contact_person_placeholder')} />
+                              <InputError message={Array.isArray(errors.company_contact_person) ? errors.company_contact_person[0] : errors.company_contact_person} />
+                            </Box>
+                            <Box>
+                              <Typography variant="subtitle2" sx={{ mb: 1, color: '#222222', fontSize: 16, fontWeight: 700 }}>{t('auth.signup.company_description')}</Typography>
+                              <TextField name="company_description" value={data.company_description} onChange={(e) => setData('company_description', e.target.value)} error={!!errors.company_description} multiline minRows={3} sx={{ width: { xs: '100%', md: formWidth }, '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', borderRadius: '8px', '& fieldset': { borderColor: '#E6E8EC', borderRadius: '8px' }, '&:hover fieldset': { borderColor: '#D1D5DB', borderRadius: '8px' }, '&.Mui-focused fieldset': { borderColor: '#C7CBD4', borderRadius: '8px' }, }, '& .MuiInputBase-input::placeholder': { color: '#9AA0A6', opacity: 1 } }} placeholder={t('auth.signup.company_description_placeholder')} />
+                              <InputError message={Array.isArray(errors.company_description) ? errors.company_description[0] : errors.company_description} />
                             </Box>
                           </>
                         )}

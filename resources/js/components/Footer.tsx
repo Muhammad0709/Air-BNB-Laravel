@@ -227,7 +227,7 @@ export default function Footer() {
               {t('footer.terms')}
             </Box>
           </Box>
-          <IconButton onClick={scrollToTop} className="footer-top-button" aria-label="Back to top">
+          <IconButton onClick={scrollToTop} className="footer-top-button" aria-label={t('common.back_to_top')}>
             <ArrowUpwardRoundedIcon fontSize="small" />
           </IconButton>
         </Box>

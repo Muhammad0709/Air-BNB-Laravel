@@ -75,19 +75,17 @@ export default function AdminUsers() {
     if (status === 'disabled') return { color: '#B91C1C', bgcolor: '#FEF2F2', borderColor: '#FECACA' }
     return { color: '#047857', bgcolor: '#ECFDF5', borderColor: '#A7F3D0' }
   }
-  const formatStatus = (status: string) => status.charAt(0).toUpperCase() + status.slice(1)
+  const formatStatus = (status: string) => t(`admin.users.status_${status}`)
+  const verificationStatuses = ['pending', 'verified', 'rejected', 'suspended']
+  const getVerificationStatus = (user: any) => String(user.provider_verification_status || 'verified').toLowerCase()
 
   return (
     <AdminLayout title={pageTitle}>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mb: 2.5 }}>
-        <TextField select label="Account status" size="small" sx={{ width: { xs: '100%', sm: 190 } }} value={filters?.account_status || ''} onChange={e => router.get(resourcePath, { ...filters, account_status: e.target.value })}>
-          <MenuItem value="">All statuses</MenuItem>
+        <TextField select label={t('admin.users.account_status')} size="small" sx={{ width: { xs: '100%', sm: 190 } }} value={filters?.account_status || ''} onChange={e => router.get(resourcePath, { ...filters, account_status: e.target.value })}>
+          <MenuItem value="">{t('admin.users.all_statuses')}</MenuItem>
           {['active', 'suspended', 'disabled'].map(s => <MenuItem key={s} value={s}>{formatStatus(s)}</MenuItem>)}
         </TextField>
-        {!page.managementType && <TextField select label="Account type" size="small" sx={{ width: { xs: '100%', sm: 190 } }} value={filters?.type || ''} onChange={e => router.get(resourcePath, { ...filters, type: e.target.value })}>
-          <MenuItem value="">All types</MenuItem>
-          {['User', 'Company'].map(s => <MenuItem key={s} value={s}>{s}</MenuItem>)}
-        </TextField>}
       </Stack>
       <Dialog
         open={!!statusUser}
@@ -102,10 +100,10 @@ export default function AdminUsers() {
               <LockOutlinedIcon />
             </Box>
             <Box sx={{ flex: 1, minWidth: 0 }}>
-              <Typography sx={{ fontWeight: 800, color: '#111827', fontSize: { xs: '1.15rem', sm: '1.3rem' } }}>Manage access</Typography>
+              <Typography sx={{ fontWeight: 800, color: '#111827', fontSize: { xs: '1.15rem', sm: '1.3rem' } }}>{t('admin.users.manage_access')}</Typography>
               <Typography noWrap sx={{ color: '#6B7280', fontSize: 14, mt: 0.25 }}>{statusUser?.name}</Typography>
             </Box>
-            <IconButton onClick={() => setStatusUser(null)} aria-label="Close" sx={{ color: '#6B7280', '&:hover': { bgcolor: '#FBE9DF', color: '#AD542D' } }}>
+            <IconButton onClick={() => setStatusUser(null)} aria-label={t('admin.common.close')} sx={{ color: '#6B7280', '&:hover': { bgcolor: '#FBE9DF', color: '#AD542D' } }}>
               <CloseIcon />
             </IconButton>
           </Stack>
@@ -115,32 +113,32 @@ export default function AdminUsers() {
           <Stack spacing={2.5}>
             <Box>
               <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
-                <Typography sx={{ fontWeight: 700, color: '#374151', fontSize: 14 }}>Account status</Typography>
+                <Typography sx={{ fontWeight: 700, color: '#374151', fontSize: 14 }}>{t('admin.users.account_status')}</Typography>
               </Stack>
               <TextField select value={statusForm.data.account_status} onChange={e => statusForm.setData('account_status', e.target.value)} fullWidth>
-              {['active', 'suspended', 'disabled'].map(s => <MenuItem key={s} value={s}>{s === 'disabled' ? 'Permanently disabled' : formatStatus(s)}</MenuItem>)}
+              {['active', 'suspended', 'disabled'].map(s => <MenuItem key={s} value={s}>{s === 'disabled' ? t('admin.users.status_permanently_disabled') : formatStatus(s)}</MenuItem>)}
               </TextField>
             </Box>
             <TextField
-              label="Reason"
-              placeholder="Add a reason for this access change"
+              label={t('admin.users.reason')}
+              placeholder={t('admin.users.reason_placeholder')}
               multiline
               minRows={3}
               value={statusForm.data.reason}
               onChange={e => statusForm.setData('reason', e.target.value)}
               error={!!statusForm.errors.reason}
-              helperText={statusForm.errors.reason || 'A reason is required when suspending or disabling an account.'}
+              helperText={statusForm.errors.reason || t('admin.users.reason_required')}
               fullWidth
             />
             <Box sx={{ px: 1.5, py: 1.25, borderRadius: 1.5, bgcolor: '#F8FAFC', border: '1px solid #E5E7EB' }}>
-              <Typography variant="body2" sx={{ color: '#6B7280', lineHeight: 1.5 }}>Permanently disabled accounts cannot be reactivated.</Typography>
+              <Typography variant="body2" sx={{ color: '#6B7280', lineHeight: 1.5 }}>{t('admin.users.permanently_disabled_note')}</Typography>
             </Box>
           </Stack>
         </DialogContent>
         <Divider />
         <DialogActions sx={{ px: { xs: 2.5, sm: 3 }, py: 2 }}>
-          <Button onClick={() => setStatusUser(null)} sx={{ textTransform: 'none', color: '#6B7280' }}>Cancel</Button>
-          <Button variant="contained" disabled={statusForm.processing} onClick={() => statusForm.patch(`${resourcePath}/${statusUser.id}/status`, { onSuccess: () => setStatusUser(null) })} sx={{ textTransform: 'none', borderRadius: 1.5, px: 2.5, bgcolor: '#AD542D', '&:hover': { bgcolor: '#8F4324' } }}>{statusForm.processing ? 'Saving...' : 'Save changes'}</Button>
+          <Button onClick={() => setStatusUser(null)} sx={{ textTransform: 'none', color: '#6B7280' }}>{t('admin.common.cancel')}</Button>
+          <Button variant="contained" disabled={statusForm.processing} onClick={() => statusForm.patch(`${resourcePath}/${statusUser.id}/status`, { onSuccess: () => setStatusUser(null) })} sx={{ textTransform: 'none', borderRadius: 1.5, px: 2.5, bgcolor: '#AD542D', '&:hover': { bgcolor: '#8F4324' } }}>{statusForm.processing ? t('admin.users.saving') : t('admin.users.save_changes')}</Button>
         </DialogActions>
       </Dialog>
       {/* Users Table */}
@@ -193,14 +191,15 @@ export default function AdminUsers() {
                       <TableCell sx={{ fontWeight: 700, color: '#374151', whiteSpace: 'nowrap', py: 1.75 }}>{t('admin.users.name')}</TableCell>
                       <TableCell sx={{ fontWeight: 700, color: '#374151', whiteSpace: 'nowrap', py: 1.75 }}>{t('admin.users.email')}</TableCell>
                       <TableCell sx={{ fontWeight: 700, color: '#374151', whiteSpace: 'nowrap', py: 1.75 }}>{t('admin.users.joined')}</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: '#374151', whiteSpace: 'nowrap', py: 1.75 }}>Status</TableCell>
+                      <TableCell sx={{ fontWeight: 700, color: '#374151', whiteSpace: 'nowrap', py: 1.75 }}>{t('admin.users.status')}</TableCell>
+                      {page.managementType === 'hosts' && <TableCell sx={{ fontWeight: 700, color: '#374151', whiteSpace: 'nowrap', py: 1.75 }}>{t('admin.users.verification')}</TableCell>}
                       <TableCell align="right" sx={{ fontWeight: 700, color: '#374151', whiteSpace: 'nowrap', py: 1.75 }}>{t('admin.common.actions')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {usersList.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={5} sx={{ textAlign: 'center', py: 6 }}>
+                        <TableCell colSpan={page.managementType === 'hosts' ? 6 : 5} sx={{ textAlign: 'center', py: 6 }}>
                           <Typography sx={{ color: '#6B7280' }}>{noItemsLabel}</Typography>
                         </TableCell>
                       </TableRow>
@@ -246,6 +245,21 @@ export default function AdminUsers() {
                           <TableCell sx={{ py: 1.75 }}>
                             <Chip label={formatStatus(getStatus(user))} size="small" sx={{ ...getStatusStyles(getStatus(user)), border: '1px solid', fontWeight: 700, fontSize: 12, height: 30, borderRadius: 1.5 }} />
                           </TableCell>
+                          {page.managementType === 'hosts' && (
+                            <TableCell sx={{ py: 1.75 }}>
+                              <TextField
+                                select
+                                size="small"
+                                value={getVerificationStatus(user)}
+                                onChange={(e) => router.patch(`${resourcePath}/${user.id}/verification`, { provider_verification_status: e.target.value }, { preserveScroll: true })}
+                                sx={{ minWidth: 130, '& .MuiOutlinedInput-root': { borderRadius: 1.5 } }}
+                              >
+                                {verificationStatuses.map((status) => (
+                                  <MenuItem key={status} value={status}>{formatStatus(status)}</MenuItem>
+                                ))}
+                              </TextField>
+                            </TableCell>
+                          )}
                           <TableCell align="right" sx={{ py: 1.75 }}>
                             <Stack direction="row" spacing={1} useFlexGap justifyContent="flex-end" alignItems="center">
                             <ActionsMenu
@@ -255,6 +269,7 @@ export default function AdminUsers() {
                               onDelete={() => handleDeleteClick({ id: user.id, name: user.name })}
                               viewLabel={t('admin.common.view')}
                               editLabel={t('admin.common.edit')}
+                              manageAccessLabel={t('admin.users.manage_access')}
                             />
                             </Stack>
                           </TableCell>

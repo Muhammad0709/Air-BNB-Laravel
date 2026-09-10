@@ -8,8 +8,10 @@ import InputError from '../../../components/InputError'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { useLanguage } from '../../../hooks/use-language'
 
 export default function AddProperty() {
+  const { t } = useLanguage()
   const { data, setData, post, processing, errors } = useForm({
     title: '',
     location: '',
@@ -62,7 +64,7 @@ export default function AddProperty() {
   }
 
   return (
-    <AdminLayout title="Add Property">
+    <AdminLayout title={t('admin.properties.add_property')}>
       <Button
         startIcon={<ArrowBackIcon />}
         onClick={() => router.visit('/admin/properties')}
@@ -73,13 +75,13 @@ export default function AddProperty() {
           '&:hover': { bgcolor: '#F9FAFB', color: '#111827' }
         }}
       >
-        Back to Properties
+        {t('admin.properties.back_to_properties')}
       </Button>
 
       <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '16px' }}>
         <CardContent sx={{ p: { xs: 2, md: 4 } }}>
           <Typography variant="h5" sx={{ fontWeight: 700, color: '#111827', mb: 4 }}>
-            Property Information
+            {t('admin.properties.property_information')}
           </Typography>
 
           <form onSubmit={handleSubmit}>
@@ -88,7 +90,7 @@ export default function AddProperty() {
                 <Stack spacing={3}>
                   <Box>
                     <TextField
-                      label="Property Title"
+                      label={t('admin.properties.property_title')}
                       name="title"
                       value={data.title}
                       onChange={handleChange}
@@ -100,20 +102,20 @@ export default function AddProperty() {
                   </Box>
                   <Box>
                     <TextField
-                      label="Location"
+                      label={t('admin.properties.location')}
                       name="location"
                       value={data.location}
                       onChange={handleChange}
                       required
                       fullWidth
-                      placeholder="e.g., Malibu, California"
+                      placeholder={t('admin.properties.location_placeholder')}
                       error={!!errors.location}
                     />
                     <InputError message={Array.isArray(errors.location) ? errors.location[0] : errors.location} />
                   </Box>
                   <Box>
                     <TextField
-                      label="Price per Night"
+                      label={t('admin.properties.price_per_night')}
                       name="price"
                       type="number"
                       value={data.price}
@@ -133,24 +135,24 @@ export default function AddProperty() {
                 <Stack spacing={3}>
                   <Box>
                     <FormControl fullWidth required error={!!errors.property_type}>
-                      <InputLabel>Property Type</InputLabel>
+                      <InputLabel>{t('admin.properties.property_type')}</InputLabel>
                       <Select
                         value={data.property_type}
                         onChange={(e) => handleSelectChange('property_type', e.target.value)}
-                        label="Property Type"
+                        label={t('admin.properties.property_type')}
                       >
-                        <MenuItem value="apartment">Apartment</MenuItem>
-                        <MenuItem value="house">House</MenuItem>
-                        <MenuItem value="villa">Villa</MenuItem>
-                        <MenuItem value="studio">Studio</MenuItem>
-                        <MenuItem value="condo">Condo</MenuItem>
+                        <MenuItem value="apartment">{t('admin.properties.apartment')}</MenuItem>
+                        <MenuItem value="house">{t('admin.properties.house')}</MenuItem>
+                        <MenuItem value="villa">{t('admin.properties.villa')}</MenuItem>
+                        <MenuItem value="studio">{t('admin.properties.studio')}</MenuItem>
+                        <MenuItem value="condo">{t('admin.properties.condo')}</MenuItem>
                       </Select>
                     </FormControl>
                     <InputError message={Array.isArray(errors.property_type) ? errors.property_type[0] : errors.property_type} />
                   </Box>
                   <Box>
                     <TextField
-                      label="Bedrooms"
+                      label={t('admin.properties.bedrooms')}
                       name="bedrooms"
                       type="number"
                       value={data.bedrooms}
@@ -163,7 +165,7 @@ export default function AddProperty() {
                   </Box>
                   <Box>
                     <TextField
-                      label="Bathrooms"
+                      label={t('admin.properties.bathrooms')}
                       name="bathrooms"
                       type="number"
                       value={data.bathrooms}
@@ -176,7 +178,7 @@ export default function AddProperty() {
                   </Box>
                   <Box>
                     <TextField
-                      label="Guests"
+                      label={t('admin.properties.guests')}
                       name="guests"
                       type="number"
                       value={data.guests}
@@ -194,14 +196,14 @@ export default function AddProperty() {
             <Row className="mt-3">
               <Col xs={12}>
                 <TextField
-                  label="Description"
+                  label={t('admin.properties.description')}
                   name="description"
                   value={data.description}
                   onChange={handleChange}
                   fullWidth
                   multiline
                   rows={6}
-                  placeholder="Describe the property in detail..."
+                  placeholder={t('admin.properties.description_placeholder')}
                   error={!!errors.description}
                 />
                 <InputError message={Array.isArray(errors.description) ? errors.description[0] : errors.description} />
@@ -211,15 +213,15 @@ export default function AddProperty() {
             <Row className="mt-4">
               <Col xs={12}>
                 <FormControl fullWidth>
-                  <InputLabel>Status</InputLabel>
+                  <InputLabel>{t('admin.properties.status')}</InputLabel>
                   <Select
                     value={data.status}
                     onChange={(e) => handleSelectChange('status', e.target.value)}
-                    label="Status"
+                    label={t('admin.properties.status')}
                   >
-                    <MenuItem value="Pending">Pending</MenuItem>
-                    <MenuItem value="Active">Active</MenuItem>
-                    <MenuItem value="Inactive">Inactive</MenuItem>
+                    <MenuItem value="Pending">{t('admin.properties.pending')}</MenuItem>
+                    <MenuItem value="Active">{t('admin.properties.active')}</MenuItem>
+                    <MenuItem value="Inactive">{t('admin.properties.inactive')}</MenuItem>
                   </Select>
                 </FormControl>
               </Col>
@@ -229,14 +231,14 @@ export default function AddProperty() {
             <Row className="mt-4">
               <Col xs={12}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 2 }}>
-                  Property Image
+                  {t('admin.properties.property_image')}
                 </Typography>
                 {imagePreview ? (
                   <Box sx={{ position: 'relative', width: '100%', maxWidth: 600 }}>
                     <Box
                       component="img"
                       src={imagePreview}
-                      alt="Preview"
+                      alt={t('admin.properties.preview')}
                       sx={{
                         width: '100%',
                         height: 300,
@@ -260,7 +262,7 @@ export default function AddProperty() {
                           '&:hover': { borderColor: '#9CA3AF', bgcolor: '#F9FAFB' }
                         }}
                       >
-                        Change Image
+                        {t('admin.properties.change_image')}
                         <input
                           type="file"
                           hidden
@@ -280,7 +282,7 @@ export default function AddProperty() {
                           '&:hover': { borderColor: '#DC2626', bgcolor: '#FEF2F2' }
                         }}
                       >
-                        Remove
+                        {t('admin.properties.remove')}
                       </Button>
                     </Stack>
                   </Box>
@@ -313,10 +315,10 @@ export default function AddProperty() {
                     />
                     <CloudUploadIcon sx={{ fontSize: 48, color: '#9CA3AF', mb: 2 }} />
                     <Typography sx={{ fontWeight: 600, color: '#111827', mb: 1 }}>
-                      Click to upload image
+                      {t('admin.properties.click_to_upload')}
                     </Typography>
                     <Typography sx={{ fontSize: 14, color: '#6B7280' }}>
-                      PNG, JPG, GIF up to 2MB
+                      {t('admin.properties.image_formats')}
                     </Typography>
                   </Box>
                 )}
@@ -338,7 +340,7 @@ export default function AddProperty() {
                       '&:hover': { borderColor: '#9CA3AF', bgcolor: '#F9FAFB' }
                     }}
                   >
-                    Cancel
+                    {t('admin.common.cancel')}
                   </Button>
                   <Button
                     type="submit"
@@ -352,7 +354,7 @@ export default function AddProperty() {
                       '&:hover': { bgcolor: '#78381C' }
                     }}
                   >
-                    {processing ? 'Creating...' : 'Add Property'}
+                    {processing ? t('admin.properties.creating') : t('admin.properties.add_property')}
                   </Button>
                 </Stack>
               </Col>
@@ -363,4 +365,3 @@ export default function AddProperty() {
     </AdminLayout>
   )
 }
-

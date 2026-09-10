@@ -21,6 +21,7 @@ export default function ViewUser() {
   const backLabel = page.backLabel || t('admin.users.back_to_users')
   const deleteConfirm = page.deleteConfirm || t('admin.users.delete_confirm')
   const deleteItemName = page.deleteItemName || t('admin.users.item_name')
+  const verificationLabel = (status?: string) => t(`admin.users.status_${String(status || 'verified').toLowerCase()}`)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
   const handleDeleteClick = () => {
@@ -190,6 +191,33 @@ export default function ViewUser() {
           </Card>
         </Col>
       </Row>
+
+      {page.managementType === 'hosts' && (
+        <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '16px', mb: 3 }}>
+          <CardContent sx={{ p: { xs: 2, md: 4 } }}>
+            <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 3 }}>
+              {t('admin.users.provider_verification_details')}
+            </Typography>
+            <Stack spacing={2}>
+              {[
+                [t('admin.users.verification_status'), verificationLabel(user.provider_verification_status)],
+                [t('admin.users.account_type'), user.type || '—'],
+                [t('admin.users.company_name'), user.company_name || '—'],
+                [t('admin.users.tax_id'), user.tax_id || '—'],
+                [t('admin.users.registration_number'), user.company_registration_number || '—'],
+                [t('admin.users.registered_address'), user.company_registered_address || '—'],
+                [t('admin.users.contact_person'), user.company_contact_person || '—'],
+                [t('admin.users.description'), user.company_description || '—'],
+              ].map(([label, value]) => (
+                <Box key={label}>
+                  <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 0.5 }}>{label}</Typography>
+                  <Typography sx={{ fontWeight: 600, color: '#111827', whiteSpace: 'pre-wrap' }}>{value}</Typography>
+                </Box>
+              ))}
+            </Stack>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Delete Confirmation Dialog */}
       <DeleteConfirmationDialog

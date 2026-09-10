@@ -272,7 +272,7 @@ export default function ListingDetail() {
 
   return (
     <Box>
-      <Head title={property.title || 'Property Detail'} />
+      <Head title={property.title || t('listing_detail.property_detail')} />
       <Navbar />
       <main className="property-detail-page">
         {/* Property Details Section */}
@@ -319,7 +319,7 @@ export default function ListingDetail() {
                       <Box className="booking-info">
                         <Box className="price">
                           <Typography component="span" className="price-amount">{formatPriceUtil(bookingTotal, currency)}</Typography>
-                          <Typography component="span" className="price-period"><span className="price-separator">/</span>{bookingNights} {bookingNights === 1 ? 'night' : 'nights'}</Typography>
+                          <Typography component="span" className="price-period"><span className="price-separator">/</span>{bookingNights} {bookingNights === 1 ? t('listing_detail.night') : t('listing_detail.nights')}</Typography>
                         </Box>
                         <Button
                           variant="contained"
@@ -332,7 +332,7 @@ export default function ListingDetail() {
                             router.visit(bookingUrl())
                           }}
                         >
-                         Reserve
+                         {t('listing_detail.book')}
                         </Button>
                       </Box>
                     </Col>
@@ -491,7 +491,7 @@ export default function ListingDetail() {
                         </Box>
                         <Box className="info-text">
                           <Typography component="span" className="info-number">{property.beds}</Typography>
-                          <Typography component="span" className="info-label">Beds</Typography>
+                          <Typography component="span" className="info-label">{t('listing_detail.beds')}</Typography>
                         </Box>
                       </Box>
                     </Col>
@@ -526,7 +526,7 @@ export default function ListingDetail() {
                     <Box className="info-icon">
                     <HomeIcon sx={{ color: '#AD542D', fontSize: '30px', width: '30px', height: '30px', marginInlineEnd: 1.5 }} />
                     </Box>
-                    <Typography component="span" className="info-label">{property.property_type || t('listing_detail.entire_place')}</Typography>
+                    <Typography component="span" className="info-label">{property.property_type ? t(`listing_detail.type_${property.property_type}`) : t('listing_detail.entire_place')}</Typography>
                   </Box>
                 </Col>
               </Row>
@@ -547,14 +547,14 @@ export default function ListingDetail() {
                     <Box className="host-avatar">
                       <img
                         src={property.host?.profile_picture || '/images/popular-stay-1.svg'}
-                        alt={property.host?.name || 'Host'}
+                        alt={property.host?.name || t('listing_detail.host')}
                         style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
                       />
                     </Box>
                     <Box className="host-details" sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                       <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 2, flexWrap: 'wrap' }}>
                         <Box>
-                          <Typography className="host-name" component="h5" sx={{ fontWeight: 700 }}>{property.host?.name || 'Host'}</Typography>
+                          <Typography className="host-name" component="h5" sx={{ fontWeight: 700 }}>{property.host?.name || t('listing_detail.host')}</Typography>
                           <Typography className="host-joined">{hostJoinedYear ? `${t('listing_detail.joined_in')} ${hostJoinedYear}` : ''}</Typography>
                         </Box>
                         <Button
@@ -591,16 +591,16 @@ export default function ListingDetail() {
 
                 {property.listing_category !== 'experience' && (
                   <Paper className="about-section mt-4" elevation={0}>
-                    <Typography className="section-title" component="h2">Stay information</Typography>
+                    <Typography className="section-title" component="h2">{t('listing_detail.stay_information')}</Typography>
                     <Typography className="about-text">
-                      Check-in: {property.check_in_time || '—'} · Check-out: {property.check_out_time || '—'}
+                      {t('listing_detail.check_in')}: {property.check_in_time || '—'} · {t('listing_detail.check_out')}: {property.check_out_time || '—'}
                     </Typography>
                     <Typography className="about-text" sx={{ mt: 1 }}>
-                      Stay length: {property.minimum_stay || 1} to {property.maximum_stay || 30} nights
+                      {t('listing_detail.stay_length')}: {property.minimum_stay || 1} {t('listing_detail.to')} {property.maximum_stay || 30} {t('listing_detail.nights')}
                     </Typography>
-                    <Typography sx={{ fontWeight: 700, color: '#1a1a1a', mt: 2, mb: 0.5 }}>House rules</Typography>
+                    <Typography sx={{ fontWeight: 700, color: '#1a1a1a', mt: 2, mb: 0.5 }}>{t('listing_detail.house_rules')}</Typography>
                     <Typography className="about-text" sx={{ whiteSpace: 'pre-line' }}>
-                      {property.house_rules || 'No house rules provided.'}
+                      {property.house_rules || t('listing_detail.no_house_rules')}
                     </Typography>
                   </Paper>
                 )}
@@ -639,7 +639,7 @@ export default function ListingDetail() {
                             <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                               <FlightTakeoffIcon sx={{ color: '#AD542D', fontSize: 24, mt: 0.5 }} />
                               <Box>
-                                <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Airport</Typography>
+                                <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>{t('listing_detail.airport')}</Typography>
                                 <Typography sx={{ fontWeight: 600, color: '#222222' }}>
                                   {property.airport || '—'}
                                 </Typography>
@@ -710,7 +710,7 @@ export default function ListingDetail() {
                               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                                 <ScheduleIcon sx={{ color: '#AD542D', fontSize: 24, mt: 0.5 }} />
                                 <Box>
-                                  <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Duration</Typography>
+                                  <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>{t('listing_detail.duration')}</Typography>
                                   <Typography sx={{ fontWeight: 600, color: '#222222' }}>
                                     {property.guided_tours_duration}
                                   </Typography>
@@ -738,7 +738,7 @@ export default function ListingDetail() {
                 {isExperience && (property.min_participants || property.guide_language || property.group_size || property.meeting_point || (property.included_services && property.included_services.length > 0) || property.safety_info) && (
                   <Paper className="about-section mt-4" elevation={0} sx={{ bgcolor: '#F0FDF4', border: '1px solid #BBF7D0' }}>
                     <Typography className="section-title" component="h2" sx={{ color: '#166534' }}>
-                      Experience Details
+                      {t('listing_detail.experience_details')}
                     </Typography>
                     <Box sx={{ p: 3 }}>
                       <Stack spacing={2.5}>
@@ -748,13 +748,13 @@ export default function ListingDetail() {
                           <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                             <PeopleIcon sx={{ color: '#16A34A', fontSize: 24, mt: 0.5 }} />
                             <Box>
-                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Participants</Typography>
+                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>{t('listing_detail.participants')}</Typography>
                               <Typography sx={{ fontWeight: 600, color: '#222222' }}>
                                 {property.min_participants && property.guests
-                                  ? `${property.min_participants} – ${property.guests} people`
+                                  ? `${property.min_participants} – ${property.guests} ${t('listing_detail.people')}`
                                   : property.guests
-                                    ? `Up to ${property.guests} people`
-                                    : `Min ${property.min_participants} people`}
+                                    ? `${t('listing_detail.up_to')} ${property.guests} ${t('listing_detail.people')}`
+                                    : `${t('listing_detail.minimum')} ${property.min_participants} ${t('listing_detail.people')}`}
                               </Typography>
                             </Box>
                           </Box>
@@ -765,7 +765,7 @@ export default function ListingDetail() {
                           <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                             <Box component="span" sx={{ fontSize: 22, mt: 0.3, color: '#16A34A' }}>🗣️</Box>
                             <Box>
-                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Guide Language</Typography>
+                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>{t('listing_detail.guide_language')}</Typography>
                               <Typography sx={{ fontWeight: 600, color: '#222222' }}>{property.guide_language}</Typography>
                             </Box>
                           </Box>
@@ -776,7 +776,7 @@ export default function ListingDetail() {
                           <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                             <Box component="span" sx={{ fontSize: 22, mt: 0.3, color: '#16A34A' }}>👥</Box>
                             <Box>
-                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Group Size</Typography>
+                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>{t('listing_detail.group_size')}</Typography>
                               <Typography sx={{ fontWeight: 600, color: '#222222' }}>{property.group_size}</Typography>
                             </Box>
                           </Box>
@@ -787,7 +787,7 @@ export default function ListingDetail() {
                           <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                             <LocationOnIcon sx={{ color: '#16A34A', fontSize: 24, mt: 0.5 }} />
                             <Box>
-                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Meeting Point</Typography>
+                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>{t('listing_detail.meeting_point')}</Typography>
                               <Typography sx={{ fontWeight: 600, color: '#222222' }}>{property.meeting_point}</Typography>
                             </Box>
                           </Box>
@@ -798,7 +798,7 @@ export default function ListingDetail() {
                           <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                             <Box component="span" sx={{ fontSize: 22, mt: 0.3, color: '#16A34A' }}>✅</Box>
                             <Box sx={{ flex: 1 }}>
-                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 1 }}>What's Included</Typography>
+                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 1 }}>{t('listing_detail.whats_included')}</Typography>
                               <Stack direction="row" flexWrap="wrap" gap={1}>
                                 {property.included_services.filter(Boolean).map((item, i) => (
                                   <Box
@@ -827,7 +827,7 @@ export default function ListingDetail() {
                           <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                             <Box component="span" sx={{ fontSize: 22, mt: 0.3, color: '#16A34A' }}>⚠️</Box>
                             <Box>
-                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Safety Information</Typography>
+                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>{t('listing_detail.safety_information')}</Typography>
                               <Typography sx={{ color: '#374151', lineHeight: 1.6 }}>{property.safety_info}</Typography>
                             </Box>
                           </Box>
@@ -840,14 +840,14 @@ export default function ListingDetail() {
 
                 {/* Rules Section */}
                 <Paper className="rules-section mt-4" elevation={0}>
-                  <Typography className="section-title" component="h2">Rules</Typography>
+                  <Typography className="section-title" component="h2">{t('listing_detail.rules')}</Typography>
                   <Box className="rules-list">
                     {[
-                      'Check-in: 3:00 PM - 10:00 PM',
-                      'Check-out: 11:00 AM',
-                      'No parties or events allowed',
-                      'Pets allowed [with prior notification]',
-                      'No smoking indoors',
+                      t('listing_detail.rule_check_in'),
+                      t('listing_detail.rule_check_out'),
+                      t('listing_detail.rule_no_parties'),
+                      t('listing_detail.rule_pets'),
+                      t('listing_detail.rule_no_smoking'),
                     ].map((rule, idx) => (
                       <Box key={idx} className="rule-item">
                         <CheckCircleIcon sx={{ color: '#28a745', fontSize: 16 }} />
@@ -859,7 +859,7 @@ export default function ListingDetail() {
 
                 {/* Availability Section */}
                 <Paper className="availability-section mt-4" elevation={0}>
-                  <Typography className="section-title" component="h2">Availability</Typography>
+                  <Typography className="section-title" component="h2">{t('listing_detail.availability')}</Typography>
                   <Row className="availability-calendars-row justify-content-center">
                     <Col md={7}>
                       <Paper className="calendar-widget" elevation={0}>
@@ -870,8 +870,8 @@ export default function ListingDetail() {
                         </Box>
                         <Box className="calendar-grid">
                           <Box className="calendar-weekdays">
-                            {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (
-                              <Box key={day}>{day}</Box>
+                            {['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'].map((day) => (
+                              <Box key={day}>{t(`listing_detail.weekday_${day}`)}</Box>
                             ))}
                           </Box>
                           <Box className="calendar-days">
@@ -904,7 +904,7 @@ export default function ListingDetail() {
                 {/* Reviews Section */}
                 <Box className="reviews-section mt-4">
                   <Row>
-                    <Typography className="reviews-title" component="h2">Reviews ({ratingStats.total})</Typography>
+                    <Typography className="reviews-title" component="h2">{t('listing_detail.reviews')} ({ratingStats.total})</Typography>
                     <Col lg={12}>
                       {authUser && reviewEligibility === 'eligible' ? (
                         <Paper component="form" onSubmit={handleSubmitReview} elevation={0} sx={{ p: 3, mb: 3, border: '1px solid #E5E7EB', borderRadius: 2 }}>
@@ -930,7 +930,7 @@ export default function ListingDetail() {
                                     '&:hover .review-star': { color: '#ffdb4d' },
                                     '&:focus': { outline: 'none' },
                                   }}
-                                  aria-label={`${star} ${star === 1 ? 'star' : 'stars'}`}
+                                  aria-label={`${star} ${star === 1 ? t('listing_detail.star') : t('listing_detail.stars')}`}
                                 >
                                   <StarIcon
                                     className="review-star"
@@ -986,7 +986,7 @@ export default function ListingDetail() {
                               </Box>
                               <Box className="reviewer-details">
                                 <Typography className="reviewer-name">{review.user?.name}</Typography>
-                                <Typography className="reviewer-subtitle">Guest on Bondoqi</Typography>
+                              <Typography className="reviewer-subtitle">{t('listing_detail.guest_on_bondoqui')}</Typography>
                               </Box>
                             </Box>
                             <Box className="review-content">
@@ -1005,7 +1005,7 @@ export default function ListingDetail() {
                                   className="review-show-more"
                                   onClick={() => setExpandedReviews((current) => current.includes(review.id) ? current.filter((id) => id !== review.id) : [...current, review.id])}
                                 >
-                                  {expandedReviews.includes(review.id) ? 'Show less' : 'Show more'}
+                                  {expandedReviews.includes(review.id) ? t('listing_detail.show_less') : t('listing_detail.show_more')}
                                 </Button>
                               )}
                             </Box>
@@ -1023,7 +1023,7 @@ export default function ListingDetail() {
                       variant="text"
                       onClick={() => setShowAllReviews((v) => !v)}
                     >
-                      {showAllReviews ? t('listing_detail.show_less') : `Show all ${reviews.length} reviews`}
+                      {showAllReviews ? t('listing_detail.show_less') : t('listing_detail.show_all_reviews').replace(':count', String(reviews.length))}
                     </Button>
                   </Box>
                 )}
@@ -1087,7 +1087,7 @@ export default function ListingDetail() {
           }}
         >
           <IconButton
-            aria-label="Close"
+            aria-label={t('listing_detail.close')}
             onClick={() => setLoginModalOpen(false)}
             sx={{
               position: 'absolute',

@@ -379,7 +379,7 @@ export default function AddProperty() {
                       />
                       <InputError message={err('bedrooms')} />
                       <TextField
-                        label="Beds"
+                        label={t('host.properties.beds')}
                         name="beds"
                         type="number"
                         value={formData.beds}
@@ -421,29 +421,29 @@ export default function AddProperty() {
             {formData.listing_category !== 'experience' && (
               <Box sx={{ mt: 4, bgcolor: '#F8FAFC', border: '1px solid #E5E7EB', borderRadius: '12px', p: 3 }}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 3 }}>
-                  Stay details
+                  {t('host.properties.stay_details')}
                 </Typography>
                 <Row>
                   <Col xs={12} md={6}>
-                    <TextField label="Check-in time" name="check_in_time" type="time" value={formData.check_in_time} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} error={!!err('check_in_time')} />
+                    <TextField label={t('host.properties.check_in_time')} name="check_in_time" type="time" value={formData.check_in_time} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} error={!!err('check_in_time')} />
                     <InputError message={err('check_in_time')} />
                   </Col>
                   <Col xs={12} md={6} className="mt-3 mt-md-0">
-                    <TextField label="Check-out time" name="check_out_time" type="time" value={formData.check_out_time} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} error={!!err('check_out_time')} />
+                    <TextField label={t('host.properties.check_out_time')} name="check_out_time" type="time" value={formData.check_out_time} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} error={!!err('check_out_time')} />
                     <InputError message={err('check_out_time')} />
                   </Col>
                 </Row>
                 <Row className="mt-3">
                   <Col xs={12} md={6}>
-                    <TextField label="Minimum stay (nights)" name="minimum_stay" type="number" value={formData.minimum_stay} onChange={handleChange} required fullWidth inputProps={{ min: 1, max: 365 }} error={!!err('minimum_stay')} />
+                    <TextField label={t('host.properties.minimum_stay')} name="minimum_stay" type="number" value={formData.minimum_stay} onChange={handleChange} required fullWidth inputProps={{ min: 1, max: 365 }} error={!!err('minimum_stay')} />
                     <InputError message={err('minimum_stay')} />
                   </Col>
                   <Col xs={12} md={6} className="mt-3 mt-md-0">
-                    <TextField label="Maximum stay (nights)" name="maximum_stay" type="number" value={formData.maximum_stay} onChange={handleChange} required fullWidth inputProps={{ min: 1, max: 365 }} error={!!err('maximum_stay')} />
+                    <TextField label={t('host.properties.maximum_stay')} name="maximum_stay" type="number" value={formData.maximum_stay} onChange={handleChange} required fullWidth inputProps={{ min: 1, max: 365 }} error={!!err('maximum_stay')} />
                     <InputError message={err('maximum_stay')} />
                   </Col>
                 </Row>
-                <TextField sx={{ mt: 3 }} label="House rules" name="house_rules" value={formData.house_rules} onChange={handleChange} required fullWidth multiline rows={4} placeholder="Describe check-in rules, smoking, pets, parties and quiet hours." error={!!err('house_rules')} />
+                <TextField sx={{ mt: 3 }} label={t('host.properties.house_rules')} name="house_rules" value={formData.house_rules} onChange={handleChange} required fullWidth multiline rows={4} placeholder={t('host.properties.house_rules_placeholder')} error={!!err('house_rules')} />
                 <InputError message={err('house_rules')} />
               </Box>
             )}
@@ -470,48 +470,48 @@ export default function AddProperty() {
             {formData.listing_category === 'experience' && (
               <Box sx={{ mt: 4, bgcolor: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '12px', p: 3 }}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#166534', mb: 3 }}>
-                  Experience Details
+                  {t('host.properties.experience_details')}
                 </Typography>
                 <Row>
                   <Col xs={12} md={6}>
                     <Stack spacing={3}>
                       <Box>
                         <TextField
-                          label="Minimum Participants"
+                          label={t('host.properties.min_participants')}
                           name="min_participants"
                           type="number"
                           value={formData.min_participants}
                           onChange={handleChange}
                           fullWidth
                           error={!!err('min_participants')}
-                          helperText="Minimum number of people required"
+                          helperText={t('host.properties.min_participants_hint')}
                           inputProps={{ min: 1 }}
                         />
                         <InputError message={err('min_participants')} />
                       </Box>
                       <Box>
                         <TextField
-                          label="Guide Language(s)"
+                          label={t('host.properties.guide_language')}
                           name="guide_language"
                           value={formData.guide_language}
                           onChange={handleChange}
                           fullWidth
                           error={!!err('guide_language')}
-                          placeholder="e.g. English, Swahili, French"
-                          helperText="Languages spoken by the guide"
+                          placeholder={t('host.properties.guide_language_placeholder')}
+                          helperText={t('host.properties.guide_language_hint')}
                         />
                         <InputError message={err('guide_language')} />
                       </Box>
                       <Box>
                         <TextField
-                          label="Group Size / Composition"
+                          label={t('host.properties.group_size')}
                           name="group_size"
                           value={formData.group_size}
                           onChange={handleChange}
                           fullWidth
                           error={!!err('group_size')}
-                          placeholder="e.g. Suitable for families, max 10 people"
-                          helperText="Describe ideal group composition"
+                          placeholder={t('host.properties.group_size_placeholder')}
+                          helperText={t('host.properties.group_size_hint')}
                         />
                         <InputError message={err('group_size')} />
                       </Box>
@@ -521,20 +521,20 @@ export default function AddProperty() {
                     <Stack spacing={3}>
                       <Box>
                         <TextField
-                          label="Meeting Point"
+                          label={t('host.properties.meeting_point')}
                           name="meeting_point"
                           value={formData.meeting_point}
                           onChange={handleChange}
                           fullWidth
                           error={!!err('meeting_point')}
-                          placeholder="e.g. Nairobi National Museum entrance"
-                          helperText="Where guests should meet you"
+                          placeholder={t('host.properties.meeting_point_placeholder')}
+                          helperText={t('host.properties.meeting_point_hint')}
                         />
                         <InputError message={err('meeting_point')} />
                       </Box>
                       <Box>
                         <TextField
-                          label="Safety Information"
+                          label={t('host.properties.safety_information')}
                           name="safety_info"
                           value={formData.safety_info}
                           onChange={handleChange}
@@ -542,8 +542,8 @@ export default function AddProperty() {
                           multiline
                           rows={3}
                           error={!!err('safety_info')}
-                          placeholder="e.g. Wear comfortable shoes, bring water, not suitable for people with mobility issues"
-                          helperText="Safety requirements and health considerations"
+                          placeholder={t('host.properties.safety_information_placeholder')}
+                          helperText={t('host.properties.safety_information_hint')}
                         />
                         <InputError message={err('safety_info')} />
                       </Box>
@@ -554,10 +554,10 @@ export default function AddProperty() {
                 {/* Included Services */}
                 <Box sx={{ mt: 3 }}>
                   <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#166534', mb: 1 }}>
-                    What's Included
+                    {t('host.properties.whats_included')}
                   </Typography>
                   <Typography variant="body2" sx={{ color: '#6B7280', mb: 2 }}>
-                    Add items included in this experience (e.g. "Lunch", "Transport", "Equipment")
+                    {t('host.properties.included_services_hint')}
                   </Typography>
                   <Stack spacing={1.5}>
                     {formData.included_services.map((item, index) => (
@@ -571,7 +571,7 @@ export default function AddProperty() {
                             updated[index] = e.target.value
                             setFormData(prev => ({ ...prev, included_services: updated }))
                           }}
-                          placeholder={`Item ${index + 1}`}
+                          placeholder={t('host.properties.item_placeholder').replace(':number', String(index + 1))}
                         />
                         <IconButton
                           size="small"
@@ -626,11 +626,11 @@ export default function AddProperty() {
                   {formData.airport_pickup_enabled && (
                     <Stack spacing={2.5} sx={{ mt: 3, width: '100%' }}>
                       <FormControl fullWidth size="medium" required error={!!err('airport')}>
-                        <InputLabel sx={{ color: '#374151' }} shrink>Select Airport *</InputLabel>
+                        <InputLabel sx={{ color: '#374151' }} shrink>{t('host.properties.select_airport')} *</InputLabel>
                         <Select
                           value={formData.airport}
                           onChange={(e) => { setFormData(prev => ({ ...prev, airport: e.target.value })); clearFieldError('airport') }}
-                          label="Select Airport *"
+                          label={`${t('host.properties.select_airport')} *`}
                           displayEmpty
                           renderValue={(v) => v || 'Select Airport'}
                           sx={{
@@ -642,7 +642,7 @@ export default function AddProperty() {
                           }}
                           variant="outlined"
                         >
-                          <MenuItem value="">Select Airport</MenuItem>
+                          <MenuItem value="">{t('host.properties.select_airport')}</MenuItem>
                           {AIRPORT_OPTIONS.map((opt) => (
                             <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
                           ))}
@@ -650,10 +650,10 @@ export default function AddProperty() {
                       </FormControl>
                       <InputError message={err('airport')} />
                       <Stack direction="row" spacing={2}>
-                        <TextField label="Pickup Start Time *" name="pickup_start_time" value={formData.pickup_start_time} onChange={handleChange} type="time" fullWidth size="medium" error={!!err('pickup_start_time')} helperText={err('pickup_start_time')} InputLabelProps={{ shrink: true }} placeholder="--:--" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
-                        <TextField label="Pickup End Time *" name="pickup_end_time" value={formData.pickup_end_time} onChange={handleChange} type="time" fullWidth size="medium" error={!!err('pickup_end_time')} helperText={err('pickup_end_time')} InputLabelProps={{ shrink: true }} placeholder="--:--" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
+                        <TextField label={`${t('host.properties.pickup_start_time')} *`} name="pickup_start_time" value={formData.pickup_start_time} onChange={handleChange} type="time" fullWidth size="medium" error={!!err('pickup_start_time')} helperText={err('pickup_start_time')} InputLabelProps={{ shrink: true }} placeholder="--:--" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
+                        <TextField label={`${t('host.properties.pickup_end_time')} *`} name="pickup_end_time" value={formData.pickup_end_time} onChange={handleChange} type="time" fullWidth size="medium" error={!!err('pickup_end_time')} helperText={err('pickup_end_time')} InputLabelProps={{ shrink: true }} placeholder="--:--" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
                       </Stack>
-                      <TextField label="Airport Pickup Price *" name="airport_pickup_price" type="number" value={formData.airport_pickup_price} onChange={handleChange} fullWidth size="medium" error={!!err('airport_pickup_price')} helperText={err('airport_pickup_price')} inputProps={{ min: 0, step: 0.01 }} InputProps={{ startAdornment: <Typography sx={{ mr: 1, color: '#6B7280' }}>$</Typography> }} placeholder="Enter price for airport pickup service" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
+                        <TextField label={`${t('host.properties.airport_pickup_price')} *`} name="airport_pickup_price" type="number" value={formData.airport_pickup_price} onChange={handleChange} fullWidth size="medium" error={!!err('airport_pickup_price')} helperText={err('airport_pickup_price')} inputProps={{ min: 0, step: 0.01 }} InputProps={{ startAdornment: <Typography sx={{ mr: 1, color: '#6B7280' }}>$</Typography> }} placeholder={t('host.properties.airport_pickup_price_placeholder')} variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
                     </Stack>
                   )}
                 </CardContent>
@@ -677,13 +677,13 @@ export default function AddProperty() {
                     <Stack spacing={2.5} sx={{ mt: 3, width: '100%' }}>
                       <TextField label={`${t('host.properties.tour_description')} *`} name="guided_tours_description" value={formData.guided_tours_description} onChange={handleChange} fullWidth multiline rows={3} size="medium" error={!!err('guided_tours_description')} helperText={err('guided_tours_description')} placeholder={t('host.properties.tour_description_placeholder')} variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
                       <FormControl fullWidth size="medium" required error={!!err('guided_tours_duration')}>
-                        <InputLabel sx={{ color: '#374151' }} shrink>Tour Duration *</InputLabel>
+                        <InputLabel sx={{ color: '#374151' }} shrink>{t('host.properties.tour_duration')} *</InputLabel>
                         <Select
                           value={formData.guided_tours_duration}
                           onChange={(e) => { setFormData(prev => ({ ...prev, guided_tours_duration: e.target.value })); clearFieldError('guided_tours_duration') }}
-                          label="Tour Duration *"
+                          label={`${t('host.properties.tour_duration')} *`}
                           displayEmpty
-                          renderValue={(v) => v || 'Select duration'}
+                          renderValue={(v) => v || t('host.properties.select_duration')}
                           sx={{
                             bgcolor: '#FFFFFF',
                             '& .MuiOutlinedInput-notchedOutline': { borderColor: '#E5E7EB' },
@@ -693,7 +693,7 @@ export default function AddProperty() {
                           }}
                           variant="outlined"
                         >
-                          <MenuItem value="">Select duration</MenuItem>
+                          <MenuItem value="">{t('host.properties.select_duration')}</MenuItem>
                           {TOUR_DURATION_OPTIONS.map((opt) => (
                             <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
                           ))}
@@ -701,9 +701,9 @@ export default function AddProperty() {
                       </FormControl>
                       <InputError message={err('guided_tours_duration')} />
                       {formData.guided_tours_duration === 'Custom Duration' && (
-                        <TextField label="Custom duration (e.g. 2.5 hours)" name="guided_tours_duration_custom" value={guidedToursDurationCustom} onChange={(e) => setGuidedToursDurationCustom(e.target.value)} fullWidth size="medium" placeholder="Enter custom duration" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
+                        <TextField label={t('host.properties.custom_duration')} name="guided_tours_duration_custom" value={guidedToursDurationCustom} onChange={(e) => setGuidedToursDurationCustom(e.target.value)} fullWidth size="medium" placeholder={t('host.properties.custom_duration_placeholder')} variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
                       )}
-                      <TextField label="Guided Tour Price *" name="guided_tours_price" type="number" value={formData.guided_tours_price} onChange={handleChange} fullWidth size="medium" error={!!err('guided_tours_price')} helperText={err('guided_tours_price')} inputProps={{ min: 0, step: 0.01 }} InputProps={{ startAdornment: <Typography sx={{ mr: 1, color: '#6B7280' }}>$</Typography> }} placeholder="Enter price for guided tour service" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
+                      <TextField label={`${t('host.properties.guided_tour_price')} *`} name="guided_tours_price" type="number" value={formData.guided_tours_price} onChange={handleChange} fullWidth size="medium" error={!!err('guided_tours_price')} helperText={err('guided_tours_price')} inputProps={{ min: 0, step: 0.01 }} InputProps={{ startAdornment: <Typography sx={{ mr: 1, color: '#6B7280' }}>$</Typography> }} placeholder={t('host.properties.guided_tour_price_placeholder')} variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
                     </Stack>
                   )}
                 </CardContent>
@@ -795,7 +795,7 @@ export default function AddProperty() {
                       '&:hover': { bgcolor: '#78381C' }
                     }}
                   >
-                    {submitting ? 'Saving...' : t('host.properties.save')}
+                    {submitting ? t('host.properties.saving') : t('host.properties.save')}
                   </Button>
                 </Stack>
               </Col>

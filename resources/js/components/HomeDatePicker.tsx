@@ -2,6 +2,7 @@ import { Box, IconButton, Popover, Stack, Typography } from '@mui/material'
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
 import { useMemo, useRef, useState } from 'react'
+import { useLanguage } from '../hooks/use-language'
 
 type Props = { checkin: string; checkout: string; onCheckinChange: (value: string) => void; onCheckoutChange: (value: string) => void; whenLabel: string; addDatesLabel: string; checkinLabel: string; checkoutLabel: string; isRtl?: boolean; open: boolean; onOpenChange: (open: boolean) => void }
 
@@ -22,6 +23,7 @@ const makeMonthDays = (month: Date) => {
 }
 
 export default function HomeDatePicker({ checkin, checkout, onCheckinChange, onCheckoutChange, whenLabel, addDatesLabel, checkinLabel, checkoutLabel, isRtl = false, open, onOpenChange }: Props) {
+  const { t } = useLanguage()
   const anchorRef = useRef<HTMLDivElement>(null)
   const [visibleMonth, setVisibleMonth] = useState(() => {
     const base = toLocalDate(checkin) || new Date()
@@ -78,8 +80,8 @@ export default function HomeDatePicker({ checkin, checkout, onCheckinChange, onC
         <Box className="home-calendar-panel">
           <Stack direction="row" justifyContent="flex-end" alignItems="center" className="home-calendar-heading">
             <Stack direction="row" spacing={1}>
-              <IconButton aria-label="Previous month" onClick={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() - 1, 1))}>{isRtl ? <ChevronRightRoundedIcon /> : <ChevronLeftRoundedIcon />}</IconButton>
-              <IconButton aria-label="Next month" onClick={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() + 1, 1))}>{isRtl ? <ChevronLeftRoundedIcon /> : <ChevronRightRoundedIcon />}</IconButton>
+              <IconButton aria-label={t('common.previous')} onClick={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() - 1, 1))}>{isRtl ? <ChevronRightRoundedIcon /> : <ChevronLeftRoundedIcon />}</IconButton>
+              <IconButton aria-label={t('common.next')} onClick={() => setVisibleMonth(new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() + 1, 1))}>{isRtl ? <ChevronLeftRoundedIcon /> : <ChevronRightRoundedIcon />}</IconButton>
             </Stack>
           </Stack>
           <Box className="home-calendar-months">{renderMonth(visibleMonth)}{renderMonth(secondMonth, true)}</Box>

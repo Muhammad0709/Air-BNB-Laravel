@@ -290,11 +290,11 @@ export default function Listing() {
                     </Box>
                     <Box className="mini-calendar">
                       <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 1 }}>
-                        <IconButton className="calendar-nav-btn" size="small" onClick={() => changeMonth(-1)} aria-label="Previous month"><ChevronLeftRoundedIcon fontSize="small" /></IconButton>
+                        <IconButton className="calendar-nav-btn" size="small" onClick={() => changeMonth(-1)} aria-label={t('common.previous')}><ChevronLeftRoundedIcon fontSize="small" /></IconButton>
                         <Typography className="cal-month">
                           {currentMonth.toLocaleString('default', { month: 'short', year: 'numeric' })}
                         </Typography>
-                        <IconButton className="calendar-nav-btn" size="small" onClick={() => changeMonth(1)} aria-label="Next month"><ChevronRightRoundedIcon fontSize="small" /></IconButton>
+                        <IconButton className="calendar-nav-btn" size="small" onClick={() => changeMonth(1)} aria-label={t('common.next')}><ChevronRightRoundedIcon fontSize="small" /></IconButton>
                       </Stack>
                       <Box className="cal-grid">
                         {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((day) => (

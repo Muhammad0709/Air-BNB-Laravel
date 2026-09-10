@@ -5,6 +5,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import HotelIcon from '@mui/icons-material/Hotel'
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
+import { useLanguage } from '../hooks/use-language'
 
 const img1 = '/images/popular-stay-1.svg'
 const img2 = '/images/popular-stay-2.svg'
@@ -24,6 +25,7 @@ interface Booking {
 }
 
 export default function ProfileBookingsTab() {
+  const { t } = useLanguage()
   const [activeTab, setActiveTab] = useState(0)
   const [search, setSearch] = useState('')
 
@@ -48,6 +50,8 @@ export default function ProfileBookingsTab() {
       default: return '#717171'
     }
   }
+
+  const getStatusLabel = (status: Booking['status']) => t(`customer_bookings.status_${status.toLowerCase()}`)
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -82,8 +86,8 @@ export default function ProfileBookingsTab() {
             '& .MuiTabs-indicator': { backgroundColor: '#AD542D', height: 3 }
           }}
         >
-          <Tab label={`Upcoming (${upcomingBookings.length})`} />
-          <Tab label={`Past (${pastBookings.length})`} />
+          <Tab label={`${t('customer_bookings.upcoming')} (${upcomingBookings.length})`} />
+          <Tab label={`${t('customer_bookings.past')} (${pastBookings.length})`} />
         </Tabs>
       </Box>
 
@@ -91,7 +95,7 @@ export default function ProfileBookingsTab() {
         <TextField
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search bookings..."
+          placeholder={t('customer_bookings.search_placeholder')}
           size="small"
           fullWidth
           sx={{ maxWidth: 400, '& .MuiOutlinedInput-root': { borderRadius: 2, '& fieldset': { borderColor: '#D0D5DD' } } }}
@@ -109,10 +113,10 @@ export default function ProfileBookingsTab() {
         <Box sx={{ textAlign: 'center', py: 6 }}>
           <HotelIcon sx={{ fontSize: 64, color: '#D0D5DD', mb: 2 }} />
           <Typography variant="h6" sx={{ color: '#717171', mb: 1 }}>
-            No {activeTab === 0 ? 'upcoming' : 'past'} bookings found
+            {activeTab === 0 ? t('customer_bookings.no_upcoming') : t('customer_bookings.no_past')}
           </Typography>
           <Typography variant="body2" sx={{ color: '#9CA3AF', mb: 3 }}>
-            {activeTab === 0 ? 'Start exploring properties to make your first booking!' : 'Your past bookings will appear here.'}
+            {activeTab === 0 ? t('customer_bookings.no_upcoming_sub') : t('customer_bookings.no_past_sub')}
           </Typography>
         </Box>
       ) : (
@@ -147,30 +151,30 @@ export default function ProfileBookingsTab() {
                         <Typography variant="body2" sx={{ color: '#717171' }}>{booking.propertyLocation}</Typography>
                       </Stack>
                     </Box>
-                    <Chip label={booking.status} size="small" sx={{ bgcolor: `${getStatusColor(booking.status)}15`, color: getStatusColor(booking.status), fontWeight: 600, fontSize: 12, height: 28 }} />
+                    <Chip label={getStatusLabel(booking.status)} size="small" sx={{ bgcolor: `${getStatusColor(booking.status)}15`, color: getStatusColor(booking.status), fontWeight: 600, fontSize: 12, height: 28 }} />
                   </Stack>
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} useFlexGap sx={{ mt: 1 }}>
                     <Stack direction="row" spacing={1} useFlexGap alignItems="center">
                       <CalendarTodayIcon sx={{ fontSize: 18, color: '#717171' }} />
                       <Box>
-                        <Typography variant="caption" sx={{ color: '#717171', display: 'block' }}>Check-in</Typography>
+                        <Typography variant="caption" sx={{ color: '#717171', display: 'block' }}>{t('customer_bookings.checkin')}</Typography>
                         <Typography variant="body2" sx={{ fontWeight: 600, color: '#222222' }}>{formatDate(booking.checkin)}</Typography>
                       </Box>
                     </Stack>
                     <Stack direction="row" spacing={1} useFlexGap alignItems="center">
                       <CalendarTodayIcon sx={{ fontSize: 18, color: '#717171' }} />
                       <Box>
-                        <Typography variant="caption" sx={{ color: '#717171', display: 'block' }}>Check-out</Typography>
+                        <Typography variant="caption" sx={{ color: '#717171', display: 'block' }}>{t('customer_bookings.checkout')}</Typography>
                         <Typography variant="body2" sx={{ fontWeight: 600, color: '#222222' }}>{formatDate(booking.checkout)}</Typography>
                       </Box>
                     </Stack>
                     <Box>
-                      <Typography variant="caption" sx={{ color: '#717171', display: 'block' }}>Guests</Typography>
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: '#222222' }}>{booking.guests} {booking.guests === 1 ? 'guest' : 'guests'}</Typography>
+                      <Typography variant="caption" sx={{ color: '#717171', display: 'block' }}>{t('customer_bookings.guests')}</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 600, color: '#222222' }}>{booking.guests} {booking.guests === 1 ? t('customer_bookings.guest') : t('customer_bookings.guests_plural')}</Typography>
                     </Box>
                     <Box>
-                      <Typography variant="caption" sx={{ color: '#717171', display: 'block' }}>Nights</Typography>
-                      <Typography variant="body2" sx={{ fontWeight: 600, color: '#222222' }}>{booking.nights} {booking.nights === 1 ? 'night' : 'nights'}</Typography>
+                      <Typography variant="caption" sx={{ color: '#717171', display: 'block' }}>{t('customer_bookings.nights')}</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 600, color: '#222222' }}>{booking.nights} {booking.nights === 1 ? t('customer_bookings.night') : t('customer_bookings.nights').toLowerCase()}</Typography>
                     </Box>
                   </Stack>
                   <Box sx={{ pt: 1, borderTop: '1px solid #E5E7EB' }}>

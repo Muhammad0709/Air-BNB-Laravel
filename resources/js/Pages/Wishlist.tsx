@@ -119,7 +119,7 @@ export default function Wishlist() {
                             },
                             boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
                           }}
-                          aria-label="remove from wishlist"
+                          aria-label={t('wishlist.remove_from_wishlist')}
                         >
                           <DeleteOutlineIcon sx={{ color: '#EF4444' }} />
                         </IconButton>

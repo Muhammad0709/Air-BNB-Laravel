@@ -204,7 +204,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
               </IconButton>
             )}
             <IconButton
-              aria-label="Menu"
+              aria-label={t('nav.menu')}
               sx={{ display: { xs: 'flex', lg: 'none' }, color: '#222222', p: 1.25 }}
               onClick={() => setOpen(true)}
             >
@@ -336,7 +336,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                   <IconButton
                     onClick={handleProfileClick}
                     sx={{ p: 0 }}
-                    aria-label="Profile menu"
+                    aria-label={t('nav.profile')}
                   >
                     <Avatar
                       src={(user as any)?.profile_picture ?? undefined}
@@ -441,7 +441,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
           <Box
             role="dialog"
             aria-modal="true"
-            aria-label="Navigation menu"
+            aria-label={t('nav.menu')}
             onClick={(e) => e.stopPropagation()}
             sx={{
               position: 'absolute',
@@ -492,7 +492,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                 </Typography>
                 <IconButton
                   onClick={() => setOpen(false)}
-                  aria-label="Close menu"
+                  aria-label={t('common.close')}
                   sx={{
                     color: '#6B7280',
                     width: 40,

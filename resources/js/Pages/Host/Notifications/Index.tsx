@@ -156,18 +156,18 @@ export default function Index({ notifications }: NotificationsPageProps) {
                     maxWidth="xs"
                     fullWidth
                 >
-                    <DialogTitle>Delete Notification</DialogTitle>
+                    <DialogTitle>{t('notifications.delete_dialog_title')}</DialogTitle>
                     <DialogContent>
                         <Typography>
-                            Are you sure you want to delete this notification? This action cannot be undone.
+                            {t('notifications.delete_dialog_message')}
                         </Typography>
                     </DialogContent>
                     <DialogActions sx={{ p: 2, gap: 1 }}>
                         <Button onClick={handleDeleteCancel} variant="outlined" color="inherit">
-                            Cancel
+                            {t('common.cancel')}
                         </Button>
                         <Button onClick={handleDeleteConfirm} variant="contained" color="error">
-                            Delete
+                            {t('common.delete')}
                         </Button>
                     </DialogActions>
                 </Dialog>

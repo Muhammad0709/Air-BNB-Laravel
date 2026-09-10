@@ -385,7 +385,7 @@ export default function EditProperty() {
                         fullWidth
                       />
                       <TextField
-                        label="Beds"
+                        label={t('host.properties.beds')}
                         name="beds"
                         type="number"
                         value={formData.beds}
@@ -447,29 +447,29 @@ export default function EditProperty() {
             {!isExperience && (
               <Box sx={{ mt: 4, bgcolor: '#F8FAFC', border: '1px solid #E5E7EB', borderRadius: '12px', p: 3 }}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 3 }}>
-                  Stay details
+                  {t('host.properties.stay_details')}
                 </Typography>
                 <Row>
                   <Col xs={12} md={6}>
-                    <TextField label="Check-in time" name="check_in_time" type="time" value={formData.check_in_time} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} error={!!activeErrors.check_in_time} />
+                    <TextField label={t('host.properties.check_in_time')} name="check_in_time" type="time" value={formData.check_in_time} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} error={!!activeErrors.check_in_time} />
                     <InputError message={Array.isArray(activeErrors.check_in_time) ? activeErrors.check_in_time[0] : activeErrors.check_in_time} />
                   </Col>
                   <Col xs={12} md={6} className="mt-3 mt-md-0">
-                    <TextField label="Check-out time" name="check_out_time" type="time" value={formData.check_out_time} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} error={!!activeErrors.check_out_time} />
+                    <TextField label={t('host.properties.check_out_time')} name="check_out_time" type="time" value={formData.check_out_time} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} error={!!activeErrors.check_out_time} />
                     <InputError message={Array.isArray(activeErrors.check_out_time) ? activeErrors.check_out_time[0] : activeErrors.check_out_time} />
                   </Col>
                 </Row>
                 <Row className="mt-3">
                   <Col xs={12} md={6}>
-                    <TextField label="Minimum stay (nights)" name="minimum_stay" type="number" value={formData.minimum_stay} onChange={handleChange} required fullWidth inputProps={{ min: 1, max: 365 }} error={!!activeErrors.minimum_stay} />
+                    <TextField label={t('host.properties.minimum_stay')} name="minimum_stay" type="number" value={formData.minimum_stay} onChange={handleChange} required fullWidth inputProps={{ min: 1, max: 365 }} error={!!activeErrors.minimum_stay} />
                     <InputError message={Array.isArray(activeErrors.minimum_stay) ? activeErrors.minimum_stay[0] : activeErrors.minimum_stay} />
                   </Col>
                   <Col xs={12} md={6} className="mt-3 mt-md-0">
-                    <TextField label="Maximum stay (nights)" name="maximum_stay" type="number" value={formData.maximum_stay} onChange={handleChange} required fullWidth inputProps={{ min: 1, max: 365 }} error={!!activeErrors.maximum_stay} />
+                    <TextField label={t('host.properties.maximum_stay')} name="maximum_stay" type="number" value={formData.maximum_stay} onChange={handleChange} required fullWidth inputProps={{ min: 1, max: 365 }} error={!!activeErrors.maximum_stay} />
                     <InputError message={Array.isArray(activeErrors.maximum_stay) ? activeErrors.maximum_stay[0] : activeErrors.maximum_stay} />
                   </Col>
                 </Row>
-                <TextField sx={{ mt: 3 }} label="House rules" name="house_rules" value={formData.house_rules} onChange={handleChange} required fullWidth multiline rows={4} placeholder="Describe check-in rules, smoking, pets, parties and quiet hours." error={!!activeErrors.house_rules} />
+                <TextField sx={{ mt: 3 }} label={t('host.properties.house_rules')} name="house_rules" value={formData.house_rules} onChange={handleChange} required fullWidth multiline rows={4} placeholder={t('host.properties.house_rules_placeholder')} error={!!activeErrors.house_rules} />
                 <InputError message={Array.isArray(activeErrors.house_rules) ? activeErrors.house_rules[0] : activeErrors.house_rules} />
               </Box>
             )}
@@ -494,62 +494,62 @@ export default function EditProperty() {
             {isExperience && (
               <Box sx={{ mt: 4, bgcolor: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '12px', p: 3 }}>
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#166534', mb: 3 }}>
-                  Experience Details
+                  {t('host.properties.experience_details')}
                 </Typography>
                 <Row>
                   <Col xs={12} md={6}>
                     <Stack spacing={3}>
                       <TextField
-                        label="Minimum Participants"
+                        label={t('host.properties.min_participants')}
                         name="min_participants"
                         type="number"
                         value={formData.min_participants}
                         onChange={handleChange}
                         fullWidth
-                        helperText="Minimum number of people required"
+                        helperText={t('host.properties.min_participants_hint')}
                         inputProps={{ min: 1 }}
                       />
                       <TextField
-                        label="Guide Language(s)"
+                        label={t('host.properties.guide_language')}
                         name="guide_language"
                         value={formData.guide_language}
                         onChange={handleChange}
                         fullWidth
-                        placeholder="e.g. English, Swahili, French"
-                        helperText="Languages spoken by the guide"
+                        placeholder={t('host.properties.guide_language_placeholder')}
+                        helperText={t('host.properties.guide_language_hint')}
                       />
                       <TextField
-                        label="Group Size / Composition"
+                        label={t('host.properties.group_size')}
                         name="group_size"
                         value={formData.group_size}
                         onChange={handleChange}
                         fullWidth
-                        placeholder="e.g. Suitable for families, max 10 people"
-                        helperText="Describe ideal group composition"
+                        placeholder={t('host.properties.group_size_placeholder')}
+                        helperText={t('host.properties.group_size_hint')}
                       />
                     </Stack>
                   </Col>
                   <Col xs={12} md={6}>
                     <Stack spacing={3}>
                       <TextField
-                        label="Meeting Point"
+                        label={t('host.properties.meeting_point')}
                         name="meeting_point"
                         value={formData.meeting_point}
                         onChange={handleChange}
                         fullWidth
-                        placeholder="e.g. Nairobi National Museum entrance"
-                        helperText="Where guests should meet you"
+                        placeholder={t('host.properties.meeting_point_placeholder')}
+                        helperText={t('host.properties.meeting_point_hint')}
                       />
                       <TextField
-                        label="Safety Information"
+                        label={t('host.properties.safety_information')}
                         name="safety_info"
                         value={formData.safety_info}
                         onChange={handleChange}
                         fullWidth
                         multiline
                         rows={3}
-                        placeholder="e.g. Wear comfortable shoes, bring water..."
-                        helperText="Safety requirements and health considerations"
+                        placeholder={t('host.properties.safety_information_placeholder')}
+                        helperText={t('host.properties.safety_information_hint')}
                       />
                     </Stack>
                   </Col>
@@ -574,7 +574,7 @@ export default function EditProperty() {
                             updated[index] = e.target.value
                             setFormData(prev => ({ ...prev, included_services: updated }))
                           }}
-                          placeholder={`Item ${index + 1}`}
+                          placeholder={t('host.properties.item_placeholder').replace(':number', String(index + 1))}
                         />
                         <IconButton
                           size="small"
@@ -628,11 +628,11 @@ export default function EditProperty() {
                   {formData.airport_pickup_enabled && (
                     <Stack spacing={2.5} sx={{ mt: 3, width: '100%' }}>
                       <FormControl fullWidth size="medium" required>
-                        <InputLabel sx={{ color: '#374151' }} shrink>Select Airport *</InputLabel>
+                        <InputLabel sx={{ color: '#374151' }} shrink>{t('host.properties.select_airport')} *</InputLabel>
                         <Select
                           value={formData.airport}
                           onChange={(e) => setFormData(prev => ({ ...prev, airport: e.target.value }))}
-                          label="Select Airport *"
+                          label={`${t('host.properties.select_airport')} *`}
                           displayEmpty
                           renderValue={(v) => v || 'Select Airport'}
                           sx={{
@@ -644,17 +644,17 @@ export default function EditProperty() {
                           }}
                           variant="outlined"
                         >
-                          <MenuItem value="">Select Airport</MenuItem>
+                          <MenuItem value="">{t('host.properties.select_airport')}</MenuItem>
                           {AIRPORT_OPTIONS.map((opt) => (
                             <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
                           ))}
                         </Select>
                       </FormControl>
                       <Stack direction="row" spacing={2}>
-                        <TextField label="Pickup Start Time *" name="pickup_start_time" value={formData.pickup_start_time} onChange={handleChange} type="time" fullWidth size="medium" error={!!activeErrors.pickup_start_time} helperText={Array.isArray(activeErrors.pickup_start_time) ? activeErrors.pickup_start_time[0] : activeErrors.pickup_start_time} InputLabelProps={{ shrink: true }} placeholder="--:--" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
-                        <TextField label="Pickup End Time *" name="pickup_end_time" value={formData.pickup_end_time} onChange={handleChange} type="time" fullWidth size="medium" error={!!activeErrors.pickup_end_time} helperText={Array.isArray(activeErrors.pickup_end_time) ? activeErrors.pickup_end_time[0] : activeErrors.pickup_end_time} InputLabelProps={{ shrink: true }} placeholder="--:--" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
+                        <TextField label={`${t('host.properties.pickup_start_time')} *`} name="pickup_start_time" value={formData.pickup_start_time} onChange={handleChange} type="time" fullWidth size="medium" error={!!activeErrors.pickup_start_time} helperText={Array.isArray(activeErrors.pickup_start_time) ? activeErrors.pickup_start_time[0] : activeErrors.pickup_start_time} InputLabelProps={{ shrink: true }} placeholder="--:--" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
+                        <TextField label={`${t('host.properties.pickup_end_time')} *`} name="pickup_end_time" value={formData.pickup_end_time} onChange={handleChange} type="time" fullWidth size="medium" error={!!activeErrors.pickup_end_time} helperText={Array.isArray(activeErrors.pickup_end_time) ? activeErrors.pickup_end_time[0] : activeErrors.pickup_end_time} InputLabelProps={{ shrink: true }} placeholder="--:--" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
                       </Stack>
-                      <TextField label="Airport Pickup Price *" name="airport_pickup_price" type="number" value={formData.airport_pickup_price} onChange={handleChange} fullWidth size="medium" inputProps={{ min: 0, step: 0.01 }} InputProps={{ startAdornment: <Typography sx={{ mr: 1, color: '#6B7280' }}>$</Typography> }} placeholder="Enter price for airport pickup service" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
+                        <TextField label={`${t('host.properties.airport_pickup_price')} *`} name="airport_pickup_price" type="number" value={formData.airport_pickup_price} onChange={handleChange} fullWidth size="medium" inputProps={{ min: 0, step: 0.01 }} InputProps={{ startAdornment: <Typography sx={{ mr: 1, color: '#6B7280' }}>$</Typography> }} placeholder={t('host.properties.airport_pickup_price_placeholder')} variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
                     </Stack>
                   )}
                 </CardContent>
@@ -676,9 +676,9 @@ export default function EditProperty() {
                   />
                   {formData.guided_tours_enabled && (
                     <Stack spacing={2.5} sx={{ mt: 3, width: '100%' }}>
-                      <TextField label="Tour Description *" name="guided_tours_description" value={formData.guided_tours_description} onChange={handleChange} fullWidth multiline rows={3} size="medium" placeholder="Describe the tour experience..." variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
+                      <TextField label={`${t('host.properties.tour_description')} *`} name="guided_tours_description" value={formData.guided_tours_description} onChange={handleChange} fullWidth multiline rows={3} size="medium" placeholder={t('host.properties.tour_description_placeholder')} variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
                       <FormControl fullWidth size="medium" required>
-                        <InputLabel sx={{ color: '#374151' }} shrink>Tour Duration *</InputLabel>
+                        <InputLabel sx={{ color: '#374151' }} shrink>{t('host.properties.tour_duration')} *</InputLabel>
                         <Select
                           value={isPresetDuration ? formData.guided_tours_duration : 'Custom Duration'}
                           onChange={(e) => {
@@ -686,9 +686,9 @@ export default function EditProperty() {
                             setFormData(prev => ({ ...prev, guided_tours_duration: v }))
                             if (v !== 'Custom Duration') setGuidedToursDurationCustom('')
                           }}
-                          label="Tour Duration *"
+                          label={`${t('host.properties.tour_duration')} *`}
                           displayEmpty
-                          renderValue={(v) => v || 'Select duration'}
+                          renderValue={(v) => v || t('host.properties.select_duration')}
                           sx={{
                             bgcolor: '#FFFFFF',
                             '& .MuiOutlinedInput-notchedOutline': { borderColor: '#E5E7EB' },
@@ -698,16 +698,16 @@ export default function EditProperty() {
                           }}
                           variant="outlined"
                         >
-                          <MenuItem value="">Select duration</MenuItem>
+                          <MenuItem value="">{t('host.properties.select_duration')}</MenuItem>
                           {TOUR_DURATION_OPTIONS.map((opt) => (
                             <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
                           ))}
                         </Select>
                       </FormControl>
                       {(formData.guided_tours_duration === 'Custom Duration' || (!isPresetDuration && formData.guided_tours_duration)) && (
-                        <TextField label="Custom duration (e.g. 2.5 hours)" name="guided_tours_duration_custom" value={guidedToursDurationCustom} onChange={(e) => setGuidedToursDurationCustom(e.target.value)} fullWidth size="medium" placeholder="Enter custom duration" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
+                        <TextField label={t('host.properties.custom_duration')} name="guided_tours_duration_custom" value={guidedToursDurationCustom} onChange={(e) => setGuidedToursDurationCustom(e.target.value)} fullWidth size="medium" placeholder={t('host.properties.custom_duration_placeholder')} variant="outlined" sx={{ '& .MuiOutlinedInput-root': { borderRadius: 2 } }} />
                       )}
-                      <TextField label="Guided Tour Price *" name="guided_tours_price" type="number" value={formData.guided_tours_price} onChange={handleChange} fullWidth size="medium" inputProps={{ min: 0, step: 0.01 }} InputProps={{ startAdornment: <Typography sx={{ mr: 1, color: '#6B7280' }}>$</Typography> }} placeholder="Enter price for guided tour service" variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
+                      <TextField label={`${t('host.properties.guided_tour_price')} *`} name="guided_tours_price" type="number" value={formData.guided_tours_price} onChange={handleChange} fullWidth size="medium" inputProps={{ min: 0, step: 0.01 }} InputProps={{ startAdornment: <Typography sx={{ mr: 1, color: '#6B7280' }}>$</Typography> }} placeholder={t('host.properties.guided_tour_price_placeholder')} variant="outlined" sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#FFFFFF', '& fieldset': { borderColor: '#E5E7EB' }, '&:hover fieldset': { borderColor: '#D1D5DB' }, '&.Mui-focused fieldset': { borderColor: '#AD542D' } }, '& .MuiInputLabel-root': { color: '#374151' } }} />
                     </Stack>
                   )}
                 </CardContent>
@@ -833,7 +833,7 @@ export default function EditProperty() {
                       '&:hover': { bgcolor: '#78381C' }
                     }}
                   >
-                    {submitting ? 'Updating...' : t('host.properties.update_property')}
+                    {submitting ? t('host.properties.updating') : t('host.properties.update_property')}
                   </Button>
                 </Stack>
               </Col>

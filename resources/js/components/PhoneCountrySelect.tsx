@@ -3,6 +3,7 @@ import { Box, FormControl, ListSubheader, MenuItem, Select, TextField } from '@m
 import SearchIcon from '@mui/icons-material/Search'
 import { getCountries, getCountryCallingCode, type Country } from 'react-phone-number-input'
 import enLocale from 'react-phone-number-input/locale/en.json'
+import { useLanguage } from '../hooks/use-language'
 
 function countryToFlag(iso2: string): string {
   if (!iso2 || iso2.length !== 2) return ''
@@ -40,6 +41,7 @@ export type PhoneCountrySelectProps = {
 }
 
 export default function PhoneCountrySelect({ value, onChange, size = 'small', sx }: PhoneCountrySelectProps) {
+  const { t } = useLanguage()
   const [search, setSearch] = useState('')
   const [selectedCountry, setSelectedCountry] = useState(
     () => PHONE_COUNTRY_LIST.find((item) => item.code === value)?.country ?? 'NL'
@@ -89,7 +91,7 @@ export default function PhoneCountrySelect({ value, onChange, size = 'small', sx
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={(e) => e.stopPropagation()}
-            placeholder="Search country or code"
+            placeholder={t('common.search_country_or_code')}
             InputProps={{ startAdornment: <SearchIcon sx={{ color: '#6B7280', mr: 1 }} /> }}
           />
         </ListSubheader>
@@ -103,7 +105,7 @@ export default function PhoneCountrySelect({ value, onChange, size = 'small', sx
           </MenuItem>
         ))}
         {filteredCountries.length === 0 && (
-          <MenuItem disabled>No country found</MenuItem>
+          <MenuItem disabled>{t('common.no_country_found')}</MenuItem>
         )}
       </Select>
     </FormControl>

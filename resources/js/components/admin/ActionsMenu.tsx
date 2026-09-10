@@ -7,6 +7,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import { useLanguage } from '../../hooks/use-language'
 
 type ActionsMenuProps = {
   onEdit?: () => void
@@ -30,15 +31,22 @@ export default function ActionsMenu({
   onManageAccess,
   onApprove,
   onReject,
-  editLabel = 'Edit',
-  deleteLabel = 'Delete',
-  viewLabel = 'View',
-  manageAccessLabel = 'Manage access',
-  approveLabel = 'Approve',
-  rejectLabel = 'Reject'
+  editLabel,
+  deleteLabel,
+  viewLabel,
+  manageAccessLabel,
+  approveLabel,
+  rejectLabel
 }: ActionsMenuProps) {
+  const { t } = useLanguage()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
+  const resolvedEditLabel = editLabel ?? t('admin.common.edit')
+  const resolvedDeleteLabel = deleteLabel ?? t('admin.common.delete')
+  const resolvedViewLabel = viewLabel ?? t('admin.common.view')
+  const resolvedManageAccessLabel = manageAccessLabel ?? t('admin.users.manage_access')
+  const resolvedApproveLabel = approveLabel ?? t('admin.properties.approve')
+  const resolvedRejectLabel = rejectLabel ?? t('admin.properties.reject')
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()
@@ -128,7 +136,7 @@ export default function ActionsMenu({
             }}
           >
             <VisibilityIcon sx={{ fontSize: 16, color: '#6B7280', marginInlineEnd: 1 }} />
-            <Typography sx={{ color: '#111827', fontSize: 14 }}>{viewLabel}</Typography>
+            <Typography sx={{ color: '#111827', fontSize: 14 }}>{resolvedViewLabel}</Typography>
           </MenuItem>
         )}
         {onEdit && (
@@ -141,7 +149,7 @@ export default function ActionsMenu({
             }}
           >
             <EditIcon sx={{ fontSize: 16, color: '#6B7280', marginInlineEnd: 1 }} />
-            <Typography sx={{ color: '#111827', fontSize: 14 }}>{editLabel}</Typography>
+            <Typography sx={{ color: '#111827', fontSize: 14 }}>{resolvedEditLabel}</Typography>
           </MenuItem>
         )}
         {onManageAccess && (
@@ -154,7 +162,7 @@ export default function ActionsMenu({
             }}
           >
             <LockOutlinedIcon sx={{ fontSize: 16, color: '#AD542D', marginInlineEnd: 1 }} />
-            <Typography sx={{ color: '#AD542D', fontSize: 14 }}>{manageAccessLabel}</Typography>
+            <Typography sx={{ color: '#AD542D', fontSize: 14 }}>{resolvedManageAccessLabel}</Typography>
           </MenuItem>
         )}
         {onApprove && (
@@ -167,7 +175,7 @@ export default function ActionsMenu({
             }}
           >
             <CheckCircleIcon sx={{ fontSize: 16, color: '#10B981', marginInlineEnd: 1 }} />
-            <Typography sx={{ color: '#10B981', fontSize: 14 }}>{approveLabel}</Typography>
+            <Typography sx={{ color: '#10B981', fontSize: 14 }}>{resolvedApproveLabel}</Typography>
           </MenuItem>
         )}
         {onReject && (
@@ -180,7 +188,7 @@ export default function ActionsMenu({
             }}
           >
             <CancelIcon sx={{ fontSize: 16, color: '#EF4444', marginInlineEnd: 1 }} />
-            <Typography sx={{ color: '#EF4444', fontSize: 14 }}>{rejectLabel}</Typography>
+            <Typography sx={{ color: '#EF4444', fontSize: 14 }}>{resolvedRejectLabel}</Typography>
           </MenuItem>
         )}
         {onDelete && (
@@ -193,12 +201,11 @@ export default function ActionsMenu({
             }}
           >
             <DeleteIcon sx={{ fontSize: 16, color: '#EF4444', marginInlineEnd: 1 }} />
-            <Typography sx={{ color: '#EF4444', fontSize: 14 }}>{deleteLabel}</Typography>
+            <Typography sx={{ color: '#EF4444', fontSize: 14 }}>{resolvedDeleteLabel}</Typography>
           </MenuItem>
         )}
       </Menu>
     </>
   )
 }
-
 
