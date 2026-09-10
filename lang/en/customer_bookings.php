@@ -17,5 +17,9 @@ return [
     'guest' => 'guest',
     'nights' => 'Nights',
     'night' => 'night',
+    'status_confirmed' => 'Confirmed',
+    'status_pending' => 'Pending',
+    'status_cancelled' => 'Cancelled',
+    'status_completed' => 'Completed',
     'view_receipt' => 'View Receipt',
 ];

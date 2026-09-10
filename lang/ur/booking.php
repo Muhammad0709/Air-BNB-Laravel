@@ -53,4 +53,5 @@ return [
     'coming_soon' => 'جلد آ رہا ہے',
     'cancel' => 'منسوخ کریں',
     'confirm_booking' => 'بکنگ کی تصدیق کریں',
+    'mpesa' => 'M-Pesa', 'mpesa_prompt' => 'M-Pesa STK Push کے ذریعے ادائیگی کریں—آپ کے فون پر ایک پرامپٹ آئے گا۔', 'mpesa_phone' => 'M-Pesa فون نمبر', 'mpesa_phone_placeholder' => 'مثلاً 0712345678', 'mpesa_phone_help' => 'M-Pesa کے ساتھ رجسٹرڈ Safaricom نمبر',
 ];

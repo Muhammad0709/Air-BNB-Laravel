@@ -53,4 +53,9 @@ return [
     'coming_soon' => 'Coming Soon',
     'cancel' => 'Cancel',
     'confirm_booking' => 'Confirm Booking',
+    'mpesa' => 'M-Pesa',
+    'mpesa_prompt' => 'Pay via M-Pesa STK Push — you will get a prompt on your phone.',
+    'mpesa_phone' => 'M-Pesa Phone Number',
+    'mpesa_phone_placeholder' => 'e.g. 0712345678',
+    'mpesa_phone_help' => 'Safaricom number registered with M-Pesa',
 ];

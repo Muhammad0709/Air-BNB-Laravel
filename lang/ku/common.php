@@ -10,4 +10,9 @@ return [
     'minutes_ago' => ':count خولەک لەمەوبەر',
     'hours_ago' => ':count کاتژمێر لەمەوبەر',
     'days_ago' => ':count ڕۆژ لەمەوبەر',
+    'close' => 'دابخە',
+    'options' => 'هەڵبژاردەکان',
+    'back_to_top' => 'بگەڕێوە سەرەوە',
+    'search_country_or_code' => 'گەڕان بۆ وڵات یان کۆد',
+    'no_country_found' => 'هیچ وڵاتێک نەدۆزرایەوە',
 ];

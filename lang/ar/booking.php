@@ -53,4 +53,5 @@ return [
     'coming_soon' => 'قريباً',
     'cancel' => 'إلغاء',
     'confirm_booking' => 'تأكيد الحجز',
+    'mpesa' => 'M-Pesa', 'mpesa_prompt' => 'ادفع عبر M-Pesa STK Push — سيظهر طلب على هاتفك.', 'mpesa_phone' => 'رقم هاتف M-Pesa', 'mpesa_phone_placeholder' => 'مثال: 0712345678', 'mpesa_phone_help' => 'رقم Safaricom مسجل في M-Pesa',
 ];

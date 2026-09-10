@@ -17,5 +17,9 @@ return [
     'guest' => 'مہمان',
     'nights' => 'راتیں',
     'night' => 'رات',
+    'status_confirmed' => 'تصدیق شدہ',
+    'status_pending' => 'زیر التوا',
+    'status_cancelled' => 'منسوخ',
+    'status_completed' => 'مکمل',
     'view_receipt' => 'رسید دیکھیں',
 ];

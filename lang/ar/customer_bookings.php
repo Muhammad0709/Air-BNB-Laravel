@@ -17,5 +17,9 @@ return [
     'guest' => 'ضيف',
     'nights' => 'ليالي',
     'night' => 'ليلة',
+    'status_confirmed' => 'مؤكد',
+    'status_pending' => 'قيد الانتظار',
+    'status_cancelled' => 'ملغى',
+    'status_completed' => 'مكتمل',
     'view_receipt' => 'عرض الإيصال',
 ];

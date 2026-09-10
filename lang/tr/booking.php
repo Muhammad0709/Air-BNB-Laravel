@@ -53,4 +53,5 @@ return [
     'coming_soon' => 'Yakında',
     'cancel' => 'İptal',
     'confirm_booking' => 'Rezervasyonu Onayla',
+    'mpesa' => 'M-Pesa', 'mpesa_prompt' => 'M-Pesa STK Push ile ödeme yapın — telefonunuza bir bildirim gelecektir.', 'mpesa_phone' => 'M-Pesa Telefon Numarası', 'mpesa_phone_placeholder' => 'örn. 0712345678', 'mpesa_phone_help' => 'M-Pesa’ya kayıtlı Safaricom numarası',
 ];

@@ -53,4 +53,5 @@ return [
     'coming_soon' => 'Zû tê',
     'cancel' => 'Betal bike',
     'confirm_booking' => 'Rezervasyonê Bipejirîne',
+    'mpesa' => 'M-Pesa', 'mpesa_prompt' => 'Bi M-Pesa STK Push bidin—daxwazekê li ser telefona we xuya dibe.', 'mpesa_phone' => 'Hejmara telefona M-Pesa', 'mpesa_phone_placeholder' => 'mînak: 0712345678', 'mpesa_phone_help' => 'Hejmara Safaricom a tomarkirî di M-Pesa de',
 ];

@@ -17,5 +17,9 @@ return [
     'guest' => 'mêvan',
     'nights' => 'Şev',
     'night' => 'şev',
+    'status_confirmed' => 'Piştrastkirî',
+    'status_pending' => 'Li bendê ye',
+    'status_cancelled' => 'Betal kirî',
+    'status_completed' => 'Temam kirî',
     'view_receipt' => 'Weslê bibîne',
 ];

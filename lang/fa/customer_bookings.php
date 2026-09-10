@@ -17,5 +17,9 @@ return [
     'guest' => 'مهمان',
     'nights' => 'شب',
     'night' => 'شب',
+    'status_confirmed' => 'تأیید شده',
+    'status_pending' => 'در انتظار',
+    'status_cancelled' => 'لغو شده',
+    'status_completed' => 'تکمیل شده',
     'view_receipt' => 'مشاهده رسید',
 ];

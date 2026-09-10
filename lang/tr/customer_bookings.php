@@ -17,5 +17,9 @@ return [
     'guest' => 'misafir',
     'nights' => 'Gece',
     'night' => 'gece',
+    'status_confirmed' => 'Onaylandı',
+    'status_pending' => 'Beklemede',
+    'status_cancelled' => 'İptal edildi',
+    'status_completed' => 'Tamamlandı',
     'view_receipt' => 'Makbuzu Görüntüle',
 ];
