@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Box, IconButton, Paper, Typography } from '@mui/material'
-import { router } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import StarIcon from '@mui/icons-material/Star'
 import CardFavoriteIcon from './CardFavoriteIcon'
+import LoginRequiredModal from './LoginRequiredModal'
 import { useLanguage } from '../hooks/use-language'
 
 type SearchResultCardProps = {
@@ -51,6 +52,9 @@ export default function SearchResultCard({
   const [isFavorited, setIsFavorited] = useState(isGuestFavorite)
   const [imgSrc, setImgSrc] = useState(image || fallbackImage)
   const [imgError, setImgError] = useState(false)
+  const [loginModalOpen, setLoginModalOpen] = useState(false)
+  const { props } = usePage()
+  const isAuthenticated = Boolean((props as any)?.auth?.user)
 
   useEffect(() => {
     setIsFavorited(isGuestFavorite)
@@ -76,6 +80,10 @@ export default function SearchResultCard({
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     e.preventDefault()
+    if (!isAuthenticated) {
+      setLoginModalOpen(true)
+      return
+    }
     const propertyId = String(id)
     if (isFavorited) {
       router.delete(`/wishlist/${propertyId}`, { preserveScroll: true })
@@ -96,7 +104,8 @@ export default function SearchResultCard({
   }
 
   return (
-    <Paper
+    <>
+      <Paper
       elevation={0}
       sx={{
         cursor: 'pointer',
@@ -186,6 +195,8 @@ export default function SearchResultCard({
           <Typography sx={{ fontSize: '0.9375rem', color: '#717171' }}>for {nights} nights</Typography>
         </Box>
       </Box>
-    </Paper>
+      </Paper>
+      <LoginRequiredModal open={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
+    </>
   )
 }
