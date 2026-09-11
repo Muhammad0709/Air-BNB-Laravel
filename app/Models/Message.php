@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Builder;
 
 class Message extends Model
 {
@@ -21,6 +22,14 @@ class Message extends Model
         'read' => 'boolean',
         'hidden_for_user_ids' => 'array',
     ];
+
+    public function scopeVisibleTo(Builder $query, int $userId): Builder
+    {
+        return $query->where(function (Builder $query) use ($userId) {
+            $query->whereNull('hidden_for_user_ids')
+                ->orWhereJsonDoesntContain('hidden_for_user_ids', $userId);
+        });
+    }
 
     public function conversation(): BelongsTo
     {

@@ -280,13 +280,13 @@ class HostChatController extends Controller
 
         Message::where('conversation_id', $id)
             ->where('sender_id', '!=', $host->id)
-            ->whereJsonDoesntContain('hidden_for_user_ids', $host->id)
+            ->visibleTo($host->id)
             ->update(['read' => true]);
 
         $messages = $conversation->messages()
             ->reorder('created_at', 'desc')
             ->orderBy('id', 'desc')
-            ->whereJsonDoesntContain('hidden_for_user_ids', $host->id)
+            ->visibleTo($host->id)
             ->with(['files'])
             ->get();
 

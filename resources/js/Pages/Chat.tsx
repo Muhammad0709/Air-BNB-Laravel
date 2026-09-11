@@ -47,6 +47,18 @@ interface Conversation extends ConversationListItem {
   messages: Message[]
 }
 
+const SELECTED_CONVERSATION_STORAGE_KEY = 'bondoqui.chat.selectedConversation'
+
+function getInitialSelectedConversation(): number | null {
+  if (typeof window === 'undefined') return null
+
+  const value = new URLSearchParams(window.location.search).get('conversation_id')
+    ?? window.sessionStorage.getItem(SELECTED_CONVERSATION_STORAGE_KEY)
+  const id = Number(value)
+
+  return Number.isInteger(id) && id > 0 ? id : null
+}
+
 // Backend returns messages as plain array with sender 'customer'|'host'
 function apiMessageToMessage(m: Record<string, unknown>): Message {
   return {
@@ -90,7 +102,7 @@ export default function Chat() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const messageContainerRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [selectedConversation, setSelectedConversation] = useState<number | null>(null)
+  const [selectedConversation, setSelectedConversation] = useState<number | null>(getInitialSelectedConversation)
   const [messageText, setMessageText] = useState('')
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [menuAnchor, setMenuAnchor] = useState<{ [key: number]: HTMLElement | null }>({})
@@ -114,8 +126,9 @@ export default function Chat() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
   const conversationsList = useMemo(() => {
-    const arr = Array.isArray(props.conversations) ? props.conversations : []
-    return arr.map((c) => ({ ...c, messages: [] as Message[] }))
+    return (props.conversations ?? [])
+      .map((c) => ({ ...c, id: Number(c.id), messages: [] as Message[] }))
+      .filter((c) => Number.isInteger(c.id) && c.id > 0)
   }, [props.conversations])
   const [conversations, setConversations] = useState<Conversation[]>(conversationsList)
 
@@ -151,6 +164,21 @@ export default function Chat() {
       })
     })
   }, [conversationsList])
+
+  useEffect(() => {
+    setSelectedConversation((current) => {
+      const preferred = current ?? getInitialSelectedConversation()
+      return conversationsList.find((item) => item.id === preferred)?.id
+        ?? conversationsList[0]?.id
+        ?? null
+    })
+  }, [conversationsList])
+
+  useEffect(() => {
+    if (selectedConversation) {
+      window.sessionStorage.setItem(SELECTED_CONVERSATION_STORAGE_KEY, String(selectedConversation))
+    }
+  }, [selectedConversation])
 
   const currentConversation = conversations.find(c => c.id === selectedConversation)
 
@@ -392,6 +420,7 @@ export default function Chat() {
       setConversations((prev) => prev.filter((c) => c.id !== conversationId))
       if (selectedConversation === conversationId) {
         setSelectedConversation(null)
+        window.sessionStorage.removeItem(SELECTED_CONVERSATION_STORAGE_KEY)
       }
     } catch {
       // Optionally show error toast

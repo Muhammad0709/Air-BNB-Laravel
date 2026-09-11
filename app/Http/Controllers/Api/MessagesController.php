@@ -85,7 +85,7 @@ class MessagesController extends Controller
                     })
                     ->orWhereHas('messages', function ($mq) use ($search, $user) {
                         $mq->where('message', 'like', "%{$search}%")
-                            ->whereJsonDoesntContain('hidden_for_user_ids', $user->id);
+                            ->visibleTo($user->id);
                     });
                 });
             })
@@ -227,13 +227,13 @@ class MessagesController extends Controller
 
         Message::where('conversation_id', $conversationId)
             ->where('sender_id', '!=', $user->id)
-            ->whereJsonDoesntContain('hidden_for_user_ids', $user->id)
+            ->visibleTo($user->id)
             ->update(['read' => true]);
 
         $messages = $conversation->messages()
             ->reorder('created_at', 'desc')
             ->orderBy('id', 'desc')
-            ->whereJsonDoesntContain('hidden_for_user_ids', $user->id)
+            ->visibleTo($user->id)
             ->with(['files', 'conversation'])
             ->get();
 

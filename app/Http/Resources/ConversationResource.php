@@ -18,7 +18,7 @@ class ConversationResource extends JsonResource
             ? $this->messages()
                 ->reorder('created_at', 'desc')
                 ->orderBy('id', 'desc')
-                ->whereJsonDoesntContain('hidden_for_user_ids', $user->id)
+                ->visibleTo($user->id)
                 ->with('files')
                 ->first()
             : $this->lastMessage;
@@ -26,7 +26,7 @@ class ConversationResource extends JsonResource
             ? $this->messages()
                 ->where('sender_id', '!=', $user->id)
                 ->where('read', false)
-                ->whereJsonDoesntContain('hidden_for_user_ids', $user->id)
+                ->visibleTo($user->id)
                 ->count()
             : 0;
 

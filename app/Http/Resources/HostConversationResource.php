@@ -15,7 +15,7 @@ class HostConversationResource extends JsonResource
         $visibleMessages = $this->messages()
             ->reorder('created_at', 'desc')
             ->orderBy('id', 'desc')
-            ->whereJsonDoesntContain('hidden_for_user_ids', $host->id);
+            ->visibleTo($host->id);
         $lastMessage = (clone $visibleMessages)->first();
 
         $unreadCount = (clone $visibleMessages)
