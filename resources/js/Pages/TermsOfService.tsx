@@ -8,7 +8,7 @@ import { useLanguage } from '../hooks/use-language'
 export default function TermsOfService() {
   const { t } = useLanguage()
   return (
-    <div>
+    <div className="terms-page">
       <Head title={t('terms.title')} />
       <Navbar />
       <Box sx={{ py: 8, minHeight: '60vh' }}>

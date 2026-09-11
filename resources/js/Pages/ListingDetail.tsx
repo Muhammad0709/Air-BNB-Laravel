@@ -25,6 +25,7 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import TourIcon from '@mui/icons-material/Tour'
 import ScheduleIcon from '@mui/icons-material/Schedule'
 import CloseIcon from '@mui/icons-material/Close'
+import LoginRequiredModal from '../components/LoginRequiredModal'
 
 const PLACEHOLDER_IMAGE = '/images/popular-stay-1.svg'
 
@@ -274,10 +275,10 @@ export default function ListingDetail() {
     <Box>
       <Head title={property.title || t('listing_detail.property_detail')} />
       <Navbar />
-      <main className="property-detail-page">
+      <main className="property-detail-page" style={{ width: '100%', maxWidth: 'none', marginInline: 0 }}>
         {/* Property Details Section */}
         <section className="property-details-section">
-          <RBContainer>
+          <RBContainer fluid>
             <Row>
               <Col lg={12}>
                 <Paper className="property-info-card" elevation={0}>
@@ -361,7 +362,7 @@ export default function ListingDetail() {
 
         {/* Image Gallery Section */}
         <section className="property-gallery-section">
-          <RBContainer>
+          <RBContainer fluid>
             {galleryImages.length === 1 ? (
               // Single image - full width, visible on all screens
               <Box sx={{ borderRadius: '12px', overflow: 'hidden', height: { xs: 280, sm: 320 }, width: '100%' }}>
@@ -455,7 +456,7 @@ export default function ListingDetail() {
 
         {/* Quick Info Section */}
         <section>
-          <RBContainer className="mt-0 mt-md-4">
+          <RBContainer fluid className="mt-0 mt-md-4">
             <Paper className="quick-info-section" elevation={0}>
               <Typography className="section-title" component="h2">{t('listing_detail.quick_info')}</Typography>
               <Row className="g-4">
@@ -536,7 +537,7 @@ export default function ListingDetail() {
 
         {/* Main Content Section */}
         <section>
-          <RBContainer className="mt-4">
+          <RBContainer fluid className="mt-4">
             <Row>
               <Col lg={12}>
 
@@ -1036,7 +1037,7 @@ export default function ListingDetail() {
 
         {/* Popular Stays Section */}
         <section className="popular-stays-section">
-          <RBContainer>
+          <RBContainer fluid>
             <Typography className="section-title" component="h2">{t('listing_detail.popular_near')}</Typography>
             <Row className="g-4">
               {relatedProperties.length > 0 ? relatedProperties.map((stay) => (
@@ -1061,78 +1062,12 @@ export default function ListingDetail() {
       </main>
       <Footer />
 
-      {/* Login prompt for guests who try to reserve */}
-      <Modal
+      {/* Reusable login prompt for guests who try to reserve */}
+      <LoginRequiredModal
         open={loginModalOpen}
         onClose={() => setLoginModalOpen(false)}
-        aria-labelledby="login-required-title"
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          p: 2,
-        }}
-      >
-        <Box
-          sx={{
-            width: '100%',
-            maxWidth: 420,
-            bgcolor: '#FFFFFF',
-            borderRadius: 3,
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.2)',
-            p: { xs: 3, sm: 4 },
-            position: 'relative',
-            outline: 'none',
-            textAlign: 'center',
-          }}
-        >
-          <IconButton
-            aria-label={t('listing_detail.close')}
-            onClick={() => setLoginModalOpen(false)}
-            sx={{
-              position: 'absolute',
-              top: 10,
-              right: 10,
-              zIndex: 2,
-              width: 40,
-              height: 40,
-              bgcolor: 'transparent',
-              color: '#717171',
-              '&:hover': { bgcolor: 'transparent', color: '#222222' },
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-          <Typography id="login-required-title" variant="h5" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>
-            {t('listing_detail.login_required_title')}
-          </Typography>
-          <Typography sx={{ color: '#717171', mb: 3 }}>
-            {t('listing_detail.login_to_book')}
-          </Typography>
-          <Button
-            fullWidth
-            variant="contained"
-            onClick={() => {
-              setLoginModalOpen(false)
-              router.visit(`/login?redirect=${encodeURIComponent(bookingUrl())}`)
-            }}
-            sx={{
-              borderRadius: 999,
-              py: 1.25,
-              textTransform: 'none',
-              fontWeight: 700,
-              bgcolor: '#AD542D',
-              boxShadow: 'none',
-              '&:hover': {
-                bgcolor: '#78381C',
-                boxShadow: 'none',
-              },
-            }}
-          >
-            {t('auth.signin.submit')}
-          </Button>
-        </Box>
-      </Modal>
+        loginRedirectUrl={bookingUrl()}
+      />
       
       {/* Gallery Modal - responsive for all devices */}
       <Modal

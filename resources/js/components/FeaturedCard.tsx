@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Box, IconButton, Paper, Typography } from '@mui/material'
-import { router } from '@inertiajs/react'
+import { router, usePage } from '@inertiajs/react'
 import StarIcon from '@mui/icons-material/Star'
 import CardFavoriteIcon from './CardFavoriteIcon'
+import LoginRequiredModal from './LoginRequiredModal'
 import { useLanguage } from '../hooks/use-language'
 import { useCurrency } from '../contexts/CurrencyContext'
 import { formatPrice } from '../utils/currency'
@@ -37,6 +38,9 @@ export default function FeaturedCard({
   const [imgSrc, setImgSrc] = useState(image)
   const [imgError, setImgError] = useState(false)
   const [isFavorited, setIsFavorited] = useState(isGuestFavorite)
+  const [loginModalOpen, setLoginModalOpen] = useState(false)
+  const { props } = usePage()
+  const isAuthenticated = Boolean((props as any)?.auth?.user)
 
   useEffect(() => {
     setImgSrc(image)
@@ -50,6 +54,10 @@ export default function FeaturedCard({
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     e.preventDefault()
+    if (!isAuthenticated) {
+      setLoginModalOpen(true)
+      return
+    }
     const propertyId = String(id)
     if (isFavorited) {
       router.delete(`/wishlist/${propertyId}`, { preserveScroll: true })
@@ -77,7 +85,8 @@ export default function FeaturedCard({
   }
 
   return (
-    <Paper 
+    <>
+      <Paper
       className="airbnb-card" 
       elevation={0} 
       sx={{ cursor: 'pointer' }} 
@@ -139,6 +148,8 @@ export default function FeaturedCard({
           )}
         </Box>
       </Box>
-    </Paper>
+      </Paper>
+      <LoginRequiredModal open={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
+    </>
   )
 }

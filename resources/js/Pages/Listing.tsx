@@ -196,8 +196,8 @@ export default function Listing() {
       <Head title={t('listing.title')} />
       <Box>
         <Navbar />
-        <Box className="listing-page">
-          <RBContainer>
+        <Box className="listing-page" style={{ width: '100%', maxWidth: 'none', marginInline: 0 }}>
+          <RBContainer fluid>
             <Row>
               <Col xs={12} md={4} lg={3}>
                 <Paper className={`filter-card${mobileFiltersOpen ? ' mobile-filters-open' : ''}`} elevation={0}>
