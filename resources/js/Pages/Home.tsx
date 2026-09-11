@@ -9,6 +9,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
+import HistoryIcon from '@mui/icons-material/History'
 import HomeDatePicker from '../components/HomeDatePicker'
 import { Container, Row, Col, Container as RBContainer } from 'react-bootstrap'
 import { router, usePage } from '@inertiajs/react'
@@ -35,11 +36,13 @@ export default function Home() {
     featuredProperties?: Property[]
     popularProperties?: Property[]
     popularDestinations?: Destination[]
+    recentSearches?: string[]
   }
   
   const featuredProperties = pageProps.featuredProperties || []
   const popularProperties = pageProps.popularProperties || []
   const popularDestinations = pageProps.popularDestinations || []
+  const recentSearches = pageProps.recentSearches || []
   const guestsAnchorRef = useRef<HTMLDivElement>(null)
   const destinationAnchorRef = useRef<HTMLDivElement>(null)
   const destinationPopoverPaperRef = useRef<HTMLElement | null>(null)
@@ -91,8 +94,9 @@ export default function Home() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
+    const trimmedDestination = destination.trim()
     const params = new URLSearchParams()
-    if (destination) params.set('location', destination)
+    if (trimmedDestination) params.set('location', trimmedDestination)
     if (checkin) params.set('checkin', checkin)
     if (checkout) params.set('checkout', checkout)
     params.set('adults', adults.toString())
@@ -353,6 +357,27 @@ export default function Home() {
                             '& .MuiOutlinedInput-root': { borderRadius: 2 },
                           }}
                         />
+                        {!destination.trim() && recentSearches.length > 0 && (
+                          <Box sx={{ mb: 2 }}>
+                            <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#222222', mb: 1 }}>
+                              Recent searches
+                            </Typography>
+                            <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
+                              {recentSearches.map((search) => (
+                                <Button
+                                  key={search}
+                                  size="small"
+                                  startIcon={<HistoryIcon sx={{ fontSize: 17 }} />}
+                                  onClick={() => handleDestinationSelect(search)}
+                                  sx={{ color: '#374151', borderColor: '#E5E7EB', textTransform: 'none', borderRadius: 5 }}
+                                  variant="outlined"
+                                >
+                                  {search}
+                                </Button>
+                              ))}
+                            </Stack>
+                          </Box>
+                        )}
                         <Stack className="home-destination-list" spacing={0} sx={{ maxHeight: { xs: 360, sm: 430 }, overflow: 'auto' }}>
                           {filteredDestinations.length === 0 && destination.trim() ? (
                             <Typography variant="body2" sx={{ color: '#717171', py: 1.5, px: 0.5 }}>

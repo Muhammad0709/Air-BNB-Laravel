@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Helper function to format properties
         $formatProperty = function ($property) {
@@ -78,6 +78,7 @@ class HomeController extends Controller
             'featuredProperties' => $featuredProperties,
             'popularProperties' => $popularProperties,
             'popularDestinations' => $popularDestinations,
+            'recentSearches' => $request->session()->get('recent_searches', []),
         ]);
     }
 }

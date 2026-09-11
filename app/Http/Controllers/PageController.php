@@ -131,6 +131,19 @@ class PageController extends Controller
 
     public function search(Request $request)
     {
+        $locationInput = trim((string) $request->input('location', ''));
+        if ($locationInput !== '') {
+            $recentSearches = collect($request->session()->get('recent_searches', []))
+                ->filter(fn ($search) => is_string($search) && trim($search) !== '')
+                ->reject(fn ($search) => strcasecmp(trim($search), $locationInput) === 0)
+                ->prepend($locationInput)
+                ->take(5)
+                ->values()
+                ->all();
+
+            $request->session()->put('recent_searches', $recentSearches);
+        }
+
         $perPage = 12;
         $query = Property::with(['reviews'])
             ->where('status', 'Active')
