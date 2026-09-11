@@ -178,6 +178,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                 key={l.label}
                 component={Link}
                 href={l.href}
+                className={`navbar-link${isActive(l.href) ? ' is-active' : ''}`}
                 style={{ textDecoration: 'none' }}
                 sx={{ color: isActive(l.href) ? '#AD542D' : '#222222', fontWeight: 700 }}
               >
