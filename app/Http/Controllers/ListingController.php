@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Property;
 use App\Enums\PropertyStatus;
+use App\Support\PlatformConfiguration;
 
 class ListingController extends Controller
 {
@@ -130,19 +131,7 @@ class ListingController extends Controller
                                     ->filter()
                                     ->values();
 
-        $availableAmenities = Property::where('status', 'Active')
-                                    ->where('approval_status', PropertyStatus::APPROVED)
-                                    ->whereNotNull('amenities')
-                                    ->get()
-                                    ->flatMap(function ($property) {
-                                        $amenities = is_string($property->amenities) 
-                                            ? explode(',', $property->amenities) 
-                                            : ($property->amenities ?? []);
-                                        return array_map('trim', $amenities);
-                                    })
-                                    ->unique()
-                                    ->filter()
-                                    ->values();
+        $availableAmenities = collect(PlatformConfiguration::amenities());
 
         return Inertia::render('Listing', [
             'properties' => $properties,

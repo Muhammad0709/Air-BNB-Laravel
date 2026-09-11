@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use App\Support\PlatformConfiguration;
 
 class LocaleController extends Controller
 {
@@ -11,7 +12,12 @@ class LocaleController extends Controller
 
     public function switch(Request $request, string $locale): \Illuminate\Http\RedirectResponse
     {
-        if (! in_array($locale, self::ALLOWED_LOCALES)) {
+        $allowedLocales = array_values(array_intersect(
+            PlatformConfiguration::list('languages', self::ALLOWED_LOCALES),
+            self::ALLOWED_LOCALES
+        )) ?: ['en'];
+
+        if (! in_array($locale, $allowedLocales, true)) {
             $locale = config('app.locale', 'en');
         }
 

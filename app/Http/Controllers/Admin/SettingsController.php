@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\Settings\UpdatePasswordRequest;
 use App\Http\Requests\Admin\Settings\UpdateProfileRequest;
 use App\Http\Requests\Admin\Settings\UploadProfilePictureRequest;
 use App\Models\Setting;
+use App\Support\PlatformConfiguration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,6 +17,18 @@ use Inertia\Inertia;
 
 class SettingsController extends Controller
 {
+    private function configurationValues(): array
+    {
+        return [
+            'commission_rate' => Setting::get('commission_rate', 10),
+            'countries' => PlatformConfiguration::text('countries'),
+            'languages' => PlatformConfiguration::text('languages'),
+            'currencies' => PlatformConfiguration::text('currencies'),
+            'property_types' => PlatformConfiguration::text('property_types'),
+            'amenities' => PlatformConfiguration::text('amenities'),
+        ];
+    }
+
     public function index()
     {
         return redirect()->route('admin.settings.profile');
@@ -35,9 +48,7 @@ class SettingsController extends Controller
                         : Storage::url($user->profile_picture))
                     : null,
             ],
-            'configuration' => [
-                'commission_rate' => Setting::get('commission_rate', 10),
-            ],
+            'configuration' => $this->configurationValues(),
         ]);
     }
 
@@ -55,23 +66,25 @@ class SettingsController extends Controller
                         : Storage::url($user->profile_picture))
                     : null,
             ],
-            'configuration' => [
-                'commission_rate' => Setting::get('commission_rate', 10),
-            ],
+            'configuration' => $this->configurationValues(),
         ]);
     }
 
     public function updateConfiguration(UpdateConfigurationRequest $request)
     {
-        Setting::set('commission_rate', $request->validated('commission_rate'));
-        return redirect()->back()->with('success', __('admin.settings.configuration_saved'));
+        foreach ($request->validated() as $key => $value) {
+            Setting::set($key, $value);
+        }
+
+        return redirect()->route('admin.settings.configuration')
+            ->with('success', __('admin.settings.configuration_saved'));
     }
 
     public function password()
     {
         $user = Auth::user();
         return Inertia::render('Admin/Settings/Profile', [
-            'configuration' => ['commission_rate' => Setting::get('commission_rate', 10)],
+            'configuration' => $this->configurationValues(),
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,

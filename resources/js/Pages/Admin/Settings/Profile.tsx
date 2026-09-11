@@ -9,17 +9,46 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera'
 import { useLanguage } from '../../../hooks/use-language'
 
 type UserProp = { id: number; name: string; email: string; profile_picture?: string | null }
+type Configuration = {
+  commission_rate: number
+  countries: string
+  languages: string
+  currencies: string
+  property_types: string
+  amenities: string
+}
 type PageProps = {
   user?: UserProp
   flash?: { success?: string; error?: string }
-  configuration?: { commission_rate: number }
+  configuration?: Partial<Configuration>
 }
+
+const DEFAULT_CONFIGURATION: Configuration = {
+  commission_rate: 10,
+  countries: 'KE, TZ, UG, NG, ZA',
+  languages: 'en, ar, ur, fa, tr, ku',
+  currencies: 'USD',
+  property_types: 'apartment, house, villa, studio, condo',
+  amenities: 'WiFi, Pool, Parking, Air conditioning, Kitchen',
+}
+
+const CONFIGURATION_FIELDS: Array<{
+  name: Exclude<keyof Configuration, 'commission_rate'>
+  label: string
+  helperText: string
+}> = [
+  { name: 'countries', label: 'Countries', helperText: 'Comma-separated codes, for example: KE, TZ, PK' },
+  { name: 'languages', label: 'Languages', helperText: 'Comma-separated codes, for example: en, ur, ar' },
+  { name: 'currencies', label: 'Currencies', helperText: 'Comma-separated ISO codes, for example: USD, PKR, EUR' },
+  { name: 'property_types', label: 'Property types', helperText: 'Comma-separated values, for example: apartment, hotel, villa' },
+  { name: 'amenities', label: 'Amenities', helperText: 'Comma-separated amenities shown to hosts' },
+]
 
 export default function ProfileSettings() {
   const { t } = useLanguage()
   const { url, props } = usePage<PageProps>()
   const user = props.user
-  const config = props.configuration ?? { commission_rate: 10 }
+  const config = { ...DEFAULT_CONFIGURATION, ...props.configuration }
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
 
   const [profileData, setProfileData] = useState({
@@ -32,9 +61,7 @@ export default function ProfileSettings() {
     newPassword: '',
     confirmPassword: ''
   })
-  const [configurationData, setConfigurationData] = useState({
-    commission_rate: config.commission_rate
-  })
+  const [configurationData, setConfigurationData] = useState<Configuration>(config)
 
   useEffect(() => {
     if (user) {
@@ -47,8 +74,19 @@ export default function ProfileSettings() {
   }, [user?.id, user?.name, user?.email, user?.profile_picture])
 
   useEffect(() => {
-    setConfigurationData({ commission_rate: config.commission_rate })
-  }, [config.commission_rate])
+    setConfigurationData(config)
+  }, [props.configuration])
+
+  useEffect(() => {
+    const message = props.flash?.success ?? props.flash?.error
+    if (!message) return
+
+    setToast({
+      open: true,
+      message,
+      severity: props.flash?.error ? 'error' : 'success',
+    })
+  }, [props.flash?.success, props.flash?.error])
 
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -97,8 +135,25 @@ export default function ProfileSettings() {
   const handleConfigurationSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     router.put('/admin/settings/configuration', {
-      commission_rate: configurationData.commission_rate
-    }, { preserveScroll: true })
+      ...configurationData,
+    }, {
+      preserveScroll: true,
+      onSuccess: () => {
+        setToast({
+          open: true,
+          message: t('admin.settings.configuration_saved'),
+          severity: 'success',
+        })
+      },
+      onError: (errors) => {
+        const firstError = Object.values(errors)[0]
+        setToast({
+          open: true,
+          message: Array.isArray(firstError) ? firstError[0] : String(firstError ?? 'Unable to save configuration.'),
+          severity: 'error',
+        })
+      },
+    })
   }
 
   const getInitials = (name: string) => (name || '').split(' ').map(n => n[0]).join('').slice(0, 2)
@@ -187,6 +242,18 @@ export default function ProfileSettings() {
                     inputProps={{ min: 0, max: 100, step: 0.5 }}
                     helperText={t('admin.settings.commission_rate_hint')}
                   />
+                  {CONFIGURATION_FIELDS.map(({ name, label, helperText }) => (
+                    <TextField
+                      key={name}
+                      label={label}
+                      name={name}
+                      value={configurationData[name]}
+                      onChange={(e) => setConfigurationData(prev => ({ ...prev, [name]: e.target.value }))}
+                      fullWidth
+                      multiline
+                      helperText={helperText}
+                    />
+                  ))}
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button type="submit" variant="contained" startIcon={<SaveIcon />} sx={{ bgcolor: '#AD542D', textTransform: 'none', borderRadius: 2, fontWeight: 700, px: 4, py: 1.5, '&:hover': { bgcolor: '#78381C' } }}>{t('admin.common.save')}</Button>
                   </Box>

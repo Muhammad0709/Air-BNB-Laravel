@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\UpdatePropertyRequest;
 use App\Models\AuditLog;
 use App\Models\Property;
 use App\Enums\PropertyStatus;
+use App\Support\PlatformConfiguration;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
@@ -81,6 +82,7 @@ class PropertyController extends Controller
         
         return Inertia::render('Admin/Properties/Edit', [
             'property' => $property,
+            'propertyTypes' => PlatformConfiguration::propertyTypes(),
         ]);
     }
 

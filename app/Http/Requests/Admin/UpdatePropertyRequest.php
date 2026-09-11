@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use App\Enums\ListingCategory;
+use App\Support\PlatformConfiguration;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePropertyRequest extends FormRequest
@@ -27,7 +28,7 @@ class UpdatePropertyRequest extends FormRequest
             'bedrooms' => $isExperience ? ['nullable', 'integer', 'min:0'] : ['required', 'integer', 'min:0'],
             'bathrooms' => $isExperience ? ['nullable', 'integer', 'min:0'] : ['required', 'integer', 'min:0'],
             'guests' => ['required', 'integer', 'min:1'],
-            'property_type' => ['required', 'in:apartment,house,villa,studio,condo'],
+            'property_type' => ['required', 'in:' . implode(',', PlatformConfiguration::propertyTypes())],
             'status' => ['required', 'in:Active,Inactive'],
             'description' => ['nullable', 'string'],
             'amenities' => ['nullable', 'array'],

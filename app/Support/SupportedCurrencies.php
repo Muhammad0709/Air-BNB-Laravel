@@ -14,7 +14,7 @@ final class SupportedCurrencies
      */
     public static function codes(): array
     {
-        $raw = config('currencies.supported', ['USD']);
+        $raw = PlatformConfiguration::list('currencies', config('currencies.supported', ['USD']));
         if (! is_array($raw) || $raw === []) {
             return ['USD'];
         }

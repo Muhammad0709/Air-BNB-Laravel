@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\CancellationPolicy;
 use App\Enums\ListingCategory;
-use App\Enums\PropertyType;
+use App\Support\PlatformConfiguration;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreHostPropertyRequest extends FormRequest
@@ -31,7 +31,7 @@ class StoreHostPropertyRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255', 'regex:/^(?=.*\p{L})[\p{L} ]+$/u'],
             'description' => ['required', 'string'],
-            'property_type' => ['required', 'in:' . implode(',', array_column(PropertyType::cases(), 'value'))],
+            'property_type' => ['required', 'in:' . implode(',', PlatformConfiguration::propertyTypes())],
             'listing_category' => ['nullable', 'in:' . implode(',', ListingCategory::values())],
             'bedrooms' => ['nullable', 'required_unless:listing_category,experience', 'integer', 'min:1'],
             'beds' => ['nullable', 'required_unless:listing_category,experience', 'integer', 'min:1'],

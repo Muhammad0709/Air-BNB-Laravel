@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Services\ExchangeRateService;
 use App\Support\SupportedCurrencies;
+use App\Support\PlatformConfiguration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Middleware;
@@ -67,6 +68,10 @@ class HandleInertiaRequests extends Middleware
             'locale' => fn () => $request->session()->get('locale', config('app.locale', 'en')),
             /** ISO 4217 codes allowed in UI / profile (from config / env). */
             'supportedCurrencies' => fn () => SupportedCurrencies::codes(),
+            'supportedLanguages' => fn () => array_values(array_intersect(
+                PlatformConfiguration::list('languages', ['en', 'ar', 'ur', 'fa', 'tr', 'ku']),
+                ['en', 'ar', 'ur', 'fa', 'tr', 'ku']
+            )) ?: ['en'],
             /** Units of each currency per 1 USD (for display; storage stays USD). */
             'exchangeRates' => fn () => app(ExchangeRateService::class)->getRates(),
             /** Session-only host UI preview for customers (account type stays User). */

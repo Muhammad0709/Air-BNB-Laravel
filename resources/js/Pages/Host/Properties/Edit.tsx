@@ -5,6 +5,7 @@ import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import Toast from '../../../Components/Admin/Toast';
 import InputError from '../../../components/InputError'
+import AmenitySelector from '../../../components/AmenitySelector'
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
@@ -43,6 +44,7 @@ interface Property {
   description: string
   image?: string
   images?: string[]
+  amenities?: string[] | null
   airport_pickup_enabled?: boolean
   airport?: string | null
   pickup_start_time?: string | null
@@ -73,10 +75,11 @@ export default function EditProperty() {
     propertyTypes: string[]
     timezones: string[]
     cancellationPolicies: string[]
+    availableAmenities?: string[]
     errors?: Record<string, string[] | string>
     validationErrors?: Record<string, string[]>
   }>()
-  const { property, propertyTypes, timezones, cancellationPolicies } = page.props
+  const { property, propertyTypes, timezones, cancellationPolicies, availableAmenities = [] } = page.props
   const pageErrors = page.props.validationErrors ?? page.props.errors ?? {}
   const isExperience = property.listing_category === 'experience'
   const [toastOpen, setToastOpen] = useState(false)
@@ -105,6 +108,7 @@ export default function EditProperty() {
     property_type: property.property_type,
     status: property.status,
     description: property.description,
+    amenities: Array.isArray(property.amenities) ? property.amenities : [],
     airport_pickup_enabled: Boolean(property.airport_pickup_enabled),
     airport: property.airport ?? '',
     pickup_start_time: toTimeInputValue(property.pickup_start_time),
@@ -207,6 +211,7 @@ export default function EditProperty() {
     submitData.append('property_type', formData.property_type)
     submitData.append('status', formData.status)
     submitData.append('description', formData.description)
+    formData.amenities.forEach((amenity, i) => submitData.append(`amenities[${i}]`, amenity))
     submitData.append('airport_pickup_enabled', formData.airport_pickup_enabled ? '1' : '0')
     if (formData.airport_pickup_enabled) {
       submitData.append('airport', formData.airport)
@@ -458,6 +463,12 @@ export default function EditProperty() {
                 <InputError message={Array.isArray(activeErrors.deposit_amount) ? activeErrors.deposit_amount[0] : activeErrors.deposit_amount} />
               </Col>
             </Row>
+
+            <AmenitySelector
+              options={availableAmenities}
+              value={formData.amenities}
+              onChange={(amenities) => setFormData(prev => ({ ...prev, amenities }))}
+            />
 
             {!isExperience && (
               <Box sx={{ mt: 4, bgcolor: '#F8FAFC', border: '1px solid #E5E7EB', borderRadius: '12px', p: 3 }}>

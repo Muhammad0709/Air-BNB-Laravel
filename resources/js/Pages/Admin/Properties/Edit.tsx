@@ -13,8 +13,14 @@ import { useLanguage } from '../../../hooks/use-language'
 
 export default function EditProperty() {
   const { t } = useLanguage()
-  const { property } = usePage().props as any
+  const { property, propertyTypes = ['apartment', 'house', 'villa', 'studio', 'condo'] } = usePage().props as any
   const isExperience = property?.listing_category === 'experience'
+  const propertyTypeLabel = (type: string) => {
+    const translated = t(`admin.properties.${type}`)
+    return translated === `admin.properties.${type}`
+      ? type.replace(/[-_]/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase())
+      : translated
+  }
   const { data, setData, processing, errors } = useForm({
     title: property?.title || '',
     location: property?.location || '',
@@ -149,11 +155,9 @@ export default function EditProperty() {
                       onChange={(e) => handleSelectChange('property_type', e.target.value)}
                       label={t('admin.properties.property_type')}
                     >
-                      <MenuItem value="apartment">{t('admin.properties.apartment')}</MenuItem>
-                      <MenuItem value="house">{t('admin.properties.house')}</MenuItem>
-                      <MenuItem value="villa">{t('admin.properties.villa')}</MenuItem>
-                      <MenuItem value="studio">{t('admin.properties.studio')}</MenuItem>
-                      <MenuItem value="condo">{t('admin.properties.condo')}</MenuItem>
+                      {propertyTypes.map((type: string) => (
+                        <MenuItem key={type} value={type}>{propertyTypeLabel(type)}</MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                   <InputError message={Array.isArray(errors.property_type) ? errors.property_type[0] : errors.property_type} />

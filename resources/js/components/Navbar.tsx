@@ -38,8 +38,9 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
   const { t, language, switchLanguage, isRtl } = useLanguage()
   const { currency, setCurrency } = useCurrency()
 
-  const { url, props } = usePage<{ supportedCurrencies?: string[] }>()
+  const { url, props } = usePage<{ supportedCurrencies?: string[]; supportedLanguages?: string[] }>()
   const supportedList = props.supportedCurrencies ?? [...getSupportedCurrencies()]
+  const availableLanguages = languages.filter((lang) => (props.supportedLanguages ?? languages.map((item) => item.code)).includes(lang.code))
 
   const currencies = useMemo(
     () =>
@@ -91,7 +92,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
     handleCurrencyClose()
   }
 
-  const currentLanguage = languages.find((l) => l.code === language) || languages[0]
+  const currentLanguage = availableLanguages.find((l) => l.code === language) || availableLanguages[0] || languages[0]
 
   const handleLanguageClick = (event: React.MouseEvent<HTMLElement>) => {
     setLanguageAnchor(event.currentTarget)
@@ -261,7 +262,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               >
-                {languages.map((lang) => (
+                {availableLanguages.map((lang) => (
                   <MenuItem
                     key={lang.code}
                     onClick={() => handleLanguageSelect(lang.code)}
@@ -622,7 +623,7 @@ export default function Navbar({ links: linksProp, showAuth = true, brandTo = '/
                       transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     >
-                      {languages.map((lang) => (
+                      {availableLanguages.map((lang) => (
                         <MenuItem
                           key={lang.code}
                           onClick={() => handleLanguageSelect(lang.code)}

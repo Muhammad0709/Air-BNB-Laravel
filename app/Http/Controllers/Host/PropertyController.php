@@ -9,11 +9,11 @@ use App\Models\Property;
 use App\Models\User;
 use App\Enums\CancellationPolicy;
 use App\Enums\ListingCategory;
-use App\Enums\PropertyType;
 use App\Enums\PropertyStatus;
 use App\Enums\UserType;
 use App\Events\NotificationEvent;
 use App\Services\DuplicateListingDetector;
+use App\Support\PlatformConfiguration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -80,7 +80,8 @@ class PropertyController extends Controller
     public function create()
     {
         return Inertia::render('Host/Properties/Create', [
-            'propertyTypes' => array_column(PropertyType::cases(), 'value'),
+            'propertyTypes' => PlatformConfiguration::propertyTypes(),
+            'availableAmenities' => PlatformConfiguration::amenities(),
             'listingCategories' => ListingCategory::values(),
             'timezones' => \DateTimeZone::listIdentifiers(),
             'cancellationPolicies' => CancellationPolicy::values(),
@@ -208,7 +209,8 @@ class PropertyController extends Controller
         }
         return Inertia::render('Host/Properties/Edit', [
             'property' => $property,
-            'propertyTypes' => array_column(PropertyType::cases(), 'value'),
+            'propertyTypes' => PlatformConfiguration::propertyTypes(),
+            'availableAmenities' => PlatformConfiguration::amenities(),
             'timezones' => \DateTimeZone::listIdentifiers(),
             'cancellationPolicies' => CancellationPolicy::values(),
         ]);

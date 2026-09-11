@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CountryPaymentSetting;
+use App\Support\PlatformConfiguration;
 
 class PaymentSettingsController extends Controller
 {
@@ -12,18 +13,19 @@ class PaymentSettingsController extends Controller
     {
         $settings = CountryPaymentSetting::orderBy('country_code')->get();
 
-        // If you want a quick way to add new countries on the fly
-        $known = $settings->pluck('country_code')->toArray();
+        $known = $settings->pluck('country_code')->map('strtoupper')->all();
 
-        $allCountries = [
+        $names = [
             'KE' => 'Kenya',
             'TZ' => 'Tanzania',
             'UG' => 'Uganda',
             'NG' => 'Nigeria',
             'ZA' => 'South Africa',
         ];
-
-        $available = array_filter($allCountries, fn ($c) => !in_array($c, $known) ? $c : null, ARRAY_FILTER_USEKEY);
+        $available = collect(PlatformConfiguration::list('countries'))
+            ->mapWithKeys(fn ($code) => [$code => $names[$code] ?? $code])
+            ->reject(fn ($name, $code) => in_array($code, $known, true))
+            ->all();
 
         return view('admin.payment-settings.index', compact('settings', 'available'));
     }

@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Enums\PropertyType;
+use App\Support\PlatformConfiguration;
 
 class HostPropertyRequest extends FormRequest
 {
@@ -62,7 +62,7 @@ class HostPropertyRequest extends FormRequest
             return [
                 'title' => ['required', 'string', 'max:255', 'regex:/^(?=.*\p{L})[\p{L} ]+$/u'],
                 'description' => 'required|string',
-                'property_type' => 'required|string|in:' . implode(',', array_column(PropertyType::cases(), 'value')),
+                'property_type' => 'required|string|in:' . implode(',', PlatformConfiguration::propertyTypes()),
                 'bedrooms' => 'required|integer|min:1',
                 'beds' => 'required|integer|min:1',
                 'bathrooms' => 'required|integer|min:1',
@@ -94,7 +94,7 @@ class HostPropertyRequest extends FormRequest
             return [
                 'title' => ['sometimes', 'required', 'string', 'max:255', 'regex:/^(?=.*\p{L})[\p{L} ]+$/u'],
                 'description' => 'sometimes|required|string',
-                'property_type' => 'sometimes|required|string|in:' . implode(',', array_column(PropertyType::cases(), 'value')),
+                'property_type' => 'sometimes|required|string|in:' . implode(',', PlatformConfiguration::propertyTypes()),
                 'bedrooms' => 'sometimes|required|integer|min:1',
                 'beds' => 'sometimes|required|integer|min:1',
                 'bathrooms' => 'sometimes|required|integer|min:1',

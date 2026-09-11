@@ -4,6 +4,7 @@ import Checkbox from '@mui/material/Checkbox'
 import { Row, Col } from 'react-bootstrap'
 import HostLayout from '../../../Components/Host/HostLayout'
 import InputError from '../../../components/InputError'
+import AmenitySelector from '../../../components/AmenitySelector'
 import { router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../../../hooks/use-language'
 import RtlBackArrowIcon from '../../../components/RtlBackArrowIcon'
@@ -19,10 +20,11 @@ export default function AddProperty() {
     listingCategories: string[]
     timezones: string[]
     cancellationPolicies: string[]
+    availableAmenities?: string[]
     errors?: Record<string, string[] | string>
     validationErrors?: Record<string, string[]>
   }>()
-  const { propertyTypes, listingCategories, timezones, cancellationPolicies } = page.props
+  const { propertyTypes, listingCategories, timezones, cancellationPolicies, availableAmenities = [] } = page.props
   const pageErrors = page.props.validationErrors ?? page.props.errors ?? {}
   const [formData, setFormData] = useState({
     title: '',
@@ -45,6 +47,7 @@ export default function AddProperty() {
     property_type: '',
     description: '',
     images: [] as File[],
+    amenities: [] as string[],
     airport_pickup_enabled: false,
     airport: '',
     pickup_start_time: '',
@@ -152,6 +155,7 @@ export default function AddProperty() {
     submitData.append('guests', formData.guests)
     submitData.append('property_type', formData.property_type)
     submitData.append('description', formData.description)
+    formData.amenities.forEach((amenity, i) => submitData.append(`amenities[${i}]`, amenity))
     submitData.append('airport_pickup_enabled', formData.airport_pickup_enabled ? '1' : '0')
     if (formData.airport_pickup_enabled) {
       submitData.append('airport', formData.airport)
@@ -475,6 +479,12 @@ export default function AddProperty() {
                 <InputError message={err('description')} />
               </Col>
             </Row>
+
+            <AmenitySelector
+              options={availableAmenities}
+              value={formData.amenities}
+              onChange={(amenities) => setFormData(prev => ({ ...prev, amenities }))}
+            />
 
             {/* Experience-specific fields */}
             {formData.listing_category === 'experience' && (
