@@ -429,6 +429,315 @@ p.hero-subtitle {
   }
 }
 
+/* Final width pass: keep every customer route on a full viewport shell. */
+.about-page > .container,
+.chat-page-layout .chat-page-container,
+.receipt-page .container,
+.confirmation-page > .container {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.about-page,
+.chat-page-layout,
+.receipt-page,
+.confirmation-page {
+  width: 100% !important;
+}
+
+/* These rules intentionally come last so earlier page-specific rules cannot
+   shrink the customer shell back to a narrow column. */
+.site-navbar > .MuiContainer-root,
+.site-navbar > .MuiContainer-root > .MuiToolbar-root,
+.index-page .featured-section .container-fluid,
+.index-page .popular-stays-section .container-fluid,
+.listing-page,
+.listing-page > .container,
+.property-detail-page > section > .container,
+.property-detail-page > section > .container-fluid,
+.booking-page > .container,
+.booking-page > .MuiContainer-root,
+.contact-page > .container,
+.privacy-page > .container,
+.privacy-page > .MuiContainer-root,
+.terms-page > .container,
+.about-page > .container,
+.receipt-page .container,
+.confirmation-page > .container {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.index-page .featured-section .container-fluid,
+.index-page .popular-stays-section .container-fluid,
+.listing-page,
+.privacy-page > .container,
+.privacy-page > .MuiContainer-root,
+.terms-page > .container {
+  padding-inline: clamp(16px, 4vw, 56px) !important;
+}
+
+/* Final auth/account cascade. */
+.auth-page > .container,
+.auth-page > .container > .MuiBox-root,
+.auth-page > .container > .MuiBox-root > .MuiBox-root,
+.contact-page .row > [class*="col-"] {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.auth-page > .container {
+  padding-inline: clamp(16px, 4vw, 56px) !important;
+}
+
+.contact-page .row > [class*="col-"] {
+  flex: 0 0 100% !important;
+}
+
+/* Absolute final route-shell pass. */
+.booking-page > .MuiContainer-root,
+.privacy-page > .MuiContainer-root,
+.notifications-page > .MuiContainer-root,
+.chat-page-layout .chat-page-container {
+  width: 100% !important;
+  max-width: none !important;
+  padding-inline: clamp(16px, 4vw, 56px) !important;
+}
+
+/* Absolute final route-shell pass: MUI Container also defaults to a capped
+   width, so customer-facing pages must explicitly opt out of that cap. */
+.booking-page > .MuiContainer-root,
+.privacy-page > .MuiContainer-root,
+.notifications-page > .MuiContainer-root,
+.chat-page-layout .chat-page-container {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.booking-page > .MuiContainer-root,
+.privacy-page > .MuiContainer-root,
+.notifications-page > .MuiContainer-root,
+.chat-page-layout .chat-page-container {
+  padding-inline: clamp(16px, 4vw, 56px) !important;
+}
+
+/* Absolute final route-shell pass: MUI Container also defaults to a capped
+   width, so customer-facing pages must explicitly opt out of that cap. */
+.booking-page > .MuiContainer-root,
+.privacy-page > .MuiContainer-root,
+.notifications-page > .MuiContainer-root,
+.chat-page-layout .chat-page-container {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.booking-page > .MuiContainer-root,
+.privacy-page > .MuiContainer-root,
+.notifications-page > .MuiContainer-root,
+.chat-page-layout .chat-page-container {
+  padding-inline: clamp(16px, 4vw, 56px) !important;
+}
+
+/* Auth pages use react-bootstrap's .container, not MUI's container class. */
+.auth-page > .container,
+.auth-page > .container > .MuiBox-root,
+.auth-page > .container > .MuiBox-root > .MuiBox-root {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.auth-page > .container {
+  padding-inline: clamp(16px, 4vw, 56px) !important;
+}
+
+/* Full-width account/contact content on desktop as well as mobile. */
+.profile-settings-page .row > [class*="col-"],
+.contact-page .row > [class*="col-"] {
+  flex: 0 0 100% !important;
+  max-width: 100% !important;
+}
+
+.auth-page,
+.auth-page > .MuiContainer-root,
+.auth-page > .MuiContainer-root > .MuiBox-root {
+  width: 100% !important;
+}
+
+.auth-page > .MuiContainer-root {
+  max-width: none !important;
+}
+
+@media (max-width: 768px) {
+  .index-page .featured-section .container-fluid,
+  .index-page .popular-stays-section .container-fluid,
+  .listing-page {
+    padding-inline: 16px !important;
+  }
+}
+
+/* ========================================================================
+   FULL-WIDTH CORRECTION + AUTH PAGES
+   The viewport shell stays full width; only individual controls/cards keep a
+   readable width where the Airbnb interaction calls for it.
+   ======================================================================== */
+
+html,
+body,
+#root,
+.MuiAppBar-root,
+.site-navbar {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.site-navbar > .MuiContainer-root,
+.site-navbar > .MuiContainer-root > .MuiToolbar-root {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.site-navbar > .MuiContainer-root {
+  padding-inline: clamp(20px, 4vw, 56px) !important;
+}
+
+.index-page .featured-section .container-fluid,
+.index-page .popular-stays-section .container-fluid,
+.listing-page,
+.listing-page > .container,
+.property-detail-page > section > .container,
+.property-detail-page > section > .container-fluid,
+.booking-page > .container,
+.contact-page > .container,
+.privacy-page > .container,
+.terms-page > .container {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.index-page .featured-section .container-fluid,
+.index-page .popular-stays-section .container-fluid {
+  padding-inline: clamp(20px, 4vw, 56px) !important;
+}
+
+.listing-page {
+  padding-inline: clamp(20px, 4vw, 56px) !important;
+}
+
+.property-detail-page .property-gallery-container {
+  width: 100% !important;
+}
+
+/* Auth routes: full-width white shell with an Airbnb-like centered form card. */
+.auth-page {
+  width: 100% !important;
+  min-height: 100dvh !important;
+  background: #FFFFFF;
+}
+
+.auth-page > .MuiContainer-root {
+  width: 100% !important;
+  max-width: none !important;
+  padding-inline: clamp(16px, 4vw, 56px) !important;
+}
+
+.auth-page > .MuiContainer-root > .MuiBox-root {
+  width: 100% !important;
+  min-height: 100dvh !important;
+}
+
+.auth-page > .MuiContainer-root > .MuiBox-root > .MuiBox-root {
+  width: 100% !important;
+  max-width: 720px !important;
+}
+
+.auth-page .MuiBox-root:has(> form) {
+  width: 100% !important;
+}
+
+.auth-page .MuiPaper-root:not(.MuiDialog-paper) {
+  width: 100% !important;
+  margin-top: 24px;
+  padding: 28px !important;
+  border: 1px solid #DDDDDD !important;
+  border-radius: 16px !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+.auth-page .MuiOutlinedInput-root {
+  min-height: 52px !important;
+  border-radius: 10px !important;
+}
+
+.auth-page .MuiOutlinedInput-root fieldset {
+  border-radius: 10px !important;
+}
+
+.auth-page .MuiButton-root {
+  min-height: 52px !important;
+}
+
+.auth-page img[alt="Bondoqi"] {
+  height: 58px !important;
+  max-width: min(280px, 80vw) !important;
+}
+
+.auth-page .MuiTypography-h4 {
+  font-size: clamp(28px, 4vw, 38px) !important;
+  font-weight: 700 !important;
+  color: #222222;
+}
+
+.auth-page .MuiFormControlLabel-label,
+.auth-page .MuiTypography-subtitle2 {
+  font-size: 14px !important;
+}
+
+.auth-page .MuiMenu-paper {
+  z-index: 1400;
+}
+
+.privacy-page,
+.terms-page,
+.notifications-page {
+  width: 100%;
+}
+
+.privacy-page > .MuiContainer-root,
+.terms-page > .container {
+  padding-inline: clamp(20px, 4vw, 56px) !important;
+}
+
+.footer-fix-bottom .MuiContainer-root {
+  width: 100% !important;
+  max-width: none !important;
+  padding-inline: clamp(20px, 4vw, 56px) !important;
+}
+
+@media (max-width: 768px) {
+  .site-navbar > .MuiContainer-root {
+    padding-inline: 16px !important;
+  }
+
+  .auth-page > .MuiContainer-root {
+    padding-inline: 16px !important;
+  }
+
+  .auth-page .MuiPaper-root:not(.MuiDialog-paper) {
+    margin-top: 18px;
+    padding: 20px !important;
+    border-radius: 14px !important;
+  }
+
+  .auth-page > .MuiContainer-root > .MuiBox-root > .MuiBox-root {
+    max-width: 100% !important;
+  }
+
+  .listing-page {
+    padding-inline: 16px !important;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
@@ -522,7 +831,7 @@ p.hero-subtitle {
 .customer-page-title {
   font-size: 1.5rem !important;
   line-height: 1.3 !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   letter-spacing: normal !important;
 }
 
@@ -1109,7 +1418,7 @@ p.hero-subtitle {
 .booking-page { padding: 24px 0 72px; background: white; }
 .booking-title { font-size: 40px; line-height: 1.15; font-weight: 900; color: #111827; margin: 6px 0 22px; }
 .booking-form { padding: 18px; border-radius: 12px; background: transparent !important; box-shadow: none !important; border: none !important; }
-.section-title { font-weight: 800; color: #111827; margin: 12px 0 8px; font-size: 20px; }
+.section-title { font-weight: 800 !important; color: #111827; margin: 12px 0 8px; font-size: 24px !important; }
 .field { margin-bottom: 14px; }
 .booking-form .label {
   color: #222222 !important;
@@ -1523,7 +1832,7 @@ p.hero-subtitle {
   .property-info-card { margin-top: 0; padding: 20px; }
   .property-title { font-size: 24px; }
   .quick-info-section { padding: 20px; }
-  .section-title { font-size: 20px; margin-bottom: 20px; }
+  .section-title { font-size: 20px !important; margin-bottom: 20px; }
   .property-gallery-container {
     grid-template-columns: 1fr;
     height: auto !important;
@@ -1894,10 +2203,20 @@ p.hero-subtitle {
   }
 }
 
-/* Footer: always keep left/right spacing on all devices (override global container padding reset) */
+/* Footer: use the same responsive page gutter as the customer pages. */
+.footer-fix-bottom,
+.site-footer {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 .footer-fix-bottom .MuiContainer-root {
-  padding-left: 16px !important;
-  padding-right: 16px !important;
+  width: 100% !important;
+  max-width: none !important;
+  box-sizing: border-box;
+  padding-left: clamp(16px, 4vw, 56px) !important;
+  padding-right: clamp(16px, 4vw, 56px) !important;
 }
 .site-footer {
   position: relative;
@@ -1923,18 +2242,6 @@ p.hero-subtitle {
   box-shadow: 0 4px 12px rgba(16,24,40,.06);
 }
 .footer-top-button:hover { background: #FFF2EC !important; transform: translateY(-2px); }
-@media (min-width: 600px) {
-  .footer-fix-bottom .MuiContainer-root {
-    padding-left: 24px !important;
-    padding-right: 24px !important;
-  }
-}
-@media (min-width: 900px) {
-  .footer-fix-bottom .MuiContainer-root {
-    padding-left: 32px !important;
-    padding-right: 32px !important;
-  }
-}
 
 @media (min-width: 1400px) {
   .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
@@ -2355,8 +2662,8 @@ a { transition: color 0.15s ease; }
    HOME PAGE — section title consistency
    ═══════════════════════════════════════════════════════════════ */
 .airbnb-section-title {
-  font-size: 22px !important;
-  font-weight: 700 !important;
+  font-size: 24px !important;
+  font-weight: 800 !important;
   color: #222222 !important;
   letter-spacing: -0.01em;
 }
@@ -2372,3 +2679,638 @@ a { transition: color 0.15s ease; }
 }
 
 /* END GLOBAL UI POLISH */
+
+/* ========================================================================
+   CUSTOMER UI REFRESH
+   Airbnb-inspired layout rhythm. Existing palette, content and interactions
+   stay unchanged; this layer only adjusts presentation and responsive layout.
+   ======================================================================== */
+
+body {
+  background: #FFFFFF;
+  color: #222222;
+  -webkit-font-smoothing: antialiased;
+}
+
+.site-navbar {
+  margin-bottom: 0 !important;
+  background: #FFFFFF !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.site-navbar.is-scrolled {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .08) !important;
+}
+
+.site-navbar .MuiToolbar-root {
+  min-height: 78px !important;
+}
+
+.site-navbar .MuiToolbar-root > .MuiBox-root:first-child img {
+  height: 42px !important;
+  max-width: 180px !important;
+}
+
+.site-navbar .MuiToolbar-root > .MuiStack-root > .MuiTypography-root {
+  position: relative;
+  padding: 27px 0;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: #222222 !important;
+}
+
+.site-navbar .MuiToolbar-root > .MuiStack-root > .MuiTypography-root[style*="AD542D"] {
+  color: #AD542D !important;
+}
+
+.site-navbar .navbar-link {
+  position: relative;
+}
+
+.site-navbar .navbar-link.is-active::after {
+  display: none;
+}
+
+.site-navbar .MuiToolbar-root .MuiAvatar-root {
+  width: 36px;
+  height: 36px;
+}
+
+.site-navbar .MuiToolbar-root .MuiIconButton-root {
+  transition: background-color .18s ease, transform .18s ease;
+}
+
+.site-navbar .MuiToolbar-root .MuiIconButton-root:hover {
+  transform: scale(1.03);
+}
+
+.index-page .featured-section,
+.index-page .popular-stays-section {
+  margin-top: 0 !important;
+  padding: 30px 0 18px !important;
+}
+
+.index-page .featured-section .container-fluid,
+.index-page .popular-stays-section .container-fluid {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 32px;
+}
+
+.index-page .airbnb-section-header {
+  padding-inline: 0;
+  margin-bottom: 16px;
+}
+
+.index-page .airbnb-scroll-container {
+  padding-inline: 0;
+}
+
+.index-page .airbnb-section-title {
+  font-size: 24px !important;
+  font-weight: 800 !important;
+}
+
+.index-page .airbnb-card {
+  min-height: 0;
+}
+
+.index-page .airbnb-card-image-wrapper {
+  border-radius: 25px !important;
+  /* Airbnb's desktop cards are slightly wider than their image height. */
+  aspect-ratio: 1.05 / 1;
+  height: auto !important;
+  padding-bottom: 0 !important;
+}
+
+/* Stays/listing page */
+.listing-page {
+  width: 100% !important;
+  max-width: none !important;
+  margin-inline: 0;
+  padding: 28px clamp(16px, 4vw, 56px) 64px !important;
+}
+
+.listing-page .filter-card {
+  position: sticky;
+  top: 96px;
+  border: 1px solid #DDDDDD;
+  border-radius: 14px;
+  box-shadow: none;
+  background: #FFFFFF;
+}
+
+.listing-page .filter-title {
+  font-size: 16px !important;
+}
+
+.listing-page .filter-group {
+  font-size: 12px !important;
+  letter-spacing: .02em;
+}
+
+.listing-page .listing-search .MuiOutlinedInput-root,
+.listing-page .listing-sort .MuiOutlinedInput-root {
+  min-height: 44px;
+  border-radius: 999px;
+}
+
+.listing-page .airbnb-card {
+  box-shadow: none;
+  transform: none !important;
+}
+
+.listing-page .airbnb-card-image-wrapper,
+.listing-page .airbnb-card-image-wrapper {
+  height: 232px;
+  border-radius: 12px !important;
+}
+
+.listing-page .airbnb-card-body {
+  padding-top: 10px;
+}
+
+/* Property detail page */
+.property-detail-page {
+  padding: 8px 0 72px !important;
+}
+
+.property-detail-page > section > .container,
+.property-detail-page > section > .container-fluid {
+  width: 100% !important;
+  max-width: none !important;
+  padding-inline: clamp(16px, 4vw, 56px) !important;
+}
+
+/* One heading style across all customer-facing pages. */
+.airbnb-section-title,
+.customer-page-title,
+.section-title,
+.reviews-title,
+.featured-heading,
+.how-title,
+.popular-title,
+.choose-title,
+.cta-title,
+.booking-title,
+.confirmation-title,
+.property-title,
+.about-hero-title {
+  font-size: 24px !important;
+  font-weight: 800 !important;
+}
+
+@media (max-width: 768px) {
+  .airbnb-section-title,
+  .customer-page-title,
+  .section-title,
+  .reviews-title,
+  .featured-heading,
+  .how-title,
+  .popular-title,
+  .choose-title,
+  .cta-title,
+  .booking-title,
+  .confirmation-title,
+  .property-title,
+  .about-hero-title {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+  }
+}
+
+/* Listing content needs a visible gap below the sticky navbar. */
+.listing-page {
+  padding-top: 44px !important;
+}
+
+@media (max-width: 768px) {
+  .listing-page {
+    padding-top: 28px !important;
+  }
+}
+
+/* Keep a little breathing room below the shared navbar on every customer page. */
+.site-navbar {
+  margin-bottom: 16px !important;
+}
+
+@media (max-width: 599px) {
+  .site-navbar {
+    margin-bottom: 12px !important;
+  }
+}
+
+.property-detail-page .property-info-card {
+  padding: 20px 0 18px;
+  margin-top: 0;
+  border-radius: 0 !important;
+  border: 0;
+  border-bottom: 0;
+  box-shadow: none;
+}
+
+.property-detail-page .property-title {
+  font-size: clamp(22px, 3vw, 30px);
+  margin-bottom: 10px;
+}
+
+.property-detail-page .property-meta {
+  gap: 14px;
+  margin-bottom: 0;
+}
+
+.property-detail-page .booking-info {
+  text-align: end;
+}
+
+.property-detail-page .price-amount {
+  font-size: 20px;
+}
+
+.property-detail-page .price-period {
+  font-size: 14px;
+}
+
+.property-detail-page .property-gallery-section {
+  padding: 24px 0 12px;
+}
+
+.property-detail-page .property-gallery-container,
+.property-detail-page .property-gallery-grid,
+.property-detail-page .property-gallery-main {
+  height: 480px !important;
+  max-height: 480px !important;
+}
+
+.property-detail-page .property-gallery-container {
+  gap: 8px;
+}
+
+.property-detail-page .property-gallery-main,
+.property-detail-page .property-gallery-main .property-gallery-img-btn {
+  border-radius: 14px 0 0 14px;
+}
+
+.property-detail-page .property-gallery-item:nth-child(2),
+.property-detail-page .property-gallery-item:nth-child(2) .property-gallery-img-btn {
+  border-radius: 0 14px 0 0;
+}
+
+.property-detail-page .property-gallery-item:nth-child(4),
+.property-detail-page .property-gallery-item:nth-child(4) .property-gallery-img-btn {
+  border-radius: 0 0 14px 0;
+}
+
+.property-detail-page .quick-info-section,
+.property-detail-page .about-section,
+.property-detail-page .amenities-section,
+.property-detail-page .rules-section,
+.property-detail-page .availability-section,
+.property-detail-page .host-section {
+  padding: 30px 0;
+  border: 0;
+  border-top: 1px solid #DDDDDD;
+  border-radius: 0 !important;
+  box-shadow: none;
+  background: #FFFFFF;
+}
+
+/* Keep the gallery separated from Quick Info without a visible divider. */
+.property-detail-page .quick-info-section {
+  border-top: 0 !important;
+}
+
+/* Detail page cards stay still on hover. */
+.property-detail-page .quick-info-section:hover,
+.property-detail-page .about-section:hover,
+.property-detail-page .amenities-section:hover,
+.property-detail-page .rules-section:hover,
+.property-detail-page .availability-section:hover,
+.property-detail-page .host-section:hover,
+.property-detail-page .review-item:hover,
+.property-detail-page .airbnb-card:hover {
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.property-detail-page .airbnb-card:hover .airbnb-card-image {
+  transform: none !important;
+}
+
+.property-detail-page .section-title,
+.property-detail-page .reviews-title {
+  font-size: 24px !important;
+  font-weight: 800 !important;
+  margin-bottom: 20px !important;
+}
+
+.property-detail-page .info-number {
+  font-size: 20px;
+}
+
+.property-detail-page .reviews-list {
+  column-gap: 48px;
+  row-gap: 40px;
+}
+
+/* Booking, receipt and account pages share Airbnb's restrained content column. */
+.booking-page,
+.confirmation-page,
+.receipt-page,
+.contact-page {
+  background: #FFFFFF;
+}
+
+.booking-page {
+  padding: 30px 0 72px !important;
+}
+
+.booking-page .booking-form,
+.booking-page .summary-card {
+  border: 1px solid #DDDDDD !important;
+  border-radius: 14px !important;
+  background: #FFFFFF !important;
+}
+
+.booking-page .booking-form {
+  padding: 28px !important;
+}
+
+.booking-page .summary-card {
+  position: sticky;
+  top: 96px;
+  box-shadow: none;
+}
+
+.booking-page .booking-total {
+  border-radius: 12px !important;
+  box-shadow: none;
+}
+
+.confirmation-page .confirmation-content {
+  max-width: 640px;
+  margin-inline: auto;
+  padding: 72px 24px 56px;
+}
+
+.confirmation-page .confirmation-title {
+  font-size: clamp(28px, 5vw, 42px);
+}
+
+.contact-page {
+  padding-top: 28px !important;
+  padding-bottom: 72px !important;
+}
+
+.contact-page .container {
+  max-width: 1180px;
+}
+
+.contact-page .contact-form-card {
+  box-shadow: none !important;
+}
+
+.contact-page .contact-form-card {
+  border-color: #DDDDDD !important;
+}
+
+.contact-page .contact-form-card {
+  border-radius: 14px !important;
+}
+
+/* Legal pages keep a comfortable reading measure. */
+.privacy-page .container,
+.terms-page .container {
+  max-width: 820px;
+}
+
+/* Legal page content should not receive the extra MUI Paper padding. */
+.privacy-page .MuiPaper-root,
+.terms-page .MuiPaper-root {
+  padding: 0 !important;
+}
+
+@media (min-width: 1200px) {
+  .site-navbar .MuiToolbar-root {
+    min-height: 80px !important;
+  }
+
+}
+
+@media (max-width: 1199px) and (min-width: 769px) {
+  .listing-page {
+    padding-inline: 24px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .site-navbar .MuiToolbar-root {
+    min-height: 68px !important;
+  }
+
+  .site-navbar .MuiToolbar-root > .MuiStack-root > .MuiTypography-root {
+    font-size: 17px !important;
+  }
+
+  .site-navbar .MuiToolbar-root > .MuiBox-root:first-child img {
+    height: 38px !important;
+    max-width: 150px !important;
+  }
+
+  .index-page .featured-section,
+  .index-page .popular-stays-section {
+    padding: 24px 0 10px !important;
+  }
+
+  .index-page .featured-section .container-fluid,
+  .index-page .popular-stays-section .container-fluid {
+    padding-inline: 20px;
+  }
+
+  .listing-page {
+    padding: 18px 16px 48px !important;
+  }
+
+  .listing-page .filter-card {
+    position: static;
+  }
+
+  .listing-page .airbnb-card-image-wrapper {
+    height: 210px;
+  }
+
+  .property-detail-page {
+    padding-top: 0 !important;
+  }
+
+  .property-detail-page .property-info-card {
+    padding: 16px 16px 14px;
+  }
+
+  .property-detail-page .property-gallery-section {
+    padding: 16px 0 8px;
+  }
+
+  .property-detail-page .property-gallery-container,
+  .property-detail-page .property-gallery-grid,
+  .property-detail-page .property-gallery-main {
+    height: 300px !important;
+    max-height: 300px !important;
+  }
+
+  .property-detail-page .property-gallery-container {
+    display: block;
+    min-height: 300px;
+  }
+
+  .property-detail-page .property-gallery-main,
+  .property-detail-page .property-gallery-main .property-gallery-img-btn {
+    border-radius: 0;
+  }
+
+  .property-detail-page .property-gallery-grid {
+    display: none;
+  }
+
+  .property-detail-page .quick-info-section,
+  .property-detail-page .about-section,
+  .property-detail-page .amenities-section,
+  .property-detail-page .rules-section,
+  .property-detail-page .availability-section,
+  .property-detail-page .host-section {
+    padding: 24px 16px;
+  }
+
+  .property-detail-page .section-title,
+  .property-detail-page .reviews-title {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+  }
+
+  .booking-page .booking-form {
+    padding: 20px !important;
+  }
+
+  .booking-page .summary-card {
+    position: static;
+  }
+
+  .contact-page {
+    padding-top: 20px !important;
+    padding-bottom: 48px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .index-page .airbnb-section-title {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+  }
+
+  .property-detail-page .property-info-card {
+    padding-inline: 16px;
+  }
+
+.property-detail-page .booking-info {
+    text-align: start;
+    margin-top: 12px;
+  }
+}
+
+/* Keep the desktop gap below Home search equal to the gap above it. */
+@media (min-width: 769px) {
+  .index-page .featured-section {
+    padding-top: 90px !important;
+  }
+}
+
+/* Final width pass: keep every customer route on a full viewport shell. */
+.about-page > .container,
+.chat-page-layout .chat-page-container,
+.receipt-page .container,
+.confirmation-page > .container {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.about-page,
+.chat-page-layout,
+.receipt-page,
+.confirmation-page {
+  width: 100% !important;
+}
+
+/* Last cascade layer: full-width viewport rules must win over all earlier
+   page-specific max-width declarations. */
+.site-navbar > .MuiContainer-root,
+.site-navbar > .MuiContainer-root > .MuiToolbar-root,
+.index-page .featured-section .container-fluid,
+.index-page .popular-stays-section .container-fluid,
+.listing-page,
+.listing-page > .container,
+.property-detail-page > section > .container,
+.property-detail-page > section > .container-fluid,
+.booking-page > .container,
+.contact-page > .container,
+.privacy-page > .container,
+.terms-page > .container,
+.about-page > .container,
+.receipt-page .container,
+.confirmation-page > .container {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.index-page .featured-section .container-fluid,
+.index-page .popular-stays-section .container-fluid,
+.listing-page,
+.privacy-page > .container,
+.terms-page > .container {
+  padding-inline: clamp(16px, 4vw, 56px) !important;
+}
+
+/* Final auth/account cascade. */
+.auth-page > .container,
+.auth-page > .container > .MuiBox-root,
+.auth-page > .container > .MuiBox-root > .MuiBox-root,
+.contact-page .row > [class*="col-"] {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.auth-page > .container {
+  padding-inline: clamp(16px, 4vw, 56px) !important;
+}
+
+.contact-page .row > [class*="col-"] {
+  flex: 0 0 100% !important;
+}
+
+/* MUI containers also need the viewport-shell override on the final cascade. */
+.booking-page > .MuiContainer-root,
+.privacy-page > .MuiContainer-root,
+.notifications-page > .MuiContainer-root,
+.chat-page-layout .chat-page-container {
+  width: 100% !important;
+  max-width: none !important;
+  padding-inline: clamp(16px, 4vw, 56px) !important;
+}
+
+/* Some routes wrap their Bootstrap container inside a section/Box. */
+.about-page .about-hero-content,
+.terms-page .container,
+.confirmation-page .container {
+  width: 100% !important;
+  max-width: none !important;
+  padding-inline: clamp(16px, 4vw, 56px) !important;
+}
+
+/* Listing detail uses the exact same viewport gutter as the Home sections. */
+.property-detail-page > section > .container,
+.property-detail-page > section > .container-fluid {
+  width: 100% !important;
+  max-width: none !important;
+  padding-inline: clamp(16px, 4vw, 56px) !important;
+}
