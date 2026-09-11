@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Enums\ListingCategory;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePropertyRequest extends FormRequest
@@ -16,12 +17,15 @@ class UpdatePropertyRequest extends FormRequest
      */
     public function rules(): array
     {
+        $property = $this->route('property');
+        $isExperience = $property && $property->listing_category === ListingCategory::EXPERIENCE;
+
         return [
             'title' => ['required', 'string', 'max:255', 'regex:/^(?=.*\p{L})[\p{L} ]+$/u'],
             'location' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric', 'min:0'],
-            'bedrooms' => ['required', 'integer', 'min:0'],
-            'bathrooms' => ['required', 'integer', 'min:0'],
+            'bedrooms' => $isExperience ? ['nullable', 'integer', 'min:0'] : ['required', 'integer', 'min:0'],
+            'bathrooms' => $isExperience ? ['nullable', 'integer', 'min:0'] : ['required', 'integer', 'min:0'],
             'guests' => ['required', 'integer', 'min:1'],
             'property_type' => ['required', 'in:apartment,house,villa,studio,condo'],
             'status' => ['required', 'in:Active,Inactive'],

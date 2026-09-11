@@ -16,6 +16,7 @@ import PeopleIcon from '@mui/icons-material/People'
 import HomeIcon from '@mui/icons-material/Home'
 import EventBusyIcon from '@mui/icons-material/EventBusy'
 import DeleteIcon from '@mui/icons-material/Delete'
+import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline'
 
 interface Property {
   id: number
@@ -28,6 +29,13 @@ interface Property {
   property_type: string
   status: string
   approval_status: string
+  listing_category?: string
+  duration_hours?: number | null
+  experience_category?: string | null
+  experience_available_dates?: string[] | null
+  experience_available_times?: string[] | null
+  experience_booking_paused?: boolean
+  experience_guest_requirements?: string | null
   description: string
   image?: string
   created_at: string
@@ -63,6 +71,12 @@ export default function ViewProperty() {
     router.delete(`/host/properties/${property.id}/blocked-dates/${blockedDateId}`, {
       preserveScroll: true,
     })
+  }
+
+  const handlePauseChange = () => {
+    router.patch(`/host/properties/${property.id}/experience/pause`, {
+      paused: !property.experience_booking_paused,
+    }, { preserveScroll: true })
   }
 
 
@@ -266,6 +280,47 @@ export default function ViewProperty() {
           </Card>
 
           {/* Availability Section */}
+          {property.listing_category === 'experience' && (
+            <Card elevation={0} sx={{ border: '1px solid #BBF7D0', bgcolor: '#F0FDF4', borderRadius: '16px', mt: 3 }}>
+              <CardContent sx={{ p: { xs: 2, md: 4 } }}>
+                <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ sm: 'center' }} spacing={2}>
+                  <Box>
+                    <Typography variant="h6" sx={{ fontWeight: 700, color: '#166534' }}>Experience schedule</Typography>
+                    <Typography sx={{ color: '#4B5563', fontSize: '0.875rem', mt: 0.5 }}>
+                      {property.experience_category || 'Experience'} · {property.duration_hours || '—'} hours
+                    </Typography>
+                  </Box>
+                  <Button
+                    variant="outlined"
+                    startIcon={<PauseCircleOutlineIcon />}
+                    onClick={handlePauseChange}
+                    sx={{ textTransform: 'none', borderColor: property.experience_booking_paused ? '#16A34A' : '#D97706', color: property.experience_booking_paused ? '#16A34A' : '#D97706' }}
+                  >
+                    {property.experience_booking_paused ? 'Resume bookings' : 'Pause bookings'}
+                  </Button>
+                </Stack>
+                {property.experience_booking_paused && (
+                  <Typography sx={{ mt: 2, color: '#B45309', fontWeight: 600 }}>Bookings are paused. Guests cannot create new bookings.</Typography>
+                )}
+                <Stack spacing={2} sx={{ mt: 3 }}>
+                  <Box>
+                    <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 1 }}>Available dates</Typography>
+                    <Stack direction="row" flexWrap="wrap" gap={1}>
+                      {(property.experience_available_dates || []).map((date) => <Chip key={date} label={date} size="small" />)}
+                    </Stack>
+                  </Box>
+                  <Box>
+                    <Typography sx={{ fontSize: 12, color: '#6B7280', mb: 1 }}>Available times</Typography>
+                    <Stack direction="row" flexWrap="wrap" gap={1}>
+                      {(property.experience_available_times || []).map((time) => <Chip key={time} label={time} size="small" />)}
+                    </Stack>
+                  </Box>
+                  {property.experience_guest_requirements && <Typography sx={{ color: '#4B5563' }}><strong>Guest requirements:</strong> {property.experience_guest_requirements}</Typography>}
+                </Stack>
+              </CardContent>
+            </Card>
+          )}
+
           <Card elevation={0} sx={{ border: '1px solid #E5E7EB', borderRadius: '16px', mt: 3 }}>
             <CardContent sx={{ p: { xs: 2, md: 4 } }}>
               <Typography variant="h6" sx={{ fontWeight: 700, color: '#111827', mb: 1 }}>
@@ -489,4 +544,3 @@ export default function ViewProperty() {
     </HostLayout>
   )
 }
-

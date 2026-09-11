@@ -15,8 +15,10 @@ use App\Services\MpesaService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class BookingController extends Controller
@@ -119,6 +121,17 @@ class BookingController extends Controller
                 }
 
                 $isExperience = $property->isExperience();
+                if ($isExperience) {
+                    $availableDates = collect($property->experience_available_dates ?? [])
+                        ->filter(fn ($date) => $date >= Carbon::today()->format('Y-m-d'))
+                        ->values();
+
+                    if ($availableDates->isNotEmpty() && ! $availableDates->contains($checkin)) {
+                        $checkin = $availableDates->first();
+                        $checkout = Carbon::parse($checkin)->addDay()->format('Y-m-d');
+                    }
+                    $nights = 1;
+                }
                 $attendees = max(1, (int) $request->query('adults', 1) + (int) $request->query('children', 0));
                 $pricePerUnit = (float) $property->price;
                 $cleaningFee = $isExperience ? 0 : 25;
@@ -151,6 +164,9 @@ class BookingController extends Controller
                     'guests' => $property->guests,
                     'listing_category' => $property->listing_category?->value ?? 'stay',
                     'duration_hours' => $property->duration_hours,
+                    'experience_available_dates' => $property->experience_available_dates ?? [],
+                    'experience_available_times' => $property->experience_available_times ?? [],
+                    'experience_booking_paused' => (bool) $property->experience_booking_paused,
                     'reviews_count' => $property->reviews_count ?? 0,
                     'rating' => round((float) ($property->reviews_avg_rating ?? 0), 1),
                 ];
@@ -247,10 +263,11 @@ class BookingController extends Controller
             ->firstOrFail();
 
         $checkin = Carbon::parse($validated['checkin']);
-        $checkout = Carbon::parse($validated['checkout']);
-        $nights = max(1, (int) $checkin->diffInDays($checkout));
-
         $isExperience = $property->isExperience();
+        $checkout = $isExperience
+            ? $checkin->copy()->addDay()
+            : Carbon::parse($validated['checkout']);
+        $nights = $isExperience ? 1 : max(1, (int) $checkin->diffInDays($checkout));
         $attendees = max(1, (int) ($validated['adults'] ?? 1) + (int) ($validated['children'] ?? 0));
         $nightlyRate = (float) $property->price;
         $cleaningFee = $isExperience ? 0.00 : 25.00;
@@ -278,28 +295,82 @@ class BookingController extends Controller
         $phoneCode     = $validated['phone_code'] ?? '+31';
         $paymentMethod = $validated['payment_method'] ?? 'cod';
 
-        $booking = Booking::create([
-            'property_id'    => $property->id,
-            'user_id'        => $user->id,
-            'name'           => $validated['name'],
-            'email'          => $validated['email'],
-            'phone_code'     => $phoneCode,
-            'phone'          => $validated['phone'],
-            'rooms'          => $validated['rooms'] ?? 1,
-            'adults'         => $validated['adults'] ?? 1,
-            'children'       => $validated['children'] ?? 0,
-            'check_in_date'  => $checkin,
-            'check_out_date' => $checkout,
-            'nights'         => $nights,
-            'nightly_rate'   => $nightlyRate,
-            'cleaning_fee'   => $cleaningFee,
-            'service_fee'    => $serviceFee,
-            'total_amount'   => $totalAmount,
-            'deposit_amount' => $depositAmount,
-            'deposit_status' => $depositAmount > 0 ? DepositStatus::HELD->value : null,
-            'status'         => BookingStatus::PENDING,
-            'payment_method' => $paymentMethod,
-        ]);
+        $booking = DB::transaction(function () use (
+            $property,
+            $isExperience,
+            $validated,
+            $user,
+            $phoneCode,
+            $checkin,
+            $checkout,
+            $nights,
+            $nightlyRate,
+            $cleaningFee,
+            $serviceFee,
+            $totalAmount,
+            $depositAmount,
+            $paymentMethod,
+        ) {
+            $lockedProperty = Property::query()->lockForUpdate()->findOrFail($property->id);
+
+            if ($isExperience) {
+                $experienceTime = $validated['experience_time'] ?? null;
+                if ($lockedProperty->experience_booking_paused) {
+                    throw ValidationException::withMessages([
+                        'checkin' => 'Bookings for this experience are currently paused.',
+                    ]);
+                }
+                if ($lockedProperty->experience_available_dates
+                    && ! in_array($checkin->format('Y-m-d'), $lockedProperty->experience_available_dates, true)) {
+                    throw ValidationException::withMessages([
+                        'checkin' => 'Please select one of the available experience dates.',
+                    ]);
+                }
+                if ($lockedProperty->experience_available_times
+                    && ! in_array($experienceTime, $lockedProperty->experience_available_times, true)) {
+                    throw ValidationException::withMessages([
+                        'experience_time' => 'Please select one of the available experience times.',
+                    ]);
+                }
+                $bookedGuests = Booking::where('property_id', $lockedProperty->id)
+                    ->whereDate('check_in_date', $checkin->format('Y-m-d'))
+                    ->where('experience_time', $experienceTime)
+                    ->whereIn('status', BookingStatus::upcoming())
+                    ->get()
+                    ->sum(fn (Booking $existing) => (int) $existing->adults + (int) $existing->children);
+                $requestedGuests = max(1, (int) ($validated['adults'] ?? 1) + (int) ($validated['children'] ?? 0));
+
+                if ($bookedGuests + $requestedGuests > (int) $lockedProperty->guests) {
+                    throw ValidationException::withMessages([
+                        'adults' => 'This experience is full for the selected date and time.',
+                    ]);
+                }
+            }
+
+            return Booking::create([
+                'property_id'    => $lockedProperty->id,
+                'user_id'        => $user->id,
+                'name'           => $validated['name'],
+                'email'          => $validated['email'],
+                'phone_code'     => $phoneCode,
+                'phone'          => $validated['phone'],
+                'rooms'          => $validated['rooms'] ?? 1,
+                'adults'         => $validated['adults'] ?? 1,
+                'children'       => $validated['children'] ?? 0,
+                'check_in_date'  => $checkin,
+                'check_out_date' => $checkout,
+                'experience_time' => $isExperience ? ($validated['experience_time'] ?? null) : null,
+                'nights'         => $nights,
+                'nightly_rate'   => $nightlyRate,
+                'cleaning_fee'   => $cleaningFee,
+                'service_fee'    => $serviceFee,
+                'total_amount'   => $totalAmount,
+                'deposit_amount' => $depositAmount,
+                'deposit_status' => $depositAmount > 0 ? DepositStatus::HELD->value : null,
+                'status'         => BookingStatus::PENDING,
+                'payment_method' => $paymentMethod,
+            ]);
+        });
 
         // Send notification to property host
         $host = $property->user;

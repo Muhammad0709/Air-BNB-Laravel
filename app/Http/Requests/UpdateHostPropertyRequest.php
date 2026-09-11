@@ -70,12 +70,20 @@ class UpdateHostPropertyRequest extends FormRequest
             'guided_tours_price'        => ['nullable', 'required_if:guided_tours_enabled,true', 'numeric', 'min:0'],
             // Experience-specific fields
             'min_participants'          => ['nullable', 'integer', 'min:1'],
-            'guide_language'            => ['nullable', 'string', 'max:255'],
+            'guide_language'            => $this->isExperienceListing() ? ['required', 'string', 'max:255'] : ['nullable', 'string', 'max:255'],
             'group_size'                => ['nullable', 'string', 'max:255'],
-            'meeting_point'             => ['nullable', 'string', 'max:500'],
-            'included_services'         => ['nullable', 'array'],
+            'meeting_point'             => $this->isExperienceListing() ? ['required', 'string', 'max:500'] : ['nullable', 'string', 'max:500'],
+            'included_services'         => $this->isExperienceListing() ? ['required', 'array', 'min:1'] : ['nullable', 'array'],
             'included_services.*'       => ['string', 'max:255'],
-            'safety_info'               => ['nullable', 'string', 'max:3000'],
+            'safety_info'               => $this->isExperienceListing() ? ['required', 'string', 'max:3000'] : ['nullable', 'string', 'max:3000'],
+            'experience_category'       => $this->isExperienceListing() ? ['required', 'string', 'max:255'] : ['nullable', 'string', 'max:255'],
+            'experience_available_dates' => $this->isExperienceListing() ? ['required', 'array', 'min:1'] : ['nullable', 'array'],
+            'experience_available_dates.*' => ['date'],
+            'experience_available_times' => $this->isExperienceListing() ? ['required', 'array', 'min:1'] : ['nullable', 'array'],
+            'experience_available_times.*' => ['date_format:H:i'],
+            'experience_not_included'   => $this->isExperienceListing() ? ['required', 'array', 'min:1'] : ['nullable', 'array'],
+            'experience_not_included.*' => ['string', 'max:255'],
+            'experience_guest_requirements' => $this->isExperienceListing() ? ['required', 'string', 'max:3000'] : ['nullable', 'string', 'max:3000'],
         ];
     }
 

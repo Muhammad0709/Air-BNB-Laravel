@@ -24,6 +24,7 @@ class Booking extends Model
         'children',
         'check_in_date',
         'check_out_date',
+        'experience_time',
         'nights',
         'nightly_rate',
         'cleaning_fee',

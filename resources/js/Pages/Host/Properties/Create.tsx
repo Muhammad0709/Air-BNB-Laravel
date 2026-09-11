@@ -61,6 +61,11 @@ export default function AddProperty() {
     meeting_point: '',
     included_services: [] as string[],
     safety_info: '',
+    experience_category: '',
+    experience_available_dates: [''],
+    experience_available_times: [''],
+    experience_not_included: [] as string[],
+    experience_guest_requirements: '',
   })
   const [guidedToursDurationCustom, setGuidedToursDurationCustom] = useState('')
   const [submitErrors, setSubmitErrors] = useState<Record<string, string[] | string>>({})
@@ -168,6 +173,11 @@ export default function AddProperty() {
       if (formData.group_size)       submitData.append('group_size', formData.group_size)
       if (formData.meeting_point)    submitData.append('meeting_point', formData.meeting_point)
       if (formData.safety_info)      submitData.append('safety_info', formData.safety_info)
+      submitData.append('experience_category', formData.experience_category)
+      formData.experience_available_dates.filter(Boolean).forEach((date, i) => submitData.append(`experience_available_dates[${i}]`, date))
+      formData.experience_available_times.filter(Boolean).forEach((time, i) => submitData.append(`experience_available_times[${i}]`, time))
+      formData.experience_not_included.filter(Boolean).forEach((item, i) => submitData.append(`experience_not_included[${i}]`, item))
+      submitData.append('experience_guest_requirements', formData.experience_guest_requirements)
       formData.included_services.forEach((item, i) => {
         submitData.append(`included_services[${i}]`, item)
       })
@@ -472,6 +482,44 @@ export default function AddProperty() {
                 <Typography variant="h6" sx={{ fontWeight: 700, color: '#166534', mb: 3 }}>
                   {t('host.properties.experience_details')}
                 </Typography>
+                <Row className="mb-3">
+                  <Col xs={12} md={6}>
+                    <TextField label="Experience category" name="experience_category" value={formData.experience_category} onChange={handleChange} required fullWidth error={!!err('experience_category')} placeholder="e.g. Guided tour" />
+                    <InputError message={err('experience_category')} />
+                  </Col>
+                  <Col xs={12} md={6} className="mt-3 mt-md-0">
+                    <TextField label="Guest requirements" name="experience_guest_requirements" value={formData.experience_guest_requirements} onChange={handleChange} required fullWidth multiline rows={2} error={!!err('experience_guest_requirements')} placeholder="Age, fitness, or other requirements" />
+                    <InputError message={err('experience_guest_requirements')} />
+                  </Col>
+                </Row>
+                <Row className="mb-3">
+                  <Col xs={12} md={6}>
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#166534', mb: 1 }}>Available dates</Typography>
+                    <Stack spacing={1}>
+                      {formData.experience_available_dates.map((date, index) => (
+                        <Stack key={index} direction="row" spacing={1} alignItems="center">
+                          <TextField type="date" size="small" fullWidth value={date} onChange={(e) => setFormData(prev => ({ ...prev, experience_available_dates: prev.experience_available_dates.map((v, i) => i === index ? e.target.value : v) }))} inputProps={{ min: new Date().toISOString().slice(0, 10) }} error={!!err('experience_available_dates')} />
+                          {formData.experience_available_dates.length > 1 && <IconButton size="small" onClick={() => setFormData(prev => ({ ...prev, experience_available_dates: prev.experience_available_dates.filter((_, i) => i !== index) }))}><DeleteIcon fontSize="small" /></IconButton>}
+                        </Stack>
+                      ))}
+                      <Button size="small" onClick={() => setFormData(prev => ({ ...prev, experience_available_dates: [...prev.experience_available_dates, ''] }))} sx={{ alignSelf: 'flex-start', color: '#166534' }}>+ Add date</Button>
+                    </Stack>
+                    <InputError message={err('experience_available_dates')} />
+                  </Col>
+                  <Col xs={12} md={6} className="mt-3 mt-md-0">
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#166534', mb: 1 }}>Available times</Typography>
+                    <Stack spacing={1}>
+                      {formData.experience_available_times.map((time, index) => (
+                        <Stack key={index} direction="row" spacing={1} alignItems="center">
+                          <TextField type="time" size="small" fullWidth value={time} onChange={(e) => setFormData(prev => ({ ...prev, experience_available_times: prev.experience_available_times.map((v, i) => i === index ? e.target.value : v) }))} InputLabelProps={{ shrink: true }} error={!!err('experience_available_times')} />
+                          {formData.experience_available_times.length > 1 && <IconButton size="small" onClick={() => setFormData(prev => ({ ...prev, experience_available_times: prev.experience_available_times.filter((_, i) => i !== index) }))}><DeleteIcon fontSize="small" /></IconButton>}
+                        </Stack>
+                      ))}
+                      <Button size="small" onClick={() => setFormData(prev => ({ ...prev, experience_available_times: [...prev.experience_available_times, ''] }))} sx={{ alignSelf: 'flex-start', color: '#166534' }}>+ Add time</Button>
+                    </Stack>
+                    <InputError message={err('experience_available_times')} />
+                  </Col>
+                </Row>
                 <Row>
                   <Col xs={12} md={6}>
                     <Stack spacing={3}>
@@ -603,6 +651,18 @@ export default function AddProperty() {
                     </Button>
                   </Stack>
                   <InputError message={err('included_services')} />
+                </Box>
+                <Box sx={{ mt: 3 }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#166534', mb: 1 }}>Not included</Typography>
+                  <Stack spacing={1.5}>
+                    {formData.experience_not_included.map((item, index) => (
+                      <Stack key={index} direction="row" spacing={1} alignItems="center">
+                        <TextField size="small" fullWidth value={item} onChange={(e) => setFormData(prev => ({ ...prev, experience_not_included: prev.experience_not_included.map((v, i) => i === index ? e.target.value : v) }))} placeholder="e.g. Meals or transport" />
+                        <IconButton size="small" onClick={() => setFormData(prev => ({ ...prev, experience_not_included: prev.experience_not_included.filter((_, i) => i !== index) }))} sx={{ color: '#EF4444' }}><DeleteIcon fontSize="small" /></IconButton>
+                      </Stack>
+                    ))}
+                    <Button variant="outlined" size="small" onClick={() => setFormData(prev => ({ ...prev, experience_not_included: [...prev.experience_not_included, ''] }))} sx={{ alignSelf: 'flex-start', borderColor: '#166534', color: '#166534' }}>+ Add item</Button>
+                  </Stack>
                 </Box>
               </Box>
             )}

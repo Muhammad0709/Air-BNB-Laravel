@@ -106,6 +106,17 @@ class PropertyController extends Controller
             ->with('success', __('admin.properties.flash_updated'));
     }
 
+    public function updateStatus(Request $request, Property $property)
+    {
+        $status = $request->validate([
+            'status' => ['required', 'in:Active,Inactive'],
+        ])['status'];
+
+        $property->update(['status' => $status]);
+
+        return back()->with('success', __('admin.properties.flash_updated'));
+    }
+
     /**
      * Approve a property.
      */

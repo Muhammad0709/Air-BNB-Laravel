@@ -55,6 +55,12 @@ class Property extends Model
         'meeting_point',
         'included_services',
         'safety_info',
+        'experience_category',
+        'experience_available_dates',
+        'experience_available_times',
+        'experience_not_included',
+        'experience_guest_requirements',
+        'experience_booking_paused',
     ];
 
     protected $casts = [
@@ -70,6 +76,10 @@ class Property extends Model
         // Experience fields
         'min_participants'       => 'integer',
         'included_services'      => 'array',
+        'experience_available_dates' => 'array',
+        'experience_available_times' => 'array',
+        'experience_not_included' => 'array',
+        'experience_booking_paused' => 'boolean',
         'beds'                   => 'integer',
         'minimum_stay'           => 'integer',
         'maximum_stay'           => 'integer',

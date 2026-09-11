@@ -77,6 +77,12 @@ type Property = {
   meeting_point?: string | null
   included_services?: string[]
   safety_info?: string | null
+  experience_category?: string | null
+  experience_available_dates?: string[]
+  experience_available_times?: string[]
+  experience_not_included?: string[]
+  experience_guest_requirements?: string | null
+  experience_booking_paused?: boolean
 }
 
 type Review = {
@@ -152,6 +158,7 @@ export default function ListingDetail() {
   const airportPickupEnabled = Boolean(property.airport_pickup_enabled)
   const guidedToursEnabled   = Boolean(property.guided_tours_enabled)
   const isExperience         = property.listing_category === 'experience'
+  const availableExperienceDates = property.experience_available_dates ?? []
   const formatPrice = (value: number | string | null | undefined) =>
     value != null ? formatPriceUtil(Number(value), currency) : '—'
 
@@ -219,14 +226,16 @@ export default function ListingDetail() {
   }
 
   const getDateState = (date: Date | undefined) => {
-    if (!date) return { isCheckin: false, isCheckout: false, isInRange: false, isPast: false }
+    if (!date) return { isCheckin: false, isCheckout: false, isInRange: false, isPast: false, isUnavailable: false }
     const today = new Date()
     today.setHours(0, 0, 0, 0)
     const isPast = date < today
     const isCheckin = !!selectedCheckin && date.getTime() === selectedCheckin.getTime()
     const isCheckout = !!selectedCheckout && date.getTime() === selectedCheckout.getTime()
     const isInRange = !!(selectedCheckin && selectedCheckout && date > selectedCheckin && date < selectedCheckout)
-    return { isCheckin, isCheckout, isInRange, isPast }
+    const dateKey = toIsoDate(date)
+    const isUnavailable = isExperience && availableExperienceDates.length > 0 && !availableExperienceDates.includes(dateKey)
+    return { isCheckin, isCheckout, isInRange, isPast, isUnavailable }
   }
 
   const toIsoDate = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
@@ -252,7 +261,8 @@ export default function ListingDetail() {
   const bookingNights = selectedCheckin && selectedCheckout
     ? Math.max(1, Math.ceil((selectedCheckout.getTime() - selectedCheckin.getTime()) / 86_400_000))
     : 1
-  const bookingTotal = priceDisplay * bookingNights
+  const bookingGuests = Math.max(1, Number(searchGuests?.adults || 1) + Number(searchGuests?.children || 0))
+  const bookingTotal = isExperience ? priceDisplay * bookingGuests : priceDisplay * bookingNights
   const hostJoinedYear = property.host?.created_at ? new Date(property.host.created_at).getFullYear() : ''
 
   const handleSubmitReview = (e: React.FormEvent) => {
@@ -330,10 +340,12 @@ export default function ListingDetail() {
                               setLoginModalOpen(true)
                               return
                             }
+                            if (property.experience_booking_paused) return
                             router.visit(bookingUrl())
                           }}
+                          disabled={Boolean(property.experience_booking_paused)}
                         >
-                         {t('listing_detail.book')}
+                         {property.experience_booking_paused ? 'Bookings paused' : t('listing_detail.book')}
                         </Button>
                       </Box>
                     </Col>
@@ -736,13 +748,28 @@ export default function ListingDetail() {
                 )}
 
                 {/* Experience Details Section – shown only for experience listings */}
-                {isExperience && (property.min_participants || property.guide_language || property.group_size || property.meeting_point || (property.included_services && property.included_services.length > 0) || property.safety_info) && (
+                {isExperience && (property.experience_category || property.experience_available_dates?.length || property.experience_available_times?.length || property.experience_guest_requirements || property.experience_not_included?.length || property.min_participants || property.guide_language || property.group_size || property.meeting_point || (property.included_services && property.included_services.length > 0) || property.safety_info) && (
                   <Paper className="about-section mt-4" elevation={0} sx={{ bgcolor: '#F0FDF4', border: '1px solid #BBF7D0' }}>
                     <Typography className="section-title" component="h2" sx={{ color: '#166534' }}>
                       {t('listing_detail.experience_details')}
                     </Typography>
                     <Box sx={{ p: 3 }}>
                       <Stack spacing={2.5}>
+
+                        {property.experience_category && (
+                          <Typography sx={{ fontWeight: 700, color: '#166534' }}>{property.experience_category}</Typography>
+                        )}
+
+                        {(property.experience_available_dates?.length || property.experience_available_times?.length) && (
+                          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                            <ScheduleIcon sx={{ color: '#16A34A', fontSize: 24, mt: 0.5 }} />
+                            <Box>
+                              <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Available schedule</Typography>
+                              {property.experience_available_dates?.length ? <Typography sx={{ color: '#374151' }}>Dates: {property.experience_available_dates.join(', ')}</Typography> : null}
+                              {property.experience_available_times?.length ? <Typography sx={{ color: '#374151' }}>Times: {property.experience_available_times.join(', ')}</Typography> : null}
+                            </Box>
+                          </Box>
+                        )}
 
                         {/* Participants */}
                         {(property.min_participants || property.guests) && (
@@ -823,6 +850,20 @@ export default function ListingDetail() {
                           </Box>
                         )}
 
+                        {property.experience_not_included && property.experience_not_included.length > 0 && (
+                          <Box>
+                            <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 1 }}>Not included</Typography>
+                            <Typography sx={{ color: '#374151' }}>{property.experience_not_included.filter(Boolean).join(' · ')}</Typography>
+                          </Box>
+                        )}
+
+                        {property.experience_guest_requirements && (
+                          <Box>
+                            <Typography sx={{ fontSize: '0.875rem', color: '#717171', mb: 0.5 }}>Guest requirements</Typography>
+                            <Typography sx={{ color: '#374151', lineHeight: 1.6 }}>{property.experience_guest_requirements}</Typography>
+                          </Box>
+                        )}
+
                         {/* Safety Info */}
                         {property.safety_info && (
                           <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
@@ -877,8 +918,8 @@ export default function ListingDetail() {
                           </Box>
                           <Box className="calendar-days">
                             {calendarDays.map((d, idx) => {
-                              const { isCheckin, isCheckout, isInRange, isPast } = getDateState(d.date)
-                              const isDisabled = d.isOtherMonth || isPast
+                              const { isCheckin, isCheckout, isInRange, isPast, isUnavailable } = getDateState(d.date)
+                              const isDisabled = d.isOtherMonth || isPast || isUnavailable
                               const isSelected = isCheckin || isCheckout
                               const rangeShapeClass = isCheckin
                                 ? (selectedCheckout ? 'start-range' : '')

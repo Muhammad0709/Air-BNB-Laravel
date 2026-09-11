@@ -131,6 +131,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/properties/{property}', [PropertyController::class, 'show'])->name('properties.show');
     Route::get('/properties/{property}/edit', [PropertyController::class, 'edit'])->name('properties.edit');
     Route::put('/properties/{property}', [PropertyController::class, 'update'])->name('properties.update');
+    Route::patch('/properties/{property}/status', [PropertyController::class, 'updateStatus'])->name('properties.status');
     Route::patch('/properties/{property}/approve', [PropertyController::class, 'approve'])->name('properties.approve');
     Route::patch('/properties/{property}/reject', [PropertyController::class, 'reject'])->name('properties.reject');
     Route::delete('/reviews/{review}', [\App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('reviews.destroy');
@@ -180,6 +181,7 @@ Route::prefix('host')->name('host.')->middleware('host')->group(function () {
     Route::get('/dashboard', [HostDashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AdminLoginController::class, 'destroy'])->name('logout');
     Route::resource('properties', HostPropertyController::class);
+    Route::patch('/properties/{property}/experience/pause', [HostPropertyController::class, 'pauseExperience'])->name('properties.experience.pause');
     Route::post('/properties/{property}/blocked-dates', [PropertyAvailabilityController::class, 'store'])->name('properties.blocked-dates.store');
     Route::delete('/properties/{property}/blocked-dates/{blockedDate}', [PropertyAvailabilityController::class, 'destroy'])->name('properties.blocked-dates.destroy');
     Route::get('/bookings', [HostBookingController::class, 'index'])->name('bookings.index');

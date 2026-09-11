@@ -23,6 +23,7 @@ class StoreBookingRequest extends FormRequest
             'property_id'    => ['required', 'integer', 'exists:properties,id'],
             'checkin'        => ['required', 'date'],
             'checkout'       => ['required', 'date', 'after:checkin'],
+            'experience_time' => ['nullable', 'date_format:H:i'],
             'name'           => ['required', 'string', 'max:255', 'regex:/^(?=.*\p{L})[\p{L} ]+$/u'],
             'email'          => ['required', 'email', 'max:255'],
             'phone_code'     => ['nullable', 'string', 'max:10'],
@@ -50,7 +51,40 @@ class StoreBookingRequest extends FormRequest
             }
 
             $property = Property::find($propertyId);
-            if ($property && ! $property->isExperience()) {
+            if ($property && $property->isExperience()) {
+                if ($property->experience_booking_paused) {
+                    $validator->errors()->add('checkin', 'Bookings for this experience are currently paused.');
+                }
+
+                $experienceTime = $this->input('experience_time');
+                if (! $experienceTime) {
+                    $validator->errors()->add('experience_time', 'Please select an experience time.');
+                } elseif ($property->experience_available_times
+                    && ! in_array($experienceTime, $property->experience_available_times, true)) {
+                    $validator->errors()->add('experience_time', 'Please select one of the available experience times.');
+                }
+
+                $selectedDate = Carbon::parse($checkin)->format('Y-m-d');
+                $availableDates = $property->experience_available_dates ?? [];
+                if ($availableDates && ! in_array($selectedDate, $availableDates, true)) {
+                    $validator->errors()->add('checkin', 'Please select one of the available experience dates.');
+                }
+
+                $requestedGuests = max(1, (int) ($this->input('adults') ?: 1) + (int) ($this->input('children') ?: 0));
+                if ($property->min_participants && $requestedGuests < (int) $property->min_participants) {
+                    $validator->errors()->add('adults', "This experience requires at least {$property->min_participants} participants.");
+                }
+                $bookedGuests = Booking::where('property_id', $property->id)
+                    ->whereDate('check_in_date', $selectedDate)
+                    ->where('experience_time', $experienceTime)
+                    ->whereIn('status', BookingStatus::upcoming())
+                    ->get()
+                    ->sum(fn (Booking $booking) => (int) $booking->adults + (int) $booking->children);
+
+                if ($bookedGuests + $requestedGuests > (int) $property->guests) {
+                    $validator->errors()->add('adults', 'This experience is full for the selected date and time.');
+                }
+            } elseif ($property) {
                 $nights = Carbon::parse($checkin)->diffInDays(Carbon::parse($checkout));
                 if ($property->minimum_stay && $nights < $property->minimum_stay) {
                     $validator->errors()->add('checkout', "This property requires a minimum stay of {$property->minimum_stay} nights.");
@@ -60,11 +94,13 @@ class StoreBookingRequest extends FormRequest
                 }
             }
 
-            $overlaps = Booking::where('property_id', $propertyId)
-                ->whereIn('status', [BookingStatus::PENDING->value, BookingStatus::CONFIRMED->value])
-                ->whereDate('check_in_date', '<', $checkout)
-                ->whereDate('check_out_date', '>', $checkin)
-                ->exists();
+            $overlaps = $property && $property->isExperience()
+                ? false
+                : Booking::where('property_id', $propertyId)
+                    ->whereIn('status', BookingStatus::upcoming())
+                    ->whereDate('check_in_date', '<', $checkout)
+                    ->whereDate('check_out_date', '>', $checkin)
+                    ->exists();
 
             if ($overlaps) {
                 $validator->errors()->add('checkin', __('validation.custom.checkin.unavailable'));
@@ -92,6 +128,7 @@ class StoreBookingRequest extends FormRequest
     {
         return [
             'checkout.after' => __('validation.custom.checkout.after'),
+            'experience_time.date_format' => 'Please select a valid experience time.',
         ];
     }
 }

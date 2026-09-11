@@ -140,6 +140,12 @@ class PropertyController extends Controller
             $validated['meeting_point']    = null;
             $validated['included_services'] = null;
             $validated['safety_info']      = null;
+            $validated['experience_category'] = null;
+            $validated['experience_available_dates'] = null;
+            $validated['experience_available_times'] = null;
+            $validated['experience_not_included'] = null;
+            $validated['experience_guest_requirements'] = null;
+            $validated['experience_booking_paused'] = false;
         }
         $validated['duplicate_flag_reason'] = $this->duplicateDetector->detect(
             $validated['title'],
@@ -249,6 +255,12 @@ class PropertyController extends Controller
             $validated['meeting_point']     = null;
             $validated['included_services'] = null;
             $validated['safety_info']       = null;
+            $validated['experience_category'] = null;
+            $validated['experience_available_dates'] = null;
+            $validated['experience_available_times'] = null;
+            $validated['experience_not_included'] = null;
+            $validated['experience_guest_requirements'] = null;
+            $validated['experience_booking_paused'] = false;
         }
         $validated['duplicate_flag_reason'] = $this->duplicateDetector->detect(
             $validated['title'],
@@ -262,6 +274,23 @@ class PropertyController extends Controller
         
         return redirect()->route('host.properties.index')
             ->with('success', __('host.property.updated_success'));
+    }
+
+    public function pauseExperience(Request $request, Property $property)
+    {
+        if ($property->user_id !== Auth::id()) {
+            abort(403, __('host.property.unauthorized'));
+        }
+
+        abort_unless($property->isExperience(), 422, 'Only experiences can be paused.');
+
+        $paused = $request->validate([
+            'paused' => ['required', 'boolean'],
+        ])['paused'];
+
+        $property->update(['experience_booking_paused' => (bool) $paused]);
+
+        return back()->with('success', $paused ? 'Experience bookings paused.' : 'Experience bookings resumed.');
     }
 
     /**

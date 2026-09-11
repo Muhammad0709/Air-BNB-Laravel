@@ -14,6 +14,7 @@ import { useLanguage } from '../../../hooks/use-language'
 export default function EditProperty() {
   const { t } = useLanguage()
   const { property } = usePage().props as any
+  const isExperience = property?.listing_category === 'experience'
   const { data, setData, processing, errors } = useForm({
     title: property?.title || '',
     location: property?.location || '',
@@ -156,7 +157,7 @@ export default function EditProperty() {
                     </Select>
                   </FormControl>
                   <InputError message={Array.isArray(errors.property_type) ? errors.property_type[0] : errors.property_type} />
-                  <TextField
+                  {!isExperience && <TextField
                     label={t('admin.properties.bedrooms')}
                     name="bedrooms"
                     type="number"
@@ -165,9 +166,9 @@ export default function EditProperty() {
                     required
                     fullWidth
                     error={!!errors.bedrooms}
-                  />
-                  <InputError message={Array.isArray(errors.bedrooms) ? errors.bedrooms[0] : errors.bedrooms} />
-                  <TextField
+                  />}
+                  {!isExperience && <InputError message={Array.isArray(errors.bedrooms) ? errors.bedrooms[0] : errors.bedrooms} />}
+                  {!isExperience && <TextField
                     label={t('admin.properties.bathrooms')}
                     name="bathrooms"
                     type="number"
@@ -176,8 +177,8 @@ export default function EditProperty() {
                     required
                     fullWidth
                     error={!!errors.bathrooms}
-                  />
-                  <InputError message={Array.isArray(errors.bathrooms) ? errors.bathrooms[0] : errors.bathrooms} />
+                  />}
+                  {!isExperience && <InputError message={Array.isArray(errors.bathrooms) ? errors.bathrooms[0] : errors.bathrooms} />}
                   <TextField
                     label={t('admin.properties.guests')}
                     name="guests"
@@ -373,4 +374,3 @@ export default function EditProperty() {
     </AdminLayout>
   )
 }
-

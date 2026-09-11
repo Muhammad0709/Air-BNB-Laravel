@@ -63,12 +63,20 @@ class StoreHostPropertyRequest extends FormRequest
             'guided_tours_price'        => ['nullable', 'required_if:guided_tours_enabled,true', 'numeric', 'min:0'],
             // Experience-specific fields (only validated when listing_category = experience)
             'min_participants'          => ['nullable', 'integer', 'min:1'],
-            'guide_language'            => ['nullable', 'string', 'max:255'],
+            'guide_language'            => ['nullable', 'required_if:listing_category,experience', 'string', 'max:255'],
             'group_size'                => ['nullable', 'string', 'max:255'],
-            'meeting_point'             => ['nullable', 'string', 'max:500'],
-            'included_services'         => ['nullable', 'array'],
+            'meeting_point'             => ['nullable', 'required_if:listing_category,experience', 'string', 'max:500'],
+            'included_services'         => ['nullable', 'required_if:listing_category,experience', 'array', 'min:1'],
             'included_services.*'       => ['string', 'max:255'],
-            'safety_info'               => ['nullable', 'string', 'max:3000'],
+            'safety_info'               => ['nullable', 'required_if:listing_category,experience', 'string', 'max:3000'],
+            'experience_category'       => ['nullable', 'required_if:listing_category,experience', 'string', 'max:255'],
+            'experience_available_dates' => ['nullable', 'required_if:listing_category,experience', 'array', 'min:1'],
+            'experience_available_dates.*' => ['date', 'after_or_equal:today'],
+            'experience_available_times' => ['nullable', 'required_if:listing_category,experience', 'array', 'min:1'],
+            'experience_available_times.*' => ['date_format:H:i'],
+            'experience_not_included'   => ['nullable', 'required_if:listing_category,experience', 'array', 'min:1'],
+            'experience_not_included.*' => ['string', 'max:255'],
+            'experience_guest_requirements' => ['nullable', 'required_if:listing_category,experience', 'string', 'max:3000'],
         ];
     }
 

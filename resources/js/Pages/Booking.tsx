@@ -17,6 +17,13 @@ import { type Country } from 'react-phone-number-input'
 
 const PLACEHOLDER_IMAGE = '/images/popular-stay-1.svg'
 
+const nextIsoDate = (value: string) => {
+  const [year, month, day] = value.split('-').map(Number)
+  const date = new Date(Date.UTC(year, (month || 1) - 1, day || 1))
+  date.setUTCDate(date.getUTCDate() + 1)
+  return date.toISOString().slice(0, 10)
+}
+
 type BookingProperty = {
   id: number
   title: string
@@ -26,6 +33,10 @@ type BookingProperty = {
   bedrooms: number
   bathrooms: number
   guests: number
+  listing_category?: string
+  experience_available_dates?: string[]
+  experience_available_times?: string[]
+  experience_booking_paused?: boolean
   reviews_count: number
   rating: number
 }
@@ -63,6 +74,10 @@ export default function Booking() {
   const { t } = useLanguage()
   const { currency } = useCurrency()
   const { property, nights, checkin, checkout, costs, totalAmount, rules, cancellationPolicy, cancellationPolicyDescription, depositAmount, auth, guestPrefill } = usePage<BookingPageProps>().props
+  const isExperience = property?.listing_category === 'experience'
+  const availableExperienceDates = property?.experience_available_dates ?? []
+  const availableExperienceTimes = property?.experience_available_times ?? []
+  const [experienceTime, setExperienceTime] = useState('')
 
   const [formData, setFormData] = useState<{
     name: string
@@ -139,6 +154,11 @@ export default function Booking() {
     })
   }, [auth?.user?.id])
 
+  useEffect(() => {
+    if (!isExperience || !availableExperienceTimes.length) return
+    setExperienceTime((current) => availableExperienceTimes.includes(current) ? current : availableExperienceTimes[0])
+  }, [isExperience, availableExperienceTimes.join('|')])
+
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [toast, setToast] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' })
   const [paymentModalOpen, setPaymentModalOpen] = useState(false)
@@ -155,6 +175,10 @@ export default function Booking() {
     e.preventDefault()
     if (!property?.id) {
       setToast({ open: true, message: t('booking.select_property'), severity: 'error' })
+      return
+    }
+    if (property.experience_booking_paused) {
+      setToast({ open: true, message: 'Bookings for this experience are currently paused.', severity: 'error' })
       return
     }
     // Open payment modal
@@ -175,6 +199,7 @@ export default function Booking() {
       rooms:          (formData.rooms   === '' ? (property?.bedrooms || 1) : formData.rooms)  ?? 1,
       adults:         (formData.adults  === '' ? 1 : formData.adults) ?? 1,
       children:       formData.children ?? 0,
+      experience_time: isExperience ? experienceTime : null,
       payment_method: paymentMethod === 'online' ? 'online_mpesa' : 'cod',
       mpesa_phone:    paymentMethod === 'online' ? mpesaPhone.trim() : null,
     }, {
@@ -216,28 +241,30 @@ export default function Booking() {
                       <Stack direction="row" spacing={1.5} useFlexGap className="field" sx={{ mb: 2 }}>
                         <Box sx={{ flex: 1 }}>
                           <Typography className="label">{t('booking.check_in')} <Box component="span" className="required-asterisk">*</Box></Typography>
-                          <TextField
-                            size="small"
-                            fullWidth
-                            type="date"
-                            value={checkin}
-                            onChange={(e) => {
-                              const newCheckin = e.target.value
-                              let newCheckout = checkout
-                              if (new Date(newCheckin) >= new Date(checkout)) {
-                                const d = new Date(newCheckin)
-                                d.setDate(d.getDate() + 1)
-                                newCheckout = d.toISOString().slice(0, 10)
-                              }
-                              updateDates(newCheckin, newCheckout)
-                            }}
-                            InputLabelProps={{ shrink: true }}
-                            inputProps={{ min: new Date().toISOString().slice(0, 10) }}
-                            error={!!errors.checkin}
-                          />
+                          {isExperience && availableExperienceDates.length > 0 ? (
+                            <FormControl fullWidth size="small" error={!!errors.checkin}>
+                              <Select value={checkin} onChange={(e) => { const date = e.target.value; updateDates(date, nextIsoDate(date)) }}>
+                                {availableExperienceDates.map((date) => <MenuItem key={date} value={date}>{date}</MenuItem>)}
+                              </Select>
+                            </FormControl>
+                          ) : (
+                            <TextField
+                              size="small"
+                              fullWidth
+                              type="date"
+                              value={checkin}
+                              onChange={(e) => {
+                                const newCheckin = e.target.value
+                                updateDates(newCheckin, nextIsoDate(newCheckin))
+                              }}
+                              InputLabelProps={{ shrink: true }}
+                              inputProps={{ min: new Date().toISOString().slice(0, 10) }}
+                              error={!!errors.checkin}
+                            />
+                          )}
                           <InputError message={errors.checkin} />
                         </Box>
-                        <Box sx={{ flex: 1 }}>
+                        {!isExperience ? <Box sx={{ flex: 1 }}>
                           <Typography className="label">{t('booking.check_out')} <Box component="span" className="required-asterisk">*</Box></Typography>
                           <TextField
                             size="small"
@@ -254,7 +281,17 @@ export default function Booking() {
                             error={!!errors.checkout}
                           />
                           <InputError message={errors.checkout} />
-                        </Box>
+                        </Box> : <Box sx={{ flex: 1 }}>
+                          <Typography className="label">Experience time <Box component="span" className="required-asterisk">*</Box></Typography>
+                          {availableExperienceTimes.length > 0 ? (
+                            <FormControl fullWidth size="small" error={!!errors.experience_time}>
+                              <Select value={experienceTime} onChange={(e) => { setExperienceTime(e.target.value); setErrors((current) => ({ ...current, experience_time: '' })) }}>
+                                {availableExperienceTimes.map((time) => <MenuItem key={time} value={time}>{time}</MenuItem>)}
+                              </Select>
+                            </FormControl>
+                          ) : <TextField size="small" fullWidth type="time" value={experienceTime} onChange={(e) => { setExperienceTime(e.target.value); setErrors((current) => ({ ...current, experience_time: '' })) }} InputLabelProps={{ shrink: true }} error={!!errors.experience_time} />}
+                          <InputError message={errors.experience_time} />
+                        </Box>}
                       </Stack>
                     )}
                     {property && (
@@ -277,7 +314,7 @@ export default function Booking() {
                       <InputError message={errors.name} />
                     </Box>
 
-                    <Box className="field">
+                    {!isExperience && <Box className="field">
                       <Typography className="label">{t('booking.number_of_rooms')} <Box component="span" className="required-asterisk">*</Box></Typography>
                       <FormControl fullWidth size="small" error={!!errors.rooms}>
                         <Select
@@ -293,7 +330,7 @@ export default function Booking() {
                         </Select>
                       </FormControl>
                       <InputError message={errors.rooms} />
-                    </Box>
+                    </Box>}
 
                     <Stack direction="row" spacing={1.5} useFlexGap className="field">
                       <Box sx={{ flex: 1 }}>
@@ -372,7 +409,7 @@ export default function Booking() {
                       <Typography>{t('booking.total')}</Typography>
                       <Stack direction="row" spacing={2} useFlexGap alignItems="center">
                         <Typography className="grand-total">{formatPrice(totalAmount, currency)}</Typography>
-                        <Button type="submit" variant="contained" className="request-btn" disabled={submitting}>{submitting ? '...' : t('booking.book_btn')}</Button>
+                        <Button type="submit" variant="contained" className="request-btn" disabled={submitting || Boolean(property?.experience_booking_paused)}>{property?.experience_booking_paused ? 'Bookings paused' : submitting ? '...' : t('booking.book_btn')}</Button>
                       </Stack>
                     </Paper>
                   </form>

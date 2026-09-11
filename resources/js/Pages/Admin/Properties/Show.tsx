@@ -62,7 +62,7 @@ export default function ViewProperty() {
   const handleStatusChange = () => {
     const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active'
     setCurrentStatus(newStatus)
-    router.put(`/admin/properties/${property.id}`, {
+    router.patch(`/admin/properties/${property.id}/status`, {
       status: newStatus
     }, {
       preserveScroll: true

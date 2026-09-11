@@ -144,6 +144,12 @@ class PropertyDetailController extends Controller
             'meeting_point'             => $property->meeting_point,
             'included_services'         => is_array($property->included_services) ? $property->included_services : [],
             'safety_info'               => $property->safety_info,
+            'experience_category'      => $property->experience_category,
+            'experience_available_dates' => is_array($property->experience_available_dates) ? $property->experience_available_dates : [],
+            'experience_available_times' => is_array($property->experience_available_times) ? $property->experience_available_times : [],
+            'experience_not_included'  => is_array($property->experience_not_included) ? $property->experience_not_included : [],
+            'experience_guest_requirements' => $property->experience_guest_requirements,
+            'experience_booking_paused' => (bool) $property->experience_booking_paused,
             'host' => [
                 'id' => $property->user->id,
                 'name' => $property->user->name,
@@ -184,6 +190,16 @@ class PropertyDetailController extends Controller
 
         $defaultCheckin = Carbon::today()->format('Y-m-d');
         $defaultCheckout = Carbon::today()->addDays(7)->format('Y-m-d');
+        if ($property->isExperience()) {
+            $nextExperienceDate = collect($property->experience_available_dates ?? [])
+                ->filter(fn ($date) => $date >= $defaultCheckin)
+                ->sort()
+                ->first();
+            if ($nextExperienceDate) {
+                $defaultCheckin = $nextExperienceDate;
+                $defaultCheckout = Carbon::parse($nextExperienceDate)->addDay()->format('Y-m-d');
+            }
+        }
 
         $reviewEligibility = 'guest'; // not logged in; frontend already hides the form in this case
         if (Auth::check()) {
