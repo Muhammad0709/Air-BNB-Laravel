@@ -1,13 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Box, IconButton, Paper, Typography } from '@mui/material'
 import { router, usePage } from '@inertiajs/react'
 import StarIcon from '@mui/icons-material/Star'
+import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
 import CardFavoriteIcon from './CardFavoriteIcon'
 import LoginRequiredModal from './LoginRequiredModal'
 import { useLanguage } from '../hooks/use-language'
 
 type SearchResultCardProps = {
   image: string
+  images?: string[]
   title: string
   location: string
   description?: string
@@ -30,6 +33,7 @@ type SearchResultCardProps = {
 
 export default function SearchResultCard({
   image,
+  images,
   title,
   location,
   description,
@@ -50,8 +54,8 @@ export default function SearchResultCard({
 }: SearchResultCardProps) {
   const { t } = useLanguage()
   const [isFavorited, setIsFavorited] = useState(isGuestFavorite)
-  const [imgSrc, setImgSrc] = useState(image || fallbackImage)
-  const [imgError, setImgError] = useState(false)
+  const [activeImage, setActiveImage] = useState(0)
+  const [failedImages, setFailedImages] = useState<Record<number, boolean>>({})
   const [loginModalOpen, setLoginModalOpen] = useState(false)
   const { props } = usePage()
   const isAuthenticated = Boolean((props as any)?.auth?.user)
@@ -60,16 +64,25 @@ export default function SearchResultCard({
     setIsFavorited(isGuestFavorite)
   }, [isGuestFavorite])
 
+  const imageSources = useMemo(() => {
+    const availableImages = (images ?? []).filter(Boolean)
+    return availableImages.length > 0 ? availableImages : [image || fallbackImage]
+  }, [images, image, fallbackImage])
+
   useEffect(() => {
-    setImgSrc(image || fallbackImage)
-    setImgError(false)
-  }, [image])
+    setActiveImage(0)
+    setFailedImages({})
+  }, [imageSources])
+
+  const hasMultipleImages = imageSources.length > 1
+  const currentImage = imageSources[activeImage] || fallbackImage
+
+  const changeImage = (direction: number) => {
+    setActiveImage((current) => (current + direction + imageSources.length) % imageSources.length)
+  }
 
   const handleImageError = () => {
-    if (!imgError) {
-      setImgError(true)
-      setImgSrc(fallbackImage)
-    }
+    setFailedImages((current) => ({ ...current, [activeImage]: true }))
   }
 
   const handleClick = () => {
@@ -116,11 +129,77 @@ export default function SearchResultCard({
       <Box sx={{ position: 'relative' }}>
         <Box
           component="img"
-          src={imgSrc}
-          alt={title}
+          src={failedImages[activeImage] ? fallbackImage : currentImage}
+          alt={`${title} - image ${activeImage + 1}`}
           onError={handleImageError}
-          sx={{ width: '100%', height: 300, objectFit: 'cover', borderRadius: '12px', mb: 1.5 }}
+          sx={{ width: '100%', height: 300, objectFit: 'cover', borderRadius: '12px', mb: 1.5, display: 'block' }}
         />
+        {hasMultipleImages && (
+          <>
+            <IconButton
+              onClick={(e) => { e.stopPropagation(); changeImage(-1) }}
+              aria-label="Previous property image"
+              size="small"
+              sx={{
+                position: 'absolute',
+                left: 10,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                width: 34,
+                height: 34,
+                bgcolor: 'rgba(255,255,255,0.95)',
+                color: '#222222',
+                boxShadow: '0 1px 4px rgba(0,0,0,0.18)',
+                '&:hover': { bgcolor: '#FFFFFF' },
+              }}
+            >
+              <ChevronLeftRoundedIcon fontSize="medium" />
+            </IconButton>
+            <IconButton
+              onClick={(e) => { e.stopPropagation(); changeImage(1) }}
+              aria-label="Next property image"
+              size="small"
+              sx={{
+                position: 'absolute',
+                right: 10,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                width: 34,
+                height: 34,
+                bgcolor: 'rgba(255,255,255,0.95)',
+                color: '#222222',
+                boxShadow: '0 1px 4px rgba(0,0,0,0.18)',
+                '&:hover': { bgcolor: '#FFFFFF' },
+              }}
+            >
+              <ChevronRightRoundedIcon fontSize="medium" />
+            </IconButton>
+            <Box
+              sx={{
+                position: 'absolute',
+                bottom: 20,
+                left: '50%',
+                transform: 'translateX(-50%)',
+                display: 'flex',
+                gap: '5px',
+                pointerEvents: 'none',
+              }}
+            >
+              {imageSources.map((_, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: '50%',
+                    bgcolor: index === activeImage ? '#FFFFFF' : 'rgba(255,255,255,0.65)',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.5)',
+                  }}
+                />
+              ))}
+            </Box>
+          </>
+        )}
         <IconButton
           className="airbnb-favorite-button"
           onClick={handleFavoriteClick}
