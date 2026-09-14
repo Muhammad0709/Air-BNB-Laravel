@@ -14,7 +14,13 @@ class GoogleAuthController extends Controller
 {
     protected function getRedirectUrl(): string
     {
-        return url('/auth/google/callback');
+        return (string) config('services.google.redirect', url('/auth/google/callback'));
+    }
+
+    protected function isConfigured(): bool
+    {
+        return filled(config('services.google.client_id'))
+            && filled(config('services.google.client_secret'));
     }
 
     /**
@@ -28,6 +34,12 @@ class GoogleAuthController extends Controller
         if (!in_array($intent, ['host', 'customer', 'company'], true)) {
             return redirect()->route('home')->withErrors([
                 'email' => 'Please use the Sign in with Google button on the login or register page.',
+            ]);
+        }
+
+        if (! $this->isConfigured()) {
+            return redirect()->route('login')->withErrors([
+                'email' => 'Google Sign In is not configured yet.',
             ]);
         }
 
@@ -53,7 +65,7 @@ class GoogleAuthController extends Controller
         }
 
         $intent = request()->session()->pull('google_login_intent');
-        if (!in_array($intent, ['host', 'customer'], true)) {
+        if (!in_array($intent, ['host', 'customer', 'company'], true)) {
             return redirect()->route('home')->withErrors([
                 'email' => 'Google sign-in session expired. Please try again from the login or register page.',
             ]);
