@@ -50,6 +50,7 @@ Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:ap
 Route::post('/password/forgot', [AuthController::class, 'forgotPassword'])->middleware('throttle:api-auth');
 Route::post('/password/reset', [AuthController::class, 'resetPassword'])->middleware('throttle:api-auth');
 Route::post('/social-login', [AuthController::class, 'socialLogin'])->middleware('throttle:api-auth');
+Route::post('/apple-login', [AuthController::class, 'appleLogin'])->middleware('throttle:api-auth');
 
 // Public search (no auth required – destination, dates, guests)
 Route::get('/search', [SearchController::class, 'index']);

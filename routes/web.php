@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\GoogleAuthController;
+use App\Http\Controllers\Auth\AppleAuthController;
 use App\Http\Controllers\Auth\TwoFactorChallengeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Admin\PropertyController;
@@ -54,6 +55,8 @@ Route::middleware('guest')->group(function () {
     Route::prefix('auth')->group(function () {
         Route::get('/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
         Route::get('/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
+        Route::get('/apple', [AppleAuthController::class, 'redirect'])->name('auth.apple');
+        Route::match(['get', 'post'], '/apple/callback', [AppleAuthController::class, 'callback'])->name('auth.apple.callback');
     });
     
     // Admin login (admin can only login, not register)

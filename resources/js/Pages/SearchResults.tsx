@@ -129,7 +129,7 @@ export default function SearchResults() {
           >
             <RBContainer fluid className="px-0">
               <Box sx={{ mb: 2 }}>
-                <Typography sx={{ fontWeight: 600, color: '#222222', fontSize: '1.375rem', mb: 0.5 }}>
+                <Typography className="search-results-title" sx={{ fontWeight: 600, color: '#222222', fontSize: '1.375rem', mb: 0.5 }}>
                   {(paginator?.total ?? 0) > 0
                     ? searchLabel
                       ? (t('search_results.over_homes_in') as string)
@@ -141,7 +141,7 @@ export default function SearchResults() {
               </Box>
               {items.length === 0 ? (
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '400px', textAlign: 'center' }}>
-                  <Typography variant="h5" sx={{ color: '#717171', mb: 1, fontWeight: 600 }}>
+                  <Typography variant="h5" className="search-results-empty-title" sx={{ color: '#717171', mb: 1, fontWeight: 600 }}>
                     {t('search_results.no_data_found')}
                   </Typography>
                   <Typography variant="body2" sx={{ color: '#9CA3AF' }}>

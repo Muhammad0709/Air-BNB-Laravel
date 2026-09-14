@@ -5,6 +5,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import CloseIcon from '@mui/icons-material/Close'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import AppleIcon from '@mui/icons-material/Apple'
 import { Container } from 'react-bootstrap'
 import { useLanguage } from '../../hooks/use-language'
 import InputError from '../../components/InputError'
@@ -32,7 +33,7 @@ export default function SignIn({ status }: SignInPageProps) {
   const { t, language, switchLanguage, isRtl } = useLanguage()
   const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null)
   const [showPassword, setShowPassword] = useState(false)
-  const [googleDialogOpen, setGoogleDialogOpen] = useState(false)
+  const [socialProvider, setSocialProvider] = useState<'google' | 'apple' | null>(null)
   const currentLanguage = languages.find((l) => l.code === language) || languages[0]
   const { data, setData, post, processing, errors: formErrors } = useForm({ email: '', password: '', remember: false })
   const page = usePage<SignInPageProps>()
@@ -101,7 +102,7 @@ export default function SignIn({ status }: SignInPageProps) {
                       <Box component="img" src={logoUrl} alt="Bondoqi" sx={{ height: 70, width: 'auto', maxWidth: 380, objectFit: 'contain', display: 'block', cursor: 'pointer', margin: '0 auto' }} />
                     </Link>
                   </Stack>
-                  <Typography variant="h4" fontWeight={700} sx={{ mb: { xs: 1.5, md: 2 }, fontSize: { xs: 28, sm: 32, md: 44 }, lineHeight: 1.15 }}>{t('auth.signin.welcome')}</Typography>
+                  <Typography variant="h4" fontWeight={700} sx={{ mb: { xs: 1.5, md: 2 }, fontSize: '30px', lineHeight: 1.15 }}>{t('auth.signin.welcome')}</Typography>
                   <Typography variant="body1" color="text.secondary" sx={{ mb: { xs: 4, md: 5 } }}>{t('auth.signin.subtitle')}</Typography>
                   <Paper elevation={0} sx={{ bgcolor: 'transparent' }}>
                     <form onSubmit={(e) => { e.preventDefault(); post('/login'); }}>
@@ -137,8 +138,20 @@ export default function SignIn({ status }: SignInPageProps) {
                           <FormControlLabel control={<Checkbox size="small" checked={data.remember} onChange={(e) => setData('remember', e.target.checked)} />} label={t('auth.signin.remember_me')} sx={{ color: '#151515' }} />
                           <MUILink component={Link} href="/forgot-password" underline="none" sx={{ color: '#667085', fontWeight: 600 }}>{t('auth.signin.forgot_password')}</MUILink>
                         </Box>
-                        <Button type="submit" variant="contained" size="large" disabled={processing} sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: 999, textTransform: 'none', fontWeight: 700, fontSize: 16, bgcolor: '#AD542D', boxShadow: 'none', '&:hover': { bgcolor: '#78381C', boxShadow: 'none' } }}>{processing ? t('auth.signin.signing_in') : t('auth.signin.submit')}</Button>
-                        <Button type="button" variant="outlined" size="large" onClick={() => setGoogleDialogOpen(true)} {...(isRtl ? { endIcon: googleIconEl } : { startIcon: googleIconEl })} sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: 999, borderColor: '#D0D5DD', color: '#344054', gap: 1, '& .MuiButton-startIcon, & .MuiButton-endIcon': { margin: 0 } }}>{t('auth.signin.sign_in_google')}</Button>
+                        <Button type="submit" variant="contained" size="large" disabled={processing} sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: '13px', textTransform: 'none', fontWeight: 700, fontSize: 16, bgcolor: '#AD542D', boxShadow: 'none', '&:hover': { bgcolor: '#78381C', boxShadow: 'none' } }}>{processing ? t('auth.signin.signing_in') : t('auth.signin.submit')}</Button>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: { xs: '100%', md: formWidth }, my: 0.5 }}>
+                          <Box sx={{ flex: 1, minWidth: 0, height: '1px', bgcolor: '#D0D5DD' }} />
+                          <Typography sx={{ color: '#222222', fontSize: 18 }}>or</Typography>
+                          <Box sx={{ flex: 1, minWidth: 0, height: '1px', bgcolor: '#D0D5DD' }} />
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, width: { xs: '100%', md: formWidth } }}>
+                          <Button type="button" aria-label={t('auth.signin.sign_in_google')} onClick={() => setSocialProvider('google')} sx={{ width: 76, height: 76, minWidth: 0, p: 0, borderRadius: '18px', border: '2px solid #DDDDDD', color: '#344054', '&:hover': { border: '2px solid #AAAAAA', bgcolor: '#FFFFFF' } }}>
+                            {googleIconEl}
+                          </Button>
+                          <Button type="button" aria-label={t('auth.signin.sign_in_apple')} onClick={() => setSocialProvider('apple')} sx={{ width: 76, height: 76, minWidth: 0, p: 0, borderRadius: '18px', border: '2px solid #DDDDDD', color: '#111827', '&:hover': { border: '2px solid #AAAAAA', bgcolor: '#FFFFFF' } }}>
+                            <AppleIcon aria-hidden="true" sx={{ fontSize: 34, color: '#111827' }} />
+                          </Button>
+                        </Box>
                       </Stack>
                     </form>
                   </Paper>
@@ -152,8 +165,8 @@ export default function SignIn({ status }: SignInPageProps) {
           </Box>
         </Container>
         <Dialog
-          open={googleDialogOpen}
-          onClose={() => setGoogleDialogOpen(false)}
+          open={socialProvider !== null}
+          onClose={() => setSocialProvider(null)}
           fullWidth
           maxWidth={false}
           PaperProps={{
@@ -179,8 +192,8 @@ export default function SignIn({ status }: SignInPageProps) {
           >
             <IconButton
               type="button"
-              onClick={() => setGoogleDialogOpen(false)}
-              aria-label={t('auth.signin.google_intent_cancel')}
+              onClick={() => setSocialProvider(null)}
+              aria-label={t('auth.signin.social_intent_cancel')}
               size="small"
               sx={{
                 color: '#6B7280',
@@ -206,7 +219,7 @@ export default function SignIn({ status }: SignInPageProps) {
               textAlign: 'center',
             }}
           >
-            {t('auth.signin.google_intent_title')}
+            {socialProvider === 'apple' ? t('auth.signin.apple_intent_title') : t('auth.signin.google_intent_title')}
           </DialogTitle>
           <DialogContent sx={{ px: { xs: 3, sm: 3.5 }, pt: 0.5, pb: { xs: 3, sm: 3.5 } }}>
             <Typography
@@ -219,13 +232,13 @@ export default function SignIn({ status }: SignInPageProps) {
                 textAlign: 'center',
               }}
             >
-              {t('auth.signin.google_intent_subtitle')}
+              {socialProvider === 'apple' ? t('auth.signin.apple_intent_subtitle') : t('auth.signin.google_intent_subtitle')}
             </Typography>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.25} sx={{ width: '100%', '& .MuiButton-root': { whiteSpace: 'nowrap', minWidth: 0, fontSize: { xs: '0.9375rem', sm: '0.875rem' } } }}>
               <Button
                 variant="contained"
                 disableElevation
-                onClick={() => { window.location.href = '/auth/google?intent=customer' }}
+                onClick={() => { if (socialProvider) window.location.href = `/auth/${socialProvider}?intent=customer` }}
                 sx={{
                   py: 1.5,
                   minHeight: 48,
@@ -243,7 +256,7 @@ export default function SignIn({ status }: SignInPageProps) {
               </Button>
               <Button
                 variant="outlined"
-                onClick={() => { window.location.href = '/auth/google?intent=host' }}
+                onClick={() => { if (socialProvider) window.location.href = `/auth/${socialProvider}?intent=host` }}
                 sx={{
                   py: 1.5,
                   minHeight: 48,
@@ -266,7 +279,7 @@ export default function SignIn({ status }: SignInPageProps) {
               </Button>
               <Button
                 variant="outlined"
-                onClick={() => { window.location.href = '/auth/google?intent=company' }}
+                onClick={() => { if (socialProvider) window.location.href = `/auth/${socialProvider}?intent=company` }}
                 sx={{
                   py: 1.5,
                   minHeight: 48,
@@ -295,7 +308,6 @@ export default function SignIn({ status }: SignInPageProps) {
           onClose={() => setToastOpen(false)}
           message={loginErrorMessage ?? ''}
           severity="error"
-          autoHideDuration={9000}
         />
         <Toast
           open={successToastOpen && !!(flashSuccess || statusFromPage)}

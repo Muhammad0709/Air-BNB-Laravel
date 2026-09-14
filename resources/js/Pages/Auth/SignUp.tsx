@@ -5,6 +5,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import CloseIcon from '@mui/icons-material/Close'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import AppleIcon from '@mui/icons-material/Apple'
 import { Container } from 'react-bootstrap'
 import { useLanguage } from '../../hooks/use-language'
 import InputError from '../../components/InputError'
@@ -25,7 +26,7 @@ export default function SignUp() {
   const [languageAnchor, setLanguageAnchor] = useState<null | HTMLElement>(null)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [googleDialogOpen, setGoogleDialogOpen] = useState(false)
+  const [socialProvider, setSocialProvider] = useState<'google' | 'apple' | null>(null)
   const currentLanguage = languages.find((l) => l.code === language) || languages[0]
   const { data, setData, post, processing, errors } = useForm({
     type: 'user' as 'user' | 'host' | 'company',
@@ -216,8 +217,20 @@ export default function SignUp() {
                           />
                           <InputError message={Array.isArray(errors.password_confirmation) ? errors.password_confirmation[0] : errors.password_confirmation} />
                         </Box>
-                        <Button type="submit" variant="contained" size="large" disabled={processing} sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: 999, textTransform: 'none', fontWeight: 700, fontSize: 16, bgcolor: '#AD542D', boxShadow: 'none', '&:hover': { bgcolor: '#78381C', boxShadow: 'none' } }}>{processing ? t('auth.signup.creating') : t('auth.signup.submit')}</Button>
-                        <Button type="button" variant="outlined" size="large" onClick={() => setGoogleDialogOpen(true)} {...(isRtl ? { endIcon: googleIconEl } : { startIcon: googleIconEl })} sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: 999, borderColor: '#D0D5DD', color: '#344054', gap: 1, '& .MuiButton-startIcon, & .MuiButton-endIcon': { margin: 0 } }}>{t('auth.signup.sign_up_google')}</Button>
+                        <Button type="submit" variant="contained" size="large" disabled={processing} sx={{ width: { xs: '100%', md: formWidth }, height: 52, borderRadius: '13px', textTransform: 'none', fontWeight: 700, fontSize: 16, bgcolor: '#AD542D', boxShadow: 'none', '&:hover': { bgcolor: '#78381C', boxShadow: 'none' } }}>{processing ? t('auth.signup.creating') : t('auth.signup.submit')}</Button>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: { xs: '100%', md: formWidth }, my: 0.5 }}>
+                          <Box sx={{ flex: 1, minWidth: 0, height: '1px', bgcolor: '#D0D5DD' }} />
+                          <Typography sx={{ color: '#222222', fontSize: 18 }}>or</Typography>
+                          <Box sx={{ flex: 1, minWidth: 0, height: '1px', bgcolor: '#D0D5DD' }} />
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, width: { xs: '100%', md: formWidth } }}>
+                          <Button type="button" aria-label={t('auth.signup.sign_up_google')} onClick={() => setSocialProvider('google')} sx={{ width: 76, height: 76, minWidth: 0, p: 0, borderRadius: '18px', border: '2px solid #DDDDDD', color: '#344054', '&:hover': { border: '2px solid #AAAAAA', bgcolor: '#FFFFFF' } }}>
+                            {googleIconEl}
+                          </Button>
+                          <Button type="button" aria-label={t('auth.signup.sign_up_apple')} onClick={() => setSocialProvider('apple')} sx={{ width: 76, height: 76, minWidth: 0, p: 0, borderRadius: '18px', border: '2px solid #DDDDDD', color: '#111827', '&:hover': { border: '2px solid #AAAAAA', bgcolor: '#FFFFFF' } }}>
+                            <AppleIcon aria-hidden="true" sx={{ fontSize: 34, color: '#111827' }} />
+                          </Button>
+                        </Box>
                       </Stack>
                     </form>
                   </Paper>
@@ -231,8 +244,8 @@ export default function SignUp() {
           </Box>
         </Container>
         <Dialog
-          open={googleDialogOpen}
-          onClose={() => setGoogleDialogOpen(false)}
+          open={socialProvider !== null}
+          onClose={() => setSocialProvider(null)}
           fullWidth
           maxWidth={false}
           PaperProps={{
@@ -258,8 +271,8 @@ export default function SignUp() {
           >
             <IconButton
               type="button"
-              onClick={() => setGoogleDialogOpen(false)}
-              aria-label={t('auth.signin.google_intent_cancel')}
+              onClick={() => setSocialProvider(null)}
+              aria-label={t('auth.signin.social_intent_cancel')}
               size="small"
               sx={{
                 color: '#6B7280',
@@ -285,7 +298,7 @@ export default function SignUp() {
               textAlign: 'center',
             }}
           >
-            {t('auth.signin.google_intent_title')}
+            {socialProvider === 'apple' ? t('auth.signup.apple_intent_title') : t('auth.signin.google_intent_title')}
           </DialogTitle>
           <DialogContent sx={{ px: { xs: 3, sm: 3.5 }, pt: 0.5, pb: { xs: 3, sm: 3.5 } }}>
             <Typography
@@ -298,13 +311,13 @@ export default function SignUp() {
                 textAlign: 'center',
               }}
             >
-              Please choose your role to sign up
+              {socialProvider === 'apple' ? t('auth.signup.apple_intent_subtitle') : 'Please choose your role to sign up'}
             </Typography>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.25} sx={{ width: '100%', '& .MuiButton-root': { whiteSpace: 'nowrap', minWidth: 0, fontSize: { xs: '0.9375rem', sm: '0.875rem' } } }}>
               <Button
                 variant="contained"
                 disableElevation
-                onClick={() => { window.location.href = '/auth/google?intent=customer' }}
+                onClick={() => { if (socialProvider) window.location.href = `/auth/${socialProvider}?intent=customer` }}
                 sx={{
                   py: 1.5,
                   minHeight: 48,
@@ -322,7 +335,7 @@ export default function SignUp() {
               </Button>
               <Button
                 variant="outlined"
-                onClick={() => { window.location.href = '/auth/google?intent=host' }}
+                onClick={() => { if (socialProvider) window.location.href = `/auth/${socialProvider}?intent=host` }}
                 sx={{
                   py: 1.5,
                   minHeight: 48,
@@ -345,7 +358,7 @@ export default function SignUp() {
               </Button>
               <Button
                 variant="outlined"
-                onClick={() => { window.location.href = '/auth/google?intent=company' }}
+                onClick={() => { if (socialProvider) window.location.href = `/auth/${socialProvider}?intent=company` }}
                 sx={{
                   py: 1.5,
                   minHeight: 48,

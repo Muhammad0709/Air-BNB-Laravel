@@ -23,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'logout',
             'admin/logout',
             'host/logout',
+            'auth/apple/callback',
             // Only API auth routes (no session when calling from Swagger/Postman/mobile)
             'api/register',
             'api/login',

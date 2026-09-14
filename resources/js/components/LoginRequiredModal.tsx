@@ -3,6 +3,7 @@ import { Box, Button, IconButton, InputAdornment, Modal, TextField, Typography }
 import CloseIcon from '@mui/icons-material/Close'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import AppleIcon from '@mui/icons-material/Apple'
 import { router } from '@inertiajs/react'
 import { useLanguage } from '../hooks/use-language'
 
@@ -182,6 +183,23 @@ export default function LoginRequiredModal({ open, onClose, loginRedirectUrl }: 
               }}
             >
               <Box component="img" src="/images/Social-icon.svg" alt="" sx={{ width: { xs: 28, sm: 32 }, height: { xs: 28, sm: 32 } }} />
+            </Button>
+            <Button
+              type="button"
+              variant="outlined"
+              aria-label="Continue with Apple"
+              onClick={() => { onClose(); window.location.href = '/auth/apple?intent=customer' }}
+              sx={{
+                width: { xs: 68, sm: 76 },
+                height: { xs: 68, sm: 76 },
+                minWidth: 0,
+                borderRadius: { xs: '16px', sm: '18px' },
+                border: '2px solid #DDDDDD',
+                color: '#111827',
+                '&:hover': { border: '2px solid #AAAAAA', bgcolor: '#FFFFFF' },
+              }}
+            >
+              <AppleIcon sx={{ fontSize: { xs: 30, sm: 34 } }} />
             </Button>
           </Box>
         </Box>

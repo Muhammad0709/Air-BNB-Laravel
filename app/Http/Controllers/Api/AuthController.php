@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ForgotPasswordRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Models\User;
+use App\Services\AppleTokenVerifier;
 use App\Enums\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,7 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
+use InvalidArgumentException;
 
 /**
  * @OA\Tag(
@@ -462,16 +464,17 @@ class AuthController extends Controller
     /**
      * @OA\Post(
      *     path="/api/social-login",
-     *     summary="Social login (Google)",
-     *     description="Authenticate user using Google OAuth token",
+     *     summary="Social login (Google or Apple)",
+     *     description="Authenticate a user using a Google ID token or Apple identity token.",
      *     tags={"Authentication"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"provider", "token", "type"},
-     *             @OA\Property(property="provider", type="string", enum={"google"}, example="google", description="Social provider (currently only Google is supported)"),
-     *             @OA\Property(property="token", type="string", example="eyJhbGciOiJSUzI1NiIsImtpZCI6IjE...", description="Google ID token obtained from Google Sign-In"),
-     *             @OA\Property(property="type", type="string", enum={"User", "Host"}, example="User", description="User type: User or Host"),
+     *             @OA\Property(property="provider", type="string", enum={"google", "apple"}, example="apple", description="Social provider"),
+     *             @OA\Property(property="token", type="string", example="eyJhbGciOiJSUzI1NiIsImtpZCI6IjE...", description="Google ID token or Apple identity token"),
+     *             @OA\Property(property="name", type="string", nullable=true, example="John Doe", description="Name supplied by Apple on first sign-in (optional)"),
+     *             @OA\Property(property="type", type="string", enum={"User", "Host", "Company"}, example="User", description="User type"),
      *             @OA\Property(property="device_type", type="string", enum={"ios", "android", "web"}, example="web", description="Device type (optional)"),
      *             @OA\Property(property="devices_token", type="string", example="device_token_123", description="Device token for push notifications (optional)")
      *         )
@@ -538,9 +541,10 @@ class AuthController extends Controller
     {
         try {
             $request->validate([
-                'provider' => 'required|string|in:google',
+                'provider' => 'required|string|in:google,apple',
                 'token' => 'required|string',
-                'type' => 'required|string|in:User,Host',
+                'name' => 'nullable|string|max:255',
+                'type' => 'required|string|in:User,Host,Company',
                 'device_type' => 'nullable|string|in:ios,android,web',
                 'devices_token' => 'nullable|string',
             ]);
@@ -550,6 +554,10 @@ class AuthController extends Controller
 
             if ($provider === 'google') {
                 return $this->loginWithGoogle($request);
+            }
+
+            if ($provider === 'apple') {
+                return $this->loginWithApple($request);
             }
 
             return response()->json([
@@ -562,6 +570,22 @@ class AuthController extends Controller
                 'message' => 'Social login failed: ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    /**
+     * Authenticate with an Apple identity token from iOS, Android, or the web.
+     */
+    public function appleLogin(Request $request)
+    {
+        $request->validate([
+            'token' => ['required', 'string'],
+            'name' => ['nullable', 'string', 'max:255'],
+            'type' => ['required', 'string', 'in:User,Host,Company'],
+            'device_type' => ['nullable', 'string', 'in:ios,android,web'],
+            'devices_token' => ['nullable', 'string'],
+        ]);
+
+        return $this->loginWithApple($request);
     }
 
     /**
@@ -698,6 +722,101 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+    private function loginWithApple(Request $request)
+    {
+        try {
+            $audiences = array_values(array_unique(array_filter([
+                config('services.apple.client_id'),
+                config('services.apple.ios_client_id'),
+                ...((array) config('services.apple.client_ids', [])),
+            ], static fn ($value) => is_string($value) && trim($value) !== '')));
+
+            if ($audiences === []) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Apple Sign In is not configured on the server.',
+                ], 503);
+            }
+
+            $claims = app(AppleTokenVerifier::class)->verify((string) $request->input('token'), $audiences);
+            $appleId = trim((string) ($claims['sub'] ?? ''));
+            $email = strtolower(trim((string) ($claims['email'] ?? '')));
+            $email = $email !== '' ? $email : null;
+            $name = trim((string) ($request->input('name') ?: ($claims['name'] ?? '')));
+            $name = $name !== '' ? $name : 'Apple User';
+            $userType = (string) $request->input('type');
+
+            if ($appleId === '') {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid Apple identity token.',
+                ], 401);
+            }
+
+            $user = User::where('apple_id', $appleId)->first();
+
+            if (!$user && $email) {
+                $user = User::where('email', $email)->first();
+            }
+
+            if ($user && $user->type->value !== $userType) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'An account with this email already exists with a different role',
+                ], 409);
+            }
+
+            if (!$user) {
+                if (!$email) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Apple did not provide an email address. Send the email received on first sign-in to link the account.',
+                    ], 422);
+                }
+
+                $user = User::create([
+                    'name' => $name,
+                    'email' => $email,
+                    'apple_id' => $appleId,
+                    'password' => Hash::make(Str::random(24)),
+                    'type' => $userType,
+                ]);
+            } elseif (!$user->apple_id) {
+                $user->update(['apple_id' => $appleId]);
+            }
+
+            if (($user->account_status ?? 'active') !== 'active') {
+                return response()->json(['message' => 'Your account is suspended or disabled.'], 403);
+            }
+
+            $token = $user->createToken('apple_auth')->plainTextToken;
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Apple login successful',
+                'data' => [
+                    'token' => $token,
+                    'user' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'type' => $user->type->value,
+                        'profile_picture' => $user->profile_picture,
+                    ],
+                ],
+            ], 200);
+        } catch (InvalidArgumentException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid Apple identity token.',
+            ], 401);
+        } catch (\Throwable $e) {
+            report($e);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Apple login failed. Please try again.',
+            ], 500);
+        }
+    }
 }
-
-
