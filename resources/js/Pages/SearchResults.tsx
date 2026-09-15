@@ -19,7 +19,6 @@ type SearchResultItem = {
   rating?: number
   reviews?: number
   image: string | null
-  images?: string[]
   /** Matches ListingResource / wishlist */
   isGuestFavorite?: boolean
 }
@@ -156,7 +155,6 @@ export default function SearchResults() {
                       <Col key={i.id} xs={12} sm={6} md={6}>
                         <SearchResultCard
                           image={i.image ?? ''}
-                          images={i.images}
                           title={i.title}
                           location={i.location}
                           price={i.price}

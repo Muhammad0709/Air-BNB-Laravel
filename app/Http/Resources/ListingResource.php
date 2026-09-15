@@ -20,18 +20,17 @@ class ListingResource extends JsonResource
         $reviewCount = $reviews->count();
         $averageRating = $reviewCount > 0 ? round($reviews->avg('rating'), 2) : 0;
 
-        // Expose the complete gallery so cards can show all uploaded images.
-        $imagesArray = is_string($this->images) ? json_decode($this->images, true) : $this->images;
-        $imagesArray = is_array($imagesArray) ? array_values(array_filter($imagesArray)) : [];
-        if ($imagesArray === [] && $this->image) {
-            $imagesArray = [$this->image];
+        // First image as full URL
+        $image = null;
+        if ($this->images) {
+            $imagesArray = is_string($this->images) ? json_decode($this->images, true) : $this->images;
+            if (is_array($imagesArray) && !empty($imagesArray)) {
+                $image = asset(Storage::url($imagesArray[0]));
+            }
         }
-
-        $images = array_map(
-            fn ($path) => filter_var($path, FILTER_VALIDATE_URL) ? $path : asset(Storage::url($path)),
-            $imagesArray
-        );
-        $image = $images[0] ?? null;
+        if (!$image && $this->image) {
+            $image = asset(Storage::url($this->image));
+        }
 
         return [
             'id' => $this->id,
@@ -41,8 +40,8 @@ class ListingResource extends JsonResource
             'rating' => $averageRating,
             'reviews' => $reviewCount,
             'image' => $image,
-            'images' => $images,
             'isGuestFavorite' => $this->is_guest_favorite ?? false,
         ];
     }
 }
+
