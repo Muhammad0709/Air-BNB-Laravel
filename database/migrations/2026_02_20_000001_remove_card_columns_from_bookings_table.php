@@ -10,9 +10,6 @@ return new class extends Migration
     {
         Schema::table('bookings', function (Blueprint $table) {
             $columnsToDrop = [];
-            if (Schema::hasColumn('bookings', 'payment_method')) {
-                $columnsToDrop[] = 'payment_method';
-            }
             if (Schema::hasColumn('bookings', 'card_last_four')) {
                 $columnsToDrop[] = 'card_last_four';
             }
@@ -25,11 +22,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('bookings', function (Blueprint $table) {
-            if (! Schema::hasColumn('bookings', 'payment_method')) {
-                $table->string('payment_method')->nullable()->after('status');
-            }
             if (! Schema::hasColumn('bookings', 'card_last_four')) {
-                $table->string('card_last_four', 4)->nullable()->after('payment_method');
+                $table->string('card_last_four', 4)->nullable()->after('status');
             }
         });
     }
