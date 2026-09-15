@@ -43,8 +43,6 @@ class HostPropertyResource extends JsonResource
             'house_rules' => $this->house_rules,
             'check_in_time' => $this->check_in_time,
             'check_out_time' => $this->check_out_time,
-            'minimum_stay' => $this->minimum_stay,
-            'maximum_stay' => $this->maximum_stay,
             'guests' => $this->guests,
             'property_type' => $this->property_type,
             'status' => $this->status,

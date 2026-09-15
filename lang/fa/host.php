@@ -322,8 +322,6 @@ return [
         'stay_details' => 'جزئیات اقامت',
         'check_in_time' => 'زمان ورود',
         'check_out_time' => 'زمان خروج',
-        'minimum_stay' => 'حداقل اقامت (شب)',
-        'maximum_stay' => 'حداکثر اقامت (شب)',
         'house_rules' => 'قوانین خانه',
         'house_rules_placeholder' => 'قوانین ورود، سیگار کشیدن، حیوانات خانگی، مهمانی‌ها و ساعات سکوت را توضیح دهید.',
         'experience_details' => 'جزئیات تجربه',
