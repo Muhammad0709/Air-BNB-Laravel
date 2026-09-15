@@ -322,6 +322,8 @@ return [
         'stay_details' => 'Konaklama ayrıntıları',
         'check_in_time' => 'Giriş saati',
         'check_out_time' => 'Çıkış saati',
+        'minimum_stay' => 'Minimum konaklama (gece)',
+        'maximum_stay' => 'Maksimum konaklama (gece)',
         'house_rules' => 'Ev kuralları',
         'house_rules_placeholder' => 'Giriş kurallarını, sigara kullanımını, evcil hayvanları, partileri ve sessizlik saatlerini açıklayın.',
         'experience_details' => 'Deneyim ayrıntıları',

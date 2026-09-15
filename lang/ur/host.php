@@ -322,6 +322,8 @@ return [
         'stay_details' => 'قیام کی تفصیلات',
         'check_in_time' => 'چیک اِن کا وقت',
         'check_out_time' => 'چیک آؤٹ کا وقت',
+        'minimum_stay' => 'کم از کم قیام (راتیں)',
+        'maximum_stay' => 'زیادہ سے زیادہ قیام (راتیں)',
         'house_rules' => 'گھر کے اصول',
         'house_rules_placeholder' => 'چیک اِن کے اصول، سگریٹ نوشی، پالتو جانور، تقریبات اور خاموشی کے اوقات بیان کریں۔',
         'experience_details' => 'تجربے کی تفصیلات',

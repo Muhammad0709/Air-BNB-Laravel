@@ -40,6 +40,8 @@ export default function AddProperty() {
     house_rules: '',
     check_in_time: '',
     check_out_time: '',
+    minimum_stay: '1',
+    maximum_stay: '30',
     duration_hours: '',
     guests: '',
     property_type: '',
@@ -147,6 +149,8 @@ export default function AddProperty() {
       submitData.append('house_rules', formData.house_rules)
       submitData.append('check_in_time', formData.check_in_time)
       submitData.append('check_out_time', formData.check_out_time)
+      submitData.append('minimum_stay', formData.minimum_stay)
+      submitData.append('maximum_stay', formData.maximum_stay)
     }
     submitData.append('guests', formData.guests)
     submitData.append('property_type', formData.property_type)
@@ -441,6 +445,16 @@ export default function AddProperty() {
                   <Col xs={12} md={6} className="mt-3 mt-md-0">
                     <TextField label={t('host.properties.check_out_time')} name="check_out_time" type="time" value={formData.check_out_time} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} error={!!err('check_out_time')} />
                     <InputError message={err('check_out_time')} />
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col xs={12} md={6}>
+                    <TextField label={t('host.properties.minimum_stay')} name="minimum_stay" type="number" value={formData.minimum_stay} onChange={handleChange} required fullWidth inputProps={{ min: 1, max: 365 }} error={!!err('minimum_stay')} />
+                    <InputError message={err('minimum_stay')} />
+                  </Col>
+                  <Col xs={12} md={6} className="mt-3 mt-md-0">
+                    <TextField label={t('host.properties.maximum_stay')} name="maximum_stay" type="number" value={formData.maximum_stay} onChange={handleChange} required fullWidth inputProps={{ min: 1, max: 365 }} error={!!err('maximum_stay')} />
+                    <InputError message={err('maximum_stay')} />
                   </Col>
                 </Row>
                 <TextField sx={{ mt: 3 }} label={t('host.properties.house_rules')} name="house_rules" value={formData.house_rules} onChange={handleChange} required fullWidth multiline rows={4} placeholder={t('host.properties.house_rules_placeholder')} error={!!err('house_rules')} />

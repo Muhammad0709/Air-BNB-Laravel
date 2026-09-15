@@ -322,6 +322,8 @@ return [
         'stay_details' => 'Stay details',
         'check_in_time' => 'Check-in time',
         'check_out_time' => 'Check-out time',
+        'minimum_stay' => 'Minimum stay (nights)',
+        'maximum_stay' => 'Maximum stay (nights)',
         'house_rules' => 'House rules',
         'house_rules_placeholder' => 'Describe check-in rules, smoking, pets, parties and quiet hours.',
         'experience_details' => 'Experience Details',

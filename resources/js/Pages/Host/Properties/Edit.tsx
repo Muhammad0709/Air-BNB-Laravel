@@ -36,6 +36,8 @@ interface Property {
   house_rules?: string | null
   check_in_time?: string | null
   check_out_time?: string | null
+  minimum_stay?: number | null
+  maximum_stay?: number | null
   guests: number
   property_type: string
   status: string
@@ -99,6 +101,8 @@ export default function EditProperty() {
     house_rules: property.house_rules ?? '',
     check_in_time: toTimeInputValue(property.check_in_time),
     check_out_time: toTimeInputValue(property.check_out_time),
+    minimum_stay: property.minimum_stay != null ? String(property.minimum_stay) : '1',
+    maximum_stay: property.maximum_stay != null ? String(property.maximum_stay) : '30',
     duration_hours: property.duration_hours != null ? property.duration_hours.toString() : '',
     guests: property.guests.toString(),
     property_type: property.property_type,
@@ -200,6 +204,8 @@ export default function EditProperty() {
       submitData.append('house_rules', formData.house_rules)
       submitData.append('check_in_time', formData.check_in_time)
       submitData.append('check_out_time', formData.check_out_time)
+      submitData.append('minimum_stay', formData.minimum_stay)
+      submitData.append('maximum_stay', formData.maximum_stay)
     }
     submitData.append('guests', formData.guests)
     submitData.append('property_type', formData.property_type)
@@ -477,6 +483,16 @@ export default function EditProperty() {
                   <Col xs={12} md={6} className="mt-3 mt-md-0">
                     <TextField label={t('host.properties.check_out_time')} name="check_out_time" type="time" value={formData.check_out_time} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} error={!!activeErrors.check_out_time} />
                     <InputError message={Array.isArray(activeErrors.check_out_time) ? activeErrors.check_out_time[0] : activeErrors.check_out_time} />
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col xs={12} md={6}>
+                    <TextField label={t('host.properties.minimum_stay')} name="minimum_stay" type="number" value={formData.minimum_stay} onChange={handleChange} required fullWidth inputProps={{ min: 1, max: 365 }} error={!!activeErrors.minimum_stay} />
+                    <InputError message={Array.isArray(activeErrors.minimum_stay) ? activeErrors.minimum_stay[0] : activeErrors.minimum_stay} />
+                  </Col>
+                  <Col xs={12} md={6} className="mt-3 mt-md-0">
+                    <TextField label={t('host.properties.maximum_stay')} name="maximum_stay" type="number" value={formData.maximum_stay} onChange={handleChange} required fullWidth inputProps={{ min: 1, max: 365 }} error={!!activeErrors.maximum_stay} />
+                    <InputError message={Array.isArray(activeErrors.maximum_stay) ? activeErrors.maximum_stay[0] : activeErrors.maximum_stay} />
                   </Col>
                 </Row>
                 <TextField sx={{ mt: 3 }} label={t('host.properties.house_rules')} name="house_rules" value={formData.house_rules} onChange={handleChange} required fullWidth multiline rows={4} placeholder={t('host.properties.house_rules_placeholder')} error={!!activeErrors.house_rules} />
