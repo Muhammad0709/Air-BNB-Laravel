@@ -39,8 +39,6 @@ class StoreHostPropertyRequest extends FormRequest
             'house_rules' => ['nullable', 'required_unless:listing_category,experience', 'string', 'max:5000'],
             'check_in_time' => ['nullable', 'required_unless:listing_category,experience', 'date_format:H:i'],
             'check_out_time' => ['nullable', 'required_unless:listing_category,experience', 'date_format:H:i'],
-            'minimum_stay' => ['nullable', 'required_unless:listing_category,experience', 'integer', 'min:1', 'max:365'],
-            'maximum_stay' => ['nullable', 'required_unless:listing_category,experience', 'integer', 'min:1', 'max:365', 'gte:minimum_stay'],
             'duration_hours' => ['nullable', 'required_if:listing_category,experience', 'integer', 'min:1', 'max:72'],
             'guests' => ['required', 'integer', 'min:1'],
             'price' => ['required', 'numeric', 'min:0'],

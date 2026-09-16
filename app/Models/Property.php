@@ -33,8 +33,6 @@ class Property extends Model
         'house_rules',
         'check_in_time',
         'check_out_time',
-        'minimum_stay',
-        'maximum_stay',
         'amenities',
         'image',
         'images',
@@ -81,8 +79,6 @@ class Property extends Model
         'experience_not_included' => 'array',
         'experience_booking_paused' => 'boolean',
         'beds'                   => 'integer',
-        'minimum_stay'           => 'integer',
-        'maximum_stay'           => 'integer',
     ];
 
     public function isExperience(): bool

@@ -118,8 +118,6 @@ class PropertyDetailController extends Controller
             'house_rules' => $property->house_rules,
             'check_in_time' => $property->check_in_time ? \Carbon\Carbon::parse($property->check_in_time)->format('H:i') : null,
             'check_out_time' => $property->check_out_time ? \Carbon\Carbon::parse($property->check_out_time)->format('H:i') : null,
-            'minimum_stay' => $property->minimum_stay,
-            'maximum_stay' => $property->maximum_stay,
             'guests' => $property->guests,
             'property_type' => $property->property_type,
             'listing_category' => $property->listing_category?->value ?? 'stay',

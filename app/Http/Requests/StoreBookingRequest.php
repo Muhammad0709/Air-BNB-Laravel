@@ -84,14 +84,6 @@ class StoreBookingRequest extends FormRequest
                 if ($bookedGuests + $requestedGuests > (int) $property->guests) {
                     $validator->errors()->add('adults', 'This experience is full for the selected date and time.');
                 }
-            } elseif ($property) {
-                $nights = Carbon::parse($checkin)->diffInDays(Carbon::parse($checkout));
-                if ($property->minimum_stay && $nights < $property->minimum_stay) {
-                    $validator->errors()->add('checkout', "This property requires a minimum stay of {$property->minimum_stay} nights.");
-                }
-                if ($property->maximum_stay && $nights > $property->maximum_stay) {
-                    $validator->errors()->add('checkout', "This property allows a maximum stay of {$property->maximum_stay} nights.");
-                }
             }
 
             $overlaps = $property && $property->isExperience()
