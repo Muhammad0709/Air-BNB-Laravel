@@ -84,18 +84,39 @@ class AuthController extends Controller
                     }
                 },
             ],
-            'type' => ['required', 'string', 'in:' . implode(',', array_column(UserType::cases(), 'value'))],
+            // Public registration may create customer/provider accounts only.
+            // Admin and moderator accounts must be created through the admin flow.
+            'type' => ['required', 'string', 'in:' . implode(',', [
+                UserType::USER->value,
+                UserType::HOST->value,
+                UserType::COMPANY->value,
+            ])],
+            'company_name' => ['nullable', 'required_if:type,' . UserType::COMPANY->value, 'string', 'max:255'],
+            'tax_id' => ['nullable', 'string', 'max:255'],
+            'company_registration_number' => ['nullable', 'required_if:type,' . UserType::COMPANY->value, 'string', 'max:255'],
+            'company_registered_address' => ['nullable', 'required_if:type,' . UserType::COMPANY->value, 'string', 'max:1000'],
+            'company_contact_person' => ['nullable', 'required_if:type,' . UserType::COMPANY->value, 'string', 'max:255'],
+            'company_description' => ['nullable', 'required_if:type,' . UserType::COMPANY->value, 'string', 'max:2000'],
         ], [
             'name.unique' => 'This name is already taken. Please choose another name.',
             'email.unique' => 'This email is already registered.',
             'password.min' => 'The password must be at least 8 characters long.',
         ]);
 
+        $type = UserType::from($request->type);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'type' => $request->type,
+            'type' => $type,
+            'provider_verification_status' => $type->isHostPanelUser() ? 'pending' : 'verified',
+            'company_name' => $request->company_name,
+            'tax_id' => $request->tax_id,
+            'company_registration_number' => $request->company_registration_number,
+            'company_registered_address' => $request->company_registered_address,
+            'company_contact_person' => $request->company_contact_person,
+            'company_description' => $request->company_description,
         ]);
 
         // Create token for API authentication

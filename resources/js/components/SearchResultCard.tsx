@@ -13,13 +13,16 @@ type SearchResultCardProps = {
   title: string
   location: string
   description?: string
-  bedrooms?: number
-  beds?: number
+  bedrooms?: number | null
+  beds?: number | null
+  bathrooms?: number | null
   price: number
   originalPrice?: number
   nights?: number | null
   checkin?: string
   checkout?: string
+  propertyCheckin?: string | null
+  propertyCheckout?: string | null
   id?: number | string
   rating?: number
   reviews?: number
@@ -38,11 +41,14 @@ export default function SearchResultCard({
   description,
   bedrooms,
   beds,
+  bathrooms,
   price,
   originalPrice,
   nights,
   checkin,
   checkout,
+  propertyCheckin,
+  propertyCheckout,
   id = 1,
   rating,
   reviews,
@@ -83,14 +89,25 @@ export default function SearchResultCard({
     }
   }
 
-  const formatDates = () => {
-    if (!checkin || !checkout) return null
-    const a = new Date(`${checkin}T12:00:00`)
-    const b = new Date(`${checkout}T12:00:00`)
-    if (Number.isNaN(a.getTime()) || Number.isNaN(b.getTime())) return null
-    const o: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' }
-    return `${a.toLocaleDateString('en-US', o)} – ${b.toLocaleDateString('en-US', o)}`
+  const formatStayDates = () => {
+    const dates = [propertyCheckin || checkin, propertyCheckout || checkout].filter(Boolean) as string[]
+    if (dates.length === 0) return null
+
+    const formatted = dates.map((date) => {
+      const parsed = new Date(`${date.slice(0, 10)}T12:00:00`)
+      return Number.isNaN(parsed.getTime())
+        ? null
+        : parsed.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    })
+
+    return formatted.every(Boolean) ? formatted.join(' – ') : formatted[0] || null
   }
+
+  const propertyDetails = [
+    bedrooms != null ? `${bedrooms} bedroom${bedrooms === 1 ? '' : 's'}` : null,
+    beds != null ? `${beds} bed${beds === 1 ? '' : 's'}` : null,
+    bathrooms != null ? `${bathrooms} bath${bathrooms === 1 ? '' : 's'}` : null,
+  ].filter(Boolean)
 
   return (
     <>
@@ -160,12 +177,14 @@ export default function SearchResultCard({
             {description}
           </Typography>
         )}
-        <Typography sx={{ fontSize: '0.9375rem', color: '#717171', mb: 0.5 }}>
-          {bedrooms && beds ? `${bedrooms} bedroom${bedrooms > 1 ? 's' : ''} · ${beds} bed${beds > 1 ? 's' : ''}` : ''}
-        </Typography>
-        {formatDates() && (
-          <Typography sx={{ fontSize: '0.9375rem', color: '#222222', mb: 1, textDecoration: 'underline' }}>
-            {formatDates()}
+        {propertyDetails.length > 0 && (
+          <Typography sx={{ fontSize: '0.9375rem', color: '#222222', mb: 0.5 }}>
+            {propertyDetails.join(' · ')}
+          </Typography>
+        )}
+        {formatStayDates() && (
+          <Typography sx={{ fontSize: '0.9375rem', color: '#222222', mb: 1 }}>
+            {formatStayDates()}
           </Typography>
         )}
         <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'baseline', gap: 0.5, flexWrap: 'wrap' }}>

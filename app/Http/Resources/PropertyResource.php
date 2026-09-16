@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Support\StayNights;
 
 class PropertyResource extends JsonResource
 {
@@ -26,6 +27,12 @@ class PropertyResource extends JsonResource
             'title' => $this->title,
             'location' => $this->location,
             'price' => (float) $this->price,
+            'nights' => StayNights::between($this->check_in_date, $this->check_out_date),
+            'check_in_date' => $this->check_in_date?->format('Y-m-d'),
+            'check_out_date' => $this->check_out_date?->format('Y-m-d'),
+            'bedrooms' => $this->bedrooms,
+            'beds' => $this->beds,
+            'bathrooms' => $this->bathrooms,
             'rating' => $averageRating,
             'reviews' => $reviewCount,
             'image' => $images[0] ?? null,

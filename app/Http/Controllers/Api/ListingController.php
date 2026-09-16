@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Property;
 use App\Enums\PropertyStatus;
+use App\Support\StayNights;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -128,8 +129,12 @@ class ListingController extends Controller
                 'title'            => $property->title,
                 'location'         => $property->location,
                 'price'            => (float) $property->price,
+                'nights'           => StayNights::between($property->check_in_date, $property->check_out_date),
+                'check_in_date'    => $property->check_in_date?->format('Y-m-d'),
+                'check_out_date'   => $property->check_out_date?->format('Y-m-d'),
                 'guests'           => $property->guests,
                 'bedrooms'         => $property->bedrooms,
+                'beds'             => $property->beds,
                 'bathrooms'        => $property->bathrooms,
                 'property_type'    => $property->property_type,
                 'image'            => $property->getPrimaryImageUrl(),

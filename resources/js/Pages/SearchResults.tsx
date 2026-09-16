@@ -20,6 +20,11 @@ type SearchResultItem = {
   reviews?: number
   image: string | null
   images?: string[]
+  check_in_date?: string | null
+  check_out_date?: string | null
+  bedrooms?: number | null
+  beds?: number | null
+  bathrooms?: number | null
   /** Matches ListingResource / wishlist */
   isGuestFavorite?: boolean
   nights: number | null
@@ -53,7 +58,7 @@ export default function SearchResults() {
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up('lg'))
   const { props } = usePage<SearchResultsPageProps>()
-  const { properties, filters = {}, nights: propsNights } = props
+  const { properties, filters = {} } = props
   const items = properties?.data ?? []
   const paginator = properties
   const checkin = filters?.checkin
@@ -162,7 +167,12 @@ export default function SearchResults() {
                           title={i.title}
                           location={i.location}
                           price={i.price}
-                          nights={propsNights ?? i.nights}
+                          propertyCheckin={i.check_in_date}
+                          propertyCheckout={i.check_out_date}
+                          bedrooms={i.bedrooms}
+                          beds={i.beds}
+                          bathrooms={i.bathrooms}
+                          nights={i.nights}
                           checkin={checkin || undefined}
                           checkout={checkout || undefined}
                           id={i.id}
@@ -227,7 +237,7 @@ export default function SearchResults() {
                       images: item.images,
                       rating: item.rating,
                       reviews: item.reviews,
-                      nights: propsNights ?? item.nights,
+                      nights: item.nights,
                       checkin: checkin || undefined,
                       checkout: checkout || undefined,
                       isGuestFavorite: item.isGuestFavorite,
