@@ -1,0 +1,1 @@
+import{c,j as o}from"./app-GzFl0-a9.js";import{A as n}from"./ArrowBack-Cp5Dn6Nt.js";import{u as a}from"./use-language-DbV0Ks8e.js";const m=c(o.jsx("path",{d:"m12 4-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"}));function u(r){const{isRtl:t}=a(),s=t?m:n;return o.jsx(s,{...r})}export{u as R};
