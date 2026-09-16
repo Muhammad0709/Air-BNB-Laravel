@@ -7,6 +7,7 @@ import { Link } from '@inertiajs/react'
 
 type PropertyItem = {
   image: string
+  images?: string[]
   title: string
   location: string
   price: number
@@ -25,6 +26,7 @@ type HorizontalScrollSectionProps = {
   emptySubtext?: string
   emptyActionLabel?: string
   emptyActionHref?: string
+  showImageCarousel?: boolean
 }
 
 export default function HorizontalScrollSection({ 
@@ -35,6 +37,7 @@ export default function HorizontalScrollSection({
   emptySubtext,
   emptyActionLabel,
   emptyActionHref,
+  showImageCarousel = true,
 }: HorizontalScrollSectionProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   const [showLeftButton, setShowLeftButton] = useState(false)
@@ -185,6 +188,7 @@ export default function HorizontalScrollSection({
             <Box key={idx} className="airbnb-card-item">
               <FeaturedCard
                 image={item.image}
+                images={item.images}
                 title={item.title}
                 location={item.location}
                 price={item.price}
@@ -193,6 +197,7 @@ export default function HorizontalScrollSection({
                 rating={item.rating}
                 reviews={item.reviews}
                 isGuestFavorite={item.isGuestFavorite}
+                showImageCarousel={showImageCarousel}
               />
             </Box>
           ))}

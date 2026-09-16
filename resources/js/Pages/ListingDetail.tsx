@@ -100,6 +100,7 @@ type RelatedProperty = {
   price: number | string
   nights?: number | null
   image: string | null
+  images?: string[]
   rating?: number
 }
 
@@ -127,6 +128,15 @@ type ListingDetailProps = {
 function parseDateFromBackend(dateStr: string): { year: number; month: number; day: number } {
   const [y, m, d] = dateStr.split('-').map(Number)
   return { year: y ?? new Date().getFullYear(), month: (m ?? new Date().getMonth() + 1) - 1, day: d ?? 1 }
+}
+
+function formatStayDateTime(date: string | null | undefined, time: string | null | undefined): string {
+  const parsedDate = date ? new Date(`${date.slice(0, 10)}T12:00:00`) : null
+  const formattedDate = parsedDate && !Number.isNaN(parsedDate.getTime())
+    ? new Intl.DateTimeFormat(undefined, { year: 'numeric', month: 'short', day: 'numeric' }).format(parsedDate)
+    : null
+
+  return [formattedDate, time].filter(Boolean).join(', ') || '—'
 }
 
 export default function ListingDetail() {
@@ -605,7 +615,7 @@ export default function ListingDetail() {
                   <Paper className="about-section mt-4" elevation={0}>
                     <Typography className="section-title" component="h2">{t('listing_detail.stay_information')}</Typography>
                     <Typography className="about-text">
-                      {t('listing_detail.check_in')}: {property.check_in_time || '—'} · {t('listing_detail.check_out')}: {property.check_out_time || '—'}
+                      {t('listing_detail.check_in')}: {formatStayDateTime(property.check_in_date, property.check_in_time)} · {t('listing_detail.check_out')}: {formatStayDateTime(property.check_out_date, property.check_out_time)}
                     </Typography>
                   </Paper>
                 )}
@@ -1077,6 +1087,7 @@ export default function ListingDetail() {
                 <Col key={stay.id} lg={3} md={4} sm={6} xs={6}>
                   <FeaturedCard
                     image={stay.image || PLACEHOLDER_IMAGE}
+                    images={stay.images}
                     title={stay.title}
                     location={stay.location}
                     price={typeof stay.price === 'number' ? stay.price : Number(stay.price) || 0}

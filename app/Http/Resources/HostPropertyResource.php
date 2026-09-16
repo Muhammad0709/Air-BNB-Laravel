@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
 class HostPropertyResource extends JsonResource
 {
@@ -15,18 +14,7 @@ class HostPropertyResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $image = null;
-        if ($this->images) {
-            $imagesArray = is_string($this->images) ? json_decode($this->images, true) : $this->images;
-            if (is_array($imagesArray) && !empty($imagesArray)) {
-                $imagePath = Storage::disk('public')->url($imagesArray[0]);
-                $image = filter_var($imagePath, FILTER_VALIDATE_URL) ? $imagePath : $request->getSchemeAndHttpHost() . $imagePath;
-            }
-        }
-        if (!$image && $this->image) {
-            $imagePath = Storage::disk('public')->url($this->image);
-            $image = filter_var($imagePath, FILTER_VALIDATE_URL) ? $imagePath : $request->getSchemeAndHttpHost() . $imagePath;
-        }
+        $images = $this->getImageUrls();
 
         $bookingsCount = $this->whenLoaded('bookings') 
             ? $this->bookings->count() 
@@ -49,7 +37,8 @@ class HostPropertyResource extends JsonResource
             'status' => $this->status,
             'approval_status' => $this->approval_status,
             'description' => $this->description,
-            'image' => $image,
+            'image' => $images[0] ?? null,
+            'images' => $images,
             'bookings_count' => $bookingsCount,
             'airport_pickup_enabled' => $this->airport_pickup_enabled ?? false,
             'airport' => $this->airport,

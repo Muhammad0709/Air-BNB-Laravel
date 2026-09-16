@@ -23,6 +23,7 @@ interface Property {
   rating?: number
   reviews?: number
   image: string
+  images?: string[]
   isGuestFavorite?: boolean
 }
 
@@ -192,6 +193,7 @@ export default function Home() {
   const featuredItems = featuredProperties.map(property => ({
     id: property.id,
     image: property.image || '/images/filter-1.svg',
+    images: property.images,
     title: property.title,
     location: property.location,
     price: property.price,
@@ -204,6 +206,7 @@ export default function Home() {
   const popularItems = popularProperties.map(property => ({
     id: property.id,
     image: property.image || '/images/filter-1.svg',
+    images: property.images,
     title: property.title,
     location: property.location,
     price: property.price,
@@ -523,6 +526,7 @@ export default function Home() {
             items={featuredItems}
             emptyMessage={t('home.no_hotels')}
             emptySubtext={t('home.no_hotels_sub')}
+            showImageCarousel={false}
           />
         </RBContainer>
       </section>

@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
 class PropertyResource extends JsonResource
 {
@@ -20,17 +19,7 @@ class PropertyResource extends JsonResource
         $reviewCount = $reviews->count();
         $averageRating = $reviewCount > 0 ? round($reviews->avg('rating'), 2) : 0;
 
-        // First image as full URL
-        $image = null;
-        if ($this->images) {
-            $imagesArray = is_string($this->images) ? json_decode($this->images, true) : $this->images;
-            if (is_array($imagesArray) && !empty($imagesArray)) {
-                $image = asset(Storage::url($imagesArray[0]));
-            }
-        }
-        if (!$image && $this->image) {
-            $image = asset(Storage::url($this->image));
-        }
+        $images = $this->getImageUrls();
 
         return [
             'id' => $this->id,
@@ -39,7 +28,8 @@ class PropertyResource extends JsonResource
             'price' => (float) $this->price,
             'rating' => $averageRating,
             'reviews' => $reviewCount,
-            'image' => $image,
+            'image' => $images[0] ?? null,
+            'images' => $images,
             'isGuestFavorite' => $this->is_guest_favorite ?? false,
             'host' => $this->whenLoaded('user', fn() => [
                 'id' => $this->user->id,
@@ -48,4 +38,3 @@ class PropertyResource extends JsonResource
         ];
     }
 }
-

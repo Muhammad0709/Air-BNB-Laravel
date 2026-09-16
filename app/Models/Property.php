@@ -122,14 +122,32 @@ class Property extends Model
      */
     public function getPrimaryImageUrl(): ?string
     {
-        $path = null;
-        if ($this->images !== null) {
-            $arr = is_array($this->images) ? $this->images : (is_string($this->images) ? json_decode($this->images, true) : []);
-            $path = is_array($arr) && $arr !== [] ? $arr[0] : null;
-        }
-        $path = $path ?? $this->image;
+        return $this->getImageUrls()[0] ?? null;
+    }
 
-        return $path ? asset(Storage::url($path)) : null;
+    /**
+     * All non-empty property photos as public URLs, falling back to the legacy
+     * single-image column for properties created before gallery uploads.
+     *
+     * @return array<int, string>
+     */
+    public function getImageUrls(): array
+    {
+        $images = is_array($this->images)
+            ? $this->images
+            : (is_string($this->images) ? json_decode($this->images, true) : []);
+
+        $paths = is_array($images) ? $images : [];
+        if (empty($paths) && $this->image) {
+            $paths = [$this->image];
+        }
+
+        $paths = array_values(array_unique(array_filter(
+            $paths,
+            fn ($path) => is_string($path) && trim($path) !== ''
+        )));
+
+        return array_map(fn (string $path) => asset(Storage::url($path)), $paths);
     }
 
     /**

@@ -26,9 +26,9 @@ export default function PopularStays({ items = [] }: PopularStaysProps) {
         items={items}
         emptyMessage={t('home.no_popular')}
         emptySubtext={t('home.no_popular_sub')}
+        showImageCarousel={false}
       />
     </section>
   )
 }
-
 

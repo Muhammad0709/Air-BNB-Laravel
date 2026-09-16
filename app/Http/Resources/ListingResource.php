@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 use App\Support\StayNights;
 
 class ListingResource extends JsonResource
@@ -21,17 +20,7 @@ class ListingResource extends JsonResource
         $reviewCount = $reviews->count();
         $averageRating = $reviewCount > 0 ? round($reviews->avg('rating'), 2) : 0;
 
-        // First image as full URL
-        $image = null;
-        if ($this->images) {
-            $imagesArray = is_string($this->images) ? json_decode($this->images, true) : $this->images;
-            if (is_array($imagesArray) && !empty($imagesArray)) {
-                $image = asset(Storage::url($imagesArray[0]));
-            }
-        }
-        if (!$image && $this->image) {
-            $image = asset(Storage::url($this->image));
-        }
+        $images = $this->getImageUrls();
 
         return [
             'id' => $this->id,
@@ -41,7 +30,8 @@ class ListingResource extends JsonResource
             'nights' => StayNights::between($this->check_in_date, $this->check_out_date),
             'rating' => $averageRating,
             'reviews' => $reviewCount,
-            'image' => $image,
+            'image' => $images[0] ?? null,
+            'images' => $images,
             'isGuestFavorite' => $this->is_guest_favorite ?? false,
         ];
     }

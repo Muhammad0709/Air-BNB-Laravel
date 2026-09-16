@@ -7,7 +7,6 @@ use App\Models\Property;
 use App\Enums\PropertyStatus;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 /**
  * @OA\Tag(
@@ -134,6 +133,7 @@ class ListingController extends Controller
                 'bathrooms'        => $property->bathrooms,
                 'property_type'    => $property->property_type,
                 'image'            => $property->getPrimaryImageUrl(),
+                'images'           => $property->getImageUrls(),
                 'amenities'        => is_array($property->amenities)
                     ? $property->amenities
                     : (is_string($property->amenities) ? explode(',', $property->amenities) : []),

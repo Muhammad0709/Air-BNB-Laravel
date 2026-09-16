@@ -4,10 +4,12 @@ import { router, usePage } from '@inertiajs/react'
 import StarIcon from '@mui/icons-material/Star'
 import CardFavoriteIcon from './CardFavoriteIcon'
 import LoginRequiredModal from './LoginRequiredModal'
+import PropertyImageCarousel from './PropertyImageCarousel'
 import { useLanguage } from '../hooks/use-language'
 
 type SearchResultCardProps = {
   image: string
+  images?: string[]
   title: string
   location: string
   description?: string
@@ -30,6 +32,7 @@ type SearchResultCardProps = {
 
 export default function SearchResultCard({
   image,
+  images,
   title,
   location,
   description,
@@ -50,8 +53,6 @@ export default function SearchResultCard({
 }: SearchResultCardProps) {
   const { t } = useLanguage()
   const [isFavorited, setIsFavorited] = useState(isGuestFavorite)
-  const [imgSrc, setImgSrc] = useState(image || fallbackImage)
-  const [imgError, setImgError] = useState(false)
   const [loginModalOpen, setLoginModalOpen] = useState(false)
   const { props } = usePage()
   const isAuthenticated = Boolean((props as any)?.auth?.user)
@@ -59,18 +60,6 @@ export default function SearchResultCard({
   useEffect(() => {
     setIsFavorited(isGuestFavorite)
   }, [isGuestFavorite])
-
-  useEffect(() => {
-    setImgSrc(image || fallbackImage)
-    setImgError(false)
-  }, [image])
-
-  const handleImageError = () => {
-    if (!imgError) {
-      setImgError(true)
-      setImgSrc(fallbackImage)
-    }
-  }
 
   const handleClick = () => {
     const suffix = detailQuery ? `?${detailQuery}` : ''
@@ -113,14 +102,8 @@ export default function SearchResultCard({
       }}
       onClick={handleClick}
     >
-      <Box sx={{ position: 'relative' }}>
-        <Box
-          component="img"
-          src={imgSrc}
-          alt={title}
-          onError={handleImageError}
-          sx={{ width: '100%', height: 300, objectFit: 'cover', borderRadius: '12px', mb: 1.5 }}
-        />
+      <Box sx={{ position: 'relative', height: 300, borderRadius: '12px', overflow: 'hidden', mb: 1.5 }}>
+        <PropertyImageCarousel image={image} images={images} fallbackImage={fallbackImage} alt={title} />
         <IconButton
           className="airbnb-favorite-button"
           onClick={handleFavoriteClick}

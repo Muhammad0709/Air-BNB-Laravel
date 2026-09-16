@@ -167,13 +167,15 @@ class PropertyDetailController extends Controller
             ->map(function ($prop) {
                 $reviews = $prop->reviews;
                 $avgRating = $reviews->count() > 0 ? round($reviews->avg('rating'), 2) : 0;
+                $images = $prop->getImageUrls();
                 return [
                     'id' => $prop->id,
                     'title' => $prop->title,
                     'location' => $prop->location,
                     'price' => $prop->price,
                     'nights' => StayNights::between($prop->check_in_date, $prop->check_out_date),
-                    'image' => $prop->image ? Storage::url($prop->image) : null,
+                    'image' => $images[0] ?? null,
+                    'images' => $images,
                     'rating' => $avgRating,
                 ];
             })
@@ -187,6 +189,7 @@ class PropertyDetailController extends Controller
                 'price' => $item['price'],
                 'nights' => $item['nights'],
                 'image' => $item['image'],
+                'images' => $item['images'],
                 'rating' => (float) $item['rating'],
             ]);
 

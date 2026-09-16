@@ -4,12 +4,14 @@ import { router, usePage } from '@inertiajs/react'
 import StarIcon from '@mui/icons-material/Star'
 import CardFavoriteIcon from './CardFavoriteIcon'
 import LoginRequiredModal from './LoginRequiredModal'
+import PropertyImageCarousel from './PropertyImageCarousel'
 import { useLanguage } from '../hooks/use-language'
 import { useCurrency } from '../contexts/CurrencyContext'
 import { formatPrice } from '../utils/currency'
 
 type FeaturedCardProps = {
   image: string
+  images?: string[]
   title: string
   location: string
   price: number
@@ -20,10 +22,12 @@ type FeaturedCardProps = {
   isGuestFavorite?: boolean
   fallbackImage?: string
   showFavoriteButton?: boolean
+  showImageCarousel?: boolean
 }
 
 export default function FeaturedCard({ 
   image, 
+  images,
   title, 
   location: _location, 
   price,
@@ -34,20 +38,14 @@ export default function FeaturedCard({
   isGuestFavorite = false,
   fallbackImage = '/images/popular-stay-1.svg',
   showFavoriteButton = true,
+  showImageCarousel = true,
 }: FeaturedCardProps) {
   const { t } = useLanguage()
   const { currency } = useCurrency()
-  const [imgSrc, setImgSrc] = useState(image)
-  const [imgError, setImgError] = useState(false)
   const [isFavorited, setIsFavorited] = useState(isGuestFavorite)
   const [loginModalOpen, setLoginModalOpen] = useState(false)
   const { props } = usePage()
   const isAuthenticated = Boolean((props as any)?.auth?.user)
-
-  useEffect(() => {
-    setImgSrc(image)
-    setImgError(false)
-  }, [image])
 
   useEffect(() => {
     setIsFavorited(isGuestFavorite)
@@ -79,13 +77,6 @@ export default function FeaturedCard({
     router.visit(`/detail/${id}`)
   }
 
-  const handleImageError = () => {
-    if (!imgError) {
-      setImgError(true)
-      setImgSrc(fallbackImage)
-    }
-  }
-
   return (
     <>
       <Paper
@@ -99,12 +90,31 @@ export default function FeaturedCard({
         onClick={handleImageClick} 
         sx={{ cursor: 'pointer' }}
       >
-        <img 
-          src={imgSrc} 
-          alt={title} 
-          className="airbnb-card-image"
-          onError={handleImageError}
-        />
+        {showImageCarousel ? (
+          <PropertyImageCarousel
+            image={image}
+            images={images}
+            fallbackImage={fallbackImage}
+            alt={title}
+            imageClassName="airbnb-card-image"
+            sx={{ position: 'absolute', inset: 0 }}
+          />
+        ) : (
+          <Box
+            component="img"
+            src={image || fallbackImage}
+            alt={title}
+            className="airbnb-card-image"
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+            }}
+          />
+        )}
 
         {showFavoriteButton && (
           <IconButton

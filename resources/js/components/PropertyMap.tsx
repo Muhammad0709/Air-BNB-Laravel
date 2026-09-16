@@ -7,6 +7,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import StarIcon from '@mui/icons-material/Star'
 import { router } from '@inertiajs/react'
 import CardFavoriteIcon from './CardFavoriteIcon'
+import PropertyImageCarousel from './PropertyImageCarousel'
 import { useLanguage } from '../hooks/use-language'
 
 type Property = {
@@ -17,6 +18,7 @@ type Property = {
   lat?: number
   lng?: number
   image?: string
+  images?: string[]
   description?: string
   rating?: number
   reviews?: number
@@ -218,12 +220,12 @@ export default function PropertyMap({ properties, center = [34.0522, -118.2437],
                   bgcolor: '#FFFFFF'
                 }}>
                   <Box sx={{ position: 'relative', width: '100%', height: 240 }}>
-                    {property.image ? (
-                      <Box
-                        component="img"
-                        src={property.image}
+                    {(property.images?.length ?? 0) > 0 || property.image ? (
+                      <PropertyImageCarousel
+                        image={property.image}
+                        images={property.images}
                         alt={property.title}
-                        sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                        sx={{ position: 'absolute', inset: 0 }}
                       />
                     ) : (
                       <Box sx={{
@@ -249,11 +251,6 @@ export default function PropertyMap({ properties, center = [34.0522, -118.2437],
                       >
                         <CloseIcon sx={{ fontSize: 16, color: '#222222' }} />
                       </IconButton>
-                    </Box>
-                    <Box sx={{ position: 'absolute', bottom: 12, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 0.5, zIndex: 10 }}>
-                      {[1, 2, 3, 4, 5].map((_, i) => (
-                        <Box key={i} sx={{ width: i === 0 ? 24 : 6, height: 6, borderRadius: i === 0 ? '3px' : '50%', bgcolor: i === 0 ? '#222222' : 'rgba(255,255,255,0.5)', cursor: 'pointer', transition: 'all 0.2s' }} />
-                      ))}
                     </Box>
                   </Box>
                   <Box
