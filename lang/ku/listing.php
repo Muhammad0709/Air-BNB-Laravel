@@ -19,4 +19,6 @@ return [
     'search_placeholder' => 'lêgerîn',
     'showing_results' => 'Nîşan dide :from-:to ji :total encam',
     'night' => 'şev',
+    'nights' => 'şev',
+    'for' => 'bo',
 ];

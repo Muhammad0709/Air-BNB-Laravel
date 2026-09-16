@@ -19,4 +19,6 @@ return [
     'search_placeholder' => 'search',
     'showing_results' => 'Showing :from-:to of :total results',
     'night' => 'night',
+    'nights' => 'nights',
+    'for' => 'for',
 ];

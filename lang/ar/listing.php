@@ -19,4 +19,6 @@ return [
     'search_placeholder' => 'بحث',
     'showing_results' => 'عرض :from-:to من :total نتيجة',
     'night' => 'ليلة',
+    'nights' => 'ليالٍ',
+    'for' => 'لمدة',
 ];

@@ -19,4 +19,6 @@ return [
     'search_placeholder' => 'جستجو',
     'showing_results' => 'نمایش :from-:to از :total نتیجه',
     'night' => 'شب',
+    'nights' => 'شب',
+    'for' => 'برای',
 ];

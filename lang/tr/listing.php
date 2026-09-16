@@ -19,4 +19,6 @@ return [
     'search_placeholder' => 'ara',
     'showing_results' => ':from-:to / :total sonuç',
     'night' => 'gece',
+    'nights' => 'gece',
+    'for' => 'için',
 ];
