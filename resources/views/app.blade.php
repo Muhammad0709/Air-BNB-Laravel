@@ -7,6 +7,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/jpeg" href="{{ asset('favicon.jpg') }}">
         <title inertia>{{ config('app.name', 'LipaBnb') }}</title>
         <meta name="google-site-verification" content="YSRuX7fcHi58eURq9yMhU3wwVG-5PYkVfOzAYN8hjU4" />
         @viteReactRefresh
@@ -17,4 +18,3 @@
         @inertia
     </body>
 </html>
-
