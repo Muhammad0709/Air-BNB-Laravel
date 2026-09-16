@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::table('properties', function (Blueprint $table): void {
             $table->unsignedInteger('beds')->nullable()->after('bedrooms');
-            $table->text('house_rules')->nullable()->after('description');
             $table->time('check_in_time')->nullable()->after('timezone');
             $table->time('check_out_time')->nullable()->after('check_in_time');
         });
@@ -20,7 +19,7 @@ return new class extends Migration
     {
         Schema::table('properties', function (Blueprint $table): void {
             $table->dropColumn([
-                'beds', 'house_rules', 'check_in_time', 'check_out_time',
+                'beds', 'check_in_time', 'check_out_time',
             ]);
         });
     }

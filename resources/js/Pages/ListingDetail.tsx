@@ -47,7 +47,6 @@ type Property = {
   bedrooms: number | null
   beds?: number | null
   bathrooms: number | null
-  house_rules?: string | null
   check_in_time?: string | null
   check_out_time?: string | null
   guests: number
@@ -605,10 +604,6 @@ export default function ListingDetail() {
                     <Typography className="section-title" component="h2">{t('listing_detail.stay_information')}</Typography>
                     <Typography className="about-text">
                       {t('listing_detail.check_in')}: {property.check_in_time || '—'} · {t('listing_detail.check_out')}: {property.check_out_time || '—'}
-                    </Typography>
-                    <Typography sx={{ fontWeight: 700, color: '#1a1a1a', mt: 2, mb: 0.5 }}>{t('listing_detail.house_rules')}</Typography>
-                    <Typography className="about-text" sx={{ whiteSpace: 'pre-line' }}>
-                      {property.house_rules || t('listing_detail.no_house_rules')}
                     </Typography>
                   </Paper>
                 )}

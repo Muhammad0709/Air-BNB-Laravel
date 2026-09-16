@@ -33,7 +33,6 @@ interface Property {
   bedrooms: number | null
   beds?: number | null
   bathrooms: number | null
-  house_rules?: string | null
   check_in_date?: string | null
   check_out_date?: string | null
   check_in_time?: string | null
@@ -98,7 +97,6 @@ export default function EditProperty() {
     bedrooms: property.bedrooms != null ? property.bedrooms.toString() : '',
     beds: property.beds != null ? property.beds.toString() : '',
     bathrooms: property.bathrooms != null ? property.bathrooms.toString() : '',
-    house_rules: property.house_rules ?? '',
     check_in_date: property.check_in_date ?? '',
     check_out_date: property.check_out_date ?? '',
     check_in_time: toTimeInputValue(property.check_in_time),
@@ -208,7 +206,6 @@ export default function EditProperty() {
       submitData.append('bedrooms', formData.bedrooms)
       submitData.append('beds', formData.beds)
       submitData.append('bathrooms', formData.bathrooms)
-      submitData.append('house_rules', formData.house_rules)
       submitData.append('check_in_date', formData.check_in_date)
       submitData.append('check_out_date', formData.check_out_date)
       submitData.append('check_in_time', formData.check_in_time)
@@ -492,8 +489,6 @@ export default function EditProperty() {
                     <InputError message={([activeErrors.check_out_date, activeErrors.check_out_time].flat().find(Boolean) as string | undefined)} />
                   </Col>
                 </Row>
-                <TextField sx={{ mt: 3 }} label={t('host.properties.house_rules')} name="house_rules" value={formData.house_rules} onChange={handleChange} required fullWidth multiline rows={4} placeholder={t('host.properties.house_rules_placeholder')} error={!!activeErrors.house_rules} />
-                <InputError message={Array.isArray(activeErrors.house_rules) ? activeErrors.house_rules[0] : activeErrors.house_rules} />
               </Box>
             )}
 

@@ -36,7 +36,6 @@ class StoreHostPropertyRequest extends FormRequest
             'bedrooms' => ['nullable', 'required_unless:listing_category,experience', 'integer', 'min:1'],
             'beds' => ['nullable', 'required_unless:listing_category,experience', 'integer', 'min:1'],
             'bathrooms' => ['nullable', 'required_unless:listing_category,experience', 'integer', 'min:1'],
-            'house_rules' => ['nullable', 'required_unless:listing_category,experience', 'string', 'max:5000'],
             'check_in_time' => ['nullable', 'required_unless:listing_category,experience', 'date_format:H:i'],
             'check_out_time' => ['nullable', 'required_unless:listing_category,experience', 'date_format:H:i'],
             'check_in_date' => ['nullable', 'required_unless:listing_category,experience', 'date_format:Y-m-d'],

@@ -324,8 +324,6 @@ return [
         'check_in_datetime' => 'بەروار و کاتی چوونەژوورەوە',
         'check_out_datetime' => 'بەروار و کاتی دەرچوون',
         'check_out_time' => 'کاتی دەرچوون',
-        'house_rules' => 'یاساکانی خانوو',
-        'house_rules_placeholder' => 'یاساکانی چوونەژوورەوە، جگەرەکێشان، ئاژەڵی ماڵی، بۆنەکان و کاتی بێدەنگی باس بکە.',
         'experience_details' => 'وردەکارییەکانی ئەزموون',
         'min_participants' => 'کەمترین بەشداربووان',
         'min_participants_hint' => 'کەمترین ژمارەی کەسانی پێویست',

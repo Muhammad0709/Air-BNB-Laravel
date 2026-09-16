@@ -324,8 +324,6 @@ return [
         'check_in_datetime' => 'تاریخ و ساعت ورود',
         'check_out_datetime' => 'تاریخ و ساعت خروج',
         'check_out_time' => 'زمان خروج',
-        'house_rules' => 'قوانین خانه',
-        'house_rules_placeholder' => 'قوانین ورود، سیگار کشیدن، حیوانات خانگی، مهمانی‌ها و ساعات سکوت را توضیح دهید.',
         'experience_details' => 'جزئیات تجربه',
         'min_participants' => 'حداقل شرکت‌کنندگان',
         'min_participants_hint' => 'حداقل تعداد افراد مورد نیاز',

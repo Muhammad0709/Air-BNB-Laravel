@@ -55,8 +55,6 @@ return [
     'to' => 'to',
     'night' => 'night',
     'nights' => 'nights',
-    'house_rules' => 'House rules',
-    'no_house_rules' => 'No house rules provided.',
     'host' => 'Host',
     'airport' => 'Airport',
     'duration' => 'Duration',

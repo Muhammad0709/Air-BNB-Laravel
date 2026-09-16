@@ -40,7 +40,6 @@ class HostPropertyResource extends JsonResource
             'bedrooms' => $this->bedrooms,
             'beds' => $this->beds,
             'bathrooms' => $this->bathrooms,
-            'house_rules' => $this->house_rules,
             'check_in_time' => $this->check_in_time,
             'check_out_time' => $this->check_out_time,
             'check_in_date' => $this->check_in_date?->format('Y-m-d'),

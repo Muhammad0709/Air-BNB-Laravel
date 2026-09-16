@@ -324,8 +324,6 @@ return [
         'check_in_datetime' => 'تاريخ ووقت تسجيل الوصول',
         'check_out_datetime' => 'تاريخ ووقت تسجيل المغادرة',
         'check_out_time' => 'وقت تسجيل المغادرة',
-        'house_rules' => 'قواعد المنزل',
-        'house_rules_placeholder' => 'صف قواعد تسجيل الوصول والتدخين والحيوانات الأليفة والحفلات وساعات الهدوء.',
         'experience_details' => 'تفاصيل التجربة',
         'min_participants' => 'الحد الأدنى للمشاركين',
         'min_participants_hint' => 'الحد الأدنى المطلوب من الأشخاص',

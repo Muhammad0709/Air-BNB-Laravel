@@ -324,8 +324,6 @@ return [
         'check_in_datetime' => 'Check-in date and time',
         'check_out_datetime' => 'Check-out date and time',
         'check_out_time' => 'Check-out time',
-        'house_rules' => 'House rules',
-        'house_rules_placeholder' => 'Describe check-in rules, smoking, pets, parties and quiet hours.',
         'experience_details' => 'Experience Details',
         'min_participants' => 'Minimum Participants',
         'min_participants_hint' => 'Minimum number of people required',

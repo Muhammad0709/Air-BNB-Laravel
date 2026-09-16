@@ -30,7 +30,6 @@ class Property extends Model
         'duplicate_flag_reason',
         'is_guest_favorite',
         'description',
-        'house_rules',
         'check_in_time',
         'check_out_time',
         'check_in_date',

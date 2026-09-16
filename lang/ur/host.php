@@ -324,8 +324,6 @@ return [
         'check_in_datetime' => 'چیک اِن کی تاریخ اور وقت',
         'check_out_datetime' => 'چیک آؤٹ کی تاریخ اور وقت',
         'check_out_time' => 'چیک آؤٹ کا وقت',
-        'house_rules' => 'گھر کے اصول',
-        'house_rules_placeholder' => 'چیک اِن کے اصول، سگریٹ نوشی، پالتو جانور، تقریبات اور خاموشی کے اوقات بیان کریں۔',
         'experience_details' => 'تجربے کی تفصیلات',
         'min_participants' => 'کم از کم شرکاء',
         'min_participants_hint' => 'ضروری افراد کی کم از کم تعداد',

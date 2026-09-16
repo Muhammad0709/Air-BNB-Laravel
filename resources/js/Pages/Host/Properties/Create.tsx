@@ -37,7 +37,6 @@ export default function AddProperty() {
     bedrooms: '',
     beds: '',
     bathrooms: '',
-    house_rules: '',
     check_in_date: '',
     check_out_date: '',
     check_in_time: '',
@@ -153,7 +152,6 @@ export default function AddProperty() {
       submitData.append('bedrooms', formData.bedrooms)
       submitData.append('beds', formData.beds)
       submitData.append('bathrooms', formData.bathrooms)
-      submitData.append('house_rules', formData.house_rules)
       submitData.append('check_in_date', formData.check_in_date)
       submitData.append('check_out_date', formData.check_out_date)
       submitData.append('check_in_time', formData.check_in_time)
@@ -454,8 +452,6 @@ export default function AddProperty() {
                     <InputError message={err('check_out_date') || err('check_out_time')} />
                   </Col>
                 </Row>
-                <TextField sx={{ mt: 3 }} label={t('host.properties.house_rules')} name="house_rules" value={formData.house_rules} onChange={handleChange} required fullWidth multiline rows={4} placeholder={t('host.properties.house_rules_placeholder')} error={!!err('house_rules')} />
-                <InputError message={err('house_rules')} />
               </Box>
             )}
 

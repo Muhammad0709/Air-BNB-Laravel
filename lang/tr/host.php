@@ -324,8 +324,6 @@ return [
         'check_in_datetime' => 'Giriş tarihi ve saati',
         'check_out_datetime' => 'Çıkış tarihi ve saati',
         'check_out_time' => 'Çıkış saati',
-        'house_rules' => 'Ev kuralları',
-        'house_rules_placeholder' => 'Giriş kurallarını, sigara kullanımını, evcil hayvanları, partileri ve sessizlik saatlerini açıklayın.',
         'experience_details' => 'Deneyim ayrıntıları',
         'min_participants' => 'Minimum katılımcı',
         'min_participants_hint' => 'Gerekli minimum kişi sayısı',

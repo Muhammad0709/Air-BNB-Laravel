@@ -128,7 +128,6 @@ class PropertyController extends Controller
             $validated['bedrooms'] = null;
             $validated['beds'] = null;
             $validated['bathrooms'] = null;
-            $validated['house_rules'] = null;
             $validated['check_in_time'] = null;
             $validated['check_out_time'] = null;
             $validated['check_in_date'] = null;
@@ -244,7 +243,6 @@ class PropertyController extends Controller
             $validated['bedrooms'] = null;
             $validated['beds'] = null;
             $validated['bathrooms'] = null;
-            $validated['house_rules'] = null;
             $validated['check_in_time'] = null;
             $validated['check_out_time'] = null;
             $validated['check_in_date'] = null;

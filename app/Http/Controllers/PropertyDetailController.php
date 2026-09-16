@@ -115,7 +115,6 @@ class PropertyDetailController extends Controller
             'bedrooms' => $property->bedrooms,
             'beds' => $property->beds,
             'bathrooms' => $property->bathrooms,
-            'house_rules' => $property->house_rules,
             'check_in_time' => $property->check_in_time ? \Carbon\Carbon::parse($property->check_in_time)->format('H:i') : null,
             'check_out_time' => $property->check_out_time ? \Carbon\Carbon::parse($property->check_out_time)->format('H:i') : null,
             'guests' => $property->guests,

@@ -42,7 +42,6 @@ class UpdateHostPropertyRequest extends FormRequest
             'bedrooms' => $this->isExperienceListing() ? ['nullable', 'integer', 'min:1'] : ['required', 'integer', 'min:1'],
             'beds' => $this->isExperienceListing() ? ['nullable', 'integer', 'min:1'] : ['required', 'integer', 'min:1'],
             'bathrooms' => $this->isExperienceListing() ? ['nullable', 'integer', 'min:1'] : ['required', 'integer', 'min:1'],
-            'house_rules' => $this->isExperienceListing() ? ['nullable', 'string', 'max:5000'] : ['required', 'string', 'max:5000'],
             'check_in_time' => $this->isExperienceListing() ? ['nullable', 'date_format:H:i'] : ['required', 'date_format:H:i'],
             'check_out_time' => $this->isExperienceListing() ? ['nullable', 'date_format:H:i'] : ['required', 'date_format:H:i'],
             'check_in_date' => $this->isExperienceListing() ? ['nullable', 'date_format:Y-m-d'] : ['required', 'date_format:Y-m-d'],
