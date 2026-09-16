@@ -11,6 +11,7 @@ use App\Enums\UserType;
 use App\Models\Booking;
 use App\Models\Property;
 use App\Models\User;
+use App\Support\StayNights;
 use App\Services\MpesaService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -34,13 +35,22 @@ class BookingController extends Controller
         $checkout = $request->query('checkout');
 
         $today = Carbon::today()->format('Y-m-d');
-        $defaultCheckout = Carbon::today()->addDays(7)->format('Y-m-d');
+        $property = $propertyId ? Property::find($propertyId) : null;
+        $hasPropertyDates = $property
+            && StayNights::between($property->check_in_date, $property->check_out_date)
+            && $property->check_in_date->gte(Carbon::today());
+        $defaultCheckin = $hasPropertyDates ? $property->check_in_date->format('Y-m-d') : $today;
+        $defaultCheckout = $hasPropertyDates
+            ? $property->check_out_date->format('Y-m-d')
+            : Carbon::parse($defaultCheckin)->addDay()->format('Y-m-d');
 
         if (! $checkin || ! preg_match('/^\d{4}-\d{2}-\d{2}$/', $checkin)) {
-            $checkin = $today;
+            $checkin = $defaultCheckin;
         }
         if (! $checkout || ! preg_match('/^\d{4}-\d{2}-\d{2}$/', $checkout)) {
-            $checkout = $defaultCheckout;
+            $checkout = $checkin === $defaultCheckin
+                ? $defaultCheckout
+                : Carbon::parse($checkin)->addDay()->format('Y-m-d');
         }
         try {
             if (Carbon::parse($checkout)->lte(Carbon::parse($checkin))) {
@@ -71,14 +81,31 @@ class BookingController extends Controller
         $checkin = $request->query('checkin');
         $checkout = $request->query('checkout');
 
-        // Default dates from backend: today and today + 7 days
+        $property = null;
+        if ($propertyId) {
+            $property = Property::withCount('reviews')
+                ->withAvg('reviews', 'rating')
+                ->where('status', 'Active')
+                ->where('approval_status', PropertyStatus::APPROVED)
+                ->find($propertyId);
+        }
+
+        // Start with the host's stay dates where possible; otherwise use one night.
         $today = Carbon::today()->format('Y-m-d');
-        $defaultCheckout = Carbon::today()->addDays(7)->format('Y-m-d');
+        $hasPropertyDates = $property
+            && StayNights::between($property->check_in_date, $property->check_out_date)
+            && $property->check_in_date->gte(Carbon::today());
+        $defaultCheckin = $hasPropertyDates ? $property->check_in_date->format('Y-m-d') : $today;
+        $defaultCheckout = $hasPropertyDates
+            ? $property->check_out_date->format('Y-m-d')
+            : Carbon::parse($defaultCheckin)->addDay()->format('Y-m-d');
         if (! $checkin) {
-            $checkin = $today;
+            $checkin = $defaultCheckin;
         }
         if (! $checkout) {
-            $checkout = $defaultCheckout;
+            $checkout = $checkin === $defaultCheckin
+                ? $defaultCheckout
+                : Carbon::parse($checkin)->addDay()->format('Y-m-d');
         }
         // Ensure checkout is after checkin
         if (Carbon::parse($checkout)->lte(Carbon::parse($checkin))) {
@@ -86,8 +113,7 @@ class BookingController extends Controller
         }
 
         $propertyData = null;
-        $property = null;
-        $nights = 7;
+        $nights = 1;
         $costs = [];
         $totalAmount = 0;
         $cancellationPolicy = CancellationPolicy::MODERATE;
@@ -100,25 +126,12 @@ class BookingController extends Controller
             'No smoking indoors',
         ];
 
-        if ($propertyId) {
-            $property = Property::withCount('reviews')
-                ->withAvg('reviews', 'rating')
-                ->where('status', 'Active')
-                ->where('approval_status', PropertyStatus::APPROVED)
-                ->find($propertyId);
-
-            if ($property) {
+        if ($property) {
                 $cancellationPolicy = CancellationPolicy::tryFrom($property->cancellation_policy ?? '') ?? CancellationPolicy::MODERATE;
                 $depositAmount = (float) ($property->deposit_amount ?? 0);
                 $image = $property->getPrimaryImageUrl() ?? '/images/popular-stay-1.svg';
 
-                try {
-                    $start = Carbon::parse($checkin);
-                    $end = Carbon::parse($checkout);
-                    $nights = max(1, (int) $start->diffInDays($end));
-                } catch (\Exception $e) {
-                    $nights = 7;
-                }
+                $nights = StayNights::between($checkin, $checkout) ?? 1;
 
                 $isExperience = $property->isExperience();
                 if ($isExperience) {
@@ -170,17 +183,10 @@ class BookingController extends Controller
                     'reviews_count' => $property->reviews_count ?? 0,
                     'rating' => round((float) ($property->reviews_avg_rating ?? 0), 1),
                 ];
-            }
         }
 
         if ($propertyData === null) {
-            $nights = 7;
-            $costs = [
-                ['label' => '87 × 7 nights', 'amount' => 585],
-                ['label' => 'Cleaning fee', 'amount' => 25],
-                ['label' => 'Service fee', 'amount' => 71],
-            ];
-            $totalAmount = 631;
+            $nights = 1;
         }
 
         $guestPrefill = $this->resolveGuestPrefillForBooking($property, $request);
@@ -267,7 +273,7 @@ class BookingController extends Controller
         $checkout = $isExperience
             ? $checkin->copy()->addDay()
             : Carbon::parse($validated['checkout']);
-        $nights = $isExperience ? 1 : max(1, (int) $checkin->diffInDays($checkout));
+        $nights = $isExperience ? 1 : (StayNights::between($checkin, $checkout) ?? 1);
         $attendees = max(1, (int) ($validated['adults'] ?? 1) + (int) ($validated['children'] ?? 0));
         $nightlyRate = (float) $property->price;
         $cleaningFee = $isExperience ? 0.00 : 25.00;

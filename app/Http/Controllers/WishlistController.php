@@ -7,6 +7,7 @@ use App\Enums\PropertyStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Support\StayNights;
 use Inertia\Inertia;
 
 class WishlistController extends Controller
@@ -26,6 +27,7 @@ class WishlistController extends Controller
                     'title' => $property->title,
                     'location' => $property->location,
                     'price' => (float) $property->price,
+                    'nights' => StayNights::between($property->check_in_date, $property->check_out_date),
                     'image' => $property->getPrimaryImageUrl() ?: ($property->image ? Storage::url($property->image) : '/images/filter-1.svg'),
                     'rating' => $property->reviews_avg_rating ? round((float) $property->reviews_avg_rating, 2) : null,
                     'reviews_count' => (int) ($property->reviews_count ?? 0),

@@ -13,6 +13,7 @@ type FeaturedCardProps = {
   title: string
   location: string
   price: number
+  nights?: number | null
   id?: number | string
   rating?: number
   reviews?: number
@@ -25,7 +26,8 @@ export default function FeaturedCard({
   image, 
   title, 
   location: _location, 
-  price, 
+  price,
+  nights,
   id = 1,
   rating = 4.93,
   reviews: _reviews,
@@ -134,9 +136,11 @@ export default function FeaturedCard({
             <Typography component="span" className="airbnb-card-price-text">
               {formatPrice(Number(price), currency)}
             </Typography>
-            <Typography component="span" className="airbnb-card-night-text">
-              {' / '}{t('listing.night')}
-            </Typography>
+            {nights != null && nights > 0 && (
+              <Typography component="span" className="airbnb-card-night-text">
+                {' '}{t('listing.for')} {nights} {t(nights === 1 ? 'listing.night' : 'listing.nights')}
+              </Typography>
+            )}
           </div>
           {rating > 0 && (
             <Box className="airbnb-card-rating-inline">

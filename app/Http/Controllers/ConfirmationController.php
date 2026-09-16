@@ -6,6 +6,7 @@ use App\Models\Booking;
 use App\Models\Property;
 use App\Enums\CancellationPolicy;
 use App\Enums\PropertyStatus;
+use App\Support\StayNights;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Carbon\Carbon;
@@ -32,10 +33,26 @@ class ConfirmationController extends Controller
             return redirect()->route('home')->with('error', __('confirmation.property_not_found'));
         }
 
+        $bookingId = $request->query('booking');
+        $booking = $bookingId
+            ? Booking::where('id', $bookingId)->where('property_id', $propertyId)->first(['id', 'reference', 'status', 'total_amount', 'check_in_date', 'check_out_date'])
+            : null;
+
         $today = Carbon::today()->format('Y-m-d');
-        $defaultCheckout = Carbon::today()->addDays(7)->format('Y-m-d');
-        $checkin = $checkin && preg_match('/^\d{4}-\d{2}-\d{2}$/', $checkin) ? $checkin : $today;
-        $checkout = $checkout && preg_match('/^\d{4}-\d{2}-\d{2}$/', $checkout) ? $checkout : $defaultCheckout;
+        $hasSavedDates = StayNights::between($property->check_in_date, $property->check_out_date)
+            && $property->check_in_date->gte(Carbon::today());
+        $defaultCheckin = $hasSavedDates ? $property->check_in_date->format('Y-m-d') : $today;
+        $defaultCheckout = $hasSavedDates
+            ? $property->check_out_date->format('Y-m-d')
+            : Carbon::parse($defaultCheckin)->addDay()->format('Y-m-d');
+
+        if ($booking && StayNights::between($booking->check_in_date, $booking->check_out_date)) {
+            $checkin = $booking->check_in_date->format('Y-m-d');
+            $checkout = $booking->check_out_date->format('Y-m-d');
+        } elseif (! StayNights::between($checkin, $checkout)) {
+            $checkin = $defaultCheckin;
+            $checkout = $defaultCheckout;
+        }
         try {
             if (Carbon::parse($checkout)->lte(Carbon::parse($checkin))) {
                 $checkout = Carbon::parse($checkin)->addDay()->format('Y-m-d');
@@ -46,7 +63,7 @@ class ConfirmationController extends Controller
 
         $start = Carbon::parse($checkin);
         $end = Carbon::parse($checkout);
-        $nights = max(1, (int) $start->diffInDays($end));
+        $nights = StayNights::between($start, $end) ?? 1;
 
         $pricePerNight = (float) $property->price;
         $cleaningFee = 25.0;
@@ -74,14 +91,10 @@ class ConfirmationController extends Controller
 
         $bookingReference = null;
         $bookingStatus    = null;
-        $bookingId        = $request->query('booking');
         $paymentMethod    = $request->query('payment_method', 'cod');
         $mpesaPhone       = $request->query('mpesa_phone');
 
-        if ($bookingId) {
-            $booking = Booking::where('id', $bookingId)
-                ->where('property_id', $propertyId)
-                ->first(['reference', 'status', 'total_amount']);
+        if ($booking) {
             $bookingReference = $booking?->reference;
             $bookingStatus    = $booking?->status->value;
         }

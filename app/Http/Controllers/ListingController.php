@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Models\Property;
 use App\Enums\PropertyStatus;
 use App\Support\PlatformConfiguration;
+use App\Support\StayNights;
 
 class ListingController extends Controller
 {
@@ -95,6 +96,7 @@ class ListingController extends Controller
                     'title' => $property->title,
                     'location' => $property->location,
                     'price' => (float) $property->price,
+                    'nights' => StayNights::between($property->check_in_date, $property->check_out_date),
                     'guests' => $property->guests,
                     'bedrooms' => $property->bedrooms,
                     'bathrooms' => $property->bathrooms,

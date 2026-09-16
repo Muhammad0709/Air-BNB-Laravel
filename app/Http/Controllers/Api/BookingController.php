@@ -9,6 +9,7 @@ use App\Http\Resources\BookingResource;
 use App\Models\Booking;
 use App\Models\Property;
 use App\Enums\PropertyStatus;
+use App\Support\StayNights;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -126,7 +127,9 @@ class BookingController extends Controller
             ], 404);
         }
 
-        $nights = request()->input('nights', 7);
+        $nights = StayNights::between(request()->input('check_in'), request()->input('check_out'))
+            ?? StayNights::between($property->check_in_date, $property->check_out_date)
+            ?? 1;
         $nightlyRate = (float) $property->price;
         $subtotal = $nightlyRate * $nights;
         $cleaningFee = 25.00; // Can be configured per property later
@@ -254,7 +257,7 @@ class BookingController extends Controller
             ], 404);
         }
 
-        $nights = $request->input('nights', 1);
+        $nights = StayNights::between($request->input('check_in_date'), $request->input('check_out_date')) ?? 1;
         $nightlyRate = (float) $property->price;
         $subtotal = $nightlyRate * $nights;
         $cleaningFee = 25.00;

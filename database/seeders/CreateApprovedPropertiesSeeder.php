@@ -177,10 +177,14 @@ class CreateApprovedPropertiesSeeder extends Seeder
         ];
 
         foreach ($properties as $propertyData) {
-            Property::create($propertyData);
+            Property::create(array_merge([
+                'check_in_date' => now()->addDay()->toDateString(),
+                'check_out_date' => now()->addDays(3)->toDateString(),
+                'check_in_time' => '14:00',
+                'check_out_time' => '11:00',
+            ], $propertyData));
         }
 
         $this->command->info('Successfully created 10 approved properties!');
     }
 }
-

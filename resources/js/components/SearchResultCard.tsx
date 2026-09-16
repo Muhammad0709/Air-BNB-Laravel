@@ -15,7 +15,7 @@ type SearchResultCardProps = {
   beds?: number
   price: number
   originalPrice?: number
-  nights?: number
+  nights?: number | null
   checkin?: string
   checkout?: string
   id?: number | string
@@ -37,7 +37,7 @@ export default function SearchResultCard({
   beds,
   price,
   originalPrice,
-  nights = 5,
+  nights,
   checkin,
   checkout,
   id = 1,
@@ -192,7 +192,11 @@ export default function SearchResultCard({
             </Typography>
           )}
           <Typography sx={{ fontSize: '0.9375rem', fontWeight: 600, color: '#222222' }}>${price}</Typography>
-          <Typography sx={{ fontSize: '0.9375rem', color: '#717171' }}>for {nights} nights</Typography>
+          {nights != null && nights > 0 && (
+            <Typography sx={{ fontSize: '0.9375rem', color: '#717171' }}>
+              {t('listing.for')} {nights} {t(nights === 1 ? 'listing.night' : 'listing.nights')}
+            </Typography>
+          )}
         </Box>
       </Box>
       </Paper>

@@ -19,6 +19,7 @@ interface Property {
   title: string
   location: string
   price: number
+  nights: number | null
   rating?: number
   reviews?: number
   image: string
@@ -45,7 +46,7 @@ export default function Home() {
   const recentSearches = pageProps.recentSearches || []
   const guestsAnchorRef = useRef<HTMLDivElement>(null)
   const destinationAnchorRef = useRef<HTMLDivElement>(null)
-  const destinationPopoverPaperRef = useRef<HTMLElement | null>(null)
+  const destinationPopoverPaperRef = useRef<HTMLDivElement | null>(null)
   /** After closing popover, Modal restores focus to the anchor — that re-fires onFocus and reopens. */
   const ignoreDestinationFocusOpenRef = useRef(false)
   const [destination, setDestination] = useState('')
@@ -57,18 +58,6 @@ export default function Home() {
   const [adults, setAdults] = useState(0)
   const [children, setChildren] = useState(0)
   const [rooms, setRooms] = useState(0)
-
-  // Calculate number of nights between check-in and check-out
-  const calculateNights = () => {
-    if (!checkin || !checkout) return undefined
-    const checkInDate = new Date(checkin)
-    const checkOutDate = new Date(checkout)
-    const diffTime = Math.abs(checkOutDate.getTime() - checkInDate.getTime())
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    return diffDays > 0 ? diffDays : undefined
-  }
-
-  const nights = calculateNights()
 
   // Use dynamic popular destinations from backend, fallback to default if empty
   const defaultDestinations: Destination[] = [
@@ -209,7 +198,7 @@ export default function Home() {
     rating: property.rating || 0,
     reviews: property.reviews || 0,
     isGuestFavorite: property.isGuestFavorite || false,
-    nights: nights,
+    nights: property.nights,
   }))
 
   const popularItems = popularProperties.map(property => ({
@@ -221,7 +210,7 @@ export default function Home() {
     rating: property.rating || 0,
     reviews: property.reviews || 0,
     isGuestFavorite: property.isGuestFavorite || false,
-    nights: nights,
+    nights: property.nights,
   }))
 
   return (

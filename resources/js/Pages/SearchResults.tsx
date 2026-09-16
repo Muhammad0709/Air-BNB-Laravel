@@ -21,6 +21,7 @@ type SearchResultItem = {
   image: string | null
   /** Matches ListingResource / wishlist */
   isGuestFavorite?: boolean
+  nights: number | null
 }
 
 type SearchResultsPageProps = {
@@ -54,7 +55,6 @@ export default function SearchResults() {
   const { properties, filters = {}, nights: propsNights } = props
   const items = properties?.data ?? []
   const paginator = properties
-  const nights = propsNights ?? 5
   const checkin = filters?.checkin
   const checkout = filters?.checkout
 
@@ -63,8 +63,10 @@ export default function SearchResults() {
     if (filters?.adults !== undefined && filters?.adults !== '') q.set('adults', filters.adults)
     if (filters?.children !== undefined && filters?.children !== '') q.set('children', filters.children)
     if (filters?.rooms !== undefined && filters?.rooms !== '') q.set('rooms', filters.rooms)
+    if (filters?.checkin) q.set('checkin', filters.checkin)
+    if (filters?.checkout) q.set('checkout', filters.checkout)
     return q.toString()
-  }, [filters?.adults, filters?.children, filters?.rooms])
+  }, [filters?.adults, filters?.children, filters?.rooms, filters?.checkin, filters?.checkout])
 
   const [viewMode] = useState<'list' | 'map'>('map')
   const [mapMounted, setMapMounted] = useState(false)
@@ -158,7 +160,7 @@ export default function SearchResults() {
                           title={i.title}
                           location={i.location}
                           price={i.price}
-                          nights={nights}
+                          nights={propsNights ?? i.nights}
                           checkin={checkin || undefined}
                           checkout={checkout || undefined}
                           id={i.id}
@@ -222,7 +224,7 @@ export default function SearchResults() {
                       image: item.image ?? undefined,
                       rating: item.rating,
                       reviews: item.reviews,
-                      nights,
+                      nights: propsNights ?? item.nights,
                       checkin: checkin || undefined,
                       checkout: checkout || undefined,
                       isGuestFavorite: item.isGuestFavorite,

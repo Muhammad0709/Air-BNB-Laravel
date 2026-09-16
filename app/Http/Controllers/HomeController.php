@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Property;
 use App\Enums\PropertyStatus;
+use App\Support\StayNights;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
@@ -23,6 +24,7 @@ class HomeController extends Controller
                 'title' => $property->title,
                 'location' => $property->location,
                 'price' => (float) $property->price,
+                'nights' => StayNights::between($property->check_in_date, $property->check_out_date),
                 'rating' => $averageRating,
                 'reviews' => $totalReviews,
                 'image' => $property->image ? Storage::url($property->image) : '/images/filter-1.svg',

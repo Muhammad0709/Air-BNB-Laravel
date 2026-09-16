@@ -31,7 +31,7 @@ class PropertySeeder extends Seeder
                 $data['image'] = $imagePath;
                 $data['images'] = [$imagePath];
             }
-            Property::create($data);
+            Property::create(array_merge($this->stayDates($index), $data));
         }
 
         // Add 3 high-rated properties (avg rating 4.6, 4.7, 4.9) with reviews
@@ -77,6 +77,8 @@ class PropertySeeder extends Seeder
                 'amenities' => ['WiFi', 'Parking', 'Pool', 'AC', 'Kitchen', 'Balcony'],
                 'user_id' => $user->id,
             ];
+            // Continue after the 50 standard properties so date ranges remain unique.
+            $data = array_merge($this->stayDates(50 + $i), $data);
             if ($imagePath) {
                 $data['image'] = $imagePath;
                 $data['images'] = [$imagePath];
@@ -100,6 +102,20 @@ class PropertySeeder extends Seeder
                 ]);
             }
         }
+    }
+
+    private function stayDates(int $propertyIndex): array
+    {
+        $checkIn = now()->startOfDay()->addDays($propertyIndex + 1);
+        // Increase the stay length gradually while keeping each checkout date unique.
+        $nights = 2 + intdiv($propertyIndex, 5);
+
+        return [
+            'check_in_date' => $checkIn->toDateString(),
+            'check_out_date' => $checkIn->copy()->addDays($nights)->toDateString(),
+            'check_in_time' => '14:00',
+            'check_out_time' => '11:00',
+        ];
     }
 
     /**

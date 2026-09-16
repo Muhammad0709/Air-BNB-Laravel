@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
+use App\Support\StayNights;
 
 class ListingResource extends JsonResource
 {
@@ -37,6 +38,7 @@ class ListingResource extends JsonResource
             'title' => $this->title,
             'location' => $this->location,
             'price' => (float) $this->price,
+            'nights' => StayNights::between($this->check_in_date, $this->check_out_date),
             'rating' => $averageRating,
             'reviews' => $reviewCount,
             'image' => $image,
@@ -44,4 +46,3 @@ class ListingResource extends JsonResource
         ];
     }
 }
-

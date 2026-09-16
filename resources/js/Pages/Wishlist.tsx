@@ -16,6 +16,7 @@ interface Property {
   title: string
   location: string
   price: number
+  nights: number | null
   image: string
   rating?: number
   reviews_count?: number
@@ -104,6 +105,7 @@ export default function Wishlist() {
                           title={item.title}
                           location={item.location}
                           price={item.price}
+                          nights={item.nights}
                           id={item.id}
                           showFavoriteButton={false}
                         />

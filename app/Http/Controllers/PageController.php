@@ -13,6 +13,7 @@ use App\Models\Property;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Support\StayNights;
 use Inertia\Inertia;
 
 class PageController extends Controller
@@ -199,12 +200,7 @@ class PageController extends Controller
 
         $checkin = $request->input('checkin');
         $checkout = $request->input('checkout');
-        $nights = null;
-        if ($checkin && $checkout) {
-            $start = \Carbon\Carbon::parse($checkin);
-            $end = \Carbon\Carbon::parse($checkout);
-            $nights = max(1, (int) $start->diffInDays($end));
-        }
+        $nights = StayNights::between($checkin, $checkout);
 
         return Inertia::render('SearchResults', [
             'properties' => $properties,

@@ -17,6 +17,7 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
 import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined'
 import { Head, router, usePage } from '@inertiajs/react'
 import { useLanguage } from '../hooks/use-language'
+import { stayNights } from '../utils/stayNights'
 
 /** Fallback when DB image is null or fails to load */
 const DEFAULT_IMAGE = '/images/popular-stay-1.svg'
@@ -35,6 +36,7 @@ type Property = {
   rating?: number | null
   reviews?: number
   is_guest_favorite?: boolean
+  nights: number | null
 }
 
 type ListingProps = {
@@ -105,7 +107,7 @@ export default function Listing() {
   }, [])
 
   const updateFilters = useCallback((overrides?: Record<string, unknown>) => {
-    const params: Record<string, unknown> = {
+    const params: Record<string, string | number | boolean | string[] | undefined> = {
       search: search || undefined,
       min_price: localPriceRange[0] !== priceRange.min ? localPriceRange[0] : undefined,
       max_price: localPriceRange[1] !== priceRange.max ? localPriceRange[1] : undefined,
@@ -426,6 +428,7 @@ export default function Listing() {
                             title={p.title}
                             location={p.location}
                             price={p.price}
+                            nights={stayNights(filters.checkin, filters.checkout) ?? p.nights}
                             id={p.id}
                             rating={p.rating ?? undefined}
                             reviews={p.reviews ?? undefined}
@@ -451,6 +454,7 @@ export default function Listing() {
                         title: p.title,
                         location: p.location,
                         price: p.price,
+                        nights: stayNights(filters.checkin, filters.checkout) ?? p.nights ?? undefined,
                         image: p.image || undefined,
                         rating: p.rating ?? undefined,
                         reviews: p.reviews ?? undefined,

@@ -8,6 +8,7 @@ use App\Models\Review;
 use App\Enums\BookingStatus;
 use App\Enums\CancellationPolicy;
 use App\Enums\PropertyStatus;
+use App\Support\StayNights;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -112,6 +113,8 @@ class PropertyDetailController extends Controller
             'cancellation_policy_description' => CancellationPolicy::tryFrom($property->cancellation_policy ?? '')?->description()
                 ?? CancellationPolicy::MODERATE->description(),
             'price' => $property->price,
+            'check_in_date' => $property->check_in_date?->format('Y-m-d'),
+            'check_out_date' => $property->check_out_date?->format('Y-m-d'),
             'bedrooms' => $property->bedrooms,
             'beds' => $property->beds,
             'bathrooms' => $property->bathrooms,
@@ -169,6 +172,7 @@ class PropertyDetailController extends Controller
                     'title' => $prop->title,
                     'location' => $prop->location,
                     'price' => $prop->price,
+                    'nights' => StayNights::between($prop->check_in_date, $prop->check_out_date),
                     'image' => $prop->image ? Storage::url($prop->image) : null,
                     'rating' => $avgRating,
                 ];
@@ -181,12 +185,13 @@ class PropertyDetailController extends Controller
                 'title' => $item['title'],
                 'location' => $item['location'],
                 'price' => $item['price'],
+                'nights' => $item['nights'],
                 'image' => $item['image'],
                 'rating' => (float) $item['rating'],
             ]);
 
         $defaultCheckin = Carbon::today()->format('Y-m-d');
-        $defaultCheckout = Carbon::today()->addDays(7)->format('Y-m-d');
+        $defaultCheckout = Carbon::tomorrow()->format('Y-m-d');
         if ($property->isExperience()) {
             $nextExperienceDate = collect($property->experience_available_dates ?? [])
                 ->filter(fn ($date) => $date >= $defaultCheckin)
@@ -195,6 +200,17 @@ class PropertyDetailController extends Controller
             if ($nextExperienceDate) {
                 $defaultCheckin = $nextExperienceDate;
                 $defaultCheckout = Carbon::parse($nextExperienceDate)->addDay()->format('Y-m-d');
+            }
+        } else {
+            $requestedCheckin = $request->query('checkin');
+            $requestedCheckout = $request->query('checkout');
+
+            if (StayNights::between($requestedCheckin, $requestedCheckout)) {
+                $defaultCheckin = Carbon::parse($requestedCheckin)->format('Y-m-d');
+                $defaultCheckout = Carbon::parse($requestedCheckout)->format('Y-m-d');
+            } elseif (StayNights::between($property->check_in_date, $property->check_out_date)) {
+                $defaultCheckin = $property->check_in_date->format('Y-m-d');
+                $defaultCheckout = $property->check_out_date->format('Y-m-d');
             }
         }
 

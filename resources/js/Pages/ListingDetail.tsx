@@ -26,6 +26,7 @@ import TourIcon from '@mui/icons-material/Tour'
 import ScheduleIcon from '@mui/icons-material/Schedule'
 import CloseIcon from '@mui/icons-material/Close'
 import LoginRequiredModal from '../components/LoginRequiredModal'
+import { stayNights } from '../utils/stayNights'
 
 const PLACEHOLDER_IMAGE = '/images/popular-stay-1.svg'
 
@@ -49,6 +50,8 @@ type Property = {
   bathrooms: number | null
   check_in_time?: string | null
   check_out_time?: string | null
+  check_in_date?: string | null
+  check_out_date?: string | null
   guests: number
   property_type: string
   listing_category?: string
@@ -95,6 +98,7 @@ type RelatedProperty = {
   title: string
   location: string
   price: number | string
+  nights?: number | null
   image: string | null
   rating?: number
 }
@@ -255,9 +259,7 @@ export default function ListingDetail() {
   }
 
   const priceDisplay = typeof property.price === 'number' ? property.price : Number(property.price) || 0
-  const bookingNights = selectedCheckin && selectedCheckout
-    ? Math.max(1, Math.ceil((selectedCheckout.getTime() - selectedCheckin.getTime()) / 86_400_000))
-    : 1
+  const bookingNights = isExperience ? 1 : stayNights(selectedCheckin, selectedCheckout) ?? 1
   const bookingGuests = Math.max(1, Number(searchGuests?.adults || 1) + Number(searchGuests?.children || 0))
   const bookingTotal = isExperience ? priceDisplay * bookingGuests : priceDisplay * bookingNights
   const hostJoinedYear = property.host?.created_at ? new Date(property.host.created_at).getFullYear() : ''
@@ -1078,6 +1080,7 @@ export default function ListingDetail() {
                     title={stay.title}
                     location={stay.location}
                     price={typeof stay.price === 'number' ? stay.price : Number(stay.price) || 0}
+                    nights={stay.nights}
                     id={stay.id}
                     rating={stay.rating != null ? Number(stay.rating) : undefined}
                   />

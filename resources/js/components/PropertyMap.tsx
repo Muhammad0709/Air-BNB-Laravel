@@ -22,7 +22,7 @@ type Property = {
   reviews?: number
   bedrooms?: number
   beds?: number
-  nights?: number
+  nights?: number | null
   checkin?: string
   checkout?: string
   originalPrice?: number
@@ -316,7 +316,7 @@ export default function PropertyMap({ properties, center = [34.0522, -118.2437],
                       </Typography>
                       {property.nights !== undefined && property.nights > 0 && (
                         <Typography component="span" sx={{ fontSize: '1rem', fontWeight: 400, color: '#717171' }}>
-                          for {property.nights} nights
+                          {t('listing.for')} {property.nights} {t(property.nights === 1 ? 'listing.night' : 'listing.nights')}
                         </Typography>
                       )}
                     </Box>

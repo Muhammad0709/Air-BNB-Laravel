@@ -10,6 +10,7 @@ type PropertyItem = {
   title: string
   location: string
   price: number
+  nights?: number | null
   id?: number | string
   rating?: number
   reviews?: number
@@ -187,6 +188,7 @@ export default function HorizontalScrollSection({
                 title={item.title}
                 location={item.location}
                 price={item.price}
+                nights={item.nights}
                 id={item.id || idx + 1}
                 rating={item.rating}
                 reviews={item.reviews}

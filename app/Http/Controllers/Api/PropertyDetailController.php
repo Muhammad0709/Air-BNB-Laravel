@@ -9,6 +9,7 @@ use App\Models\Review;
 use App\Enums\BookingStatus;
 use App\Enums\CancellationPolicy;
 use App\Enums\PropertyStatus;
+use App\Support\StayNights;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -136,6 +137,9 @@ class PropertyDetailController extends Controller
             'cancellation_policy_description' => CancellationPolicy::tryFrom($property->cancellation_policy ?? '')?->description()
                 ?? CancellationPolicy::MODERATE->description(),
             'price'                        => (float) $property->price,
+            'check_in_date'                => $property->check_in_date?->format('Y-m-d'),
+            'check_out_date'               => $property->check_out_date?->format('Y-m-d'),
+            'nights'                       => StayNights::between($property->check_in_date, $property->check_out_date),
             'bedrooms'                     => $property->bedrooms,
             'bathrooms'                    => $property->bathrooms,
             'guests'                       => $property->guests,
@@ -188,6 +192,7 @@ class PropertyDetailController extends Controller
                     'title'    => $prop->title,
                     'location' => $prop->location,
                     'price'    => (float) $prop->price,
+                    'nights'   => StayNights::between($prop->check_in_date, $prop->check_out_date),
                     'image'    => $prop->image ? Storage::url($prop->image) : null,
                     'rating'   => (float) $avg,
                 ];
@@ -214,6 +219,8 @@ class PropertyDetailController extends Controller
             }
         }
 
+        $defaultDates = $this->defaultDates($request, $property);
+
         return response()->json([
             'status'  => 'success',
             'message' => 'Property retrieved successfully',
@@ -226,8 +233,8 @@ class PropertyDetailController extends Controller
                     'total'     => $totalReviews,
                     'breakdown' => $ratingBreakdown,
                 ],
-                'default_checkin'    => Carbon::today()->format('Y-m-d'),
-                'default_checkout'   => Carbon::today()->addDays(7)->format('Y-m-d'),
+                'default_checkin'    => $defaultDates[0],
+                'default_checkout'   => $defaultDates[1],
                 'search_guests'      => [
                     'adults'   => $request->query('adults'),
                     'children' => $request->query('children'),
@@ -236,5 +243,23 @@ class PropertyDetailController extends Controller
                 'review_eligibility' => $reviewEligibility,
             ],
         ], 200);
+    }
+
+    /** @return array{0: string, 1: string} */
+    private function defaultDates(Request $request, Property $property): array
+    {
+        $requestedCheckin = $request->query('checkin');
+        $requestedCheckout = $request->query('checkout');
+
+        if (StayNights::between($requestedCheckin, $requestedCheckout)) {
+            return [Carbon::parse($requestedCheckin)->format('Y-m-d'), Carbon::parse($requestedCheckout)->format('Y-m-d')];
+        }
+
+        if (StayNights::between($property->check_in_date, $property->check_out_date)
+            && $property->check_in_date->gte(Carbon::today())) {
+            return [$property->check_in_date->format('Y-m-d'), $property->check_out_date->format('Y-m-d')];
+        }
+
+        return [Carbon::today()->format('Y-m-d'), Carbon::tomorrow()->format('Y-m-d')];
     }
 }
