@@ -321,6 +321,8 @@ return [
         'beds' => 'بستر',
         'stay_details' => 'قیام کی تفصیلات',
         'check_in_time' => 'چیک اِن کا وقت',
+        'check_in_datetime' => 'چیک اِن کی تاریخ اور وقت',
+        'check_out_datetime' => 'چیک آؤٹ کی تاریخ اور وقت',
         'check_out_time' => 'چیک آؤٹ کا وقت',
         'house_rules' => 'گھر کے اصول',
         'house_rules_placeholder' => 'چیک اِن کے اصول، سگریٹ نوشی، پالتو جانور، تقریبات اور خاموشی کے اوقات بیان کریں۔',

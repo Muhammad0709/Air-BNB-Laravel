@@ -43,6 +43,8 @@ class HostPropertyResource extends JsonResource
             'house_rules' => $this->house_rules,
             'check_in_time' => $this->check_in_time,
             'check_out_time' => $this->check_out_time,
+            'check_in_date' => $this->check_in_date?->format('Y-m-d'),
+            'check_out_date' => $this->check_out_date?->format('Y-m-d'),
             'guests' => $this->guests,
             'property_type' => $this->property_type,
             'status' => $this->status,

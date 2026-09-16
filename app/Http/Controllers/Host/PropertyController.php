@@ -131,6 +131,8 @@ class PropertyController extends Controller
             $validated['house_rules'] = null;
             $validated['check_in_time'] = null;
             $validated['check_out_time'] = null;
+            $validated['check_in_date'] = null;
+            $validated['check_out_date'] = null;
         } else {
             $validated['duration_hours']   = null;
             $validated['min_participants'] = null;
@@ -245,6 +247,8 @@ class PropertyController extends Controller
             $validated['house_rules'] = null;
             $validated['check_in_time'] = null;
             $validated['check_out_time'] = null;
+            $validated['check_in_date'] = null;
+            $validated['check_out_date'] = null;
         } else {
             $validated['duration_hours']    = null;
             $validated['min_participants']  = null;

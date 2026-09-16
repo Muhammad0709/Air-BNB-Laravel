@@ -38,6 +38,8 @@ export default function AddProperty() {
     beds: '',
     bathrooms: '',
     house_rules: '',
+    check_in_date: '',
+    check_out_date: '',
     check_in_time: '',
     check_out_time: '',
     duration_hours: '',
@@ -87,6 +89,13 @@ export default function AddProperty() {
       delete next[field]
       return next
     })
+  }
+
+  const handleStayDateTimeChange = (field: 'check_in' | 'check_out', value: string) => {
+    const [date = '', time = ''] = value.split('T')
+    setFormData(prev => ({ ...prev, [field + '_date']: date, [field + '_time']: time }))
+    clearFieldError(field + '_date')
+    clearFieldError(field + '_time')
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -145,6 +154,8 @@ export default function AddProperty() {
       submitData.append('beds', formData.beds)
       submitData.append('bathrooms', formData.bathrooms)
       submitData.append('house_rules', formData.house_rules)
+      submitData.append('check_in_date', formData.check_in_date)
+      submitData.append('check_out_date', formData.check_out_date)
       submitData.append('check_in_time', formData.check_in_time)
       submitData.append('check_out_time', formData.check_out_time)
     }
@@ -435,12 +446,12 @@ export default function AddProperty() {
                 </Typography>
                 <Row>
                   <Col xs={12} md={6}>
-                    <TextField label={t('host.properties.check_in_time')} name="check_in_time" type="time" value={formData.check_in_time} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} error={!!err('check_in_time')} />
-                    <InputError message={err('check_in_time')} />
+                    <TextField label={t('host.properties.check_in_datetime')} name="check_in_datetime" type="datetime-local" value={formData.check_in_date && formData.check_in_time ? formData.check_in_date + 'T' + formData.check_in_time : ''} onChange={(e) => handleStayDateTimeChange('check_in', e.target.value)} required fullWidth InputLabelProps={{ shrink: true }} error={!!(err('check_in_date') || err('check_in_time'))} />
+                    <InputError message={err('check_in_date') || err('check_in_time')} />
                   </Col>
                   <Col xs={12} md={6} className="mt-3 mt-md-0">
-                    <TextField label={t('host.properties.check_out_time')} name="check_out_time" type="time" value={formData.check_out_time} onChange={handleChange} required fullWidth InputLabelProps={{ shrink: true }} error={!!err('check_out_time')} />
-                    <InputError message={err('check_out_time')} />
+                    <TextField label={t('host.properties.check_out_datetime')} name="check_out_datetime" type="datetime-local" value={formData.check_out_date && formData.check_out_time ? formData.check_out_date + 'T' + formData.check_out_time : ''} onChange={(e) => handleStayDateTimeChange('check_out', e.target.value)} required fullWidth InputLabelProps={{ shrink: true }} error={!!(err('check_out_date') || err('check_out_time'))} />
+                    <InputError message={err('check_out_date') || err('check_out_time')} />
                   </Col>
                 </Row>
                 <TextField sx={{ mt: 3 }} label={t('host.properties.house_rules')} name="house_rules" value={formData.house_rules} onChange={handleChange} required fullWidth multiline rows={4} placeholder={t('host.properties.house_rules_placeholder')} error={!!err('house_rules')} />

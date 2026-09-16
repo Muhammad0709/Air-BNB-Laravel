@@ -321,6 +321,8 @@ return [
         'beds' => 'Yataklar',
         'stay_details' => 'Konaklama ayrıntıları',
         'check_in_time' => 'Giriş saati',
+        'check_in_datetime' => 'Giriş tarihi ve saati',
+        'check_out_datetime' => 'Çıkış tarihi ve saati',
         'check_out_time' => 'Çıkış saati',
         'house_rules' => 'Ev kuralları',
         'house_rules_placeholder' => 'Giriş kurallarını, sigara kullanımını, evcil hayvanları, partileri ve sessizlik saatlerini açıklayın.',

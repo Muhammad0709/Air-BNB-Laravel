@@ -33,6 +33,8 @@ class Property extends Model
         'house_rules',
         'check_in_time',
         'check_out_time',
+        'check_in_date',
+        'check_out_date',
         'amenities',
         'image',
         'images',
@@ -62,6 +64,8 @@ class Property extends Model
     ];
 
     protected $casts = [
+        'check_in_date'          => 'date:Y-m-d',
+        'check_out_date'         => 'date:Y-m-d',
         'amenities'              => 'array',
         'images'                 => 'array',
         'price'                  => 'decimal:2',

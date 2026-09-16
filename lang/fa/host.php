@@ -321,6 +321,8 @@ return [
         'beds' => 'تخت‌ها',
         'stay_details' => 'جزئیات اقامت',
         'check_in_time' => 'زمان ورود',
+        'check_in_datetime' => 'تاریخ و ساعت ورود',
+        'check_out_datetime' => 'تاریخ و ساعت خروج',
         'check_out_time' => 'زمان خروج',
         'house_rules' => 'قوانین خانه',
         'house_rules_placeholder' => 'قوانین ورود، سیگار کشیدن، حیوانات خانگی، مهمانی‌ها و ساعات سکوت را توضیح دهید.',
