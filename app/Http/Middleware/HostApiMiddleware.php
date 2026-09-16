@@ -34,6 +34,14 @@ class HostApiMiddleware
             ], 403);
         }
 
+        if (Auth::user()->provider_verification_status !== 'verified'
+            && str_starts_with($request->path(), 'api/host/earnings')) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Provider verification is required to access earnings.',
+            ], 403);
+        }
+
         return $next($request);
     }
 }

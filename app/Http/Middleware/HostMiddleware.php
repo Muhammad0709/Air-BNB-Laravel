@@ -31,6 +31,10 @@ class HostMiddleware
 
         // Customer previewing host UI (session flag; account type stays User)
         if ($user->type === UserType::USER && $request->session()->get('host_panel_preview')) {
+            if (! $request->isMethodSafe()) {
+                abort(403, 'Host panel preview is read-only.');
+            }
+
             return $next($request);
         }
 
@@ -39,4 +43,3 @@ class HostMiddleware
         return redirect()->route('login')->with('error', 'Access denied. Host privileges required.');
     }
 }
-

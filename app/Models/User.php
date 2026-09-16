@@ -29,6 +29,11 @@ class User extends Authenticatable
         'type',
         'company_name',
         'tax_id',
+        'company_registration_number',
+        'company_registered_address',
+        'company_contact_person',
+        'company_description',
+        'provider_verification_status',
         'phone',
         'bio',
         'profile_picture',
@@ -89,6 +94,11 @@ class User extends Authenticatable
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function properties()
+    {
+        return $this->hasMany(Property::class);
     }
 
     public function conversations()

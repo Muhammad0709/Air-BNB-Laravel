@@ -33,6 +33,8 @@ class Booking extends Model
         'deposit_amount',
         'deposit_status',
         'deposit_dispute_reason',
+        'payment_method',
+        'payment_collected_at',
         'status',
     ];
 
@@ -44,6 +46,7 @@ class Booking extends Model
         'service_fee' => 'decimal:2',
         'total_amount' => 'decimal:2',
         'deposit_amount' => 'decimal:2',
+        'payment_collected_at' => 'datetime',
         'deposit_status' => DepositStatus::class,
         'rooms' => 'integer',
         'adults' => 'integer',

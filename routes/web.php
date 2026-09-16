@@ -146,6 +146,7 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
         Route::get('/hosts/{host}/edit', [HostController::class, 'edit'])->name('hosts.edit');
         Route::put('/hosts/{host}', [HostController::class, 'update'])->name('hosts.update');
         Route::patch('/hosts/{host}/status', [HostController::class, 'updateStatus'])->name('hosts.status');
+        Route::patch('/hosts/{host}/verification', [HostController::class, 'updateVerification'])->name('hosts.verification');
         Route::delete('/hosts/{host}', [HostController::class, 'destroy'])->name('hosts.destroy');
         Route::patch('/users/{user}/status', [UserController::class, 'updateStatus'])->name('users.status');
         Route::resource('users', UserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);

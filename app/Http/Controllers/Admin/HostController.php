@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Enums\UserType;
+use App\Enums\PropertyStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Http\Requests\Admin\UpdateUserStatusRequest;
@@ -67,6 +68,27 @@ class HostController extends Controller
 
         return redirect()->route('admin.hosts.index')
             ->with('success', __('admin.users.flash_updated'));
+    }
+
+    public function updateVerification(Request $request, User $host)
+    {
+        $this->ensureHost($host);
+
+        $request->validate([
+            'provider_verification_status' => ['required', 'in:pending,verified,rejected,suspended'],
+        ]);
+
+        $status = $request->provider_verification_status;
+
+        $host->update(['provider_verification_status' => $status]);
+
+        if ($status !== 'verified') {
+            $host->properties()
+                ->where('approval_status', PropertyStatus::APPROVED->value)
+                ->update(['approval_status' => PropertyStatus::PENDING->value]);
+        }
+
+        return redirect()->back()->with('success', __('admin.users.flash_updated'));
     }
 
     public function updateStatus(UpdateUserStatusRequest $request, User $host)
